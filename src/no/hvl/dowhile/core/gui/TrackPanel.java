@@ -14,7 +14,7 @@ import java.util.List;
 
 public class TrackPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
-    private final no.hvl.dowhile.core.gui.Window WINDOW;
+    private final Window WINDOW;
     private JLabel headerLabel;
     private JLabel statusLabel;
     private JLabel operationStartedLabel;
@@ -26,7 +26,7 @@ public class TrackPanel extends JPanel {
     private java.util.List<JRadioButton> radioButtons;
     private ButtonGroup crewGroup;
 
-    public TrackPanel(final OperationManager OPERATION_MANAGER, final no.hvl.dowhile.core.gui.Window WINDOW) {
+    public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
         setLayout(new GridBagLayout());
@@ -56,6 +56,9 @@ public class TrackPanel extends JPanel {
         setConstraintsXY(2, 1);
         constraints.anchor = GridBagConstraints.NORTH;
         add(statusLabel, constraints);
+
+        crewGroup = new ButtonGroup();
+        radioButtons = generateButtons(generateNames());
 
         // adding them buttons
         setButtonsInWindow();

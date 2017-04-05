@@ -34,6 +34,8 @@ public class Window extends JFrame {
                 }
             }
         });
+
+        trackPanel.close();
     }
 
     /**
