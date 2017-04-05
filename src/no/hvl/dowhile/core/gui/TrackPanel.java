@@ -133,13 +133,23 @@ public class TrackPanel extends JPanel {
         statusLabel.setText("GPS: " + status);
     }
 
-    // Setting the constraints for x and y coordinates
+    /**
+     * Setting the constraints for x and y coordinates
+     *
+     * @param x x coordinate for contstraints
+     * @param y y coordinate for contstraints
+     */
+
     private void setConstraintsXY(int x, int y) {
         constraints.gridx = x;
         constraints.gridy = y;
     }
 
-    // Setting the insets of the constraints
+    /**
+     * Setting the insets of the constraints
+     *
+     * @param borders all borders around grid cell
+     */
     private void setConstraintsInsets(int borders) {
         constraints.insets = new Insets(borders, borders, borders, borders);
     }
