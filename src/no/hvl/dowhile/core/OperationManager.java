@@ -4,6 +4,7 @@ import no.hvl.dowhile.core.drive.DriveDetector;
 import no.hvl.dowhile.core.drive.GPSDrive;
 import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.Messages;
+import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
@@ -11,10 +12,7 @@ import org.alternativevision.gpx.beans.TrackPoint;
 import org.alternativevision.gpx.beans.Waypoint;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Handling communication between the components in the application.
@@ -33,9 +31,10 @@ public class OperationManager {
         // TODO: Remove this time. Just for testing.
         Calendar calendar = Calendar.getInstance();
         calendar.set(2017, Calendar.MARCH, 22, 12, 0, 0);
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC+1"));
         this.operationStartTime = calendar.getTime();
 
-        this.window = new Window(this, operationStartTime.toString());
+        this.window = new Window(this, StringTools.formatDate(operationStartTime));
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager();
     }
