@@ -2,9 +2,9 @@ package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.core.drive.DriveDetector;
 import no.hvl.dowhile.core.drive.GPSDrive;
+import no.hvl.dowhile.core.gui.Window;
 import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.Messages;
-import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
@@ -34,7 +34,7 @@ public class OperationManager {
         calendar.setTimeZone(TimeZone.getTimeZone("UTC+1"));
         this.operationStartTime = calendar.getTime();
 
-        this.window = new Window(this, StringTools.formatDate(operationStartTime));
+        this.window = new Window(this);
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager();
     }

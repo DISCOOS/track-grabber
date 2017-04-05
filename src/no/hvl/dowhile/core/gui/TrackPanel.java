@@ -1,22 +1,20 @@
-package no.hvl.dowhile.core;
+package no.hvl.dowhile.core.gui;
 
+import no.hvl.dowhile.core.OperationManager;
+import no.hvl.dowhile.core.TrackInfo;
 import no.hvl.dowhile.utility.Messages;
+import no.hvl.dowhile.utility.StringTools;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * This class represents the Window exposed to the user for configuring the application.
- * Responsible of laying out elements and handling user interaction.
- */
-public class Window extends JFrame {
+public class TrackPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
+    private final no.hvl.dowhile.core.gui.Window WINDOW;
     private JLabel headerLabel;
     private JLabel statusLabel;
     private JLabel operationStartedLabel;
@@ -26,21 +24,14 @@ public class Window extends JFrame {
     private SpinnerModel crewNumberInput;
     private SpinnerModel crewCountInput;
     private GridBagConstraints constraints;
-    private List<JRadioButton> radioButtons;
+    private java.util.List<JRadioButton> radioButtons;
     private ButtonGroup crewGroup;
 
-    public Window(final OperationManager OPERATION_MANAGER, String date) {
+    public TrackPanel(final OperationManager OPERATION_MANAGER, final no.hvl.dowhile.core.gui.Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
-        crewGroup = new ButtonGroup();
-        radioButtons = generateButtons(generateNames());
-
-        setTitle(Messages.PROJECT_NAME.get());
-        setSize(500, 400);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
-        panel = new JPanel(new GridBagLayout());
-        getContentPane().add(panel, BorderLayout.NORTH);
+        this.WINDOW = WINDOW;
+        setLayout(new GridBagLayout());
+        WINDOW.add(panel, BorderLayout.NORTH);
         constraints = new GridBagConstraints();
         setConstraintsInsets(5);
 
@@ -53,7 +44,7 @@ public class Window extends JFrame {
 
         // Operation started label
         operationStartedLabel = new JLabel();
-        operationStartedLabel.setText("<html><body>" + Messages.OPERATION_STARTED.get() + "<br>" + date + "</body></html>");
+        operationStartedLabel.setText("<html><body>" + Messages.OPERATION_STARTED.get() + "<br>" + StringTools.formatDate(OPERATION_MANAGER.getOperationStartTime()) + "</body></html>");
         operationStartedLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
         setConstraintsXY(0, 1);
         constraints.gridwidth = 2;
@@ -102,17 +93,6 @@ public class Window extends JFrame {
         constraints.gridwidth = 2;
         panel.add(registerButton, constraints);
 
-        // Listener for when the window closes
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent windowEvent) {
-                if (JOptionPane.showConfirmDialog(JOptionPane.getRootFrame(), Messages.CONFIRM_EXIT.get(), Messages.PROJECT_NAME.get(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    System.exit(0);
-                }
-            }
-        });
-
-
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -133,14 +113,22 @@ public class Window extends JFrame {
         });
     }
 
-    // Method for opening the window
+    /**
+     * Open/show this panel.
+     */
     public void open() {
         setVisible(true);
     }
 
-    // Method for setting the status of whether or not the gps is connected
-    public void setStatus(String status) {
-        statusLabel.setText("GPS: " + status);
+    /**
+     * Close/hide this panel.
+     */
+    public void close() {
+        setVisible(false);
+    }
+
+    public JLabel getStatusLabel() {
+        return statusLabel;
     }
 
     // Setting the constraints for x and y coordinates
