@@ -13,6 +13,7 @@ import java.awt.event.WindowEvent;
  */
 public class Window extends JFrame {
     private final OperationManager OPERATION_MANAGER;
+    private OperationPanel operationPanel;
     private TrackPanel trackPanel;
 
     public Window(final OperationManager OPERATION_MANAGER) {
@@ -23,7 +24,11 @@ public class Window extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
+        operationPanel = new OperationPanel(OPERATION_MANAGER, this);
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
+
+        trackPanel.close();
+        operationPanel.open();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {
@@ -34,8 +39,6 @@ public class Window extends JFrame {
                 }
             }
         });
-
-        trackPanel.close();
     }
 
     /**
