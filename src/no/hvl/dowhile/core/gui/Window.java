@@ -52,8 +52,12 @@ public class Window extends JFrame {
         setVisible(false);
     }
 
-    // Method for setting the status of whether or not the gps is connected
+    /**
+     * Set the status of whether a gps is connected or not.
+     *
+     * @param status the new status.
+     */
     public void setStatus(String status) {
-        trackPanel.getStatusLabel().setText("GPS: " + status);
+        trackPanel.setStatus(status);
     }
 }

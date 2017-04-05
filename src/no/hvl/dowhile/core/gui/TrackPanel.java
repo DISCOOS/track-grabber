@@ -15,13 +15,8 @@ import java.util.List;
 public class TrackPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
-    private JLabel headerLabel;
     private JLabel statusLabel;
     private JLabel operationStartedLabel;
-    private JLabel crewNumberLabel;
-    private JLabel crewCountLabel;
-    private SpinnerModel crewNumberInput;
-    private SpinnerModel crewCountInput;
     private GridBagConstraints constraints;
     private java.util.List<JRadioButton> radioButtons;
     private ButtonGroup crewGroup;
@@ -35,7 +30,7 @@ public class TrackPanel extends JPanel {
         setConstraintsInsets(5);
 
         // Header Label
-        headerLabel = new JLabel();
+        JLabel headerLabel = new JLabel();
         headerLabel.setText(Messages.PROJECT_NAME.get());
         headerLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 24));
         setConstraintsXY(0, 0);
@@ -64,26 +59,26 @@ public class TrackPanel extends JPanel {
         setButtonsInWindow();
 
         // Label and input for team number
-        crewNumberLabel = new JLabel();
+        JLabel crewNumberLabel = new JLabel();
         crewNumberLabel.setText(Messages.CREW_NUMBER.get());
         crewNumberLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
         setConstraintsXY(2, 2);
         add(crewNumberLabel, constraints);
 
-        crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
+        SpinnerModel crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner groupNumberSpinner = new JSpinner(crewNumberInput);
         setConstraintsXY(2, 3);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(groupNumberSpinner, constraints);
 
         // Label for crew count
-        crewCountLabel = new JLabel();
+        JLabel crewCountLabel = new JLabel();
         crewCountLabel.setText(Messages.CREW_COUNT.get());
         crewCountLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
         setConstraintsXY(2, 4);
         add(crewCountLabel, constraints);
 
-        crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
+        SpinnerModel crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner crewCountSpinner = new JSpinner(crewCountInput);
         setConstraintsXY(2, 5);
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -129,8 +124,13 @@ public class TrackPanel extends JPanel {
         setVisible(false);
     }
 
-    public JLabel getStatusLabel() {
-        return statusLabel;
+    /**
+     * Set the status of whether a gps is connected or not.
+     *
+     * @param status the new status.
+     */
+    public void setStatus(String status) {
+        statusLabel.setText("GPS: " + status);
     }
 
     // Setting the constraints for x and y coordinates
