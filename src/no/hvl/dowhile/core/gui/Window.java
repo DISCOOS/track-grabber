@@ -27,6 +27,7 @@ public class Window extends JFrame {
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
 
+        open();
         trackPanel.close();
         operationPanel.open();
 

@@ -18,12 +18,13 @@ public class TrackPanel extends JPanel {
     private JLabel statusLabel;
     private JLabel operationStartedLabel;
     private GridBagConstraints constraints;
-    private java.util.List<JRadioButton> radioButtons;
+    private List<JRadioButton> radioButtons;
     private ButtonGroup crewGroup;
 
     public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
+
         setLayout(new GridBagLayout());
         WINDOW.getContentPane().add(this, BorderLayout.NORTH);
         constraints = new GridBagConstraints();
@@ -170,7 +171,7 @@ public class TrackPanel extends JPanel {
     }
 
     private List<JRadioButton> generateButtons(List<String> crewNames) {
-        List<JRadioButton> rbs = new ArrayList<JRadioButton>();
+        List<JRadioButton> rbs = new ArrayList<>();
 
         JRadioButton radioButton = null;
         for (String n : crewNames) {
@@ -184,7 +185,7 @@ public class TrackPanel extends JPanel {
     }
 
     private List<String> generateNames() {
-        List<String> crewNames = new ArrayList<String>();
+        List<String> crewNames = new ArrayList<>();
         crewNames.add("Mannskap");
         crewNames.add("Hund");
         crewNames.add("Bil");
