@@ -20,7 +20,6 @@ public class TrackPanel extends JPanel {
     private JLabel operationStartedLabel;
     private JLabel crewNumberLabel;
     private JLabel crewCountLabel;
-    private JPanel panel;
     private SpinnerModel crewNumberInput;
     private SpinnerModel crewCountInput;
     private GridBagConstraints constraints;
@@ -31,7 +30,7 @@ public class TrackPanel extends JPanel {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
         setLayout(new GridBagLayout());
-        WINDOW.add(panel, BorderLayout.NORTH);
+        WINDOW.getContentPane().add(this, BorderLayout.NORTH);
         constraints = new GridBagConstraints();
         setConstraintsInsets(5);
 
@@ -40,7 +39,7 @@ public class TrackPanel extends JPanel {
         headerLabel.setText(Messages.PROJECT_NAME.get());
         headerLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 24));
         setConstraintsXY(0, 0);
-        panel.add(headerLabel, constraints);
+        add(headerLabel, constraints);
 
         // Operation started label
         operationStartedLabel = new JLabel();
@@ -48,7 +47,7 @@ public class TrackPanel extends JPanel {
         operationStartedLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
         setConstraintsXY(0, 1);
         constraints.gridwidth = 2;
-        panel.add(operationStartedLabel, constraints);
+        add(operationStartedLabel, constraints);
 
         // isConnected label
         statusLabel = new JLabel();
@@ -56,7 +55,7 @@ public class TrackPanel extends JPanel {
         statusLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
         setConstraintsXY(2, 1);
         constraints.anchor = GridBagConstraints.NORTH;
-        panel.add(statusLabel, constraints);
+        add(statusLabel, constraints);
 
         // adding them buttons
         setButtonsInWindow();
@@ -66,32 +65,32 @@ public class TrackPanel extends JPanel {
         crewNumberLabel.setText(Messages.CREW_NUMBER.get());
         crewNumberLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
         setConstraintsXY(2, 2);
-        panel.add(crewNumberLabel, constraints);
+        add(crewNumberLabel, constraints);
 
         crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner groupNumberSpinner = new JSpinner(crewNumberInput);
         setConstraintsXY(2, 3);
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(groupNumberSpinner, constraints);
+        add(groupNumberSpinner, constraints);
 
         // Label for crew count
         crewCountLabel = new JLabel();
         crewCountLabel.setText(Messages.CREW_COUNT.get());
         crewCountLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
         setConstraintsXY(2, 4);
-        panel.add(crewCountLabel, constraints);
+        add(crewCountLabel, constraints);
 
         crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner crewCountSpinner = new JSpinner(crewCountInput);
         setConstraintsXY(2, 5);
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(crewCountSpinner, constraints);
+        add(crewCountSpinner, constraints);
 
         // Register button
         JButton registerButton = new JButton(Messages.REGISTER_BUTTON.get());
         setConstraintsXY(2, 6);
         constraints.gridwidth = 2;
-        panel.add(registerButton, constraints);
+        add(registerButton, constraints);
 
         registerButton.addActionListener(new ActionListener() {
             @Override
@@ -150,7 +149,7 @@ public class TrackPanel extends JPanel {
         for (JRadioButton rb : radioButtons) {
             setConstraintsXY(x, startY);
             constraints.anchor = GridBagConstraints.WEST;
-            panel.add(rb, constraints);
+            add(rb, constraints);
 
             startY++;
         }
