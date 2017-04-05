@@ -9,7 +9,7 @@ import java.awt.event.WindowEvent;
 
 /**
  * This class represents the Window exposed to the user for configuring the application.
- * Responsible of laying out elements and handling user interaction.
+ * The class has different panels for displaying information depending on certain events in the application.
  */
 public class Window extends JFrame {
     private final OperationManager OPERATION_MANAGER;
