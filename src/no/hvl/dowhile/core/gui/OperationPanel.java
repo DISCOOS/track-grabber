@@ -78,25 +78,7 @@ public class OperationPanel extends JPanel {
         add(existingOperationInput, constraints);
     }
 
-    /**
-     * Open/show this panel.
-     */
-    public void open() {
-        setVisible(true);
-    }
-
-    /**
-     * Close/hide this panel.
-     */
-    public void close() {
-        setVisible(false);
-    }
-
-    private void testJComboBox (JComboBox<String> comboBox) {
+    private void testJComboBox(JComboBox<String> comboBox) {
         //comboBox.add("Hund");
-
     }
-
-
-
 }

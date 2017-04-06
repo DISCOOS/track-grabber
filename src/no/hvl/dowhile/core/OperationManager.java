@@ -93,6 +93,7 @@ public class OperationManager {
         fileManager.saveRawGpxFile(gpx, file.getName());
         currentTrackCutter = new TrackCutter();
         currentTrackCutter.setTrack(gpx);
+        window.openTrackPanel();
     }
 
     /**

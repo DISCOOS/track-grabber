@@ -16,6 +16,7 @@ public class Window extends JFrame {
     protected final int HEADER_FONT_SIZE = 24;
     protected final int TEXT_FONT_SIZE = 16;
     private final OperationManager OPERATION_MANAGER;
+    private JPanel cardPanel;
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
 
@@ -30,9 +31,12 @@ public class Window extends JFrame {
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
 
-        open();
-        trackPanel.close();
-        operationPanel.open();
+        cardPanel = new JPanel(new CardLayout());
+        cardPanel.add(operationPanel, "Operation");
+        cardPanel.add(trackPanel, "Track");
+        add(cardPanel, BorderLayout.CENTER);
+
+        openOperationPanel();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {
@@ -59,6 +63,16 @@ public class Window extends JFrame {
         setVisible(false);
     }
 
+    public void openOperationPanel() {
+        CardLayout cl = (CardLayout) (cardPanel.getLayout());
+        cl.show(cardPanel, "Operation");
+    }
+
+    public void openTrackPanel() {
+        CardLayout cl = (CardLayout) (cardPanel.getLayout());
+        cl.show(cardPanel, "Track");
+    }
+
     /**
      * Set the status of whether a gps is connected or not.
      *
@@ -71,7 +85,7 @@ public class Window extends JFrame {
     /**
      * Makes a JLabel with given text and font size
      *
-     * @param text text that will be inserted into the JLabel
+     * @param text     text that will be inserted into the JLabel
      * @param fontSize font size that will be used on the Jlabel
      * @return a JLabel with given text and font size
      */
@@ -81,12 +95,13 @@ public class Window extends JFrame {
 
         return theLabel;
     }
+
     /**
      * Setting the constraints for x and y coordinates
      *
      * @param constraints the GridBagConstraints for which we will set the x and y coordinate
-     * @param x x coordinate for contstraints
-     * @param y y coordinate for contstraints
+     * @param x           x coordinate for contstraints
+     * @param y           y coordinate for contstraints
      */
     public void setConstraintsXY(GridBagConstraints constraints, int x, int y) {
         constraints.gridx = x;
@@ -97,7 +112,7 @@ public class Window extends JFrame {
      * Setting the insets of the constraints
      *
      * @param constraints the GridBagConstraints for which we will set the insets
-     * @param borders all borders around grid cell
+     * @param borders     all borders around grid cell
      */
     public void setConstraintsInsets(GridBagConstraints constraints, int borders) {
         constraints.insets = new Insets(borders, borders, borders, borders);

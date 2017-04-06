@@ -35,15 +35,15 @@ public class TrackPanel extends JPanel {
 
         // Header Label
         JLabel headerLabel = WINDOW.makeLabel(Messages.PROJECT_NAME.get(), WINDOW.HEADER_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints,0, 0);
+        WINDOW.setConstraintsXY(constraints, 0, 0);
         add(headerLabel, constraints);
 
         // Operation started label
         operationStartedLabel = WINDOW.makeLabel("<html><body>"
-                + Messages.OPERATION_STARTED.get()
-                + "<br>"
-                + StringTools.formatDate(OPERATION_MANAGER.getOperationStartTime())
-                + "</body></html>",
+                        + Messages.OPERATION_STARTED.get()
+                        + "<br>"
+                        + StringTools.formatDate(OPERATION_MANAGER.getOperationStartTime())
+                        + "</body></html>",
                 WINDOW.TEXT_FONT_SIZE
         );
         WINDOW.setConstraintsXY(constraints, 0, 1);
@@ -120,20 +120,6 @@ public class TrackPanel extends JPanel {
     }
 
     /**
-     * Open/show this panel.
-     */
-    public void open() {
-        setVisible(true);
-    }
-
-    /**
-     * Close/hide this panel.
-     */
-    public void close() {
-        setVisible(false);
-    }
-
-    /**
      * Set the status of whether a gps is connected or not.
      *
      * @param status the new status.
@@ -143,7 +129,7 @@ public class TrackPanel extends JPanel {
     }
 
     /**
-     *  places the radio buttons in the given coordinates in the panel
+     * places the radio buttons in the given coordinates in the panel
      */
     private void setButtonsInWindow() {
         int startY = 2;
@@ -209,6 +195,4 @@ public class TrackPanel extends JPanel {
         }
         return chosenRadioButton;
     }
-
-
 }
