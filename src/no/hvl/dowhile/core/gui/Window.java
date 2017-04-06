@@ -36,6 +36,7 @@ public class Window extends JFrame {
         cardPanel.add(trackPanel, "Track");
         add(cardPanel, BorderLayout.CENTER);
 
+        open();
         openOperationPanel();
 
         // Listener for when the window closes
