@@ -22,7 +22,7 @@ public class TrackPanel extends JPanel {
     private JLabel operationStartedLabel;
     private GridBagConstraints constraints;
     private List<JRadioButton> radioButtons;
-    private ButtonGroup crewGroup;
+    private ButtonGroup radioButtonGroup;
 
     public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
@@ -31,88 +31,87 @@ public class TrackPanel extends JPanel {
         setLayout(new GridBagLayout());
         WINDOW.getContentPane().add(this, BorderLayout.NORTH);
         constraints = new GridBagConstraints();
-        setConstraintsInsets(5);
+        WINDOW.setConstraintsInsets(constraints, 5);
 
         // Header Label
-        JLabel headerLabel = makeLabel(Messages.PROJECT_NAME.get(), WINDOW.HEADER_FONT_SIZE);
-        setConstraintsXY(0, 0);
+        JLabel headerLabel = WINDOW.makeLabel(Messages.PROJECT_NAME.get(), WINDOW.HEADER_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints,0, 0);
         add(headerLabel, constraints);
 
         // Operation started label
-        operationStartedLabel = makeLabel("<html><body>"
+        operationStartedLabel = WINDOW.makeLabel("<html><body>"
                 + Messages.OPERATION_STARTED.get()
                 + "<br>"
                 + StringTools.formatDate(OPERATION_MANAGER.getOperationStartTime())
                 + "</body></html>",
                 WINDOW.TEXT_FONT_SIZE
         );
-        setConstraintsXY(0, 1);
+        WINDOW.setConstraintsXY(constraints, 0, 1);
         constraints.gridwidth = 2;
         add(operationStartedLabel, constraints);
 
         // isConnected label
-        statusLabel = makeLabel(Messages.GPS_OFFLINE.get(), WINDOW.TEXT_FONT_SIZE);
-        setConstraintsXY(2, 1);
+        statusLabel = WINDOW.makeLabel(Messages.GPS_OFFLINE.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 2, 1);
         constraints.anchor = GridBagConstraints.NORTH;
         add(statusLabel, constraints);
 
-        crewGroup = new ButtonGroup();
+        radioButtonGroup = new ButtonGroup();
         radioButtons = generateButtons(generateNames());
 
         // adding them buttons
         setButtonsInWindow();
 
         // Label and input for team number
-        JLabel crewNumberLabel = makeLabel(Messages.CREW_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
-        setConstraintsXY(2, 2);
+        JLabel crewNumberLabel = WINDOW.makeLabel(Messages.CREW_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 2, 2);
         add(crewNumberLabel, constraints);
 
         SpinnerModel crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner groupNumberSpinner = new JSpinner(crewNumberInput);
-        setConstraintsXY(2, 3);
+        WINDOW.setConstraintsXY(constraints, 2, 3);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(groupNumberSpinner, constraints);
 
-        // Label for crew count
-        JLabel crewCountLabel = makeLabel(Messages.CREW_COUNT.get(), WINDOW.TEXT_FONT_SIZE);
-        setConstraintsXY(2, 4);
+        // Label and input for crew count
+        JLabel crewCountLabel = WINDOW.makeLabel(Messages.CREW_COUNT.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 2, 4);
         add(crewCountLabel, constraints);
 
         SpinnerModel crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner crewCountSpinner = new JSpinner(crewCountInput);
-        setConstraintsXY(2, 5);
+        WINDOW.setConstraintsXY(constraints, 2, 5);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(crewCountSpinner, constraints);
 
-        JLabel areaLabel = makeLabel(Messages.AREA_SEARCHED.get(), WINDOW.TEXT_FONT_SIZE);
-        setConstraintsXY(2, 6);
+        // Label and input for area searched
+        JLabel areaLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 2, 6);
         add(areaLabel, constraints);
 
         JTextField areaInput = new JTextField();
-        setConstraintsXY(2, 7);
+        WINDOW.setConstraintsXY(constraints, 2, 7);
         add(areaInput, constraints);
 
         // Register button
         JButton registerButton = new JButton(Messages.REGISTER_BUTTON.get());
-        setConstraintsXY(2, 8);
+        WINDOW.setConstraintsXY(constraints, 2, 8);
         constraints.gridwidth = 2;
         add(registerButton, constraints);
 
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Fetching the input data and sending it to the OperationManager
                 String crew = getSelectedRadioButton();
-                String crewCount = crewCountSpinner.getModel().getValue().toString();
-                String crewNumber = groupNumberSpinner.getModel().getValue().toString();
+                int crewCount = Integer.parseInt(crewCountSpinner.getModel().getValue().toString());
+                int crewNumber = Integer.parseInt(groupNumberSpinner.getModel().getValue().toString());
                 String areaSearched = areaInput.getText();
-                TrackInfo trackInfo = new TrackInfo();
-                trackInfo.setTrackName(crew);
-                trackInfo.setCrewCount(Integer.parseInt(crewCount));
-                trackInfo.setCrewNumber(Integer.parseInt(crewNumber));
-                trackInfo.setAreaSearched(areaSearched);
+                TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched);
                 OPERATION_MANAGER.initiateTrackCutter(trackInfo);
-                String dialogText = Messages.SAVE_FILE.get() + crew + "_" + crewNumber + "_" + crewCount;
 
+                // Message to user
+                String dialogText = Messages.SAVE_FILE.get() + crew + "_" + crewNumber + "_" + crewCount;
                 JOptionPane.showMessageDialog(
                         JOptionPane.getRootFrame(),
                         dialogText);
@@ -144,33 +143,14 @@ public class TrackPanel extends JPanel {
     }
 
     /**
-     * Setting the constraints for x and y coordinates
-     *
-     * @param x x coordinate for contstraints
-     * @param y y coordinate for contstraints
+     *  places the radio buttons in the given coordinates in the panel
      */
-
-    private void setConstraintsXY(int x, int y) {
-        constraints.gridx = x;
-        constraints.gridy = y;
-    }
-
-    /**
-     * Setting the insets of the constraints
-     *
-     * @param borders all borders around grid cell
-     */
-    private void setConstraintsInsets(int borders) {
-        constraints.insets = new Insets(borders, borders, borders, borders);
-    }
-
-    // Creates a radio button and a label a places them in the given coordinates
     private void setButtonsInWindow() {
         int startY = 2;
         int x = 0;
 
         for (JRadioButton rb : radioButtons) {
-            setConstraintsXY(x, startY);
+            WINDOW.setConstraintsXY(constraints, x, startY);
             constraints.anchor = GridBagConstraints.WEST;
             add(rb, constraints);
 
@@ -179,6 +159,12 @@ public class TrackPanel extends JPanel {
 
     }
 
+    /**
+     * Generates the radio buttons
+     *
+     * @param crewNames List of strings with the names used on the radio buttons
+     * @return a List with the radio buttons
+     */
     private List<JRadioButton> generateButtons(List<String> crewNames) {
         List<JRadioButton> rbs = new ArrayList<>();
 
@@ -187,23 +173,33 @@ public class TrackPanel extends JPanel {
             radioButton = new JRadioButton(n);
             radioButton.setText(n);
             rbs.add(radioButton);
-            crewGroup.add(radioButton);
+            radioButtonGroup.add(radioButton);
         }
 
         return rbs;
     }
 
+    /**
+     * Method for creating names that will be put in the radio buttons
+     *
+     * @return a List with the names
+     */
     private List<String> generateNames() {
         List<String> crewNames = new ArrayList<>();
-        crewNames.add("Mannskap");
+        crewNames.add("Lag");
         crewNames.add("Hund");
         crewNames.add("Bil");
-        crewNames.add("Sjørøver");
+        crewNames.add("ATV");
         crewNames.add("Helikopter");
-        crewNames.add("Etc.");
+        crewNames.add("Båt");
         return crewNames;
     }
 
+    /**
+     * Finds the selected radio button and returns it
+     *
+     * @return a String with the selected radio button
+     */
     private String getSelectedRadioButton() {
         String chosenRadioButton = "";
         for (JRadioButton rb : radioButtons) {
@@ -214,10 +210,5 @@ public class TrackPanel extends JPanel {
         return chosenRadioButton;
     }
 
-    private JLabel makeLabel(String text, int fontSize) {
-        JLabel theLabel = new JLabel(text);
-        theLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, fontSize));
 
-        return theLabel;
-    }
 }
