@@ -5,17 +5,20 @@ import org.alternativevision.gpx.beans.GPX;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Managing files and has methods for storing files in the application file system.
  */
 public class FileManager {
+    private final OperationManager OPERATION_MANAGER;
     private File appFolder;
     private File processedFolder;
     private File rawFolder;
+
+    public FileManager(final OperationManager OPERATION_MANAGER) {
+        this.OPERATION_MANAGER = OPERATION_MANAGER;
+    }
 
     /**
      * Setting up folder for storing processed and raw files.
@@ -38,6 +41,32 @@ public class FileManager {
         if (rawFolderCreated) {
             System.err.println("Folder for raw files didn't exist. Created!");
         }
+        boolean configCreated = false;
+        File[] appFolderFiles = appFolder.listFiles();
+        if (appFolderFiles != null) {
+            for (File file : appFolderFiles) {
+                if (file.getName().equals("config.txt")) {
+                    configCreated = true;
+                }
+            }
+        }
+        if (!configCreated) {
+            System.err.println("Config doesn't exist. Creating.");
+            File file = new File(appFolder, "config.txt");
+            try {
+                file.createNewFile();
+                FileWriter writer = new FileWriter(file);
+                for (String line : OPERATION_MANAGER.getConfig().getConfigInstructions()) {
+                    writer.write(line + System.lineSeparator());
+                }
+                writer.flush();
+                writer.close();
+                System.err.println("Config created.");
+            } catch (IOException ex) {
+                System.err.println("Failed while creating config file.");
+            }
+        }
+        parseFilenameFromConfig();
     }
 
     /**
@@ -100,6 +129,32 @@ public class FileManager {
         } catch (TransformerException ex) {
             System.err.println("Failed to transform raw file.");
             ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets the filename pattern from the config file.
+     */
+    private void parseFilenameFromConfig() {
+        File file = new File(appFolder, "config.txt");
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = reader.readLine();
+            while (line != null) {
+                if (!line.startsWith("#")) {
+                    if (line.startsWith("filename")) {
+                        String[] parts = line.split("=");
+                        if (parts.length == 2) {
+                            String pattern = parts[1];
+                            OPERATION_MANAGER.getConfig().setPattern(pattern);
+                            System.err.println("Sporene vil lagres på følgende format: " + pattern);
+                        }
+                    }
+                }
+                line = reader.readLine();
+            }
+        } catch (IOException ex) {
+            System.err.println("Failed while reading from config file.");
         }
     }
 }
