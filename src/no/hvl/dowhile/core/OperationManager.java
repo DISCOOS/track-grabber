@@ -23,6 +23,7 @@ public class OperationManager {
     private Window window;
     private DriveDetector driveDetector;
     private FileManager fileManager;
+    private Config config;
     private TrackCutter currentTrackCutter;
 
     public OperationManager() {
@@ -36,7 +37,8 @@ public class OperationManager {
 
         this.window = new Window(this);
         this.driveDetector = new DriveDetector(this);
-        this.fileManager = new FileManager();
+        this.fileManager = new FileManager(this);
+        this.config = new Config();
     }
 
     /**
@@ -91,6 +93,7 @@ public class OperationManager {
         fileManager.saveRawGpxFile(gpx, file.getName());
         currentTrackCutter = new TrackCutter();
         currentTrackCutter.setTrack(gpx);
+        window.openTrackPanel();
     }
 
     /**
@@ -193,5 +196,14 @@ public class OperationManager {
      */
     public void setupLocalFolders(File listRoot) {
         fileManager.setupLocalFolders(listRoot);
+    }
+
+    /**
+     * Get the current instance of the Config.
+     *
+     * @return the current instance of the Config.
+     */
+    public Config getConfig() {
+        return config;
     }
 }

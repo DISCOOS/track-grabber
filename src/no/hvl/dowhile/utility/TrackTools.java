@@ -1,5 +1,6 @@
 package no.hvl.dowhile.utility;
 
+import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
@@ -52,6 +53,8 @@ public class TrackTools {
     public static GPX parseFileAsGPX(File file) {
         GPX gpxVersion = null;
         GPXParser gpxParser = new GPXParser();
+        DisplayColorExtensionParser colorParser = new DisplayColorExtensionParser();
+        gpxParser.addExtensionParser(colorParser);
         try {
             gpxVersion = gpxParser.parseGPX(new FileInputStream(file));
         } catch (Exception ex) {
