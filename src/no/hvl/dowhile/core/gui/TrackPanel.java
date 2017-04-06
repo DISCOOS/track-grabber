@@ -34,24 +34,24 @@ public class TrackPanel extends JPanel {
         setConstraintsInsets(5);
 
         // Header Label
-        JLabel headerLabel = new JLabel();
-        headerLabel.setText(Messages.PROJECT_NAME.get());
+        JLabel headerLabel = new JLabel(Messages.PROJECT_NAME.get());
         headerLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 24));
         setConstraintsXY(0, 0);
         add(headerLabel, constraints);
 
         // Operation started label
-        operationStartedLabel = new JLabel();
-        operationStartedLabel.setText("<html><body>" + Messages.OPERATION_STARTED.get() + "<br>" + StringTools.formatDate(OPERATION_MANAGER.getOperationStartTime()) + "</body></html>");
-        operationStartedLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
+        operationStartedLabel = makeLabel("<html><body>"
+                + Messages.OPERATION_STARTED.get()
+                + "<br>"
+                + StringTools.formatDate(OPERATION_MANAGER.getOperationStartTime())
+                + "</body></html>"
+        );
         setConstraintsXY(0, 1);
         constraints.gridwidth = 2;
         add(operationStartedLabel, constraints);
 
         // isConnected label
-        statusLabel = new JLabel();
-        statusLabel.setText(Messages.GPS_OFFLINE.get());
-        statusLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
+        statusLabel = makeLabel(Messages.GPS_OFFLINE.get());
         setConstraintsXY(2, 1);
         constraints.anchor = GridBagConstraints.NORTH;
         add(statusLabel, constraints);
@@ -63,9 +63,7 @@ public class TrackPanel extends JPanel {
         setButtonsInWindow();
 
         // Label and input for team number
-        JLabel crewNumberLabel = new JLabel();
-        crewNumberLabel.setText(Messages.CREW_NUMBER.get());
-        crewNumberLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
+        JLabel crewNumberLabel = makeLabel(Messages.CREW_NUMBER.get());
         setConstraintsXY(2, 2);
         add(crewNumberLabel, constraints);
 
@@ -76,9 +74,7 @@ public class TrackPanel extends JPanel {
         add(groupNumberSpinner, constraints);
 
         // Label for crew count
-        JLabel crewCountLabel = new JLabel();
-        crewCountLabel.setText(Messages.CREW_COUNT.get());
-        crewCountLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
+        JLabel crewCountLabel = makeLabel(Messages.CREW_COUNT.get());
         setConstraintsXY(2, 4);
         add(crewCountLabel, constraints);
 
@@ -88,9 +84,17 @@ public class TrackPanel extends JPanel {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(crewCountSpinner, constraints);
 
+        JLabel areaLabel = makeLabel(Messages.AREA_SEARCHED.get());
+        setConstraintsXY(2, 6);
+        add(areaLabel, constraints);
+
+        JTextField areaInput = new JTextField();
+        setConstraintsXY(2, 7);
+        add(areaInput, constraints);
+
         // Register button
         JButton registerButton = new JButton(Messages.REGISTER_BUTTON.get());
-        setConstraintsXY(2, 6);
+        setConstraintsXY(2, 8);
         constraints.gridwidth = 2;
         add(registerButton, constraints);
 
@@ -100,10 +104,12 @@ public class TrackPanel extends JPanel {
                 String crew = getSelectedRadioButton();
                 String crewCount = crewCountSpinner.getModel().getValue().toString();
                 String crewNumber = groupNumberSpinner.getModel().getValue().toString();
+                String areaSearched = areaInput.getText();
                 TrackInfo trackInfo = new TrackInfo();
                 trackInfo.setTrackName(crew);
                 trackInfo.setCrewCount(Integer.parseInt(crewCount));
                 trackInfo.setCrewNumber(Integer.parseInt(crewNumber));
+                trackInfo.setAreaSearched(areaSearched);
                 OPERATION_MANAGER.initiateTrackCutter(trackInfo);
                 String dialogText = Messages.SAVE_FILE.get() + crew + "_" + crewNumber + "_" + crewCount;
 
@@ -206,5 +212,12 @@ public class TrackPanel extends JPanel {
             }
         }
         return chosenRadioButton;
+    }
+
+    private JLabel makeLabel(String text) {
+        JLabel theLabel = new JLabel(text);
+        theLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, 16));
+
+        return theLabel;
     }
 }

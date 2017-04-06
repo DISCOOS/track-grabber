@@ -12,6 +12,7 @@ public enum Messages {
     GPS_OFFLINE("GPS: Koblet fra."),
     CREW_NUMBER("Gruppenummer: "),
     CREW_COUNT("Antall mann: "),
+    AREA_SEARCHED("Teiger: "),
     REGISTER_BUTTON("Registrer"),
     SAVE_FILE("Vil bli lagret som: "),
     OPERATION_STARTED("Operasjon startet: "),
