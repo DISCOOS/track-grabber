@@ -8,7 +8,7 @@ public class Config {
         return new String[]{
                 "# TrackGrabber Config - Egendefinert navngivning av filer.",
                 "# Ikke endre versjonsnummeret under!",
-                "Version=" + VERSION,
+                "version=" + VERSION,
                 "# Du kan inkludere følgende variabler i navnet. De vil erstattes med faktisk data under kjøring.",
                 "# %LAGTYPE% - Type lag som lagde sporet (helikopter, bil, atv, hund osv).",
                 "# %LAGNUMMER% - Nummeret på laget som hadde GPS.",
