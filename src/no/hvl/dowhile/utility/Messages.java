@@ -18,7 +18,17 @@ public enum Messages {
     OPERATION_STARTED("Operasjon startet: "),
     CONFIRM_EXIT("Vil du virkelig avslutte Track Grabber? Alle endringer vil bli lagret."),
     ERROR_THREAD("En tråd ga en error mens den ventet på neste kjøring."),
-    ERROR_NO_TRACK_FOR_INFO("Systemet prøvde å starte prosessering av fil som ikke finnes.");
+    ERROR_NO_TRACK_FOR_INFO("Systemet prøvde å starte prosessering av fil som ikke finnes."),
+
+    // Operation panel
+    OPERATION_NAME("Navn på operasjon: "),
+    OPERATION_START_DATE("Startdato: "),
+    EXISTING_OPERATION("Velg en allerede eksisterende operasjon.")
+
+
+   ;
+
+
 
     private String message;
 
