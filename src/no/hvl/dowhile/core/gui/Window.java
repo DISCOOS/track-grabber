@@ -31,8 +31,8 @@ public class Window extends JFrame {
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
 
         open();
-        trackPanel.open();
-        operationPanel.close();
+        trackPanel.close();
+        operationPanel.open();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {
