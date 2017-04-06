@@ -1,15 +1,15 @@
 package no.hvl.dowhile.utility;
 
+import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 import org.alternativevision.gpx.beans.Waypoint;
+import org.alternativevision.gpx.extensions.IExtensionParser;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Utility methods to work with GPX files and tracks.
@@ -52,12 +52,22 @@ public class TrackTools {
     public static GPX parseFileAsGPX(File file) {
         GPX gpxVersion = null;
         GPXParser gpxParser = new GPXParser();
+        DisplayColorExtensionParser colorParser = new DisplayColorExtensionParser();
+        gpxParser.addExtensionParser(colorParser);
+
         try {
             gpxVersion = gpxParser.parseGPX(new FileInputStream(file));
         } catch (Exception ex) {
             System.err.println("File not found or something.");
             ex.printStackTrace();
         }
+
+        // TEST
+        Track track = getTrackFromGPXFile(gpxVersion);
+        String color = (String)track.getExtensionData(colorParser.getId());
+        System.out.println(color);
+        // END TEST
+
         return gpxVersion;
     }
 

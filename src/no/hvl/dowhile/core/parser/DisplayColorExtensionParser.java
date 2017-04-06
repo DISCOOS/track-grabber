@@ -8,10 +8,13 @@ import org.alternativevision.gpx.extensions.IExtensionParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-public class ExtensionParser implements IExtensionParser {
+public class DisplayColorExtensionParser implements IExtensionParser {
+
+    public static final String myID = "DisplayColorExtension";
+
     @Override
     public String getId() {
-        return null;
+        return myID;
     }
 
     @Override
@@ -21,7 +24,19 @@ public class ExtensionParser implements IExtensionParser {
 
     @Override
     public Object parseTrackExtension(Node node) {
-        return null;
+        String dc = new String("color");
+        for(int idx = 0; idx < node.getChildNodes().getLength(); idx++) {
+            Node currentNode = node.getChildNodes().item(idx);
+            if("gpxx:TrackExtension".equals(currentNode.getNodeName())) {
+                for(int idx1 = 0; idx < currentNode.getChildNodes().getLength(); idx++) {
+                    Node dcNode = currentNode.getChildNodes().item(idx);
+                    if("gpxx:DisplayColor".equals(dcNode.getNodeName())){
+                        dc = dcNode.getFirstChild().getNodeValue();
+                    }
+                }
+            }
+        }
+        return dc;
     }
 
     @Override
