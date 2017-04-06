@@ -1,5 +1,6 @@
 package no.hvl.dowhile.core;
 
+import no.hvl.dowhile.utility.FileTools;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 
@@ -116,6 +117,7 @@ public class FileManager {
                 file.createNewFile();
             }
             new GPXParser().writeGPX(gpx, new FileOutputStream(file));
+            FileTools.insertXmlData(gpx, file);
         } catch (IOException ex) {
             System.err.println("Failed to save raw file.");
             ex.printStackTrace();
