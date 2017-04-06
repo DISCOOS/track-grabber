@@ -16,7 +16,8 @@ public class Config {
                 "# %SPORNUMMER% - Nummeret på sporet, dersom et lag har flere GPS-er.",
                 "# %DATO% - Dato og tid for import av sporet.",
                 "#",
-                "# Du kan oppgi filnavnet under. Deler du ikke vil ha med kan enkelt fjernes/utelates:",
+                "# Endre filnavnet under slik du vil ha det. Deler du ikke vil ha med kan enkelt fjernes/utelates.",
+                "# Mellomrom er ikke tillatt. Bruk understrek.",
                 "",
                 "filename=%LAGTYPE%%LAGNUMMER%_TEIG%TEIGNUMMER%_SPOR%SPORNUMMER%_%DATO%.gpx"
         };
