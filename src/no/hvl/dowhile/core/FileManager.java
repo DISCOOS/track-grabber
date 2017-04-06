@@ -89,22 +89,7 @@ public class FileManager {
      * @param filename the name for the new file.
      */
     public void saveRawGpxFile(GPX rawGpx, String filename) {
-        try {
-            File file = new File(rawFolder, filename);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            new GPXParser().writeGPX(rawGpx, new FileOutputStream(file));
-        } catch (IOException ex) {
-            System.err.println("Failed to save raw file.");
-            ex.printStackTrace();
-        } catch (ParserConfigurationException ex) {
-            System.err.println("Parser is not configured correctly.");
-            ex.printStackTrace();
-        } catch (TransformerException ex) {
-            System.err.println("Failed to transform raw file.");
-            ex.printStackTrace();
-        }
+        saveGpxFile(rawGpx, filename, rawFolder);
     }
 
     /**
@@ -114,12 +99,23 @@ public class FileManager {
      * @param filename     the name for the new file.
      */
     public void saveProcessedGpxFile(GPX processedGpx, String filename) {
+        saveGpxFile(processedGpx, filename, processedFolder);
+    }
+
+    /**
+     * Saving the file in the specified folder as the specified filename.
+     *
+     * @param gpx      the gpx to save.
+     * @param filename the name for the new file.
+     * @param folder   the folder to save it in.
+     */
+    private void saveGpxFile(GPX gpx, String filename, File folder) {
         try {
-            File file = new File(processedFolder, filename);
+            File file = new File(folder, filename);
             if (!file.exists()) {
                 file.createNewFile();
             }
-            new GPXParser().writeGPX(processedGpx, new FileOutputStream(file));
+            new GPXParser().writeGPX(gpx, new FileOutputStream(file));
         } catch (IOException ex) {
             System.err.println("Failed to save raw file.");
             ex.printStackTrace();
