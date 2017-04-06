@@ -118,6 +118,7 @@ public class FileManager {
             }
             new GPXParser().writeGPX(gpx, new FileOutputStream(file));
             FileTools.insertXmlData(gpx, file);
+            FileTools.insertDisplayColor(gpx, file);
         } catch (IOException ex) {
             System.err.println("Failed to save raw file.");
             ex.printStackTrace();
