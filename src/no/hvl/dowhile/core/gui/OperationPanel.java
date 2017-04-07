@@ -6,6 +6,9 @@ import no.hvl.dowhile.utility.StringTools;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import org.jdesktop.swingx.JXDatePicker;
 
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
@@ -69,12 +72,11 @@ public class OperationPanel extends JPanel {
         constraints.anchor = GridBagConstraints.SOUTHWEST;
         add(operationDateLabel, constraints);
 
-        JTextField operationDateInput = new JTextField();
+        JXDatePicker datePicker = new JXDatePicker();
+        datePicker.setDate(Calendar.getInstance().getTime());
+        datePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         WINDOW.setConstraintsXY(constraints, 2, 3);
-        constraints.gridwidth = 2;
-        constraints.weightx = 2;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        add(operationDateInput, constraints);
+        add(datePicker, constraints);
 
         // Already existing operation label and input
         JLabel existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
@@ -85,6 +87,10 @@ public class OperationPanel extends JPanel {
         WINDOW.setConstraintsXY(constraints, 0, 5);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(existingOperationInput, constraints);
+
+        JButton registerButton = new JButton(Messages.REGISTER_BUTTON.get());
+        WINDOW.setConstraintsXY(constraints, 3, 5);
+        add(registerButton, constraints);
     }
 
     private void testJComboBox(JComboBox<String> comboBox) {
