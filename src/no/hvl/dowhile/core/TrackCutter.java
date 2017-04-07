@@ -1,12 +1,19 @@
 package no.hvl.dowhile.core;
 
+import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
+import org.alternativevision.gpx.beans.Track;
+import org.alternativevision.gpx.beans.Waypoint;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Processing a GPX file. Removing unnecessary data.
  */
 public class TrackCutter {
-    private GPX track;
+    private GPX trackFile;
     private TrackInfo trackInfo;
 
     /**
@@ -44,18 +51,34 @@ public class TrackCutter {
     }
 
     /**
-     * Removes all track points that were created outside of the given time span
+     * Removes all track points that were created before a given time
      */
-    private void filterOnTimeSpan() {
+    public GPX filterOnTimeStarted(Calendar startTime) {
+        Track track = TrackTools.getTrackFromGPXFile(trackFile);
+        ArrayList<Waypoint> trackPts = track.getTrackPoints();
+        long startTimeMillis = startTime.getTimeInMillis();
 
+        System.out.println("Point count before cutting: " + trackPts.size());
+
+        for(int i = 0; i < trackPts.size(); i++) {
+            long pointTimeMillis = trackPts.get(i).getTime().getTime();
+            if(pointTimeMillis < startTimeMillis) {
+                trackPts.remove(i);
+            }
+        }
+
+        track.setTrackPoints(trackPts); // Is this necessary?
+        System.out.println("Point count after cutting: " + trackPts.size());
+
+        return trackFile;
     }
 
-    public GPX getTrack() {
-        return track;
+    public GPX getTrackFile() {
+        return trackFile;
     }
 
-    public void setTrack(GPX track) {
-        this.track = track;
+    public void setTrackFile(GPX track) {
+        this.trackFile = trackFile;
     }
 
     public TrackInfo getTrackInfo() {

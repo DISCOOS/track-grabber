@@ -92,7 +92,7 @@ public class OperationManager {
         GPX gpx = TrackTools.parseFileAsGPX(file);
         fileManager.saveRawGpxFile(gpx, file.getName());
         currentTrackCutter = new TrackCutter();
-        currentTrackCutter.setTrack(gpx);
+        currentTrackCutter.setTrackFile(gpx);
         window.openTrackPanel();
     }
 
@@ -108,7 +108,7 @@ public class OperationManager {
         }
         currentTrackCutter.setTrackInfo(trackInfo);
         currentTrackCutter.process();
-        GPX gpxFile = currentTrackCutter.getTrack();
+        GPX gpxFile = currentTrackCutter.getTrackFile();
         TrackInfo info = currentTrackCutter.getTrackInfo();
         String newName = info.getTrackName() + "_" + info.getCrewNumber() + "_" + info.getCrewCount();
         Track track = TrackTools.getTrackFromGPXFile(gpxFile);
