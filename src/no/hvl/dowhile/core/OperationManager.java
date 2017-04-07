@@ -31,8 +31,8 @@ public class OperationManager {
 
         // TODO: Remove this time. Just for testing.
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2017, Calendar.MARCH, 22, 15, 15, 0);
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC+1"));
+        calendar.set(2017, Calendar.MARCH, 22, 14, 20, 30);
+        calendar.setTimeZone(TimeZone.getTimeZone("CET"));
         this.operationStartTime = calendar.getTime();
 
         this.window = new Window(this);
@@ -109,7 +109,6 @@ public class OperationManager {
         currentTrackCutter.setTrackInfo(trackInfo);
         currentTrackCutter.process();
         GPX gpxFile = currentTrackCutter.getTrackFile();
-        TrackInfo info = currentTrackCutter.getTrackInfo();
         String newName = config.generateFilename(trackInfo);
         Track track = TrackTools.getTrackFromGPXFile(gpxFile);
         track.setName(newName);

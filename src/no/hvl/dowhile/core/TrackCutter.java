@@ -56,21 +56,20 @@ public class TrackCutter {
      */
     public GPX filterOnTimeStarted(Date startTime) {
         Track track = TrackTools.getTrackFromGPXFile(trackFile);
-        ArrayList<Waypoint> trackPts = track.getTrackPoints();
+        ArrayList<Waypoint> trackPoints = track.getTrackPoints();
+        ArrayList<Waypoint> pointsToRemove = new ArrayList<>();
         long startTimeMillis = startTime.getTime();
 
-        System.out.println("Point count before cutting: " + trackPts.size());
-
-        for(int i = 0; i < trackPts.size(); i++) {
-            long pointTimeMillis = trackPts.get(i).getTime().getTime();
-            if(pointTimeMillis < startTimeMillis) {
-                trackPts.remove(i);
+        for (Waypoint waypoint : trackPoints) {
+            long pointTimeMillis = waypoint.getTime().getTime();
+            System.err.println(pointTimeMillis);
+            System.err.println(startTimeMillis);
+            if (pointTimeMillis < startTimeMillis) {
+                pointsToRemove.add(waypoint);
             }
         }
-
-        track.setTrackPoints(trackPts); // Is this necessary?
-        System.out.println("Point count after cutting: " + trackPts.size());
-
+        trackPoints.removeAll(pointsToRemove);
+        track.setTrackPoints(trackPoints);
         return trackFile;
     }
 
@@ -78,7 +77,7 @@ public class TrackCutter {
         return trackFile;
     }
 
-    public void setTrackFile(GPX track) {
+    public void setTrackFile(GPX trackFile) {
         this.trackFile = trackFile;
     }
 
