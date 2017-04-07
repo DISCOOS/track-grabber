@@ -6,27 +6,28 @@ import org.alternativevision.gpx.beans.Track;
 import org.alternativevision.gpx.beans.Waypoint;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
  * Processing a GPX file. Removing unnecessary data.
  */
 public class TrackCutter {
+    private final OperationManager OPERATION_MANAGER;
     private GPX trackFile;
     private TrackInfo trackInfo;
 
     /**
      * Default constructor taking the track to be processed and info about it.
      */
-    public TrackCutter() {
+    public TrackCutter(final OperationManager OPERATION_MANAGER) {
+        this.OPERATION_MANAGER = OPERATION_MANAGER;
     }
 
     /**
      * Processing the file to remove unnecessary data.
      */
-    public void process(OperationManager operationManager) {
-        trackFile = filterOnTimeStarted(operationManager.getOperationStartTime());
+    public void process() {
+        trackFile = filterOnTimeStarted(OPERATION_MANAGER.getOperationStartTime());
     }
 
     /**

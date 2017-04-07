@@ -91,7 +91,7 @@ public class OperationManager {
         File file = gpxFiles.iterator().next();
         GPX gpx = TrackTools.parseFileAsGPX(file);
         fileManager.saveRawGpxFile(gpx, file.getName());
-        currentTrackCutter = new TrackCutter();
+        currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setTrackFile(gpx);
         window.openTrackPanel();
     }
@@ -102,12 +102,12 @@ public class OperationManager {
      * @param trackInfo info about the currently imported track.
      */
     public void initiateTrackCutter(TrackInfo trackInfo) {
-        if (currentTrackCutter == null) {
+        if (currentTrackCutter == null || currentTrackCutter.getTrackFile() == null) {
             Messages.ERROR_NO_TRACK_FOR_INFO.print();
             return;
         }
         currentTrackCutter.setTrackInfo(trackInfo);
-        currentTrackCutter.process(this);
+        currentTrackCutter.process();
         GPX gpxFile = currentTrackCutter.getTrackFile();
         TrackInfo info = currentTrackCutter.getTrackInfo();
         String newName = config.generateFilename(trackInfo);
