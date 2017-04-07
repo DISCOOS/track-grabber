@@ -110,10 +110,10 @@ public class OperationManager {
         currentTrackCutter.process();
         GPX gpxFile = currentTrackCutter.getTrack();
         TrackInfo info = currentTrackCutter.getTrackInfo();
-        String newName = info.getTrackName() + "_" + info.getCrewNumber() + "_" + info.getCrewCount();
+        String newName = config.generateFilename(trackInfo);
         Track track = TrackTools.getTrackFromGPXFile(gpxFile);
         track.setName(newName);
-        fileManager.saveProcessedGpxFile(gpxFile, newName + ".gpx");
+        fileManager.saveProcessedGpxFile(gpxFile, newName);
     }
 
     /**
