@@ -78,7 +78,7 @@ public class Config {
                     filename = filename.replace(variable, trackInfo.getAreaSearched());
                     break;
                 case "%SPORNUMMER%":
-                    filename = filename.replace(variable, "Not_supported_XD");
+                    filename = filename.replace(variable, "" + trackInfo.getTrackNumber());
                     break;
                 case "%DATO%":
                     filename = filename.replace(variable, StringTools.formatDateForFile(Calendar.getInstance().getTime()));

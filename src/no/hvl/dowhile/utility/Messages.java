@@ -26,14 +26,12 @@ public enum Messages {
     REGISTER_BUTTON("Registrer"),
     SAVE_FILE("Vil bli lagret som: "),
     OPERATION_STARTED("Operasjon startet: "),
+    TRACK_NUMBER("Spornummer: "),
 
     // Operation panel
     OPERATION_NAME("Navn på operasjon: "),
     OPERATION_START_DATE("Startdato: "),
-    EXISTING_OPERATION("Velg en allerede eksisterende operasjon.")
-   ;
-
-
+    EXISTING_OPERATION("Velg en allerede eksisterende operasjon.");
 
     private String message;
 

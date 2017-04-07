@@ -93,9 +93,20 @@ public class TrackPanel extends JPanel {
         WINDOW.setConstraintsXY(constraints, 2, 7);
         add(areaInput, constraints);
 
+        // Label and input for track number
+        JLabel trackNumberLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 2, 8);
+        add(trackNumberLabel, constraints);
+
+        SpinnerModel trackNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
+        JSpinner trackNumberSpinner = new JSpinner(trackNumberInput);
+        WINDOW.setConstraintsXY(constraints, 2, 9);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(trackNumberSpinner, constraints);
+
         // Register button
         JButton registerButton = new JButton(Messages.REGISTER_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 2, 8);
+        WINDOW.setConstraintsXY(constraints, 2, 10);
         constraints.gridwidth = 2;
         add(registerButton, constraints);
 
@@ -107,7 +118,8 @@ public class TrackPanel extends JPanel {
                 int crewCount = Integer.parseInt(crewCountSpinner.getModel().getValue().toString());
                 int crewNumber = Integer.parseInt(groupNumberSpinner.getModel().getValue().toString());
                 String areaSearched = areaInput.getText();
-                TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched);
+                int trackNumber = Integer.parseInt(trackNumberSpinner.getModel().getValue().toString());
+                TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackNumber);
                 OPERATION_MANAGER.initiateTrackCutter(trackInfo);
 
                 // Message to user

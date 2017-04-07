@@ -8,6 +8,7 @@ public class TrackInfo {
     private int crewCount;
     private int crewNumber;
     private String areaSearched;
+    private int trackNumber;
 
     /**
      * Default constructor instantiating variables.
@@ -17,6 +18,7 @@ public class TrackInfo {
         crewNumber = 0;
         crewCount = 0;
         areaSearched = "";
+        trackNumber = 0;
     }
 
     /**
@@ -26,12 +28,14 @@ public class TrackInfo {
      * @param crewCount    number of people on the crew.
      * @param crewNumber   the number of this crew.
      * @param areaSearched the area they were searching in.
+     * @param trackNumber the number of track (if multiple tracks for a team etc).
      */
-    public TrackInfo(String crewType, int crewCount, int crewNumber, String areaSearched) {
+    public TrackInfo(String crewType, int crewCount, int crewNumber, String areaSearched, int trackNumber) {
         this.crewType = crewType;
         this.crewCount = crewCount;
         this.crewNumber = crewNumber;
         this.areaSearched = areaSearched;
+        this.trackNumber = trackNumber;
     }
 
     /**
@@ -98,5 +102,23 @@ public class TrackInfo {
      */
     public void setAreaSearched(String areaSearched) {
         this.areaSearched = areaSearched;
+    }
+
+    /**
+     * Get the number of the track (if multiple tracks on a team etc):
+     *
+     * @return number of the track.
+     */
+    public int getTrackNumber() {
+        return trackNumber;
+    }
+
+    /**
+     * Set the number of the track (if multiple tracks on a team etc):
+     *
+     * @param trackNumber number of the track.
+     */
+    public void setTrackNumber(int trackNumber) {
+        this.trackNumber = trackNumber;
     }
 }
