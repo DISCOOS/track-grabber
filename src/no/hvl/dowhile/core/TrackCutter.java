@@ -1,25 +1,33 @@
 package no.hvl.dowhile.core;
 
+import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
+import org.alternativevision.gpx.beans.Track;
+import org.alternativevision.gpx.beans.Waypoint;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Processing a GPX file. Removing unnecessary data.
  */
 public class TrackCutter {
-    private GPX track;
+    private final OperationManager OPERATION_MANAGER;
+    private GPX trackFile;
     private TrackInfo trackInfo;
 
     /**
      * Default constructor taking the track to be processed and info about it.
      */
-    public TrackCutter() {
+    public TrackCutter(final OperationManager OPERATION_MANAGER) {
+        this.OPERATION_MANAGER = OPERATION_MANAGER;
     }
 
     /**
      * Processing the file to remove unnecessary data.
      */
     public void process() {
-
+        trackFile = filterOnTimeStarted(OPERATION_MANAGER.getOperationStartTime());
     }
 
     /**
@@ -44,18 +52,33 @@ public class TrackCutter {
     }
 
     /**
-     * Removes all track points that were created outside of the given time span
+     * Removes all track points that were created before a given time
      */
-    private void filterOnTimeSpan() {
+    public GPX filterOnTimeStarted(Date startTime) {
+        Track track = TrackTools.getTrackFromGPXFile(trackFile);
+        ArrayList<Waypoint> trackPoints = track.getTrackPoints();
+        ArrayList<Waypoint> pointsToRemove = new ArrayList<>();
+        long startTimeMillis = startTime.getTime();
 
+        for (Waypoint waypoint : trackPoints) {
+            long pointTimeMillis = waypoint.getTime().getTime();
+            System.err.println(pointTimeMillis);
+            System.err.println(startTimeMillis);
+            if (pointTimeMillis < startTimeMillis) {
+                pointsToRemove.add(waypoint);
+            }
+        }
+        trackPoints.removeAll(pointsToRemove);
+        track.setTrackPoints(trackPoints);
+        return trackFile;
     }
 
-    public GPX getTrack() {
-        return track;
+    public GPX getTrackFile() {
+        return trackFile;
     }
 
-    public void setTrack(GPX track) {
-        this.track = track;
+    public void setTrackFile(GPX trackFile) {
+        this.trackFile = trackFile;
     }
 
     public TrackInfo getTrackInfo() {

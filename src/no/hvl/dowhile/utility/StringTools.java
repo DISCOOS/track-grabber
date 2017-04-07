@@ -16,4 +16,14 @@ public class StringTools {
     public static String formatDate(Date date) {
         return new SimpleDateFormat("dd-MM/yyyy HH:mm z").format(date);
     }
+
+    /**
+     * Formatting a Date into a string without spaces.
+     *
+     * @param date the date to format.
+     * @return the date formatted as a String without spaces.
+     */
+    public static String formatDateForFile(Date date) {
+        return new SimpleDateFormat("dd-MM-yy-HH-mm-ss").format(date);
+    }
 }

@@ -57,7 +57,7 @@ public class FileManager {
             try {
                 file.createNewFile();
                 FileWriter writer = new FileWriter(file);
-                for (String line : OPERATION_MANAGER.getConfig().getConfigInstructions()) {
+                for (String line : OPERATION_MANAGER.getConfig().getConfigTemplate()) {
                     writer.write(line + System.lineSeparator());
                 }
                 writer.flush();
