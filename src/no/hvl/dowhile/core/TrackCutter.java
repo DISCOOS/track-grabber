@@ -25,8 +25,8 @@ public class TrackCutter {
     /**
      * Processing the file to remove unnecessary data.
      */
-    public void process() {
-
+    public void process(OperationManager operationManager) {
+        trackFile = filterOnTimeStarted(operationManager.getOperationStartTime());
     }
 
     /**
@@ -53,10 +53,10 @@ public class TrackCutter {
     /**
      * Removes all track points that were created before a given time
      */
-    public GPX filterOnTimeStarted(Calendar startTime) {
+    public GPX filterOnTimeStarted(Date startTime) {
         Track track = TrackTools.getTrackFromGPXFile(trackFile);
         ArrayList<Waypoint> trackPts = track.getTrackPoints();
-        long startTimeMillis = startTime.getTimeInMillis();
+        long startTimeMillis = startTime.getTime();
 
         System.out.println("Point count before cutting: " + trackPts.size());
 
