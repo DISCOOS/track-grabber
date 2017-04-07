@@ -6,11 +6,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Reading and writing to the configuration file.
+ */
 public class Config {
     private final String VERSION = "1";
     private String pattern;
 
-    public String[] getConfigInstructions() {
+    /**
+     * Get the configuration template.
+     *
+     * @return the lines for the configuration file.
+     */
+    public String[] getConfigTemplate() {
         return new String[]{
                 "# TrackGrabber Config - Egendefinert navngivning av filer.",
                 "# Ikke endre versjonsnummeret under!",
@@ -29,20 +37,28 @@ public class Config {
         };
     }
 
+    /**
+     * Get the current pattern to use for the filenames.
+     * @return the pattern for the filenames.
+     */
     public String getPattern() {
         return pattern;
     }
 
+    /**
+     * Set the pattern to use for the filenames.
+     * @param pattern the pattern for the filenames.
+     */
     public void setPattern(String pattern) {
         this.pattern = pattern;
     }
 
+    /**
+     * Insert track info data into the pattern to generate the filename.
+     * @param trackInfo the info to insert.
+     * @return the filename.
+     */
     public String generateFilename(TrackInfo trackInfo) {
-        String crewType = trackInfo.getCrewType();
-        int crewNumber = trackInfo.getCrewNumber();
-        int crewCount = trackInfo.getCrewCount();
-        String areaSearched = trackInfo.getAreaSearched();
-
         String filename = getPattern();
         char[] filenameArray = filename.toCharArray();
         List<String> variables = new ArrayList<>();
