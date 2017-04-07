@@ -40,31 +40,40 @@ public class OperationPanel extends JPanel {
                 WINDOW.TEXT_FONT_SIZE
         );
         WINDOW.setConstraintsXY(constraints, 0, 1);
+        constraints.anchor = GridBagConstraints.WEST;
         constraints.gridwidth = 2;
         add(operationStartedLabel, constraints);
 
         // isConnected label
         statusLabel = WINDOW.makeLabel(Messages.GPS_OFFLINE.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 2, 1);
-        constraints.anchor = GridBagConstraints.NORTH;
+        WINDOW.setConstraintsXY(constraints, 3, 1);
+        constraints.anchor = GridBagConstraints.NORTHWEST;
         add(statusLabel, constraints);
 
         // New operation label and input
         JLabel operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.setConstraintsXY(constraints, 0, 2);
+        constraints.anchor = GridBagConstraints.SOUTHWEST;
         add(operationNameLabel, constraints);
 
         JTextField operationNameInput = new JTextField();
         WINDOW.setConstraintsXY(constraints, 0, 3);
+        constraints.gridwidth = 2;
+        constraints.weightx = 2;
+        constraints.fill = GridBagConstraints.BOTH;
         add(operationNameInput, constraints);
 
         // Date for operation and input
         JLabel operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 1, 2);
+        WINDOW.setConstraintsXY(constraints, 2, 2);
+        constraints.anchor = GridBagConstraints.SOUTHWEST;
         add(operationDateLabel, constraints);
 
         JTextField operationDateInput = new JTextField();
-        WINDOW.setConstraintsXY(constraints, 1, 3);
+        WINDOW.setConstraintsXY(constraints, 2, 3);
+        constraints.gridwidth = 2;
+        constraints.weightx = 2;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         add(operationDateInput, constraints);
 
         // Already existing operation label and input
@@ -74,7 +83,7 @@ public class OperationPanel extends JPanel {
 
         JComboBox<String> existingOperationInput = new JComboBox<String>();
         WINDOW.setConstraintsXY(constraints, 0, 5);
-        constraints.gridwidth = 2;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         add(existingOperationInput, constraints);
     }
 
