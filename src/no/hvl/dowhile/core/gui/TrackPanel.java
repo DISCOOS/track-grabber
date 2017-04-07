@@ -86,27 +86,27 @@ public class TrackPanel extends JPanel {
 
         // Label and input for area searched
         JLabel areaLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 2, 6);
+        WINDOW.setConstraintsXY(constraints, 4, 2);
         add(areaLabel, constraints);
 
         JTextField areaInput = new JTextField();
-        WINDOW.setConstraintsXY(constraints, 2, 7);
+        WINDOW.setConstraintsXY(constraints, 4, 3);
         add(areaInput, constraints);
 
         // Label and input for track number
         JLabel trackNumberLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 2, 8);
+        WINDOW.setConstraintsXY(constraints, 4, 4);
         add(trackNumberLabel, constraints);
 
         SpinnerModel trackNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner trackNumberSpinner = new JSpinner(trackNumberInput);
-        WINDOW.setConstraintsXY(constraints, 2, 9);
+        WINDOW.setConstraintsXY(constraints, 4, 5);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(trackNumberSpinner, constraints);
 
         // Register button
         JButton registerButton = new JButton(Messages.REGISTER_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 2, 10);
+        WINDOW.setConstraintsXY(constraints, 2, 6);
         constraints.gridwidth = 2;
         add(registerButton, constraints);
 
