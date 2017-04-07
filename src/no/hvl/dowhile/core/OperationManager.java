@@ -126,7 +126,7 @@ public class OperationManager {
         Track track = TrackTools.getTrackFromGPXFile(gpxFile);
         ArrayList<Waypoint> trkPts = track.getTrackPoints();
 
-        // Do the addin'
+        // Do the adding
 
         TrackPoint tp1 = new TrackPoint();
         TrackPoint tp2 = new TrackPoint();
@@ -140,39 +140,11 @@ public class OperationManager {
         tp3.setLatitude(83.15);
         tp3.setLongitude(48.8);
 
-        // Add new tracks AKA do the messing
+        // Add new tracks
         trkPts.add(tp1);
         trkPts.add(tp2);
         trkPts.add(tp3);
         track.setTrackPoints(trkPts);
-
-        return gpxFile;
-    }
-
-    /**
-     * Takes a file and cuts off track points that are outside a certain area.
-     * Any useful code should be moved to TrackCutter.java.
-     *
-     * @param file
-     * @return gpxFile
-     */
-    public GPX cutPointsFromGPXFile(File file) {
-
-        GPX gpxFile = TrackTools.parseFileAsGPX(file);
-        Track track = TrackTools.getTrackFromGPXFile(gpxFile);
-        ArrayList<Waypoint> trackPts = track.getTrackPoints();
-
-        System.out.println("Point count before cutting: " + trackPts.size());
-
-        // Do the cuttin'
-        if (trackPts.size() > 200) {
-            System.out.println("Cutting...");
-            for (int i = 100; i < 176; i++) {
-                trackPts.remove(i);
-            }
-        }
-        track.setTrackPoints(trackPts); // Is this necessary?
-        System.out.println("Point count after cutting: " + trackPts.size());
 
         return gpxFile;
     }
