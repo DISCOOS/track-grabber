@@ -5,27 +5,32 @@ package no.hvl.dowhile.utility;
  * This will make maintaining easier.
  */
 public enum Messages {
+    // System
     DRIVE_DETECTOR_START("Systemet lytter nå etter enheter som kobles til."),
     DRIVE_DETECTOR_STOP("Systemet lytter ikke lenger etter enheter som kobles til."),
-    PROJECT_NAME("Track Grabber"),
+    ERROR_THREAD("En tråd ga en error mens den ventet på neste kjøring."),
+    ERROR_NO_TRACK_FOR_INFO("Systemet prøvde å starte prosessering av fil som ikke finnes."),
+
+    // Font
     FONT_NAME("Times New Roman"),
+
+    // Window
     GPS_OFFLINE("GPS: Koblet fra."),
+    PROJECT_NAME("Track Grabber"),
+    CONFIRM_EXIT("Vil du virkelig avslutte Track Grabber? Alle endringer vil bli lagret."),
+
+    // Track panel
     CREW_NUMBER("Gruppenummer: "),
     CREW_COUNT("Antall mann: "),
     AREA_SEARCHED("Teiger: "),
     REGISTER_BUTTON("Registrer"),
     SAVE_FILE("Vil bli lagret som: "),
     OPERATION_STARTED("Operasjon startet: "),
-    CONFIRM_EXIT("Vil du virkelig avslutte Track Grabber? Alle endringer vil bli lagret."),
-    ERROR_THREAD("En tråd ga en error mens den ventet på neste kjøring."),
-    ERROR_NO_TRACK_FOR_INFO("Systemet prøvde å starte prosessering av fil som ikke finnes."),
 
     // Operation panel
     OPERATION_NAME("Navn på operasjon: "),
     OPERATION_START_DATE("Startdato: "),
     EXISTING_OPERATION("Velg en allerede eksisterende operasjon.")
-
-
    ;
 
 
