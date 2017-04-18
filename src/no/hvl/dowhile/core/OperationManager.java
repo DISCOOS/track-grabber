@@ -98,6 +98,10 @@ public class OperationManager {
         }
     }
 
+    /**
+     * Takes a file and adds it to the queue (if it's not a duplicate).
+     * @param f
+     */
     public void addFileToQueue(File f) {
         GPX gpx = TrackTools.parseFileAsGPX(f);
         if (fileManager.fileAlreadyImported(gpx, f.getName())) {
@@ -108,6 +112,9 @@ public class OperationManager {
         fileManager.saveRawGpxFile(gpx, f.getName());
     }
 
+    /**
+     * Assigns a new file to the TrackCutter and re-opens the GUI panel
+     */
     public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
         GPX gpx = TrackTools.parseFileAsGPX(queue.remove(0));
