@@ -141,7 +141,9 @@ public class OperationManager {
         Track track = TrackTools.getTrackFromGPXFile(gpxFile);
         track.setName(newName);
         fileManager.saveProcessedGpxFile(gpxFile, newName);
-        if(!queue.isEmpty()) {
+        if (queue.isEmpty()) {
+            window.openOperationPanel();
+        } else {
             prepareNextFile();
         }
     }
