@@ -58,20 +58,20 @@ public class TrackPanel extends JPanel {
 
         // isConnected label
         statusLabel = WINDOW.makeLabel(Messages.GPS_OFFLINE.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 1, 1);
+        WINDOW.setConstraintsXY(constraints, 3, 1);
         constraints.anchor = GridBagConstraints.NORTH;
         add(statusLabel, constraints);
 
         // Current file imported from GPS
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + currentFile;
         JLabel currentImportLabel = WINDOW.makeLabel(currentImportedFile , WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 2, 1);
+        WINDOW.setConstraintsXY(constraints, 1, 1);
         add(currentImportLabel, constraints);
 
         // Remaining files imported from GPS waiting to be processed
         String remainingFiles = fileQueue + Messages.IMPORTED_FILES_LEFT_TO_PROSESS.get();
         JLabel remainingFilesLabel = WINDOW.makeLabel(remainingFiles, WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 2, 2);
+        WINDOW.setConstraintsXY(constraints, 1, 2);
         add(remainingFilesLabel, constraints);
 
         // adding buttons
