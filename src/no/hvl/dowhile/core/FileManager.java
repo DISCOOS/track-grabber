@@ -1,12 +1,16 @@
 package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.utility.FileTools;
+import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
+import org.alternativevision.gpx.beans.Track;
+import org.alternativevision.gpx.beans.Waypoint;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
+import java.util.List;
 
 /**
  * Managing files and has methods for storing files in the application file system.
@@ -79,7 +83,32 @@ public class FileManager {
     public boolean fileAlreadyImported(GPX newGpx, String newFilename) {
         System.err.println("[FileManager] Duplicate check!");
         File[] rawFiles = rawFolder.listFiles();
-
+        if (rawFiles == null || rawFiles.length == 0) {
+            return false;
+        }
+        Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);
+        if (newTrack == null) {
+            return false;
+        }
+        for (File rawFile : rawFiles) {
+            GPX rawGpx = TrackTools.parseFileAsGPX(rawFile);
+            if (rawGpx != null) {
+                Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
+                if (rawTrack != null) {
+                    List<Waypoint> newPoints = newTrack.getTrackPoints();
+                    List<Waypoint> rawPoints = rawTrack.getTrackPoints();
+                    if (newPoints != null && rawPoints != null) {
+                        if (newPoints.size() == rawPoints.size()) {
+                            for (int i = 0; i < newPoints.size() && i < rawPoints.size(); i++) {
+                                if (TrackTools.matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return false;
     }
 
