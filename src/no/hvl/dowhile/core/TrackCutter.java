@@ -62,8 +62,6 @@ public class TrackCutter {
 
         for (Waypoint waypoint : trackPoints) {
             long pointTimeMillis = waypoint.getTime().getTime();
-            System.err.println(pointTimeMillis);
-            System.err.println(startTimeMillis);
             if (pointTimeMillis < startTimeMillis) {
                 pointsToRemove.add(waypoint);
             }

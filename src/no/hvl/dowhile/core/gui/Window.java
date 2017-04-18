@@ -24,7 +24,7 @@ public class Window extends JFrame {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
 
         setTitle(Messages.PROJECT_NAME.get());
-        setSize(500, 400);
+        setSize(800, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -87,6 +87,8 @@ public class Window extends JFrame {
     public void updateCurrentFile(String filename, int filesLeft) {
         trackPanel.setCurrentFile(filename);
         trackPanel.setFileQueue(filesLeft);
+
+        trackPanel.updateCurrentFile(filename, filesLeft);
     }
 
     /**

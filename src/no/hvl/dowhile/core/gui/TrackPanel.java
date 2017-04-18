@@ -20,6 +20,8 @@ public class TrackPanel extends JPanel {
     private final Window WINDOW;
     private JLabel statusLabel;
     private JLabel operationStartedLabel;
+    private JLabel currentImportLabel;
+    private JLabel remainingFilesLabel;
     private GridBagConstraints constraints;
     private List<JRadioButton> radioButtons;
     private ButtonGroup radioButtonGroup;
@@ -64,13 +66,13 @@ public class TrackPanel extends JPanel {
 
         // Current file imported from GPS
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + currentFile;
-        JLabel currentImportLabel = WINDOW.makeLabel(currentImportedFile , WINDOW.TEXT_FONT_SIZE);
+        currentImportLabel = WINDOW.makeLabel(currentImportedFile, WINDOW.TEXT_FONT_SIZE);
         WINDOW.setConstraintsXY(constraints, 1, 1);
         add(currentImportLabel, constraints);
 
         // Remaining files imported from GPS waiting to be processed
         String remainingFiles = fileQueue + Messages.IMPORTED_FILES_LEFT_TO_PROSESS.get();
-        JLabel remainingFilesLabel = WINDOW.makeLabel(remainingFiles, WINDOW.TEXT_FONT_SIZE);
+        remainingFilesLabel = WINDOW.makeLabel(remainingFiles, WINDOW.TEXT_FONT_SIZE);
         WINDOW.setConstraintsXY(constraints, 1, 2);
         add(remainingFilesLabel, constraints);
 
@@ -154,6 +156,13 @@ public class TrackPanel extends JPanel {
 
     public void setFileQueue(int fileQueue) {
         this.fileQueue = fileQueue;
+    }
+
+    public void updateCurrentFile(String filename, int filesLeft) {
+        String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + filename;
+        String remainingFiles = filesLeft + Messages.IMPORTED_FILES_LEFT_TO_PROSESS.get();
+        currentImportLabel.setText(currentImportedFile);
+        remainingFilesLabel.setText(remainingFiles);
     }
 
     /**
