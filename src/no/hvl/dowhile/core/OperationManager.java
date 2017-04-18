@@ -25,6 +25,7 @@ public class OperationManager {
     private FileManager fileManager;
     private Config config;
     private TrackCutter currentTrackCutter;
+    private List<File> queue;
 
     public OperationManager() {
         this.active = true;
@@ -39,6 +40,7 @@ public class OperationManager {
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager(this);
         this.config = new Config();
+        this.queue = new ArrayList<>();
     }
 
     /**
@@ -88,14 +90,27 @@ public class OperationManager {
             System.err.println("No gpx files.");
             return;
         }
-        File file = gpxFiles.iterator().next();
-        GPX gpx = TrackTools.parseFileAsGPX(file);
-        if (fileManager.fileAlreadyImported(gpx, file.getName())) {
+        for(File f : gpxFiles) {
+            addFileToQueue(f);
+        }
+        if(!queue.isEmpty()) {
+            prepareNextFile();
+        }
+    }
+
+    public void addFileToQueue(File f) {
+        GPX gpx = TrackTools.parseFileAsGPX(f);
+        if (fileManager.fileAlreadyImported(gpx, f.getName())) {
             System.err.println("This file has already been imported.");
             return;
         }
-        fileManager.saveRawGpxFile(gpx, file.getName());
+        queue.add(f);
+        fileManager.saveRawGpxFile(gpx, f.getName());
+    }
+
+    public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
+        GPX gpx = TrackTools.parseFileAsGPX(queue.remove(0));
         currentTrackCutter.setTrackFile(gpx);
         window.openTrackPanel();
     }
@@ -117,6 +132,9 @@ public class OperationManager {
         Track track = TrackTools.getTrackFromGPXFile(gpxFile);
         track.setName(newName);
         fileManager.saveProcessedGpxFile(gpxFile, newName);
+        if(!queue.isEmpty()) {
+            prepareNextFile();
+        }
     }
 
     /**
