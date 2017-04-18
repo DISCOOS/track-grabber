@@ -117,8 +117,10 @@ public class OperationManager {
      */
     public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
-        GPX gpx = TrackTools.parseFileAsGPX(queue.remove(0));
+        File file = queue.remove(0);
+        GPX gpx = TrackTools.parseFileAsGPX(file);
         currentTrackCutter.setTrackFile(gpx);
+        // window.updateCurrentFile(file.getName(), queue.size());
         window.openTrackPanel();
     }
 

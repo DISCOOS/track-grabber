@@ -84,6 +84,10 @@ public class Window extends JFrame {
         trackPanel.setStatus(status);
     }
 
+    public void updateCurrentFile(String filename, int filesLeft) {
+
+    }
+
     /**
      * Makes a JLabel with given text and font size
      *
