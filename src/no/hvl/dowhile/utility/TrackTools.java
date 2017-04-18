@@ -73,15 +73,12 @@ public class TrackTools {
      */
     public static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
         if (!waypoint1.getLatitude().equals(waypoint2.getLatitude())) {
-            System.err.println("Latitude mismatch.");
             return false;
         }
         if (!waypoint1.getLongitude().equals(waypoint2.getLongitude())) {
-            System.err.println("Longitude mismatch.");
             return false;
         }
         if (!waypoint1.getElevation().equals(waypoint2.getElevation())) {
-            System.err.println("Elevation mismatch.");
             return false;
         }
         return true;

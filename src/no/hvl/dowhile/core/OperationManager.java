@@ -90,6 +90,10 @@ public class OperationManager {
         }
         File file = gpxFiles.iterator().next();
         GPX gpx = TrackTools.parseFileAsGPX(file);
+        if (fileManager.fileAlreadyImported(gpx, file.getName())) {
+            System.err.println("This file has already been imported.");
+            return;
+        }
         fileManager.saveRawGpxFile(gpx, file.getName());
         currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setTrackFile(gpx);
