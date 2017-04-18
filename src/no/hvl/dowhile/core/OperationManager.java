@@ -8,8 +8,6 @@ import no.hvl.dowhile.utility.Messages;
 import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.TrackPoint;
-import org.alternativevision.gpx.beans.Waypoint;
 
 import java.io.File;
 import java.util.*;
@@ -90,8 +88,14 @@ public class OperationManager {
             System.err.println("No gpx files.");
             return;
         }
-        for(File f : gpxFiles) {
-            addFileToQueue(f);
+        for (File file : gpxFiles) {
+            GPX gpx = TrackTools.parseFileAsGPX(file);
+            if (!fileManager.fileAlreadyImported(gpx, file.getName())) {
+                fileManager.saveRawGpxFile(gpx, file.getName());
+                queue.add(file);
+            } else {
+                System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
+            }
         }
         if(!queue.isEmpty()) {
             prepareNextFile();
@@ -99,21 +103,8 @@ public class OperationManager {
     }
 
     /**
-     * Takes a file and adds it to the queue (if it's not a duplicate).
-     * @param f
-     */
-    public void addFileToQueue(File f) {
-        GPX gpx = TrackTools.parseFileAsGPX(f);
-        if (fileManager.fileAlreadyImported(gpx, f.getName())) {
-            System.err.println("This file has already been imported.");
-            return;
-        }
-        queue.add(f);
-        fileManager.saveRawGpxFile(gpx, f.getName());
-    }
-
-    /**
-     * Assigns a new file to the TrackCutter and updates the GUI panel
+     * Assigns a new file to the TrackCutter and updates the GUI panel.
+     * This method is used when a gps is connected and one or more gpx-files are located.
      */
     public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
@@ -146,40 +137,6 @@ public class OperationManager {
         } else {
             prepareNextFile();
         }
-    }
-
-    /**
-     * Takes a file and messes it up. NB: WILL BE REMOVED
-     *
-     * @param file the file to operate on.
-     */
-    public GPX addPointsToGPXFile(File file) {
-
-        GPX gpxFile = TrackTools.parseFileAsGPX(file);
-        Track track = TrackTools.getTrackFromGPXFile(gpxFile);
-        ArrayList<Waypoint> trkPts = track.getTrackPoints();
-
-        // Do the adding
-
-        TrackPoint tp1 = new TrackPoint();
-        TrackPoint tp2 = new TrackPoint();
-        TrackPoint tp3 = new TrackPoint();
-
-        // Set values to new track points
-        tp1.setLatitude(45.34);
-        tp1.setLongitude(23.98);
-        tp2.setLatitude(5.74);
-        tp2.setLongitude(7.28);
-        tp3.setLatitude(83.15);
-        tp3.setLongitude(48.8);
-
-        // Add new tracks
-        trkPts.add(tp1);
-        trkPts.add(tp2);
-        trkPts.add(tp3);
-        track.setTrackPoints(trkPts);
-
-        return gpxFile;
     }
 
     /**
