@@ -113,14 +113,14 @@ public class OperationManager {
     }
 
     /**
-     * Assigns a new file to the TrackCutter and re-opens the GUI panel
+     * Assigns a new file to the TrackCutter and updates the GUI panel
      */
     public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
         File file = queue.remove(0);
         GPX gpx = TrackTools.parseFileAsGPX(file);
         currentTrackCutter.setTrackFile(gpx);
-        // window.updateCurrentFile(file.getName(), queue.size());
+        window.updateCurrentFile(file.getName(), queue.size());
         window.openTrackPanel();
     }
 
