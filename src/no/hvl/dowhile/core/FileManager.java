@@ -99,10 +99,14 @@ public class FileManager {
                     List<Waypoint> rawPoints = rawTrack.getTrackPoints();
                     if (newPoints != null && rawPoints != null) {
                         if (newPoints.size() == rawPoints.size()) {
-                            for (int i = 0; i < newPoints.size() && i < rawPoints.size(); i++) {
-                                if (TrackTools.matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
-                                    return true;
+                            boolean trackPointsMatching = true;
+                            for (int i = 0; trackPointsMatching && i < newPoints.size() && i < rawPoints.size(); i++) {
+                                if (!TrackTools.matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
+                                    trackPointsMatching = false;
                                 }
+                            }
+                            if (trackPointsMatching) {
+                                return true;
                             }
                         }
                     }
