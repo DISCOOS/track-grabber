@@ -24,6 +24,9 @@ public class TrackPanel extends JPanel {
     private List<JRadioButton> radioButtons;
     private ButtonGroup radioButtonGroup;
 
+    private String currentFile;
+    private int fileQueue;
+
     public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
@@ -50,63 +53,77 @@ public class TrackPanel extends JPanel {
         constraints.gridwidth = 2;
         add(operationStartedLabel, constraints);
 
+
+
+
         // isConnected label
         statusLabel = WINDOW.makeLabel(Messages.GPS_OFFLINE.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 2, 1);
+        WINDOW.setConstraintsXY(constraints, 1, 1);
         constraints.anchor = GridBagConstraints.NORTH;
         add(statusLabel, constraints);
 
+        // Current file imported from GPS
+        String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + currentFile;
+        JLabel currentImportLabel = WINDOW.makeLabel(currentImportedFile , WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 2, 1);
+        add(currentImportLabel, constraints);
+
+        // Remaining files imported from GPS waiting to be processed
+        String remainingFiles = fileQueue + Messages.IMPORTED_FILES_LEFT_TO_PROSESS.get();
+        JLabel remainingFilesLabel = WINDOW.makeLabel(remainingFiles, WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 2, 2);
+        add(remainingFilesLabel, constraints);
+
+        // adding buttons
         radioButtonGroup = new ButtonGroup();
         radioButtons = generateButtons(generateNames());
-
-        // adding them buttons
         setButtonsInWindow();
 
         // Label and input for team number
         JLabel crewNumberLabel = WINDOW.makeLabel(Messages.CREW_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 2, 2);
+        WINDOW.setConstraintsXY(constraints, 2, 3);
         add(crewNumberLabel, constraints);
 
         SpinnerModel crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner groupNumberSpinner = new JSpinner(crewNumberInput);
-        WINDOW.setConstraintsXY(constraints, 2, 3);
+        WINDOW.setConstraintsXY(constraints, 2, 4);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(groupNumberSpinner, constraints);
 
         // Label and input for crew count
         JLabel crewCountLabel = WINDOW.makeLabel(Messages.CREW_COUNT.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 2, 4);
+        WINDOW.setConstraintsXY(constraints, 2, 5);
         add(crewCountLabel, constraints);
 
         SpinnerModel crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner crewCountSpinner = new JSpinner(crewCountInput);
-        WINDOW.setConstraintsXY(constraints, 2, 5);
+        WINDOW.setConstraintsXY(constraints, 2, 6);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(crewCountSpinner, constraints);
 
         // Label and input for area searched
         JLabel areaLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 4, 2);
+        WINDOW.setConstraintsXY(constraints, 4, 3);
         add(areaLabel, constraints);
 
         JTextField areaInput = new JTextField();
-        WINDOW.setConstraintsXY(constraints, 4, 3);
+        WINDOW.setConstraintsXY(constraints, 4, 4);
         add(areaInput, constraints);
 
         // Label and input for track number
         JLabel trackNumberLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 4, 4);
+        WINDOW.setConstraintsXY(constraints, 4, 5);
         add(trackNumberLabel, constraints);
 
         SpinnerModel trackNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner trackNumberSpinner = new JSpinner(trackNumberInput);
-        WINDOW.setConstraintsXY(constraints, 4, 5);
+        WINDOW.setConstraintsXY(constraints, 4, 6);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(trackNumberSpinner, constraints);
 
         // Register button
         JButton registerButton = new JButton(Messages.REGISTER_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 2, 6);
+        WINDOW.setConstraintsXY(constraints, 2, 7);
         constraints.gridwidth = 2;
         add(registerButton, constraints);
 
@@ -131,6 +148,14 @@ public class TrackPanel extends JPanel {
         });
     }
 
+    public void setCurrentFile(String currentFile) {
+        this.currentFile = currentFile;
+    }
+
+    public void setFileQueue(int fileQueue) {
+        this.fileQueue = fileQueue;
+    }
+
     /**
      * Set the status of whether a gps is connected or not.
      *
@@ -144,7 +169,7 @@ public class TrackPanel extends JPanel {
      * places the radio buttons in the given coordinates in the panel
      */
     private void setButtonsInWindow() {
-        int startY = 2;
+        int startY = 3;
         int x = 0;
 
         for (JRadioButton rb : radioButtons) {

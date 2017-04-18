@@ -85,7 +85,8 @@ public class Window extends JFrame {
     }
 
     public void updateCurrentFile(String filename, int filesLeft) {
-
+        trackPanel.setCurrentFile(filename);
+        trackPanel.setFileQueue(filesLeft);
     }
 
     /**
