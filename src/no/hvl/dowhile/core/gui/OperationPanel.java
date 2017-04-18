@@ -3,12 +3,12 @@ package no.hvl.dowhile.core.gui;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
 import no.hvl.dowhile.utility.StringTools;
+import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import org.jdesktop.swingx.JXDatePicker;
 
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
@@ -95,5 +95,14 @@ public class OperationPanel extends JPanel {
 
     private void testJComboBox(JComboBox<String> comboBox) {
         //comboBox.add("Hund");
+    }
+
+    /**
+     * Set the status of whether a gps is connected or not.
+     *
+     * @param status the new status.
+     */
+    public void setStatus(String status) {
+        statusLabel.setText("GPS: " + status);
     }
 }

@@ -37,7 +37,7 @@ public class Window extends JFrame {
         add(cardPanel, BorderLayout.CENTER);
 
         open();
-        openTrackPanel();
+        openOperationPanel();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {
@@ -80,6 +80,7 @@ public class Window extends JFrame {
      * @param status the new status.
      */
     public void setStatus(String status) {
+        operationPanel.setStatus(status);
         trackPanel.setStatus(status);
     }
 
