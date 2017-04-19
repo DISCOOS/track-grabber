@@ -11,7 +11,6 @@ import org.alternativevision.gpx.beans.Track;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -20,11 +19,11 @@ import java.util.Set;
  */
 public class OperationManager {
     private boolean active;
-    private Date operationStartTime;
     private Window window;
     private DriveDetector driveDetector;
     private FileManager fileManager;
     private Config config;
+    private Operation operation;
     private TrackCutter currentTrackCutter;
     private List<File> queue;
 
@@ -48,25 +47,16 @@ public class OperationManager {
     }
 
     /**
-     * Get the time for the operation start. The operation start time is used to ignore old tracks etc.
-     */
-    public Date getOperationStartTime() {
-        return operationStartTime;
-    }
-
-    /**
-     * Set the time for the operation start. The operation start time is used to ignore old tracks etc.
-     */
-    public void setOperationStartTime(Date operationStartTime) {
-        this.operationStartTime = operationStartTime;
-    }
-
-    /**
      * Start components which needs to perform operations from the beginning.
      */
     public void start() {
         window.open();
         new Thread(driveDetector).start();
+    }
+
+    public void createOperation(Operation operation) {
+        this.operation = operation;
+        fileManager.setupOperationFolder(operation);
     }
 
     /**
@@ -86,7 +76,7 @@ public class OperationManager {
         }
         for (File file : gpxFiles) {
             GPX gpx = TrackTools.parseFileAsGPX(file);
-            if (!TrackTools.trackCreatedBeforeStartTime(gpx, getOperationStartTime())) {
+            if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
                 if (!fileManager.fileAlreadyImported(gpx)) {
                     fileManager.saveRawGpxFile(gpx, file.getName());
                     queue.add(file);

@@ -10,7 +10,6 @@ import org.alternativevision.gpx.beans.Waypoint;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,13 +64,24 @@ public class FileManager {
         parseFilenameFromConfig();
     }
 
-    public void setupOperationFolder(File listRoot, Operation operation) {
-        String operationName = operation.getName();
-        appFolder = setupFolder(listRoot, "TrackGrabber"); // Just in Case?
-        operationFolder = setupFolder(appFolder, operationName);
-        rawFolder = setupFolder(operationFolder,"Raw");
-        processedFolder = setupFolder(operationFolder,"Processed");
-
+    public void setupOperationFolder(Operation operation) {
+        operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
+        boolean operationFolderCreated = operationFolder.mkdir();
+        if (operationFolderCreated) {
+            rawFolder = setupFolder(operationFolder, "Raw");
+            boolean rawFolderCreated = rawFolder.mkdir();
+            if (!rawFolderCreated) {
+                System.err.println("Raw folder for operation " + operation.getName() + " already exists.");
+            }
+            processedFolder = setupFolder(operationFolder, "Processed");
+            boolean processedFolderCreated = processedFolder.mkdir();
+            if (!processedFolderCreated) {
+                System.err.println("Processed folder for operation " + operation.getName() + " already exists.");
+            }
+            System.err.println("Done creating folders for operation " + operation.getName());
+        } else {
+            System.err.println("Operation folder " + operation.getName() + " already exists.");
+        }
     }
 
     /**
