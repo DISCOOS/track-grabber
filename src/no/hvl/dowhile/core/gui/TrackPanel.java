@@ -55,10 +55,13 @@ public class TrackPanel extends JPanel {
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + "Ingen fil.";
         currentImportLabel = WINDOW.makeLabel(currentImportedFile, WINDOW.TEXT_FONT_SIZE);
         WINDOW.setConstraintsXY(constraints, 0, 1);
+        constraints.gridwidth = 4;
+        constraints.anchor = GridBagConstraints.WEST;
         add(currentImportLabel, constraints);
 
         // adding buttons
         radioButtonGroup = new ButtonGroup();
+        constraints.gridwidth = 1;
         radioButtons = generateButtons(generateNames());
         setButtonsInWindow();
 
