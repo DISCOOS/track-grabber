@@ -33,8 +33,6 @@ public class FileManager {
      */
     public void setupLocalFolders(File listRoot) {
         appFolder = setupFolder(listRoot, "TrackGrabber");
-        processedFolder = setupFolder(appFolder, "Processed");
-        rawFolder = setupFolder(appFolder, "Rawfiles");
 
         boolean configCreated = false;
         File[] appFolderFiles = appFolder.listFiles();

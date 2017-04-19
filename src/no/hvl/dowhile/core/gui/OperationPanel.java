@@ -7,7 +7,6 @@ import com.github.lgooddatepicker.components.TimePickerSettings;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
-import no.hvl.dowhile.utility.StringTools;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,7 +57,7 @@ public class OperationPanel extends JPanel {
         operationStartedLabel = WINDOW.makeLabel("<html><body>"
                         + Messages.OPERATION_STARTED.get()
                         + "<br>"
-                        + StringTools.formatDate(OPERATION_MANAGER.getOperationStartTime())
+                        + "Ingen operasjon."
                         + "</body></html>",
                 WINDOW.TEXT_FONT_SIZE
         );
@@ -203,6 +202,7 @@ public class OperationPanel extends JPanel {
                 int hour = timePicker.getTime().getHour();
                 int minute = timePicker.getTime().getMinute();
                 Operation operation = new Operation(operationNameInput.getText(), day, month, year, hour, minute);
+                OPERATION_MANAGER.createOperation(operation);
                 setVisibilityNewOperation(false);
                 setVisibilityOperationButtons(true);
                 // TODO: Create new operation folder

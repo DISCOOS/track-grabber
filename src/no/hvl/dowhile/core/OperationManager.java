@@ -46,6 +46,10 @@ public class OperationManager {
         return active;
     }
 
+    public Operation getOperation() {
+        return operation;
+    }
+
     /**
      * Start components which needs to perform operations from the beginning.
      */

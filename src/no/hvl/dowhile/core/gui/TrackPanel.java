@@ -3,7 +3,6 @@ package no.hvl.dowhile.core.gui;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.TrackInfo;
 import no.hvl.dowhile.utility.Messages;
-import no.hvl.dowhile.utility.StringTools;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +42,7 @@ public class TrackPanel extends JPanel {
         operationStartedLabel = WINDOW.makeLabel("<html><body>"
                         + Messages.OPERATION_STARTED.get()
                         + "<br>"
-                        + StringTools.formatDate(OPERATION_MANAGER.getOperationStartTime())
+                        + "Ingen operasjon."
                         + "</body></html>",
                 WINDOW.TEXT_FONT_SIZE
         );
