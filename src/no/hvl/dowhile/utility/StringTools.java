@@ -29,21 +29,18 @@ public class StringTools {
 
     /**
      * Checks if a given name is a valid operation name (contains only letters and/or numbers).
-     * @param opName
+     * @param operationName the name to check.
      * @return true if the name is valid, false if not.
      */
-    public static boolean isValidOperationName(String opName) {
-        boolean isValid = true;
-
-        if(opName == null || opName.isEmpty()) {
+    public static boolean isValidOperationName(String operationName) {
+        if (operationName == null || operationName.isEmpty()) {
             return false;
         }
-        for(char c : opName.toCharArray()) {
+        for (char c : operationName.toCharArray()) {
             if(!Character.isLetter(c) && !Character.isDigit(c)) {
-                isValid = false;
+                return false;
             }
         }
-
-        return isValid;
+        return true;
     }
 }
