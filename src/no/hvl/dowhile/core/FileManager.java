@@ -19,6 +19,7 @@ import java.util.List;
 public class FileManager {
     private final OperationManager OPERATION_MANAGER;
     private File appFolder;
+    private File operationFolder;
     private File processedFolder;
     private File rawFolder;
 
@@ -64,10 +65,12 @@ public class FileManager {
         parseFilenameFromConfig();
     }
 
-    public void setupOperationFolder(Operation operation) {
+    public void setupOperationFolder(File listRoot, Operation operation) {
         String operationName = operation.getName();
-        File appFolder = setupFolder(listRoot, "TrackGrabber");
-        
+        appFolder = setupFolder(listRoot, "TrackGrabber"); // Just in Case?
+        operationFolder = setupFolder(appFolder, operationName);
+        rawFolder = setupFolder(operationFolder,"Raw");
+        processedFolder = setupFolder(operationFolder,"Processed");
 
     }
 
