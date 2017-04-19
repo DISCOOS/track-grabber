@@ -205,6 +205,7 @@ public class OperationPanel extends JPanel {
                 Operation operation = new Operation(operationNameInput.getText(), day, month, year, hour, minute);
                 setVisibilityNewOperation(false);
                 setVisibilityOperationButtons(true);
+                // TODO: Create new operation folder
             }
         });
     }
