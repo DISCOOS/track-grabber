@@ -33,7 +33,9 @@ public enum Messages {
     // Operation panel
     OPERATION_NAME("Navn på operasjon: "),
     OPERATION_START_DATE("Startdato: "),
-    EXISTING_OPERATION("Velg en allerede eksisterende operasjon.");
+    EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
+    NEW_OPERATION_BUTTON("Ny operasjon"),
+    EXISTING_OPERATION_BUTTON("Eksisterende operasjon");
 
     private String message;
 

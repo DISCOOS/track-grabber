@@ -7,6 +7,8 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -18,6 +20,18 @@ public class OperationPanel extends JPanel {
     private final Window WINDOW;
     private JLabel operationStartedLabel;
     private JLabel statusLabel;
+    private JLabel operationNameLabel;
+    private JTextField operationNameInput;
+    private JLabel operationDateLabel;
+    private JXDatePicker datePicker;
+    private JLabel existingOperationLabel;
+    private JComboBox<String> existingOperationInput;
+    private JButton registerNewButton;
+    private JButton registerExistingButton;
+
+    private JButton newOperationButton;
+    private JButton existingOperationButton;
+
     private GridBagConstraints constraints;
 
     public OperationPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
@@ -47,19 +61,14 @@ public class OperationPanel extends JPanel {
         constraints.gridwidth = 2;
         add(operationStartedLabel, constraints);
 
-        // isConnected label
-        statusLabel = WINDOW.makeLabel(Messages.GPS_OFFLINE.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 3, 1);
-        constraints.anchor = GridBagConstraints.NORTHWEST;
-        add(statusLabel, constraints);
 
         // New operation label and input
-        JLabel operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
+        operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.setConstraintsXY(constraints, 0, 2);
         constraints.anchor = GridBagConstraints.SOUTHWEST;
         add(operationNameLabel, constraints);
 
-        JTextField operationNameInput = new JTextField();
+        operationNameInput = new JTextField();
         WINDOW.setConstraintsXY(constraints, 0, 3);
         constraints.gridwidth = 2;
         constraints.weightx = 2;
@@ -67,30 +76,55 @@ public class OperationPanel extends JPanel {
         add(operationNameInput, constraints);
 
         // Date for operation and input
-        JLabel operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
+        operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.setConstraintsXY(constraints, 2, 2);
         constraints.anchor = GridBagConstraints.SOUTHWEST;
         add(operationDateLabel, constraints);
 
-        JXDatePicker datePicker = new JXDatePicker();
+        datePicker = new JXDatePicker();
         datePicker.setDate(Calendar.getInstance().getTime());
         datePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         WINDOW.setConstraintsXY(constraints, 2, 3);
         add(datePicker, constraints);
 
         // Already existing operation label and input
-        JLabel existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
+        existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.setConstraintsXY(constraints, 0, 4);
         add(existingOperationLabel, constraints);
 
-        JComboBox<String> existingOperationInput = new JComboBox<String>();
+        existingOperationInput = new JComboBox<String>();
         WINDOW.setConstraintsXY(constraints, 0, 5);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(existingOperationInput, constraints);
 
-        JButton registerButton = new JButton(Messages.REGISTER_BUTTON.get());
+        // Register new operation
+        registerNewButton = new JButton(Messages.REGISTER_BUTTON.get());
         WINDOW.setConstraintsXY(constraints, 3, 5);
-        add(registerButton, constraints);
+        add(registerNewButton, constraints);
+
+        // Register existing operation
+        registerExistingButton = new JButton(Messages.REGISTER_BUTTON.get());
+        WINDOW.setConstraintsXY(constraints, 3, 5);
+        add(registerExistingButton, constraints);
+
+        // New operation button
+        newOperationButton = new JButton(Messages.NEW_OPERATION_BUTTON.get());
+        WINDOW.setConstraintsXY(constraints, 0,2);
+        add(newOperationButton, constraints);
+
+        // Extisting operation button
+        existingOperationButton = new JButton(Messages.EXISTING_OPERATION_BUTTON.get());
+        WINDOW.setConstraintsXY(constraints, 2,2);
+        add(existingOperationButton, constraints);
+
+        setVisibilityNewOperation(false);
+        setVisibilityExistingOperation(false);
+
+        newOperationButtonListener();
+        existingOperationButtonListener();
+        registerExistingOperationButtonListener();
+        registerNewOperationButtonListener();
+
     }
 
     private void testJComboBox(JComboBox<String> comboBox) {
@@ -104,5 +138,64 @@ public class OperationPanel extends JPanel {
      */
     public void setStatus(String status) {
         statusLabel.setText("GPS: " + status);
+    }
+
+    private void setVisibilityNewOperation(boolean visible) {
+        operationNameInput.setVisible(visible);
+        operationDateLabel.setVisible(visible);
+        operationNameLabel.setVisible(visible);
+        datePicker.setVisible(visible);
+        registerNewButton.setVisible(visible);
+    }
+
+    private void setVisibilityExistingOperation(boolean visible) {
+        existingOperationLabel.setVisible(visible);
+        existingOperationInput.setVisible(visible);
+        registerExistingButton.setVisible(visible);
+    }
+
+    private void setVisibilityOperationButtons(boolean visible){
+        newOperationButton.setVisible(visible);
+        existingOperationButton.setVisible(visible);
+    }
+
+    private void newOperationButtonListener () {
+        newOperationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisibilityOperationButtons(false);
+                setVisibilityNewOperation(true);
+            }
+        });
+    }
+
+    private void existingOperationButtonListener() {
+        existingOperationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisibilityOperationButtons(false);
+                setVisibilityExistingOperation(true);
+            }
+        });
+    }
+
+    private void registerNewOperationButtonListener() {
+        registerNewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisibilityNewOperation(false);
+                setVisibilityOperationButtons(true);
+            }
+        });
+    }
+
+    public void registerExistingOperationButtonListener() {
+        registerExistingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisibilityExistingOperation(false);
+                setVisibilityOperationButtons(true);
+            }
+        });
     }
 }
