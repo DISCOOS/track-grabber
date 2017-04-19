@@ -4,9 +4,11 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
+import com.privatejgoodies.forms.layout.FormLayout;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
+import no.hvl.dowhile.utility.StringTools;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +30,7 @@ public class OperationPanel extends JPanel {
     private JLabel operationDateLabel;
     private DatePicker datePicker;
     private TimePicker timePicker;
+    private JLabel invalidOperationNameLabel;
 
     private JLabel existingOperationLabel;
     private JComboBox<String> existingOperationInput;
@@ -80,6 +83,13 @@ public class OperationPanel extends JPanel {
         constraints.fill = GridBagConstraints.BOTH;
         add(operationNameInput, constraints);
 
+        // Invalid operation name label
+        invalidOperationNameLabel = WINDOW.makeLabel(Messages.INVALID_OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
+        invalidOperationNameLabel.setForeground(Color.RED);
+        WINDOW.setConstraintsXY(constraints, 2, 3);
+        add(invalidOperationNameLabel, constraints);
+        invalidOperationNameLabel.setVisible(false);
+
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.setConstraintsXY(constraints, 0, 4);
@@ -89,14 +99,17 @@ public class OperationPanel extends JPanel {
         datePicker = new DatePicker();
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        dateSettings.setAllowEmptyDates(false);
         datePicker.setSettings(dateSettings);
         WINDOW.setConstraintsXY(constraints, 0, 5);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         add(datePicker, constraints);
 
         TimePickerSettings timeSettings = new TimePickerSettings();
         timeSettings.initialTime = LocalTime.now();
         timePicker = new TimePicker(timeSettings);
         WINDOW.setConstraintsXY(constraints, 2, 5);
+        constraints.anchor = GridBagConstraints.WEST;
         add(timePicker, constraints);
 
         // Already existing operation label and input
@@ -106,12 +119,12 @@ public class OperationPanel extends JPanel {
 
         existingOperationInput = new JComboBox<String>();
         WINDOW.setConstraintsXY(constraints, 0, 3);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.WEST;
         add(existingOperationInput, constraints);
 
         // Register new operation
         registerNewButton = new JButton(Messages.REGISTER_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 3, 6);
+        WINDOW.setConstraintsXY(constraints, 2, 6);
         add(registerNewButton, constraints);
 
         // Register existing operation
@@ -201,11 +214,17 @@ public class OperationPanel extends JPanel {
                 int year = datePicker.getDate().getYear();
                 int hour = timePicker.getTime().getHour();
                 int minute = timePicker.getTime().getMinute();
-                Operation operation = new Operation(operationNameInput.getText(), day, month, year, hour, minute);
-                OPERATION_MANAGER.createOperation(operation);
-                setVisibilityNewOperation(false);
-                setVisibilityOperationButtons(true);
-                // TODO: Create new operation folder
+                String operationName = operationNameInput.getText();
+
+                if (StringTools.isValidOperationName(operationName)) {
+                    Operation operation = new Operation(operationName, day, month, year, hour, minute);
+                    OPERATION_MANAGER.createOperation(operation);
+                    setVisibilityNewOperation(false);
+                    setVisibilityOperationButtons(true);
+                    invalidOperationNameLabel.setVisible(false);
+                } else {
+                    invalidOperationNameLabel.setVisible(true);
+                }
             }
         });
     }
