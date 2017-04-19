@@ -90,11 +90,15 @@ public class OperationManager {
         }
         for (File file : gpxFiles) {
             GPX gpx = TrackTools.parseFileAsGPX(file);
-            if (!fileManager.fileAlreadyImported(gpx)) {
-                fileManager.saveRawGpxFile(gpx, file.getName());
-                queue.add(file);
+            if (!TrackTools.trackCreatedBeforeStartTime(gpx, getOperationStartTime())) {
+                if (!fileManager.fileAlreadyImported(gpx)) {
+                    fileManager.saveRawGpxFile(gpx, file.getName());
+                    queue.add(file);
+                } else {
+                    System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
+                }
             } else {
-                System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
+                System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
             }
         }
         if(!queue.isEmpty()) {
