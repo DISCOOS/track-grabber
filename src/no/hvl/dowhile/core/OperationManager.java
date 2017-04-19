@@ -54,10 +54,22 @@ public class OperationManager {
      * Start components which needs to perform operations from the beginning.
      */
     public void start() {
-        window.open();
         new Thread(driveDetector).start();
     }
 
+    /**
+     * Open the window.
+     */
+    public void openWindow() {
+        window.open();
+    }
+
+    /**
+     * Setting the current operation and telling file manager to create folder for the operation.
+     *
+     * @param operation the current operation.
+     * @see FileManager
+     */
     public void createOperation(Operation operation) {
         this.operation = operation;
         fileManager.setupOperationFolder(operation);
@@ -91,7 +103,7 @@ public class OperationManager {
                 System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
             }
         }
-        if(!queue.isEmpty()) {
+        if (!queue.isEmpty()) {
             prepareNextFile();
         }
     }
