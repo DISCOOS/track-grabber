@@ -4,20 +4,17 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
+import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
 import no.hvl.dowhile.utility.StringTools;
-import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
@@ -100,7 +97,7 @@ public class OperationPanel extends JPanel {
         TimePickerSettings timeSettings = new TimePickerSettings();
         timeSettings.initialTime = LocalTime.now();
         timePicker = new TimePicker(timeSettings);
-        WINDOW.setConstraintsXY(constraints, 2,5);
+        WINDOW.setConstraintsXY(constraints, 2, 5);
         add(timePicker, constraints);
 
         // Already existing operation label and input
@@ -125,12 +122,12 @@ public class OperationPanel extends JPanel {
 
         // New operation button
         newOperationButton = new JButton(Messages.NEW_OPERATION_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 0,2);
+        WINDOW.setConstraintsXY(constraints, 0, 2);
         add(newOperationButton, constraints);
 
         // Extisting operation button
         existingOperationButton = new JButton(Messages.EXISTING_OPERATION_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 2,2);
+        WINDOW.setConstraintsXY(constraints, 2, 2);
         add(existingOperationButton, constraints);
 
         setVisibilityNewOperation(false);
@@ -171,12 +168,12 @@ public class OperationPanel extends JPanel {
         registerExistingButton.setVisible(visible);
     }
 
-    private void setVisibilityOperationButtons(boolean visible){
+    private void setVisibilityOperationButtons(boolean visible) {
         newOperationButton.setVisible(visible);
         existingOperationButton.setVisible(visible);
     }
 
-    private void newOperationButtonListener () {
+    private void newOperationButtonListener() {
         newOperationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -200,6 +197,12 @@ public class OperationPanel extends JPanel {
         registerNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int day = datePicker.getDate().getDayOfMonth();
+                int month = datePicker.getDate().getMonth().getValue();
+                int year = datePicker.getDate().getYear();
+                int hour = timePicker.getTime().getHour();
+                int minute = timePicker.getTime().getMinute();
+                Operation operation = new Operation(operationNameInput.getText(), day, month, year, hour, minute);
                 setVisibilityNewOperation(false);
                 setVisibilityOperationButtons(true);
             }

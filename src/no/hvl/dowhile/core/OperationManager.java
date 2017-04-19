@@ -10,7 +10,10 @@ import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Handling communication between the components in the application.
@@ -27,13 +30,6 @@ public class OperationManager {
 
     public OperationManager() {
         this.active = true;
-
-        // TODO: Remove this time. Just for testing.
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2017, Calendar.MARCH, 22, 14, 20, 30);
-        calendar.setTimeZone(TimeZone.getTimeZone("CET"));
-        this.operationStartTime = calendar.getTime();
-
         this.window = new Window(this);
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager(this);
