@@ -81,13 +81,9 @@ public class Window extends JFrame {
      */
     public void setStatus(String status) {
         operationPanel.setStatus(status);
-        trackPanel.setStatus(status);
     }
 
     public void updateCurrentFile(String filename, int filesLeft) {
-        trackPanel.setCurrentFile(filename);
-        trackPanel.setFileQueue(filesLeft);
-
         trackPanel.updateCurrentFile(filename, filesLeft);
     }
 
