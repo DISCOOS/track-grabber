@@ -35,6 +35,9 @@ public class StringTools {
     public static boolean isValidOperationName(String opName) {
         boolean isValid = true;
 
+        if(opName == null || opName.isEmpty()) {
+            return false;
+        }
         for(char c : opName.toCharArray()) {
             if(!Character.isLetter(c) && !Character.isDigit(c)) {
                 isValid = false;
