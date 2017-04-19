@@ -31,9 +31,9 @@ public class FileManager {
      * @param listRoot the drive to store the files.
      */
     public void setupLocalFolders(File listRoot) {
-        File appFolder = setupFolder(listRoot, "TrackGrabber");
-        setupFolder(appFolder, "Processed");
-        setupFolder(appFolder, "Rawfiles");
+        appFolder = setupFolder(listRoot, "TrackGrabber");
+        processedFolder = setupFolder(appFolder, "Processed");
+        rawFolder = setupFolder(appFolder, "Rawfiles");
 
         boolean configCreated = false;
         File[] appFolderFiles = appFolder.listFiles();
