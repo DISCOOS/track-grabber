@@ -1,5 +1,9 @@
 package no.hvl.dowhile.core.gui;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.TimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
 import no.hvl.dowhile.utility.StringTools;
@@ -10,7 +14,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
@@ -23,7 +30,9 @@ public class OperationPanel extends JPanel {
     private JLabel operationNameLabel;
     private JTextField operationNameInput;
     private JLabel operationDateLabel;
-    private JXDatePicker datePicker;
+    private DatePicker datePicker;
+    private TimePicker timePicker;
+
     private JLabel existingOperationLabel;
     private JComboBox<String> existingOperationInput;
     private JButton registerNewButton;
@@ -77,34 +86,41 @@ public class OperationPanel extends JPanel {
 
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 2, 2);
+        WINDOW.setConstraintsXY(constraints, 0, 4);
         constraints.anchor = GridBagConstraints.SOUTHWEST;
         add(operationDateLabel, constraints);
 
-        datePicker = new JXDatePicker();
-        datePicker.setDate(Calendar.getInstance().getTime());
-        datePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
-        WINDOW.setConstraintsXY(constraints, 2, 3);
+        datePicker = new DatePicker();
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        datePicker.setSettings(dateSettings);
+        WINDOW.setConstraintsXY(constraints, 0, 5);
         add(datePicker, constraints);
+
+        TimePickerSettings timeSettings = new TimePickerSettings();
+        timeSettings.initialTime = LocalTime.now();
+        timePicker = new TimePicker(timeSettings);
+        WINDOW.setConstraintsXY(constraints, 2,5);
+        add(timePicker, constraints);
 
         // Already existing operation label and input
         existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 0, 4);
+        WINDOW.setConstraintsXY(constraints, 0, 2);
         add(existingOperationLabel, constraints);
 
         existingOperationInput = new JComboBox<String>();
-        WINDOW.setConstraintsXY(constraints, 0, 5);
+        WINDOW.setConstraintsXY(constraints, 0, 3);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(existingOperationInput, constraints);
 
         // Register new operation
         registerNewButton = new JButton(Messages.REGISTER_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 3, 5);
+        WINDOW.setConstraintsXY(constraints, 3, 6);
         add(registerNewButton, constraints);
 
         // Register existing operation
         registerExistingButton = new JButton(Messages.REGISTER_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 3, 5);
+        WINDOW.setConstraintsXY(constraints, 2, 3);
         add(registerExistingButton, constraints);
 
         // New operation button
@@ -145,6 +161,7 @@ public class OperationPanel extends JPanel {
         operationDateLabel.setVisible(visible);
         operationNameLabel.setVisible(visible);
         datePicker.setVisible(visible);
+        timePicker.setVisible(visible);
         registerNewButton.setVisible(visible);
     }
 
