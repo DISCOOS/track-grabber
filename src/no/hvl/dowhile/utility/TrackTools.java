@@ -4,6 +4,7 @@ import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
+import org.alternativevision.gpx.beans.TrackPoint;
 import org.alternativevision.gpx.beans.Waypoint;
 
 import java.io.File;
@@ -42,6 +43,28 @@ public class TrackTools {
         gpx.getTracks().clear();
         gpx.setTracks(tracks);
         return gpx;
+    }
+
+    /**
+     * Checks if the track is older the operation, and therefore is irrelevant.
+     * @param gpx
+     * @param operationStartTime
+     * @return
+     */
+    public static boolean trackCreatedBeforeStartTime(GPX gpx, Date operationStartTime) {
+        Track track = TrackTools.getTrackFromGPXFile(gpx);
+        if(track == null) {
+            return false;
+        }
+        Waypoint lastPoint = track.getTrackPoints().get(track.getTrackPoints().size()-1);
+        if(lastPoint == null) {
+            return false;
+        }
+        Date pointDate = lastPoint.getTime();
+        if(pointDate.getTime() < operationStartTime.getTime()) {
+            return true;
+        }
+        return false;
     }
 
     /**

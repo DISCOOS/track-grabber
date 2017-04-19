@@ -80,8 +80,7 @@ public class FileManager {
      * @param newGpx The gpx file to check.
      * @return true if the file is matching a file, false if not.
      */
-    public boolean fileAlreadyImported(GPX newGpx, String newFilename) {
-        System.err.println("[FileManager] Duplicate check!");
+    public boolean fileAlreadyImported(GPX newGpx) {
         File[] rawFiles = rawFolder.listFiles();
         if (rawFiles == null || rawFiles.length == 0) {
             return false;
@@ -90,6 +89,20 @@ public class FileManager {
         if (newTrack == null) {
             return false;
         }
+        if (trackPointsAreEqual(rawFiles, newTrack)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Compares all track points in the new track with the track points of every other track files.
+     * Concludes based on this if the track already exists in the folder.
+     * @param rawFiles
+     * @param newTrack
+     * @return
+     */
+    public boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
         for (File rawFile : rawFiles) {
             GPX rawGpx = TrackTools.parseFileAsGPX(rawFile);
             if (rawGpx != null) {

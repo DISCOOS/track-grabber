@@ -90,7 +90,7 @@ public class OperationManager {
         }
         for (File file : gpxFiles) {
             GPX gpx = TrackTools.parseFileAsGPX(file);
-            if (!fileManager.fileAlreadyImported(gpx, file.getName())) {
+            if (!fileManager.fileAlreadyImported(gpx)) {
                 fileManager.saveRawGpxFile(gpx, file.getName());
                 queue.add(file);
             } else {
