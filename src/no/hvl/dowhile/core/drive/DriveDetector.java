@@ -36,7 +36,6 @@ public class DriveDetector implements Runnable {
     public void run() {
         Messages.DRIVE_DETECTOR_START.print();
         do {
-            ThreadTools.sleep(5);
             File[] listRoots = File.listRoots(); // A listroot is a station/drive. (C:// D:// E:// Etc).
             if (detectedDrives.size() > listRoots.length) {
                 // One or more drives removed.
@@ -56,6 +55,7 @@ public class DriveDetector implements Runnable {
             } else {
                 // No changes in amount of drives.
             }
+            ThreadTools.sleep(5);
         } while (OPERATION_MANAGER.isActive());
         Messages.DRIVE_DETECTOR_STOP.print();
     }

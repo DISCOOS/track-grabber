@@ -10,7 +10,6 @@ import java.util.List;
  * Reading and writing to the configuration file.
  */
 public class Config {
-    private final String VERSION = "1";
     private String pattern;
 
     /**
@@ -21,8 +20,6 @@ public class Config {
     public String[] getConfigTemplate() {
         return new String[]{
                 "# TrackGrabber Config - Egendefinert navngivning av filer.",
-                "# Ikke endre versjonsnummeret under!",
-                "version=" + VERSION,
                 "# Du kan inkludere følgende variabler i navnet. De vil erstattes med faktisk data under kjøring.",
                 "# %LAGTYPE% - Type lag som lagde sporet (helikopter, bil, atv, hund osv).",
                 "# %LAGNUMMER% - Nummeret på laget som hadde GPS.",
