@@ -23,7 +23,7 @@ public class GPSDrive extends Drive {
      * @return true if the folders are matching a GPS, false if not.
      */
     public boolean isValidGPSDrive() {
-        return garminFolder != null && gpxFolder != null && currentFolder != null && archiveFolder != null && garminFolder.getName().equals("Garmin") && currentFolder.getName().equals("Current") && archiveFolder.getName().equals("Archive");
+        return garminFolder != null && gpxFolder != null && currentFolder != null && archiveFolder != null && garminFolder.getName().equals("Garmin") && gpxFolder.getName().equals("GPX") && currentFolder.getName().equals("Current") && archiveFolder.getName().equals("Archive");
     }
 
     /**
