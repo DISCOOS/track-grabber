@@ -36,7 +36,7 @@ public class StringTools {
         boolean isValid = true;
 
         for(char c : opName.toCharArray()) {
-            if(!Character.isLetter(c) || !Character.isDigit(c)) {
+            if(!Character.isLetter(c) && !Character.isDigit(c)) {
                 isValid = false;
             }
         }
