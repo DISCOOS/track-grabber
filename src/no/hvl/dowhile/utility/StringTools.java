@@ -26,4 +26,14 @@ public class StringTools {
     public static String formatDateForFile(Date date) {
         return new SimpleDateFormat("dd-MM-yy-HH-mm-ss").format(date);
     }
+
+    public static String convertToValidFileName(String name) {
+        String validFileName = name.trim()
+                .replace(" ", "_")
+                .replace("/", "-")
+                .replace("\\", "-")
+                .replace("")
+
+        return validFileName;
+    }
 }
