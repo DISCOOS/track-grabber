@@ -10,6 +10,7 @@ import org.alternativevision.gpx.beans.Waypoint;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,6 +62,13 @@ public class FileManager {
             }
         }
         parseFilenameFromConfig();
+    }
+
+    public void setupOperationFolder(Operation operation) {
+        String operationName = operation.getName();
+        File appFolder = setupFolder(listRoot, "TrackGrabber");
+        
+
     }
 
     /**

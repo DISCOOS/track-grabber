@@ -202,6 +202,7 @@ public class OperationPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 setVisibilityNewOperation(false);
                 setVisibilityOperationButtons(true);
+                // TODO: Create new operation folder
             }
         });
     }
