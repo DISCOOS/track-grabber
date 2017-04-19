@@ -64,22 +64,9 @@ public class FileManager {
 
     public void setupOperationFolder(Operation operation) {
         operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
-        boolean operationFolderCreated = operationFolder.mkdir();
-        if (operationFolderCreated) {
-            rawFolder = setupFolder(operationFolder, "Raw");
-            boolean rawFolderCreated = rawFolder.mkdir();
-            if (!rawFolderCreated) {
-                System.err.println("Raw folder for operation " + operation.getName() + " already exists.");
-            }
-            processedFolder = setupFolder(operationFolder, "Processed");
-            boolean processedFolderCreated = processedFolder.mkdir();
-            if (!processedFolderCreated) {
-                System.err.println("Processed folder for operation " + operation.getName() + " already exists.");
-            }
-            System.err.println("Done creating folders for operation " + operation.getName());
-        } else {
-            System.err.println("Operation folder " + operation.getName() + " already exists.");
-        }
+        rawFolder = setupFolder(operationFolder, "Raw");
+        processedFolder = setupFolder(operationFolder, "Processed");
+        System.err.println("Done creating folders for operation " + operation.getName());
     }
 
     /**
