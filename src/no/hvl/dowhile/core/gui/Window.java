@@ -34,7 +34,7 @@ public class Window extends JFrame {
         cardPanel = new JPanel(new CardLayout());
         cardPanel.add(operationPanel, "Operation");
         cardPanel.add(trackPanel, "Track");
-        add(cardPanel, BorderLayout.CENTER);
+        add(cardPanel, BorderLayout.NORTH);
 
         open();
         openOperationPanel();
