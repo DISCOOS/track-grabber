@@ -27,13 +27,20 @@ public class StringTools {
         return new SimpleDateFormat("dd-MM-yy-HH-mm-ss").format(date);
     }
 
-    public static String convertToValidFileName(String name) {
-        String validFileName = name.trim()
-                .replace(" ", "_")
-                .replace("/", "-")
-                .replace("\\", "-")
-                .replace("")
+    /**
+     * Checks if a given name is a valid operation name (contains only letters and/or numbers).
+     * @param opName
+     * @return true if the name is valid, false if not.
+     */
+    public static boolean isValidOperationName(String opName) {
+        boolean isValid = true;
 
-        return validFileName;
+        for(char c : opName.toCharArray()) {
+            if(!Character.isLetter(c) || !Character.isDigit(c)) {
+                isValid = false;
+            }
+        }
+
+        return isValid;
     }
 }

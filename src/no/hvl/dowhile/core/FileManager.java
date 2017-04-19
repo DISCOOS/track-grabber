@@ -63,7 +63,7 @@ public class FileManager {
     }
 
     public void setupOperationFolder(Operation operation) {
-        operationFolder = setupFolder(appFolder, operation.getName().trim());
+        operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
         rawFolder = setupFolder(operationFolder, "Raw");
         processedFolder = setupFolder(operationFolder, "Processed");
         System.err.println("Done creating folders for operation " + operation.getName());
