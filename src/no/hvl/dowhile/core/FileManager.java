@@ -31,12 +31,9 @@ public class FileManager {
      * @param listRoot the drive to store the files.
      */
     public void setupLocalFolders(File listRoot) {
-        String noAppFolder = "App folder didn't exist. Created!";
-        String noProcessedFolder = "Folder for processed files didn't exist. Created!";
-        String noRawFolder = "Folder for raw files didn't exist. Created!";
-        setupFolder(listRoot, noAppFolder);
-        setupFolder(listRoot, noProcessedFolder);
-        setupFolder(listRoot, noRawFolder);
+        File appFolder = setupFolder(listRoot, "TrackGrabber");
+        setupFolder(appFolder, "Processed");
+        setupFolder(appFolder, "Rawfiles");
 
         boolean configCreated = false;
         File[] appFolderFiles = appFolder.listFiles();
@@ -68,15 +65,18 @@ public class FileManager {
 
     /**
      * Sets up a folder if it doesn't already exist.
-     * @param listRoot
-     * @param message
+     *
+     * @param parentFolder the folder where you want to create the new folder.
+     * @param name         the name of the new folder.
+     * @return the folder which was created.
      */
-    private void setupFolder(File listRoot, String message) {
-        appFolder = new File(listRoot, "TrackGrabber");
-        boolean appFolderCreated = appFolder.mkdir();
-        if (appFolderCreated) {
-            System.err.println(message);
+    private File setupFolder(File parentFolder, String name) {
+        File folder = new File(parentFolder, name);
+        boolean folderCreated = folder.mkdir();
+        if (folderCreated) {
+            System.err.println(name + " folder didn't exist. Created!");
         }
+        return folder;
     }
 
     /**
@@ -103,6 +103,7 @@ public class FileManager {
     /**
      * Compares all track points in the new track with the track points of every other track files.
      * Concludes based on this if the track already exists in the folder.
+     *
      * @param rawFiles
      * @param newTrack
      * @return
