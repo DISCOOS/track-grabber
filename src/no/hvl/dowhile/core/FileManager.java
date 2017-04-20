@@ -66,6 +66,13 @@ public class FileManager {
         operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
         rawFolder = setupFolder(operationFolder, "Raw");
         processedFolder = setupFolder(operationFolder, "Processed");
+        File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
+        try {
+            operationFile.createNewFile();
+        } catch (IOException ex) {
+            System.err.println("Failed to create operation file.");
+        }
+        OPERATION_MANAGER.getOperation().writeToFile(operationFile);
         System.err.println("Done creating folders for operation " + operation.getName());
     }
 
