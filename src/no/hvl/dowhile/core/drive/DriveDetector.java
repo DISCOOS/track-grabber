@@ -1,7 +1,9 @@
 package no.hvl.dowhile.core.drive;
 
+import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
+import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.ThreadTools;
 
 import java.io.File;
@@ -47,6 +49,11 @@ public class DriveDetector implements Runnable {
                     if (!detectedDrives.containsKey(driveLetter)) {
                         if (listRoot.getAbsolutePath().startsWith("C")) {
                             OPERATION_MANAGER.setupLocalFolders(listRoot);
+                            for (Operation operation : OPERATION_MANAGER.loadExistingOperations()) {
+                                System.err.println("Existing operation: ");
+                                System.err.println("Name: " + operation.getName());
+                                System.err.println("Start time: " + StringTools.formatDate(operation.getStartTime()));
+                            }
                             OPERATION_MANAGER.openWindow();
                         }
                         registerConnectedDrive(driveLetter, listRoot);

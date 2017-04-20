@@ -10,6 +10,7 @@ import org.alternativevision.gpx.beans.Waypoint;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +61,32 @@ public class FileManager {
             }
         }
         parseFilenameFromConfig();
+    }
+
+    public List<Operation> loadExistingOperations() {
+        List<Operation> operations = new ArrayList<>();
+        File[] filesInAppFolder = appFolder.listFiles();
+        if (filesInAppFolder == null || filesInAppFolder.length == 0) {
+            return operations;
+        }
+        for (File file : filesInAppFolder) {
+            if (file.isDirectory()) {
+                File[] operationFiles = file.listFiles();
+                if (operationFiles != null && operationFiles.length != 0) {
+                    for (File fileInOperationFolder : operationFiles) {
+                        if (fileInOperationFolder.getName().endsWith(".txt")) {
+                            try {
+                                Operation operation = new Operation(fileInOperationFolder);
+                                operations.add(operation);
+                            } catch (Exception ex) {
+                                System.err.println("Failed while parsing operation file.");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return operations;
     }
 
     public void setupOperationFolder(Operation operation) {

@@ -76,6 +76,10 @@ public class OperationManager {
         fileManager.setupOperationFolder(operation);
     }
 
+    public List<Operation> loadExistingOperations() {
+        return fileManager.loadExistingOperations();
+    }
+
     /**
      * Getting files, checking for duplicates, processing files, saving files.
      *
