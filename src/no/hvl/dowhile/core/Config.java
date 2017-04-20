@@ -10,7 +10,6 @@ import java.util.List;
  * Reading and writing to the configuration file.
  */
 public class Config {
-    private final String VERSION = "1";
     private String pattern;
 
     /**
@@ -21,8 +20,6 @@ public class Config {
     public String[] getConfigTemplate() {
         return new String[]{
                 "# TrackGrabber Config - Egendefinert navngivning av filer.",
-                "# Ikke endre versjonsnummeret under!",
-                "version=" + VERSION,
                 "# Du kan inkludere følgende variabler i navnet. De vil erstattes med faktisk data under kjøring.",
                 "# %LAGTYPE% - Type lag som lagde sporet (helikopter, bil, atv, hund osv).",
                 "# %LAGNUMMER% - Nummeret på laget som hadde GPS.",
@@ -60,6 +57,36 @@ public class Config {
      */
     public String generateFilename(TrackInfo trackInfo) {
         String filename = getPattern();
+        List<String> variables = findVariables(filename);
+        for (String variable : variables) {
+            switch (variable) {
+                case "%LAGTYPE%":
+                    filename = filename.replace(variable, trackInfo.getCrewType());
+                    break;
+                case "%LAGNUMMER%":
+                    filename = filename.replace(variable, "" + trackInfo.getCrewNumber());
+                    break;
+                case "%TEIGNUMMER%":
+                    filename = filename.replace(variable, trackInfo.getAreaSearched());
+                    break;
+                case "%SPORNUMMER%":
+                    filename = filename.replace(variable, "" + trackInfo.getTrackNumber());
+                    break;
+                case "%DATO%":
+                    filename = filename.replace(variable, StringTools.formatDateForFile(Calendar.getInstance().getTime()));
+                    break;
+            }
+        }
+        return filename;
+    }
+
+    /**
+     * Checking the filename to find the variables in the String.
+     *
+     * @param filename the filename to check.
+     * @return list of variables in the given filename.
+     */
+    private List<String> findVariables(String filename) {
         char[] filenameArray = filename.toCharArray();
         List<String> variables = new ArrayList<>();
         StringBuilder currentVariable = new StringBuilder();
@@ -82,25 +109,6 @@ public class Config {
                 }
             }
         }
-        for (String variable : variables) {
-            switch (variable) {
-                case "%LAGTYPE%":
-                    filename = filename.replace(variable, trackInfo.getCrewType());
-                    break;
-                case "%LAGNUMMER%":
-                    filename = filename.replace(variable, "" + trackInfo.getCrewNumber());
-                    break;
-                case "%TEIGNUMMER%":
-                    filename = filename.replace(variable, trackInfo.getAreaSearched());
-                    break;
-                case "%SPORNUMMER%":
-                    filename = filename.replace(variable, "" + trackInfo.getTrackNumber());
-                    break;
-                case "%DATO%":
-                    filename = filename.replace(variable, StringTools.formatDateForFile(Calendar.getInstance().getTime()));
-                    break;
-            }
-        }
-        return filename;
+        return variables;
     }
 }

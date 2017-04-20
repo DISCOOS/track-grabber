@@ -1,12 +1,16 @@
 package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.utility.FileTools;
+import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
+import org.alternativevision.gpx.beans.Track;
+import org.alternativevision.gpx.beans.Waypoint;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
+import java.util.List;
 
 /**
  * Managing files and has methods for storing files in the application file system.
@@ -14,6 +18,7 @@ import java.io.*;
 public class FileManager {
     private final OperationManager OPERATION_MANAGER;
     private File appFolder;
+    private File operationFolder;
     private File processedFolder;
     private File rawFolder;
 
@@ -27,21 +32,8 @@ public class FileManager {
      * @param listRoot the drive to store the files.
      */
     public void setupLocalFolders(File listRoot) {
-        appFolder = new File(listRoot, "TrackGrabber");
-        boolean appFolderCreated = appFolder.mkdir();
-        if (appFolderCreated) {
-            System.err.println("App folder didn't exist. Created!");
-        }
-        processedFolder = new File(appFolder, "Processed");
-        boolean processedFolderCreated = processedFolder.mkdir();
-        if (processedFolderCreated) {
-            System.err.println("Folder for processed files didn't exist. Created!");
-        }
-        rawFolder = new File(appFolder, "Rawfiles");
-        boolean rawFolderCreated = rawFolder.mkdir();
-        if (rawFolderCreated) {
-            System.err.println("Folder for raw files didn't exist. Created!");
-        }
+        appFolder = setupFolder(listRoot, "TrackGrabber");
+
         boolean configCreated = false;
         File[] appFolderFiles = appFolder.listFiles();
         if (appFolderFiles != null) {
@@ -70,16 +62,89 @@ public class FileManager {
         parseFilenameFromConfig();
     }
 
+    public void setupOperationFolder(Operation operation) {
+        operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
+        rawFolder = setupFolder(operationFolder, "Raw");
+        processedFolder = setupFolder(operationFolder, "Processed");
+        File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
+        try {
+            operationFile.createNewFile();
+        } catch (IOException ex) {
+            System.err.println("Failed to create operation file.");
+        }
+        OPERATION_MANAGER.getOperation().writeToFile(operationFile);
+        System.err.println("Done creating folders for operation " + operation.getName());
+    }
+
+    /**
+     * Sets up a folder if it doesn't already exist.
+     *
+     * @param parentFolder the folder where you want to create the new folder.
+     * @param name         the name of the new folder.
+     * @return the folder which was created.
+     */
+    private File setupFolder(File parentFolder, String name) {
+        File folder = new File(parentFolder, name);
+        boolean folderCreated = folder.mkdir();
+        if (folderCreated) {
+            System.err.println(name + " folder didn't exist. Created!");
+        }
+        return folder;
+    }
+
     /**
      * Checking if a file has been saved in the rawfolder already.
      *
      * @param newGpx The gpx file to check.
      * @return true if the file is matching a file, false if not.
      */
-    public boolean fileAlreadyImported(GPX newGpx, String newFilename) {
-        System.err.println("[FileManager] Duplicate check!");
+    public boolean fileAlreadyImported(GPX newGpx) {
         File[] rawFiles = rawFolder.listFiles();
+        if (rawFiles == null || rawFiles.length == 0) {
+            return false;
+        }
+        Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);
+        if (newTrack == null) {
+            return false;
+        }
+        if (trackPointsAreEqual(rawFiles, newTrack)) {
+            return true;
+        }
+        return false;
+    }
 
+    /**
+     * Compares all track points in the new track with the track points of every other track files.
+     * Concludes based on this if the track already exists in the folder.
+     *
+     * @param rawFiles
+     * @param newTrack
+     * @return
+     */
+    public boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
+        for (File rawFile : rawFiles) {
+            GPX rawGpx = TrackTools.parseFileAsGPX(rawFile);
+            if (rawGpx != null) {
+                Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
+                if (rawTrack != null) {
+                    List<Waypoint> newPoints = newTrack.getTrackPoints();
+                    List<Waypoint> rawPoints = rawTrack.getTrackPoints();
+                    if (newPoints != null && rawPoints != null) {
+                        if (newPoints.size() == rawPoints.size()) {
+                            boolean trackPointsMatching = true;
+                            for (int i = 0; trackPointsMatching && i < newPoints.size() && i < rawPoints.size(); i++) {
+                                if (!TrackTools.matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
+                                    trackPointsMatching = false;
+                                }
+                            }
+                            if (trackPointsMatching) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return false;
     }
 

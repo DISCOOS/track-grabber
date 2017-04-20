@@ -8,37 +8,32 @@ import no.hvl.dowhile.utility.Messages;
 import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.TrackPoint;
-import org.alternativevision.gpx.beans.Waypoint;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Handling communication between the components in the application.
  */
 public class OperationManager {
     private boolean active;
-    private Date operationStartTime;
     private Window window;
     private DriveDetector driveDetector;
     private FileManager fileManager;
     private Config config;
+    private Operation operation;
     private TrackCutter currentTrackCutter;
+    private List<File> queue;
 
     public OperationManager() {
         this.active = true;
-
-        // TODO: Remove this time. Just for testing.
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2017, Calendar.MARCH, 22, 14, 20, 30);
-        calendar.setTimeZone(TimeZone.getTimeZone("CET"));
-        this.operationStartTime = calendar.getTime();
-
         this.window = new Window(this);
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager(this);
         this.config = new Config();
+        this.queue = new ArrayList<>();
     }
 
     /**
@@ -51,26 +46,34 @@ public class OperationManager {
         return active;
     }
 
-    /**
-     * Get the time for the operation start. The operation start time is used to ignore old tracks etc.
-     */
-    public Date getOperationStartTime() {
-        return operationStartTime;
-    }
-
-    /**
-     * Set the time for the operation start. The operation start time is used to ignore old tracks etc.
-     */
-    public void setOperationStartTime(Date operationStartTime) {
-        this.operationStartTime = operationStartTime;
+    public Operation getOperation() {
+        return operation;
     }
 
     /**
      * Start components which needs to perform operations from the beginning.
      */
     public void start() {
-        window.open();
         new Thread(driveDetector).start();
+    }
+
+    /**
+     * Open the window.
+     */
+    public void openWindow() {
+        window.open();
+    }
+
+    /**
+     * Setting the current operation and telling file manager to create folder for the operation.
+     *
+     * @param operation the current operation.
+     * @see FileManager
+     */
+    public void createOperation(Operation operation) {
+        this.operation = operation;
+        window.updateOperationInfo(operation);
+        fileManager.setupOperationFolder(operation);
     }
 
     /**
@@ -88,11 +91,34 @@ public class OperationManager {
             System.err.println("No gpx files.");
             return;
         }
-        File file = gpxFiles.iterator().next();
-        GPX gpx = TrackTools.parseFileAsGPX(file);
-        fileManager.saveRawGpxFile(gpx, file.getName());
+        for (File file : gpxFiles) {
+            GPX gpx = TrackTools.parseFileAsGPX(file);
+            if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
+                if (!fileManager.fileAlreadyImported(gpx)) {
+                    fileManager.saveRawGpxFile(gpx, file.getName());
+                    queue.add(file);
+                } else {
+                    System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
+                }
+            } else {
+                System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
+            }
+        }
+        if (!queue.isEmpty()) {
+            prepareNextFile();
+        }
+    }
+
+    /**
+     * Assigns a new file to the TrackCutter and updates the GUI panel.
+     * This method is used when a gps is connected and one or more gpx-files are located.
+     */
+    public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
+        File file = queue.remove(0);
+        GPX gpx = TrackTools.parseFileAsGPX(file);
         currentTrackCutter.setTrackFile(gpx);
+        window.updateCurrentFile(file.getName(), queue.size());
         window.openTrackPanel();
     }
 
@@ -113,40 +139,11 @@ public class OperationManager {
         Track track = TrackTools.getTrackFromGPXFile(gpxFile);
         track.setName(newName);
         fileManager.saveProcessedGpxFile(gpxFile, newName);
-    }
-
-    /**
-     * Takes a file and messes it up. NB: WILL BE REMOVED
-     *
-     * @param file the file to operate on.
-     */
-    public GPX addPointsToGPXFile(File file) {
-
-        GPX gpxFile = TrackTools.parseFileAsGPX(file);
-        Track track = TrackTools.getTrackFromGPXFile(gpxFile);
-        ArrayList<Waypoint> trkPts = track.getTrackPoints();
-
-        // Do the adding
-
-        TrackPoint tp1 = new TrackPoint();
-        TrackPoint tp2 = new TrackPoint();
-        TrackPoint tp3 = new TrackPoint();
-
-        // Set values to new track points
-        tp1.setLatitude(45.34);
-        tp1.setLongitude(23.98);
-        tp2.setLatitude(5.74);
-        tp2.setLongitude(7.28);
-        tp3.setLatitude(83.15);
-        tp3.setLongitude(48.8);
-
-        // Add new tracks
-        trkPts.add(tp1);
-        trkPts.add(tp2);
-        trkPts.add(tp3);
-        track.setTrackPoints(trkPts);
-
-        return gpxFile;
+        if (queue.isEmpty()) {
+            window.openOperationPanel();
+        } else {
+            prepareNextFile();
+        }
     }
 
     /**

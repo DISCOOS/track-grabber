@@ -26,4 +26,21 @@ public class StringTools {
     public static String formatDateForFile(Date date) {
         return new SimpleDateFormat("dd-MM-yy-HH-mm-ss").format(date);
     }
+
+    /**
+     * Checks if a given name is a valid operation name (contains only letters and/or numbers).
+     * @param operationName the name to check.
+     * @return true if the name is valid, false if not.
+     */
+    public static boolean isValidOperationName(String operationName) {
+        if (operationName == null || operationName.isEmpty()) {
+            return false;
+        }
+        for (char c : operationName.toCharArray()) {
+            if (!Character.isLetter(c) && !Character.isDigit(c) && !(c == ' ')) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

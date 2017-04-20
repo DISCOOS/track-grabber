@@ -36,7 +36,6 @@ public class DriveDetector implements Runnable {
     public void run() {
         Messages.DRIVE_DETECTOR_START.print();
         do {
-            ThreadTools.sleep(5);
             File[] listRoots = File.listRoots(); // A listroot is a station/drive. (C:// D:// E:// Etc).
             if (detectedDrives.size() > listRoots.length) {
                 // One or more drives removed.
@@ -48,6 +47,7 @@ public class DriveDetector implements Runnable {
                     if (!detectedDrives.containsKey(driveLetter)) {
                         if (listRoot.getAbsolutePath().startsWith("C")) {
                             OPERATION_MANAGER.setupLocalFolders(listRoot);
+                            OPERATION_MANAGER.openWindow();
                         }
                         registerConnectedDrive(driveLetter, listRoot);
                     }
@@ -55,6 +55,7 @@ public class DriveDetector implements Runnable {
             } else {
                 // No changes in amount of drives.
             }
+            ThreadTools.sleep(5);
         } while (OPERATION_MANAGER.isActive());
         Messages.DRIVE_DETECTOR_STOP.print();
     }
@@ -123,43 +124,39 @@ public class DriveDetector implements Runnable {
             return null;
         }
         GPSDrive gpsDrive = new GPSDrive(driveLetter, listRoot.getAbsolutePath());
-        for (File file : filesInRootFolder) {
-            if (file.getName().equals("Garmin")) {
-                gpsDrive.setGarminFolder(file);
-            }
-        }
+        gpsDrive.setGarminFolder(findFileInFolder(listRoot, "Garmin"));
         if (!gpsDrive.hasGarminFolder()) {
             return null;
         }
-        File[] filesInGarminFolder = gpsDrive.getGarminFolder().listFiles();
-        if (filesInGarminFolder == null) {
-            return null;
-        }
-        for (File file : filesInGarminFolder) {
-            if (file.getName().equals("GPX")) {
-                gpsDrive.setGpxFolder(file);
-            }
-        }
+        gpsDrive.setGpxFolder(findFileInFolder(gpsDrive.getGarminFolder(), "GPX"));
         if (!gpsDrive.hasGpxFolder()) {
             return null;
         }
-        File[] filesInGpxFolder = gpsDrive.getGpxFolder().listFiles();
-        if (filesInGpxFolder == null) {
-            return null;
-        }
-        for (File file : filesInGpxFolder) {
-            if (file.getName().equals("Current")) {
-                gpsDrive.setCurrentFolder(file);
-            }
-        }
-        for (File file : filesInGpxFolder) {
-            if (file.getName().equals("Archive")) {
-                gpsDrive.setArchiveFolder(file);
-            }
-        }
+        gpsDrive.setCurrentFolder(findFileInFolder(gpsDrive.getGpxFolder(), "Current"));
+        gpsDrive.setArchiveFolder(findFileInFolder(gpsDrive.getGpxFolder(), "Archive"));
         if (!gpsDrive.isValidGPSDrive()) {
             return null;
         }
         return gpsDrive;
+    }
+
+    /**
+     * Finding the file with specified name in the parent folder.
+     *
+     * @param parentFolder the folder to check.
+     * @param filename     the name of the file to find.
+     * @return the file which was found, null if the file doesn't exist in folder.
+     */
+    private File findFileInFolder(File parentFolder, String filename) {
+        File[] filesInParent = parentFolder.listFiles();
+        if (filesInParent == null || filesInParent.length == 0) {
+            return null;
+        }
+        for (File file : filesInParent) {
+            if (file.getName().equals(filename)) {
+                return file;
+            }
+        }
+        return null;
     }
 }

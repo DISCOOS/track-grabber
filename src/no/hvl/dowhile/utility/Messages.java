@@ -25,13 +25,20 @@ public enum Messages {
     AREA_SEARCHED("Teiger: "),
     REGISTER_BUTTON("Registrer"),
     SAVE_FILE("Vil bli lagret som: "),
-    OPERATION_STARTED("Operasjon startet: "),
+    OPERATION_INFO("Operasjonsinfo "),
+    OPERATION_INFO_NAME("Navn: "),
+    OPERATION_INFO_START("Start: "),
     TRACK_NUMBER("Spornummer: "),
+    IMPORTED_FROM_GPS("Oppgi data for fil: "),
+    IMPORTED_FILES_LEFT_TO_PROCESS("Det er nå %1 filer i kø for prosessering."),
 
     // Operation panel
     OPERATION_NAME("Navn på operasjon: "),
     OPERATION_START_DATE("Startdato: "),
-    EXISTING_OPERATION("Velg en allerede eksisterende operasjon.");
+    EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
+    NEW_OPERATION_BUTTON("Ny operasjon"),
+    EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
+    INVALID_OPERATION_NAME("Ugyldig operasjonsnavn");
 
     private String message;
 
@@ -52,6 +59,17 @@ public enum Messages {
      */
     public String get() {
         return message;
+    }
+
+    /**
+     * Gives you the current message and inserts replacement into the string.
+     *
+     * @param replacement1 text to insert into message.
+     * @return the current message.
+     * @see #getMessage()
+     */
+    public String get(String replacement1) {
+        return message.replace("%1", replacement1);
     }
 
     /**

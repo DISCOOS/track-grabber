@@ -1,5 +1,6 @@
 package no.hvl.dowhile.core.gui;
 
+import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
 
@@ -24,7 +25,7 @@ public class Window extends JFrame {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
 
         setTitle(Messages.PROJECT_NAME.get());
-        setSize(500, 400);
+        setSize(800, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -34,10 +35,10 @@ public class Window extends JFrame {
         cardPanel = new JPanel(new CardLayout());
         cardPanel.add(operationPanel, "Operation");
         cardPanel.add(trackPanel, "Track");
-        add(cardPanel, BorderLayout.CENTER);
+        add(cardPanel, BorderLayout.NORTH);
 
         open();
-        openTrackPanel();
+        openOperationPanel();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {
@@ -80,7 +81,21 @@ public class Window extends JFrame {
      * @param status the new status.
      */
     public void setStatus(String status) {
-        trackPanel.setStatus(status);
+        operationPanel.setStatus(status);
+    }
+
+    /**
+     * Updating the labels with info about the operation.
+     *
+     * @param operation the current operation.
+     */
+    public void updateOperationInfo(Operation operation) {
+        operationPanel.updateOperationInfo(operation);
+        trackPanel.updateOperationInfo(operation);
+    }
+
+    public void updateCurrentFile(String filename, int filesLeft) {
+        trackPanel.updateCurrentFile(filename, filesLeft);
     }
 
     /**

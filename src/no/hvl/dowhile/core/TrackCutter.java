@@ -27,7 +27,7 @@ public class TrackCutter {
      * Processing the file to remove unnecessary data.
      */
     public void process() {
-        trackFile = filterOnTimeStarted(OPERATION_MANAGER.getOperationStartTime());
+        trackFile = filterOnTimeStarted(OPERATION_MANAGER.getOperation().getStartTime());
     }
 
     /**
@@ -62,8 +62,6 @@ public class TrackCutter {
 
         for (Waypoint waypoint : trackPoints) {
             long pointTimeMillis = waypoint.getTime().getTime();
-            System.err.println(pointTimeMillis);
-            System.err.println(startTimeMillis);
             if (pointTimeMillis < startTimeMillis) {
                 pointsToRemove.add(waypoint);
             }

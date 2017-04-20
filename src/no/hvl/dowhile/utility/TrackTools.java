@@ -8,7 +8,6 @@ import org.alternativevision.gpx.beans.Waypoint;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -45,6 +44,26 @@ public class TrackTools {
     }
 
     /**
+     * Checks if the track is older the operation, and therefore is irrelevant.
+     *
+     * @param gpx                the gpx to import.
+     * @param operationStartTime the start time of the current operation.
+     * @return true if the track was stopped before the operation, false if not.
+     */
+    public static boolean trackCreatedBeforeStartTime(GPX gpx, Date operationStartTime) {
+        Track track = TrackTools.getTrackFromGPXFile(gpx);
+        if (track == null) {
+            return false;
+        }
+        Waypoint lastPoint = track.getTrackPoints().get(track.getTrackPoints().size() - 1);
+        if (lastPoint == null) {
+            return false;
+        }
+        Date pointDate = lastPoint.getTime();
+        return (pointDate.getTime() < operationStartTime.getTime());
+    }
+
+    /**
      * Parsing a file and gives it back as GPX.
      *
      * @param file the file to parse.
@@ -73,33 +92,14 @@ public class TrackTools {
      */
     public static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
         if (!waypoint1.getLatitude().equals(waypoint2.getLatitude())) {
-            System.err.println("Latitude mismatch.");
             return false;
         }
         if (!waypoint1.getLongitude().equals(waypoint2.getLongitude())) {
-            System.err.println("Longitude mismatch.");
             return false;
         }
         if (!waypoint1.getElevation().equals(waypoint2.getElevation())) {
-            System.err.println("Elevation mismatch.");
             return false;
         }
         return true;
-    }
-
-    /**
-     * Checks if the track was created after the operation start time.
-     *
-     * @param gpx                the gpx file with the track to check.
-     * @param operationStartTime the start time of the operation.
-     * @return true if the track was created after operation start time, false if not.
-     */
-    public static boolean trackCreatedAfterOperationStart(GPX gpx, Date operationStartTime) {
-        Track track = TrackTools.getTrackFromGPXFile(gpx);
-        ArrayList<Waypoint> trkPts = track.getTrackPoints();
-        Waypoint pointToCheck = trkPts.get(0);
-        Date trackDate = pointToCheck.getTime();
-        System.err.println("Comparing track date " + trackDate + " with start date " + operationStartTime);
-        return trackDate.getTime() > operationStartTime.getTime();
     }
 }
