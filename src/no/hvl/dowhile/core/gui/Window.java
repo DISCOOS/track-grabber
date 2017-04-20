@@ -1,5 +1,6 @@
 package no.hvl.dowhile.core.gui;
 
+import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
 
@@ -81,6 +82,16 @@ public class Window extends JFrame {
      */
     public void setStatus(String status) {
         operationPanel.setStatus(status);
+    }
+
+    /**
+     * Updating the labels with info about the operation.
+     *
+     * @param operation the current operation.
+     */
+    public void updateOperationInfo(Operation operation) {
+        operationPanel.updateOperationInfo(operation);
+        trackPanel.updateOperationInfo(operation);
     }
 
     public void updateCurrentFile(String filename, int filesLeft) {

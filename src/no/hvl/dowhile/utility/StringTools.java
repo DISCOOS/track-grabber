@@ -37,7 +37,7 @@ public class StringTools {
             return false;
         }
         for (char c : operationName.toCharArray()) {
-            if(!Character.isLetter(c) && !Character.isDigit(c)) {
+            if (!Character.isLetter(c) && !Character.isDigit(c) && !(c == ' ')) {
                 return false;
             }
         }

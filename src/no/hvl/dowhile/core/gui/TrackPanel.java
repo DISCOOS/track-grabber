@@ -1,8 +1,10 @@
 package no.hvl.dowhile.core.gui;
 
+import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.TrackInfo;
 import no.hvl.dowhile.utility.Messages;
+import no.hvl.dowhile.utility.StringTools;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +19,7 @@ import java.util.List;
 public class TrackPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
-    private JLabel operationStartedLabel;
+    private JLabel operationInfoLabel;
     private JLabel currentImportLabel;
     private JLabel remainingFilesLabel;
     private GridBagConstraints constraints;
@@ -38,17 +40,17 @@ public class TrackPanel extends JPanel {
         WINDOW.setConstraintsXY(constraints, 0, 0);
         add(headerLabel, constraints);
 
-        // Operation started label
-        operationStartedLabel = WINDOW.makeLabel("<html><body>"
-                        + Messages.OPERATION_STARTED.get()
-                        + "<br>"
-                        + "Ingen operasjon."
+        // Operation info label
+        operationInfoLabel = WINDOW.makeLabel("<html><body>"
+                        + Messages.OPERATION_INFO.get() + "<br>"
+                        + Messages.OPERATION_INFO_NAME.get() + "Ingen operasjon." + "<br>"
+                        + Messages.OPERATION_INFO_START.get() + "Ingen operasjon."
                         + "</body></html>",
                 WINDOW.TEXT_FONT_SIZE
         );
         WINDOW.setConstraintsXY(constraints, 2, 0);
         constraints.gridwidth = 2;
-        add(operationStartedLabel, constraints);
+        add(operationInfoLabel, constraints);
 
         // Current file imported from GPS
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + "Ingen fil.";
@@ -138,6 +140,20 @@ public class TrackPanel extends JPanel {
                         dialogText);
             }
         });
+    }
+
+    /**
+     * Updating the label with info about the operation.
+     *
+     * @param operation the current operation.
+     */
+    public void updateOperationInfo(Operation operation) {
+        operationInfoLabel.setText("<html><body>"
+                + Messages.OPERATION_INFO.get() + "<br>"
+                + Messages.OPERATION_INFO_NAME.get() + operation.getName() + "<br>"
+                + Messages.OPERATION_INFO_START.get() + StringTools.formatDate(operation.getStartTime())
+                + "</body></html>"
+        );
     }
 
     public void updateCurrentFile(String filename, int filesLeft) {

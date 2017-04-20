@@ -72,6 +72,7 @@ public class OperationManager {
      */
     public void createOperation(Operation operation) {
         this.operation = operation;
+        window.updateOperationInfo(operation);
         fileManager.setupOperationFolder(operation);
     }
 

@@ -4,7 +4,6 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
-import com.privatejgoodies.forms.layout.FormLayout;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
@@ -23,7 +22,7 @@ import java.time.LocalTime;
 public class OperationPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
-    private JLabel operationStartedLabel;
+    private JLabel operationInfoLabel;
     private JLabel statusLabel;
     private JLabel operationNameLabel;
     private JTextField operationNameInput;
@@ -56,18 +55,18 @@ public class OperationPanel extends JPanel {
         WINDOW.setConstraintsXY(constraints, 0, 0);
         add(headerLabel, constraints);
 
-        // Operation started label
-        operationStartedLabel = WINDOW.makeLabel("<html><body>"
-                        + Messages.OPERATION_STARTED.get()
-                        + "<br>"
-                        + "Ingen operasjon."
+        // Operation info label
+        operationInfoLabel = WINDOW.makeLabel("<html><body>"
+                        + Messages.OPERATION_INFO.get() + "<br>"
+                        + Messages.OPERATION_INFO_NAME.get() + "Ingen operasjon." + "<br>"
+                        + Messages.OPERATION_INFO_START.get() + "Ingen operasjon."
                         + "</body></html>",
                 WINDOW.TEXT_FONT_SIZE
         );
         WINDOW.setConstraintsXY(constraints, 0, 1);
         constraints.anchor = GridBagConstraints.WEST;
         constraints.gridwidth = 2;
-        add(operationStartedLabel, constraints);
+        add(operationInfoLabel, constraints);
 
 
         // New operation label and input
@@ -163,6 +162,20 @@ public class OperationPanel extends JPanel {
      */
     public void setStatus(String status) {
         statusLabel.setText("GPS: " + status);
+    }
+
+    /**
+     * Updating the label with info about the operation.
+     *
+     * @param operation the current operation.
+     */
+    public void updateOperationInfo(Operation operation) {
+        operationInfoLabel.setText("<html><body>"
+                + Messages.OPERATION_INFO.get() + "<br>"
+                + Messages.OPERATION_INFO_NAME.get() + operation.getName() + "<br>"
+                + Messages.OPERATION_INFO_START.get() + StringTools.formatDate(operation.getStartTime())
+                + "</body></html>"
+        );
     }
 
     private void setVisibilityNewOperation(boolean visible) {
