@@ -46,7 +46,7 @@ public class Operation {
                 if (line.startsWith("name")) {
                     String[] nameAndValue = line.split("=");
                     if (nameAndValue.length == 2) {
-                        name = nameAndValue[1];
+                        name = nameAndValue[1].replace("_", " ");
                     } else {
                         throw new Exception("Failed to parse name from file.");
                     }
