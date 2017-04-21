@@ -65,6 +65,15 @@ public class Operation {
         }
     }
 
+    /**
+     * Updating the start time of the operation.
+     *
+     * @param year   the year it started.
+     * @param month  the month it started.
+     * @param day    the day it started.
+     * @param hour   the hour it started.
+     * @param minute the minute it started.
+     */
     public void updateStartTime(int year, int month, int day, int hour, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day, hour, minute);

@@ -62,6 +62,11 @@ public class FileManager {
         parseFilenameFromConfig();
     }
 
+    /**
+     * Finding the operation folders and parsing the operation files.
+     *
+     * @return list of the operations existing in the file system.
+     */
     public List<Operation> loadExistingOperations() {
         List<Operation> operations = new ArrayList<>();
         File[] filesInAppFolder = appFolder.listFiles();
@@ -88,6 +93,11 @@ public class FileManager {
         return operations;
     }
 
+    /**
+     * Setting up the folder for the operation with a raw folder, processed folder and operation info file.
+     *
+     * @param operation the operation to setup.
+     */
     public void setupOperationFolder(Operation operation) {
         File operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
         rawFolder = setupFolder(operationFolder, "Raw");
@@ -102,6 +112,11 @@ public class FileManager {
         System.err.println("Done creating folders for operation " + operation.getName());
     }
 
+    /**
+     * Replacing the content of the operation file with the new operation info.
+     *
+     * @param operation the operation to update.
+     */
     public void updateOperationFile(Operation operation) {
         try {
             File operationFolder = new File(appFolder, operation.getName().trim().replace(" ", "_"));
@@ -111,11 +126,8 @@ public class FileManager {
             File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
             if (!operationFile.exists()) {
                 operationFile.createNewFile();
-                operation.writeToFile(operationFile);
             } else {
-                PrintWriter writer = new PrintWriter(operationFile);
-                writer.print("");
-                writer.close();
+                FileTools.clearFile(operationFile);
             }
             operation.writeToFile(operationFile);
         } catch (IOException ex) {
@@ -164,9 +176,9 @@ public class FileManager {
      * Compares all track points in the new track with the track points of every other track files.
      * Concludes based on this if the track already exists in the folder.
      *
-     * @param rawFiles
-     * @param newTrack
-     * @return
+     * @param rawFiles the files in the raw folder.
+     * @param newTrack the new track to import.
+     * @return true if the file matches an existing file, false if not.
      */
     public boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
         for (File rawFile : rawFiles) {

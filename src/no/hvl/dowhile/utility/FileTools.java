@@ -4,10 +4,7 @@ import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +12,21 @@ import java.util.Set;
  * Utility methods to work with files.
  */
 public class FileTools {
+    /**
+     * Clear the specified file.
+     *
+     * @param file the file to clear.
+     */
+    public static void clearFile(File file) {
+        try {
+            PrintWriter writer = new PrintWriter(file);
+            writer.print("");
+            writer.close();
+        } catch (IOException ex) {
+            System.err.println("Failed while attempting to clear file " + file.getName());
+        }
+    }
+
     /**
      * Utility method to find all .gpx files in the folders.
      *
@@ -36,6 +48,12 @@ public class FileTools {
         return gpxFiles;
     }
 
+    /**
+     * This method will insert some data to the XML file to ensure Basecamp is able to handle it.
+     *
+     * @param gpx  the gpx to edit.
+     * @param file the file representing the gpx.
+     */
     public static void insertXmlData(GPX gpx, File file) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -54,6 +72,11 @@ public class FileTools {
         }
     }
 
+    /**
+     * Method to get the color from the gpx file and insert it correctly into the xml file.
+     * @param gpx the gpx to edit.
+     * @param file the file representing the gpx.
+     */
     public static void insertDisplayColor(GPX gpx, File file) {
         Track track = TrackTools.getTrackFromGPXFile(gpx);
         String displayColor = (String) track.getExtensionData(new DisplayColorExtensionParser().getId());
