@@ -32,6 +32,7 @@ public class OperationPanel extends JPanel {
     private DatePicker datePicker;
     private TimePicker timePicker;
     private JLabel invalidOperationNameLabel;
+    private JLabel operationNameAlreadyExistsLabel;
 
     private JLabel existingOperationLabel;
     private JComboBox<String> existingOperationInput;
@@ -97,6 +98,13 @@ public class OperationPanel extends JPanel {
         add(invalidOperationNameLabel, constraints);
         invalidOperationNameLabel.setVisible(false);
 
+        // Name already exists label
+        operationNameAlreadyExistsLabel = WINDOW.makeLabel(Messages.OPERATION_NAME_ALREADY_EXISTS.get(), WINDOW.TEXT_FONT_SIZE);
+        operationNameAlreadyExistsLabel.setForeground(Color.RED);
+        WINDOW.setConstraintsXY(constraints, 2, 3);
+        add(operationNameAlreadyExistsLabel, constraints);
+        operationNameAlreadyExistsLabel.setVisible(false);
+
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.setConstraintsXY(constraints, 0, 4);
@@ -144,7 +152,7 @@ public class OperationPanel extends JPanel {
         WINDOW.setConstraintsXY(constraints, 0, 2);
         add(newOperationButton, constraints);
 
-        // Extisting operation button
+        // Existing operation button
         existingOperationButton = new JButton(Messages.EXISTING_OPERATION_BUTTON.get());
         WINDOW.setConstraintsXY(constraints, 2, 2);
         add(existingOperationButton, constraints);
@@ -314,6 +322,8 @@ public class OperationPanel extends JPanel {
                     setVisibilityNewOperation(false);
                     setVisibilityToggleEditInfo(true);
                     invalidOperationNameLabel.setVisible(false);
+                } else if(OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
+                    operationNameAlreadyExistsLabel.setVisible(true);
                 } else {
                     invalidOperationNameLabel.setVisible(true);
                 }

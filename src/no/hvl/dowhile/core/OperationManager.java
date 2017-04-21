@@ -175,6 +175,21 @@ public class OperationManager {
     }
 
     /**
+     * Checks if a given operation name is already taken by another operation.
+     * @param name
+     * @return true if the names are equal, false if not.
+     */
+    public boolean operationNameAlreadyExists(String name) {
+        boolean alreadyExists = false;
+        for(Operation op : existingOperations) {
+            if(name.equals(op.getName())) {
+                alreadyExists = true;
+            }
+        }
+        return alreadyExists;
+    }
+
+    /**
      * Tell the FileManager to setup the folders on the computer for saving files later.
      *
      * @param listRoot the drive to make folders.
