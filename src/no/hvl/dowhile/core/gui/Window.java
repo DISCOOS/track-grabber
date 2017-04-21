@@ -77,15 +77,6 @@ public class Window extends JFrame {
     }
 
     /**
-     * Set the status of whether a gps is connected or not.
-     *
-     * @param status the new status.
-     */
-    public void setStatus(String status) {
-        operationPanel.setStatus(status);
-    }
-
-    /**
      * Updating the labels with info about the operation.
      *
      * @param operation the current operation.

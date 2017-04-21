@@ -107,7 +107,6 @@ public class DriveDetector implements Runnable {
             Drive drive = detectedDrives.remove(driveLetter);
             if (drive != null) {
                 if (drive instanceof GPSDrive) {
-                    OPERATION_MANAGER.setStatus("Koblet fra.");
                     System.err.println("GPS drive removed. There are now " + detectedDrives.size() + " connected.");
                 } else {
                     System.err.println("Normal drive removed. There are now " + detectedDrives.size() + " connected.");

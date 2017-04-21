@@ -112,7 +112,6 @@ public class OperationManager {
      * @see GPSDrive
      */
     public void handleGPSDrive(GPSDrive gpsDrive) {
-        setStatus("Koblet til.");
         File currentFolder = gpsDrive.getCurrentFolder();
         File archiveFolder = gpsDrive.getArchiveFolder();
         Set<File> gpxFiles = FileTools.findGpxFiles(archiveFolder);
@@ -173,16 +172,6 @@ public class OperationManager {
         } else {
             prepareNextFile();
         }
-    }
-
-    /**
-     * Tell the Window to update the status about the current GPS connected.
-     *
-     * @param status the status message to display.
-     * @see Window
-     */
-    public void setStatus(String status) {
-        window.setStatus(status);
     }
 
     /**

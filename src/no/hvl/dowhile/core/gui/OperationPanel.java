@@ -24,7 +24,6 @@ public class OperationPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private JLabel operationInfoLabel;
-    private JLabel statusLabel;
     private JLabel operationNameLabel;
     private JTextField operationNameInput;
     private JLabel operationDateLabel;
@@ -39,6 +38,12 @@ public class OperationPanel extends JPanel {
 
     private JButton newOperationButton;
     private JButton existingOperationButton;
+
+    private JLabel editOperationLabel;
+    private JLabel editDateLabel;
+    private DatePicker editDatePicker;
+    private TimePicker editTimePicker;
+    private JButton saveOperationButton;
 
     private GridBagConstraints constraints;
 
@@ -142,8 +147,40 @@ public class OperationPanel extends JPanel {
         WINDOW.setConstraintsXY(constraints, 2, 2);
         add(existingOperationButton, constraints);
 
+        // Edit operation label
+        editOperationLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 0, 2);
+        add(editOperationLabel, constraints);
+
+        // Edit operation date label
+        editDateLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION_TIME.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 0, 3);
+        add(editDateLabel, constraints);
+
+        // Edit date of operation
+        DatePickerSettings dateEditSettings = new DatePickerSettings();
+        dateEditSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        dateEditSettings.setAllowEmptyDates(false);
+        editDatePicker = new DatePicker(dateEditSettings);
+        WINDOW.setConstraintsXY(constraints, 0, 4);
+        add(editDatePicker, constraints);
+
+        // Edit time of operation
+        TimePickerSettings timeEditSettings = new TimePickerSettings();
+        timeEditSettings.initialTime = LocalTime.now();
+        editTimePicker = new TimePicker(timeEditSettings);
+        WINDOW.setConstraintsXY(constraints, 0, 5);
+        add(editTimePicker, constraints);
+
+        // Save edited operation button
+        saveOperationButton = new JButton(Messages.EDIT_OPERATION_BUTTON.get());
+        WINDOW.setConstraintsXY(constraints, 0, 6);
+        constraints.gridwidth = 2;
+        add(saveOperationButton, constraints);
+
         setVisibilityNewOperation(false);
         setVisibilityExistingOperation(false);
+        setVisibilityEditInfo(false);
 
         newOperationButtonListener();
         existingOperationButtonListener();
@@ -154,15 +191,6 @@ public class OperationPanel extends JPanel {
 
     private void testJComboBox(JComboBox<String> comboBox) {
         //comboBox.add("Hund");
-    }
-
-    /**
-     * Set the status of whether a gps is connected or not.
-     *
-     * @param status the new status.
-     */
-    public void setStatus(String status) {
-        statusLabel.setText("GPS: " + status);
     }
 
     /**
@@ -210,6 +238,14 @@ public class OperationPanel extends JPanel {
         existingOperationButton.setVisible(visible);
     }
 
+    private void setVisibilityEditInfo(boolean visibility) {
+        editOperationLabel.setVisible(visibility);
+        editDateLabel.setVisible(visibility);
+        editDatePicker.setVisible(visibility);
+        editTimePicker.setVisible(visibility);
+        saveOperationButton.setVisible(visibility);
+    }
+
     private void newOperationButtonListener() {
         newOperationButton.addActionListener(new ActionListener() {
             @Override
@@ -246,6 +282,7 @@ public class OperationPanel extends JPanel {
                     OPERATION_MANAGER.createOperation(operation);
                     setVisibilityNewOperation(false);
                     setVisibilityOperationButtons(true);
+                    setVisibilityEditInfo(true);
                     invalidOperationNameLabel.setVisible(false);
                 } else {
                     invalidOperationNameLabel.setVisible(true);
@@ -266,6 +303,7 @@ public class OperationPanel extends JPanel {
                 }
                 setVisibilityExistingOperation(false);
                 setVisibilityOperationButtons(true);
+                setVisibilityEditInfo(true);
             }
         });
     }
