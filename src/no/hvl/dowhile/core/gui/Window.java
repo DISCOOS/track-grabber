@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 /**
  * This class represents the Window exposed to the user for configuring the application.
@@ -76,15 +77,6 @@ public class Window extends JFrame {
     }
 
     /**
-     * Set the status of whether a gps is connected or not.
-     *
-     * @param status the new status.
-     */
-    public void setStatus(String status) {
-        operationPanel.setStatus(status);
-    }
-
-    /**
      * Updating the labels with info about the operation.
      *
      * @param operation the current operation.
@@ -94,8 +86,23 @@ public class Window extends JFrame {
         trackPanel.updateOperationInfo(operation);
     }
 
+    /**
+     * Telling the track panel to update the info about which file is currently processed.
+     *
+     * @param filename  the name of the file.
+     * @param filesLeft the amount of files left after the one currently processing.
+     */
     public void updateCurrentFile(String filename, int filesLeft) {
         trackPanel.updateCurrentFile(filename, filesLeft);
+    }
+
+    /**
+     * Tell the operation panel to add existing operations to the selector in the user interface.
+     *
+     * @param operations the operations to add.
+     */
+    public void addExistingOperations(List<Operation> operations) {
+        operationPanel.addExistingOperations(operations);
     }
 
     /**

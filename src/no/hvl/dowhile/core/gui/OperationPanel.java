@@ -14,7 +14,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
@@ -23,7 +26,6 @@ public class OperationPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private JLabel operationInfoLabel;
-    private JLabel statusLabel;
     private JLabel operationNameLabel;
     private JTextField operationNameInput;
     private JLabel operationDateLabel;
@@ -38,6 +40,12 @@ public class OperationPanel extends JPanel {
 
     private JButton newOperationButton;
     private JButton existingOperationButton;
+
+    private JButton toggleEditInfoButton;
+    private JLabel editDateLabel;
+    private DatePicker editDatePicker;
+    private TimePicker editTimePicker;
+    private JButton saveOperationButton;
 
     private GridBagConstraints constraints;
 
@@ -141,27 +149,52 @@ public class OperationPanel extends JPanel {
         WINDOW.setConstraintsXY(constraints, 2, 2);
         add(existingOperationButton, constraints);
 
+        // Edit info toggle button
+        toggleEditInfoButton = new JButton(Messages.EDIT_INFO_SHOW_BUTTON.get());
+        WINDOW.setConstraintsXY(constraints, 0, 3);
+        add(toggleEditInfoButton, constraints);
+
+        // Edit operation date label
+        editDateLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION_TIME.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 0, 4);
+        add(editDateLabel, constraints);
+
+        // Edit date of operation
+        DatePickerSettings dateEditSettings = new DatePickerSettings();
+        dateEditSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        dateEditSettings.setAllowEmptyDates(false);
+        editDatePicker = new DatePicker(dateEditSettings);
+        WINDOW.setConstraintsXY(constraints, 0, 5);
+        add(editDatePicker, constraints);
+
+        // Edit time of operation
+        TimePickerSettings timeEditSettings = new TimePickerSettings();
+        timeEditSettings.initialTime = LocalTime.now();
+        editTimePicker = new TimePicker(timeEditSettings);
+        WINDOW.setConstraintsXY(constraints, 0, 6);
+        add(editTimePicker, constraints);
+
+        // Save edited operation button
+        saveOperationButton = new JButton(Messages.EDIT_OPERATION_BUTTON.get());
+        WINDOW.setConstraintsXY(constraints, 0, 7);
+        constraints.gridwidth = 2;
+        add(saveOperationButton, constraints);
+
         setVisibilityNewOperation(false);
         setVisibilityExistingOperation(false);
+        setVisibilityEditInfo(false);
+        setVisibilityToggleEditInfo(false);
 
         newOperationButtonListener();
         existingOperationButtonListener();
         registerExistingOperationButtonListener();
         registerNewOperationButtonListener();
+        toggleEditInfoButtonListener();
 
     }
 
     private void testJComboBox(JComboBox<String> comboBox) {
         //comboBox.add("Hund");
-    }
-
-    /**
-     * Set the status of whether a gps is connected or not.
-     *
-     * @param status the new status.
-     */
-    public void setStatus(String status) {
-        statusLabel.setText("GPS: " + status);
     }
 
     /**
@@ -176,6 +209,21 @@ public class OperationPanel extends JPanel {
                 + Messages.OPERATION_INFO_START.get() + StringTools.formatDate(operation.getStartTime())
                 + "</body></html>"
         );
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(operation.getStartTime());
+        editDatePicker.setDate(LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));
+        editTimePicker.setTime(LocalTime.of(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
+    }
+
+    /**
+     * Adding the existing operations to selector.
+     *
+     * @param operations the operations to add.
+     */
+    public void addExistingOperations(List<Operation> operations) {
+        for (Operation operation : operations) {
+            existingOperationInput.addItem(operation.getName());
+        }
     }
 
     private void setVisibilityNewOperation(boolean visible) {
@@ -198,6 +246,22 @@ public class OperationPanel extends JPanel {
         existingOperationButton.setVisible(visible);
     }
 
+    private void setVisibilityEditInfo(boolean visibility) {
+        editDateLabel.setVisible(visibility);
+        editDatePicker.setVisible(visibility);
+        editTimePicker.setVisible(visibility);
+        saveOperationButton.setVisible(visibility);
+        if (visibility) {
+            toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
+        } else {
+            toggleEditInfoButton.setText(Messages.EDIT_INFO_SHOW_BUTTON.get());
+        }
+    }
+
+    private void setVisibilityToggleEditInfo(boolean visibility) {
+        toggleEditInfoButton.setVisible(visibility);
+    }
+
     private void newOperationButtonListener() {
         newOperationButton.addActionListener(new ActionListener() {
             @Override
@@ -218,6 +282,21 @@ public class OperationPanel extends JPanel {
         });
     }
 
+    private void toggleEditInfoButtonListener() {
+        toggleEditInfoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_SHOW_BUTTON.get())) {
+                    setVisibilityEditInfo(true);
+                    toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
+                } else if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_HIDE_BUTTON.get())) {
+                    setVisibilityEditInfo(false);
+                    toggleEditInfoButton.setText(Messages.EDIT_INFO_SHOW_BUTTON.get());
+                }
+            }
+        });
+    }
+
     private void registerNewOperationButtonListener() {
         registerNewButton.addActionListener(new ActionListener() {
             @Override
@@ -233,7 +312,7 @@ public class OperationPanel extends JPanel {
                     Operation operation = new Operation(operationName, day, month, year, hour, minute);
                     OPERATION_MANAGER.createOperation(operation);
                     setVisibilityNewOperation(false);
-                    setVisibilityOperationButtons(true);
+                    setVisibilityToggleEditInfo(true);
                     invalidOperationNameLabel.setVisible(false);
                 } else {
                     invalidOperationNameLabel.setVisible(true);
@@ -246,8 +325,14 @@ public class OperationPanel extends JPanel {
         registerExistingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String selectedOperationName = (String) existingOperationInput.getSelectedItem();
+                for (Operation operation : OPERATION_MANAGER.getExistingOperations()) {
+                    if (operation.getName().endsWith(selectedOperationName)) {
+                        OPERATION_MANAGER.setCurrentOperation(operation);
+                    }
+                }
                 setVisibilityExistingOperation(false);
-                setVisibilityOperationButtons(true);
+                setVisibilityToggleEditInfo(true);
             }
         });
     }

@@ -24,6 +24,7 @@ public class OperationManager {
     private FileManager fileManager;
     private Config config;
     private Operation operation;
+    private List<Operation> existingOperations;
     private TrackCutter currentTrackCutter;
     private List<File> queue;
 
@@ -33,6 +34,7 @@ public class OperationManager {
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager(this);
         this.config = new Config();
+        this.existingOperations = new ArrayList<>();
         this.queue = new ArrayList<>();
     }
 
@@ -58,13 +60,6 @@ public class OperationManager {
     }
 
     /**
-     * Open the window.
-     */
-    public void openWindow() {
-        window.open();
-    }
-
-    /**
      * Setting the current operation and telling file manager to create folder for the operation.
      *
      * @param operation the current operation.
@@ -76,8 +71,38 @@ public class OperationManager {
         fileManager.setupOperationFolder(operation);
     }
 
-    public List<Operation> loadExistingOperations() {
-        return fileManager.loadExistingOperations();
+    /**
+     * Set the current operation and update the operation info.
+     *
+     * @param operation the operation to set.
+     */
+    public void setCurrentOperation(Operation operation) {
+        this.operation = operation;
+        window.updateOperationInfo(operation);
+    }
+
+    /**
+     * Tell the FileManager to load existing operations from the file system.
+     *
+     * @return the list of current operations.
+     * @see FileManager
+     */
+    public List<Operation> getExistingOperations() {
+        if (existingOperations.isEmpty()) {
+            List<Operation> operations = fileManager.loadExistingOperations();
+            existingOperations.addAll(operations);
+        }
+        return existingOperations;
+    }
+
+    /**
+     * Tell the window to add the existing operations to the selector in the user interface.
+     *
+     * @param operations the existing operations to add.
+     * @see Window
+     */
+    public void addExistingOperations(List<Operation> operations) {
+        window.addExistingOperations(operations);
     }
 
     /**
@@ -87,7 +112,6 @@ public class OperationManager {
      * @see GPSDrive
      */
     public void handleGPSDrive(GPSDrive gpsDrive) {
-        setStatus("Koblet til.");
         File currentFolder = gpsDrive.getCurrentFolder();
         File archiveFolder = gpsDrive.getArchiveFolder();
         Set<File> gpxFiles = FileTools.findGpxFiles(archiveFolder);
@@ -148,16 +172,6 @@ public class OperationManager {
         } else {
             prepareNextFile();
         }
-    }
-
-    /**
-     * Tell the Window to update the status about the current GPS connected.
-     *
-     * @param status the status message to display.
-     * @see Window
-     */
-    public void setStatus(String status) {
-        window.setStatus(status);
     }
 
     /**
