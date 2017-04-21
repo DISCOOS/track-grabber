@@ -258,6 +258,12 @@ public class OperationPanel extends JPanel {
         registerExistingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String selectedOperationName = (String) existingOperationInput.getSelectedItem();
+                for (Operation operation : OPERATION_MANAGER.getExistingOperations()) {
+                    if (operation.getName().endsWith(selectedOperationName)) {
+                        OPERATION_MANAGER.setCurrentOperation(operation);
+                    }
+                }
                 setVisibilityExistingOperation(false);
                 setVisibilityOperationButtons(true);
             }

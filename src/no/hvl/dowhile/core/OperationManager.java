@@ -24,6 +24,7 @@ public class OperationManager {
     private FileManager fileManager;
     private Config config;
     private Operation operation;
+    private List<Operation> existingOperations;
     private TrackCutter currentTrackCutter;
     private List<File> queue;
 
@@ -33,6 +34,7 @@ public class OperationManager {
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager(this);
         this.config = new Config();
+        this.existingOperations = new ArrayList<>();
         this.queue = new ArrayList<>();
     }
 
@@ -70,13 +72,27 @@ public class OperationManager {
     }
 
     /**
+     * Set the current operation and update the operation info.
+     *
+     * @param operation the operation to set.
+     */
+    public void setCurrentOperation(Operation operation) {
+        this.operation = operation;
+        window.updateOperationInfo(operation);
+    }
+
+    /**
      * Tell the FileManager to load existing operations from the file system.
      *
      * @return the list of current operations.
      * @see FileManager
      */
-    public List<Operation> loadExistingOperations() {
-        return fileManager.loadExistingOperations();
+    public List<Operation> getExistingOperations() {
+        if (existingOperations.isEmpty()) {
+            List<Operation> operations = fileManager.loadExistingOperations();
+            existingOperations.addAll(operations);
+        }
+        return existingOperations;
     }
 
     /**

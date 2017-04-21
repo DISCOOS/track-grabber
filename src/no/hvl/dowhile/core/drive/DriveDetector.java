@@ -46,7 +46,7 @@ public class DriveDetector implements Runnable {
                     if (!detectedDrives.containsKey(driveLetter)) {
                         if (listRoot.getAbsolutePath().startsWith("C")) {
                             OPERATION_MANAGER.setupLocalFolders(listRoot);
-                            List<Operation> operations = OPERATION_MANAGER.loadExistingOperations();
+                            List<Operation> operations = OPERATION_MANAGER.getExistingOperations();
                             for (Operation operation : operations) {
                                 System.err.println("Existing operation: ");
                                 System.err.println("Name: " + operation.getName());
