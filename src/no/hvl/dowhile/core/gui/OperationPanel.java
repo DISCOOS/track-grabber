@@ -39,7 +39,7 @@ public class OperationPanel extends JPanel {
     private JButton newOperationButton;
     private JButton existingOperationButton;
 
-    private JLabel editOperationLabel;
+    private JButton toggleEditInfoButton;
     private JLabel editDateLabel;
     private DatePicker editDatePicker;
     private TimePicker editTimePicker;
@@ -147,14 +147,14 @@ public class OperationPanel extends JPanel {
         WINDOW.setConstraintsXY(constraints, 2, 2);
         add(existingOperationButton, constraints);
 
-        // Edit operation label
-        editOperationLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 0, 2);
-        add(editOperationLabel, constraints);
+        // Edit info toggle button
+        toggleEditInfoButton = new JButton(Messages.EDIT_INFO_SHOW_BUTTON.get());
+        WINDOW.setConstraintsXY(constraints, 0, 3);
+        add(toggleEditInfoButton, constraints);
 
         // Edit operation date label
         editDateLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION_TIME.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 0, 3);
+        WINDOW.setConstraintsXY(constraints, 0, 4);
         add(editDateLabel, constraints);
 
         // Edit date of operation
@@ -162,30 +162,32 @@ public class OperationPanel extends JPanel {
         dateEditSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         dateEditSettings.setAllowEmptyDates(false);
         editDatePicker = new DatePicker(dateEditSettings);
-        WINDOW.setConstraintsXY(constraints, 0, 4);
+        WINDOW.setConstraintsXY(constraints, 0, 5);
         add(editDatePicker, constraints);
 
         // Edit time of operation
         TimePickerSettings timeEditSettings = new TimePickerSettings();
         timeEditSettings.initialTime = LocalTime.now();
         editTimePicker = new TimePicker(timeEditSettings);
-        WINDOW.setConstraintsXY(constraints, 0, 5);
+        WINDOW.setConstraintsXY(constraints, 0, 6);
         add(editTimePicker, constraints);
 
         // Save edited operation button
         saveOperationButton = new JButton(Messages.EDIT_OPERATION_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 0, 6);
+        WINDOW.setConstraintsXY(constraints, 0, 7);
         constraints.gridwidth = 2;
         add(saveOperationButton, constraints);
 
         setVisibilityNewOperation(false);
         setVisibilityExistingOperation(false);
         setVisibilityEditInfo(false);
+        setVisibilityToggleEditInfo(false);
 
         newOperationButtonListener();
         existingOperationButtonListener();
         registerExistingOperationButtonListener();
         registerNewOperationButtonListener();
+        toggleEditInfoButtonListener();
 
     }
 
@@ -239,11 +241,19 @@ public class OperationPanel extends JPanel {
     }
 
     private void setVisibilityEditInfo(boolean visibility) {
-        editOperationLabel.setVisible(visibility);
         editDateLabel.setVisible(visibility);
         editDatePicker.setVisible(visibility);
         editTimePicker.setVisible(visibility);
         saveOperationButton.setVisible(visibility);
+        if (visibility) {
+            toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
+        } else {
+            toggleEditInfoButton.setText(Messages.EDIT_INFO_SHOW_BUTTON.get());
+        }
+    }
+
+    private void setVisibilityToggleEditInfo(boolean visibility) {
+        toggleEditInfoButton.setVisible(visibility);
     }
 
     private void newOperationButtonListener() {
@@ -266,6 +276,21 @@ public class OperationPanel extends JPanel {
         });
     }
 
+    private void toggleEditInfoButtonListener() {
+        toggleEditInfoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_SHOW_BUTTON.get())) {
+                    setVisibilityEditInfo(true);
+                    toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
+                } else if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_HIDE_BUTTON.get())) {
+                    setVisibilityEditInfo(false);
+                    toggleEditInfoButton.setText(Messages.EDIT_INFO_SHOW_BUTTON.get());
+                }
+            }
+        });
+    }
+
     private void registerNewOperationButtonListener() {
         registerNewButton.addActionListener(new ActionListener() {
             @Override
@@ -281,8 +306,7 @@ public class OperationPanel extends JPanel {
                     Operation operation = new Operation(operationName, day, month, year, hour, minute);
                     OPERATION_MANAGER.createOperation(operation);
                     setVisibilityNewOperation(false);
-                    setVisibilityOperationButtons(true);
-                    setVisibilityEditInfo(true);
+                    setVisibilityToggleEditInfo(true);
                     invalidOperationNameLabel.setVisible(false);
                 } else {
                     invalidOperationNameLabel.setVisible(true);
@@ -302,8 +326,7 @@ public class OperationPanel extends JPanel {
                     }
                 }
                 setVisibilityExistingOperation(false);
-                setVisibilityOperationButtons(true);
-                setVisibilityEditInfo(true);
+                setVisibilityToggleEditInfo(true);
             }
         });
     }
