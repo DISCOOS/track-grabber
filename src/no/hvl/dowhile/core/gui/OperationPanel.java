@@ -14,7 +14,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -207,6 +209,10 @@ public class OperationPanel extends JPanel {
                 + Messages.OPERATION_INFO_START.get() + StringTools.formatDate(operation.getStartTime())
                 + "</body></html>"
         );
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(operation.getStartTime());
+        editDatePicker.setDate(LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));
+        editTimePicker.setTime(LocalTime.of(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
     }
 
     /**
