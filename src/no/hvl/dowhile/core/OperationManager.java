@@ -181,8 +181,10 @@ public class OperationManager {
      */
     public boolean operationNameAlreadyExists(String name) {
         boolean alreadyExists = false;
+        String nameCopy = "";
         for(Operation op : existingOperations) {
-            if(name.equals(op.getName())) {
+            nameCopy = op.getName().replace("_", " ");
+            if(name.equals(nameCopy)) {
                 alreadyExists = true;
             }
         }
