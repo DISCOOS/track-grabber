@@ -65,6 +65,13 @@ public class Operation {
         }
     }
 
+    public void updateStartTime(int year, int month, int day, int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day, hour, minute);
+        calendar.setTimeZone(TimeZone.getTimeZone("CET"));
+        this.startTime = calendar.getTime();
+    }
+
     /**
      * Get the name of the operation.
      *

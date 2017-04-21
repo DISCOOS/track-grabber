@@ -81,6 +81,12 @@ public class OperationManager {
         window.updateOperationInfo(operation);
     }
 
+    public void updateCurrentOperation(int year, int month, int day, int hour, int minute) {
+        operation.updateStartTime(year, month, day, hour, minute);
+        window.updateOperationInfo(operation);
+        fileManager.updateOperationFile(operation);
+    }
+
     /**
      * Tell the FileManager to load existing operations from the file system.
      *

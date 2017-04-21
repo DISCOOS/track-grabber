@@ -198,6 +198,7 @@ public class OperationPanel extends JPanel {
         registerExistingOperationButtonListener();
         registerNewOperationButtonListener();
         toggleEditInfoButtonListener();
+        saveOperationButtonListener();
 
     }
 
@@ -241,6 +242,7 @@ public class OperationPanel extends JPanel {
         datePicker.setVisible(visible);
         timePicker.setVisible(visible);
         registerNewButton.setVisible(visible);
+        invalidOperationNameLabel.setVisible(visible);
     }
 
     private void setVisibilityExistingOperation(boolean visible) {
@@ -310,20 +312,21 @@ public class OperationPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int day = datePicker.getDate().getDayOfMonth();
-                int month = datePicker.getDate().getMonth().getValue();
+                int month = datePicker.getDate().getMonthValue();
                 int year = datePicker.getDate().getYear();
                 int hour = timePicker.getTime().getHour();
                 int minute = timePicker.getTime().getMinute();
                 String operationName = operationNameInput.getText();
 
                 if (StringTools.isValidOperationName(operationName)) {
-                    Operation operation = new Operation(operationName, day, month, year, hour, minute);
-                    OPERATION_MANAGER.createOperation(operation);
-                    setVisibilityNewOperation(false);
-                    setVisibilityToggleEditInfo(true);
-                    invalidOperationNameLabel.setVisible(false);
-                } else if(OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
-                    operationNameAlreadyExistsLabel.setVisible(true);
+                    if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
+                        operationNameAlreadyExistsLabel.setVisible(true);
+                    } else {
+                        Operation operation = new Operation(operationName, day, month, year, hour, minute);
+                        OPERATION_MANAGER.createOperation(operation);
+                        setVisibilityNewOperation(false);
+                        setVisibilityToggleEditInfo(true);
+                    }
                 } else {
                     invalidOperationNameLabel.setVisible(true);
                 }
@@ -343,6 +346,20 @@ public class OperationPanel extends JPanel {
                 }
                 setVisibilityExistingOperation(false);
                 setVisibilityToggleEditInfo(true);
+            }
+        });
+    }
+
+    public void saveOperationButtonListener() {
+        saveOperationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int year = editDatePicker.getDate().getYear();
+                int month = editDatePicker.getDate().getMonthValue();
+                int day = editDatePicker.getDate().getDayOfMonth();
+                int hour = editTimePicker.getTime().getHour();
+                int minute = editTimePicker.getTime().getMinute();
+                OPERATION_MANAGER.updateCurrentOperation(year, month, day, hour, minute);
             }
         });
     }

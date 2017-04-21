@@ -19,7 +19,6 @@ import java.util.List;
 public class FileManager {
     private final OperationManager OPERATION_MANAGER;
     private File appFolder;
-    private File operationFolder;
     private File processedFolder;
     private File rawFolder;
 
@@ -90,7 +89,7 @@ public class FileManager {
     }
 
     public void setupOperationFolder(Operation operation) {
-        operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
+        File operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
         rawFolder = setupFolder(operationFolder, "Raw");
         processedFolder = setupFolder(operationFolder, "Processed");
         File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
@@ -99,8 +98,29 @@ public class FileManager {
         } catch (IOException ex) {
             System.err.println("Failed to create operation file.");
         }
-        OPERATION_MANAGER.getOperation().writeToFile(operationFile);
+        operation.writeToFile(operationFile);
         System.err.println("Done creating folders for operation " + operation.getName());
+    }
+
+    public void updateOperationFile(Operation operation) {
+        try {
+            File operationFolder = new File(appFolder, operation.getName().trim().replace(" ", "_"));
+            if (!operationFolder.exists()) {
+                operationFolder.mkdir();
+            }
+            File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
+            if (!operationFile.exists()) {
+                operationFile.createNewFile();
+                operation.writeToFile(operationFile);
+            } else {
+                PrintWriter writer = new PrintWriter(operationFile);
+                writer.print("");
+                writer.close();
+            }
+            operation.writeToFile(operationFile);
+        } catch (IOException ex) {
+            System.err.println("Failed to update operation file.");
+        }
     }
 
     /**
