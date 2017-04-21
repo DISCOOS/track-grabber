@@ -126,11 +126,8 @@ public class FileManager {
             File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
             if (!operationFile.exists()) {
                 operationFile.createNewFile();
-                operation.writeToFile(operationFile);
             } else {
-                PrintWriter writer = new PrintWriter(operationFile);
-                writer.print("");
-                writer.close();
+                FileTools.clearFile(operationFile);
             }
             operation.writeToFile(operationFile);
         } catch (IOException ex) {

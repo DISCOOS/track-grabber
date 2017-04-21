@@ -4,10 +4,7 @@ import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +12,21 @@ import java.util.Set;
  * Utility methods to work with files.
  */
 public class FileTools {
+    /**
+     * Clear the specified file.
+     *
+     * @param file the file to clear.
+     */
+    public static void clearFile(File file) {
+        try {
+            PrintWriter writer = new PrintWriter(file);
+            writer.print("");
+            writer.close();
+        } catch (IOException ex) {
+            System.err.println("Failed while attempting to clear file " + file.getName());
+        }
+    }
+
     /**
      * Utility method to find all .gpx files in the folders.
      *
