@@ -355,6 +355,7 @@ public class OperationPanel extends JPanel {
                 int hour = editTimePicker.getTime().getHour();
                 int minute = editTimePicker.getTime().getMinute();
                 OPERATION_MANAGER.updateCurrentOperation(year, month, day, hour, minute);
+                setVisibilityEditInfo(false);
             }
         });
     }
