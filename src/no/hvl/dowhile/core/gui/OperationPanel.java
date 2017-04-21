@@ -195,10 +195,6 @@ public class OperationPanel extends JPanel {
 
     }
 
-    private void testJComboBox(JComboBox<String> comboBox) {
-        //comboBox.add("Hund");
-    }
-
     /**
      * Updating the label with info about the operation.
      *
@@ -228,26 +224,45 @@ public class OperationPanel extends JPanel {
         }
     }
 
-    private void setVisibilityNewOperation(boolean visible) {
-        operationNameInput.setVisible(visible);
-        operationDateLabel.setVisible(visible);
-        operationNameLabel.setVisible(visible);
-        datePicker.setVisible(visible);
-        timePicker.setVisible(visible);
-        registerNewButton.setVisible(visible);
+    /**
+     * Set the visibility of the items required to make a new operation.
+     *
+     * @param visibility the new visibility.
+     */
+    private void setVisibilityNewOperation(boolean visibility) {
+        operationNameInput.setVisible(visibility);
+        operationDateLabel.setVisible(visibility);
+        operationNameLabel.setVisible(visibility);
+        datePicker.setVisible(visibility);
+        timePicker.setVisible(visibility);
+        registerNewButton.setVisible(visibility);
     }
 
-    private void setVisibilityExistingOperation(boolean visible) {
-        existingOperationLabel.setVisible(visible);
-        existingOperationInput.setVisible(visible);
-        registerExistingButton.setVisible(visible);
+    /**
+     * Set the visibility of the items required to find an existing operation.
+     *
+     * @param visibility the new visibility.
+     */
+    private void setVisibilityExistingOperation(boolean visibility) {
+        existingOperationLabel.setVisible(visibility);
+        existingOperationInput.setVisible(visibility);
+        registerExistingButton.setVisible(visibility);
     }
 
-    private void setVisibilityOperationButtons(boolean visible) {
-        newOperationButton.setVisible(visible);
-        existingOperationButton.setVisible(visible);
+    /**
+     * Set the visibility of the main operation selector button.
+     *
+     * @param visibility the new visibility.
+     */
+    private void setVisibilityOperationButtons(boolean visibility) {
+        newOperationButton.setVisible(visibility);
+        existingOperationButton.setVisible(visibility);
     }
 
+    /**
+     * Set the visibility of the items required to edit data about an operation.
+     * @param visibility the new visibility.
+     */
     private void setVisibilityEditInfo(boolean visibility) {
         editDateLabel.setVisible(visibility);
         editDatePicker.setVisible(visibility);
@@ -260,10 +275,17 @@ public class OperationPanel extends JPanel {
         }
     }
 
+    /**
+     * Set the visibility of the edit info toggle button.
+     * @param visibility the new visibility.
+     */
     private void setVisibilityToggleEditInfo(boolean visibility) {
         toggleEditInfoButton.setVisible(visibility);
     }
 
+    /**
+     * Setup the listener for the new operation button.
+     */
     private void newOperationButtonListener() {
         newOperationButton.addActionListener(new ActionListener() {
             @Override
@@ -274,6 +296,9 @@ public class OperationPanel extends JPanel {
         });
     }
 
+    /**
+     * Setup the listener for the existing operation button.
+     */
     private void existingOperationButtonListener() {
         existingOperationButton.addActionListener(new ActionListener() {
             @Override
@@ -284,6 +309,9 @@ public class OperationPanel extends JPanel {
         });
     }
 
+    /**
+     * Setup the listener for the edit info toggle button.
+     */
     private void toggleEditInfoButtonListener() {
         toggleEditInfoButton.addActionListener(new ActionListener() {
             @Override
@@ -299,6 +327,9 @@ public class OperationPanel extends JPanel {
         });
     }
 
+    /**
+     * Setup the listener for the button to register a new operation.
+     */
     private void registerNewOperationButtonListener() {
         registerNewButton.addActionListener(new ActionListener() {
             @Override
@@ -329,6 +360,9 @@ public class OperationPanel extends JPanel {
         });
     }
 
+    /**
+     * Setup the listener for the button to load an existing operation.
+     */
     public void registerExistingOperationButtonListener() {
         registerExistingButton.addActionListener(new ActionListener() {
             @Override
@@ -345,6 +379,9 @@ public class OperationPanel extends JPanel {
         });
     }
 
+    /**
+     * Setup the listener for the button to save an edited operation.
+     */
     public void saveOperationButtonListener() {
         saveOperationButton.addActionListener(new ActionListener() {
             @Override

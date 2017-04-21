@@ -156,6 +156,12 @@ public class TrackPanel extends JPanel {
         );
     }
 
+    /**
+     * Updating info about the file currently being processed.
+     *
+     * @param filename  the new filename.
+     * @param filesLeft amount of files left after the current file.
+     */
     public void updateCurrentFile(String filename, int filesLeft) {
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + filename;
         String remainingFiles = Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get("" + filesLeft);

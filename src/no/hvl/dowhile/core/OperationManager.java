@@ -48,6 +48,11 @@ public class OperationManager {
         return active;
     }
 
+    /**
+     * Gives you the current operation.
+     *
+     * @return the current operation.
+     */
     public Operation getOperation() {
         return operation;
     }
@@ -81,6 +86,15 @@ public class OperationManager {
         window.updateOperationInfo(operation);
     }
 
+    /**
+     * Set the date and time of the current operation and updating info in window and the file.
+     *
+     * @param year   the year it started.
+     * @param month  the month it started.
+     * @param day    the day it started.
+     * @param hour   the hour it started.
+     * @param minute the minute it started.
+     */
     public void updateCurrentOperation(int year, int month, int day, int hour, int minute) {
         operation.updateStartTime(year, month, day, hour, minute);
         window.updateOperationInfo(operation);
@@ -182,15 +196,16 @@ public class OperationManager {
 
     /**
      * Checks if a given operation name is already taken by another operation.
-     * @param name
+     *
+     * @param name the name of the new operation.
      * @return true if the names are equal, false if not.
      */
     public boolean operationNameAlreadyExists(String name) {
         boolean alreadyExists = false;
         String nameCopy = "";
-        for(Operation op : existingOperations) {
+        for (Operation op : existingOperations) {
             nameCopy = op.getName().replace("_", " ");
-            if(name.equals(nameCopy)) {
+            if (name.equals(nameCopy)) {
                 alreadyExists = true;
             }
         }
