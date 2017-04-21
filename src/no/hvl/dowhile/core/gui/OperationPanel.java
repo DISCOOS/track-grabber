@@ -31,8 +31,7 @@ public class OperationPanel extends JPanel {
     private JLabel operationDateLabel;
     private DatePicker datePicker;
     private TimePicker timePicker;
-    private JLabel invalidOperationNameLabel;
-    private JLabel operationNameAlreadyExistsLabel;
+    private JLabel errorMessageLabel;
 
     private JLabel existingOperationLabel;
     private JComboBox<String> existingOperationInput;
@@ -91,19 +90,13 @@ public class OperationPanel extends JPanel {
         constraints.fill = GridBagConstraints.BOTH;
         add(operationNameInput, constraints);
 
-        // Invalid operation name label
-        invalidOperationNameLabel = WINDOW.makeLabel(Messages.INVALID_OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
-        invalidOperationNameLabel.setForeground(Color.RED);
+        // Error message label
+        errorMessageLabel = WINDOW.makeLabel(" ", WINDOW.TEXT_FONT_SIZE);
+        errorMessageLabel.setForeground(Color.RED);
         WINDOW.setConstraintsXY(constraints, 2, 3);
-        add(invalidOperationNameLabel, constraints);
-        invalidOperationNameLabel.setVisible(false);
+        add(errorMessageLabel, constraints);
+        errorMessageLabel.setVisible(false);
 
-        // Name already exists label
-        operationNameAlreadyExistsLabel = WINDOW.makeLabel(Messages.OPERATION_NAME_ALREADY_EXISTS.get(), WINDOW.TEXT_FONT_SIZE);
-        operationNameAlreadyExistsLabel.setForeground(Color.RED);
-        WINDOW.setConstraintsXY(constraints, 2, 3);
-        add(operationNameAlreadyExistsLabel, constraints);
-        operationNameAlreadyExistsLabel.setVisible(false);
 
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
@@ -242,7 +235,6 @@ public class OperationPanel extends JPanel {
         datePicker.setVisible(visible);
         timePicker.setVisible(visible);
         registerNewButton.setVisible(visible);
-        invalidOperationNameLabel.setVisible(visible);
     }
 
     private void setVisibilityExistingOperation(boolean visible) {
@@ -320,15 +312,18 @@ public class OperationPanel extends JPanel {
 
                 if (StringTools.isValidOperationName(operationName)) {
                     if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
-                        operationNameAlreadyExistsLabel.setVisible(true);
+                        errorMessageLabel.setText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
+                        errorMessageLabel.setVisible(true);
                     } else {
                         Operation operation = new Operation(operationName, day, month, year, hour, minute);
                         OPERATION_MANAGER.createOperation(operation);
                         setVisibilityNewOperation(false);
                         setVisibilityToggleEditInfo(true);
+                        errorMessageLabel.setVisible(false);
                     }
                 } else {
-                    invalidOperationNameLabel.setVisible(true);
+                    errorMessageLabel.setText(Messages.INVALID_OPERATION_NAME.get());
+                    errorMessageLabel.setVisible(true);
                 }
             }
         });
