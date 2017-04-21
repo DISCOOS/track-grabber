@@ -58,13 +58,6 @@ public class OperationManager {
     }
 
     /**
-     * Open the window.
-     */
-    public void openWindow() {
-        window.open();
-    }
-
-    /**
      * Setting the current operation and telling file manager to create folder for the operation.
      *
      * @param operation the current operation.
@@ -76,8 +69,24 @@ public class OperationManager {
         fileManager.setupOperationFolder(operation);
     }
 
+    /**
+     * Tell the FileManager to load existing operations from the file system.
+     *
+     * @return the list of current operations.
+     * @see FileManager
+     */
     public List<Operation> loadExistingOperations() {
         return fileManager.loadExistingOperations();
+    }
+
+    /**
+     * Tell the window to add the existing operations to the selector in the user interface.
+     *
+     * @param operations the existing operations to add.
+     * @see Window
+     */
+    public void addExistingOperations(List<Operation> operations) {
+        window.addExistingOperations(operations);
     }
 
     /**

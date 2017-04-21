@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
@@ -176,6 +177,17 @@ public class OperationPanel extends JPanel {
                 + Messages.OPERATION_INFO_START.get() + StringTools.formatDate(operation.getStartTime())
                 + "</body></html>"
         );
+    }
+
+    /**
+     * Adding the existing operations to selector.
+     *
+     * @param operations the operations to add.
+     */
+    public void addExistingOperations(List<Operation> operations) {
+        for (Operation operation : operations) {
+            existingOperationInput.addItem(operation.getName());
+        }
     }
 
     private void setVisibilityNewOperation(boolean visible) {

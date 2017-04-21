@@ -7,10 +7,7 @@ import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.ThreadTools;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Responsible of checking new drives connected and removed.
@@ -49,12 +46,13 @@ public class DriveDetector implements Runnable {
                     if (!detectedDrives.containsKey(driveLetter)) {
                         if (listRoot.getAbsolutePath().startsWith("C")) {
                             OPERATION_MANAGER.setupLocalFolders(listRoot);
-                            for (Operation operation : OPERATION_MANAGER.loadExistingOperations()) {
+                            List<Operation> operations = OPERATION_MANAGER.loadExistingOperations();
+                            for (Operation operation : operations) {
                                 System.err.println("Existing operation: ");
                                 System.err.println("Name: " + operation.getName());
                                 System.err.println("Start time: " + StringTools.formatDate(operation.getStartTime()));
                             }
-                            OPERATION_MANAGER.openWindow();
+                            OPERATION_MANAGER.addExistingOperations(operations);
                         }
                         registerConnectedDrive(driveLetter, listRoot);
                     }
