@@ -176,9 +176,9 @@ public class FileManager {
      * Compares all track points in the new track with the track points of every other track files.
      * Concludes based on this if the track already exists in the folder.
      *
-     * @param rawFiles
-     * @param newTrack
-     * @return
+     * @param rawFiles the files in the raw folder.
+     * @param newTrack the new track to import.
+     * @return true if the file matches an existing file, false if not.
      */
     public boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
         for (File rawFile : rawFiles) {

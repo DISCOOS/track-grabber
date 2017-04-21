@@ -48,6 +48,12 @@ public class FileTools {
         return gpxFiles;
     }
 
+    /**
+     * This method will insert some data to the XML file to ensure Basecamp is able to handle it.
+     *
+     * @param gpx  the gpx to edit.
+     * @param file the file representing the gpx.
+     */
     public static void insertXmlData(GPX gpx, File file) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -66,6 +72,11 @@ public class FileTools {
         }
     }
 
+    /**
+     * Method to get the color from the gpx file and insert it correctly into the xml file.
+     * @param gpx the gpx to edit.
+     * @param file the file representing the gpx.
+     */
     public static void insertDisplayColor(GPX gpx, File file) {
         Track track = TrackTools.getTrackFromGPXFile(gpx);
         String displayColor = (String) track.getExtensionData(new DisplayColorExtensionParser().getId());
