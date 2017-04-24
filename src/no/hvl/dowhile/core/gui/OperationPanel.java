@@ -31,6 +31,7 @@ public class OperationPanel extends JPanel {
     private JLabel operationDateLabel;
     private DatePicker datePicker;
     private TimePicker timePicker;
+    private JLabel awaitingGPSLabel;
     private JLabel errorMessageLabel;
 
     private JLabel existingOperationLabel;
@@ -97,6 +98,11 @@ public class OperationPanel extends JPanel {
         add(errorMessageLabel, constraints);
         errorMessageLabel.setVisible(false);
 
+        // Awaiting GPS label
+        awaitingGPSLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.setConstraintsXY(constraints, 1, 0);
+        add(awaitingGPSLabel, constraints);
+        awaitingGPSLabel.setVisible(false);
 
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
@@ -351,6 +357,7 @@ public class OperationPanel extends JPanel {
                         setVisibilityNewOperation(false);
                         setVisibilityToggleEditInfo(true);
                         errorMessageLabel.setVisible(false);
+                        awaitingGPSLabel.setVisible(true);
                     }
                 } else {
                     errorMessageLabel.setText(Messages.INVALID_OPERATION_NAME.get());
@@ -371,6 +378,7 @@ public class OperationPanel extends JPanel {
                 for (Operation operation : OPERATION_MANAGER.getExistingOperations()) {
                     if (operation.getName().endsWith(selectedOperationName)) {
                         OPERATION_MANAGER.setupOperation(operation);
+                        awaitingGPSLabel.setVisible(true);
                     }
                 }
                 setVisibilityExistingOperation(false);

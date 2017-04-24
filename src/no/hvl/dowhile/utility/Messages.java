@@ -10,7 +10,7 @@ public enum Messages {
     DRIVE_DETECTOR_STOP("Systemet lytter ikke lenger etter enheter som kobles til."),
     ERROR_THREAD("En tråd ga en error mens den ventet på neste kjøring."),
     ERROR_NO_TRACK_FOR_INFO("Systemet prøvde å starte prosessering av fil som ikke finnes."),
-    NO_RELEVANT_FILES_FOUND("Oppdaget GPS, men fant ingen relevante filer!"),
+    NO_RELEVANT_FILES_FOUND("Oppdaget GPS, men fant ingen relevante filer! \n Mulige årsaker: \n - GPSen inneholder ingen filer \n - Filene er for gamle (de ble laget før operasjonsstart) \n - Filene er allerede overført"),
 
     // Font
     FONT_NAME("Times New Roman"),
@@ -43,6 +43,7 @@ public enum Messages {
     EDIT_INFO_SHOW_BUTTON("Rediger operasjon"),
     EDIT_INFO_HIDE_BUTTON("Skjul redigeringsinfo"),
     EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
+    AWAITING_GPS("Venter på at en GPS-enhet kobles til..."),
     INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
     OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet.");
 
