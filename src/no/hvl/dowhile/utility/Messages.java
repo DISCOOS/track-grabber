@@ -10,6 +10,7 @@ public enum Messages {
     DRIVE_DETECTOR_STOP("Systemet lytter ikke lenger etter enheter som kobles til."),
     ERROR_THREAD("En tråd ga en error mens den ventet på neste kjøring."),
     ERROR_NO_TRACK_FOR_INFO("Systemet prøvde å starte prosessering av fil som ikke finnes."),
+    NO_RELEVANT_FILES_FOUND("Oppdaget GPS, men fant ingen relevante filer!"),
 
     // Font
     FONT_NAME("Times New Roman"),

@@ -154,6 +154,8 @@ public class OperationManager {
         }
         if (!queue.isEmpty()) {
             prepareNextFile();
+        } else {
+            window.showDialog(Messages.NO_RELEVANT_FILES_FOUND.get());
         }
     }
 
