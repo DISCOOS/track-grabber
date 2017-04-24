@@ -58,9 +58,9 @@ public class OperationManager {
     }
 
     /**
-     * Start components which needs to perform operations from the beginning.
+     * Starts listening for new drives connected.
      */
-    public void start() {
+    public void listenForDrives() {
         new Thread(driveDetector).start();
     }
 

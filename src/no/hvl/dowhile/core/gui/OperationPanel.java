@@ -348,6 +348,7 @@ public class OperationPanel extends JPanel {
                     } else {
                         Operation operation = new Operation(operationName, day, month, year, hour, minute);
                         OPERATION_MANAGER.createOperation(operation);
+                        OPERATION_MANAGER.listenForDrives();
                         setVisibilityNewOperation(false);
                         setVisibilityToggleEditInfo(true);
                         errorMessageLabel.setVisible(false);
@@ -371,6 +372,7 @@ public class OperationPanel extends JPanel {
                 for (Operation operation : OPERATION_MANAGER.getExistingOperations()) {
                     if (operation.getName().endsWith(selectedOperationName)) {
                         OPERATION_MANAGER.setCurrentOperation(operation);
+                        OPERATION_MANAGER.listenForDrives();
                     }
                 }
                 setVisibilityExistingOperation(false);
