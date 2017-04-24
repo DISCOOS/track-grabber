@@ -24,7 +24,7 @@ public enum Messages {
     CREW_COUNT("Antall mann: "),
     AREA_SEARCHED("Teiger: "),
     REGISTER_BUTTON("Registrer"),
-    SAVE_FILE("Vil bli lagret som: "),
+    SAVE_FILE("Fil prosessert og lagret!"),
     OPERATION_INFO("Operasjonsinfo "),
     OPERATION_INFO_NAME("Navn: "),
     OPERATION_INFO_START("Start: "),

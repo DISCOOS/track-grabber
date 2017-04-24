@@ -133,8 +133,14 @@ public class TrackPanel extends JPanel {
                 TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackNumber);
                 OPERATION_MANAGER.initiateTrackCutter(trackInfo);
 
+                // Resetting all input fields
+                crewCountSpinner.setValue(0);
+                groupNumberSpinner.setValue(0);
+                areaInput.setText("");
+                trackNumberSpinner.setValue(0);
+
                 // Message to user
-                String dialogText = Messages.SAVE_FILE.get() + crew + "_" + crewNumber + "_" + crewCount;
+                String dialogText = Messages.SAVE_FILE.get();
                 JOptionPane.showMessageDialog(
                         JOptionPane.getRootFrame(),
                         dialogText);
