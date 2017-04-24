@@ -27,7 +27,7 @@ public class Operation {
     public Operation(String name, int day, int month, int year, int hour, int minute) {
         this.name = name;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day, hour, minute);
+        calendar.set(year, month - 1, day, hour, minute);
         calendar.setTimeZone(TimeZone.getTimeZone("CET"));
         this.startTime = calendar.getTime();
     }
@@ -76,7 +76,7 @@ public class Operation {
      */
     public void updateStartTime(int year, int month, int day, int hour, int minute) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day, hour, minute);
+        calendar.set(year, month - 1, day, hour, minute);
         calendar.setTimeZone(TimeZone.getTimeZone("CET"));
         this.startTime = calendar.getTime();
     }
