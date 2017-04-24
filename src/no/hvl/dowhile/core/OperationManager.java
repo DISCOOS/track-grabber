@@ -79,20 +79,10 @@ public class OperationManager {
      * @param operation the current operation.
      * @see FileManager
      */
-    public void createOperation(Operation operation) {
+    public void setupOperation(Operation operation) {
         this.operation = operation;
         window.updateOperationInfo(operation);
         fileManager.setupOperationFolder(operation);
-    }
-
-    /**
-     * Set the current operation and update the operation info.
-     *
-     * @param operation the operation to set.
-     */
-    public void setCurrentOperation(Operation operation) {
-        this.operation = operation;
-        window.updateOperationInfo(operation);
     }
 
     /**
