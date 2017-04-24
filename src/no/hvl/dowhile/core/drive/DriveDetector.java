@@ -53,6 +53,7 @@ public class DriveDetector implements Runnable {
                                 System.err.println("Start time: " + StringTools.formatDate(operation.getStartTime()));
                             }
                             OPERATION_MANAGER.addExistingOperations(operations);
+                            registerConnectedDrive(driveLetter, listRoot);
                         }
                         if (OPERATION_MANAGER.hasOperation()) {
                             registerConnectedDrive(driveLetter, listRoot);
