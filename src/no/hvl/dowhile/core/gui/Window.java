@@ -77,6 +77,15 @@ public class Window extends JFrame {
     }
 
     /**
+     * Shows a dialog with the given text.
+     *
+     * @param text the text to show in the dialog.
+     */
+    public void showDialog(String text) {
+        JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), text);
+    }
+
+    /**
      * Updating the labels with info about the operation.
      *
      * @param operation the current operation.
