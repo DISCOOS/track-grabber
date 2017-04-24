@@ -54,7 +54,9 @@ public class DriveDetector implements Runnable {
                             }
                             OPERATION_MANAGER.addExistingOperations(operations);
                         }
-                        registerConnectedDrive(driveLetter, listRoot);
+                        if (OPERATION_MANAGER.hasOperation()) {
+                            registerConnectedDrive(driveLetter, listRoot);
+                        }
                     }
                 }
             } else {

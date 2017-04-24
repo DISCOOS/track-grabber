@@ -58,9 +58,18 @@ public class OperationManager {
     }
 
     /**
+     * Method to check whether an operation is set or not.
+     *
+     * @return true if an operation is set, false if not.
+     */
+    public boolean hasOperation() {
+        return operation != null;
+    }
+
+    /**
      * Starts listening for new drives connected.
      */
-    public void listenForDrives() {
+    public void start() {
         new Thread(driveDetector).start();
     }
 
