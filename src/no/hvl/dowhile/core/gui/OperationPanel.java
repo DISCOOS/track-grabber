@@ -158,6 +158,7 @@ public class OperationPanel extends JPanel {
 
         // Edit info toggle button
         toggleEditInfoButton = new JButton(Messages.EDIT_INFO_SHOW_BUTTON.get());
+        constraints.gridwidth = 4;
         WINDOW.setConstraintsXY(constraints, 0, 3);
         add(toggleEditInfoButton, constraints);
 
@@ -184,7 +185,7 @@ public class OperationPanel extends JPanel {
         // Save edited operation button
         saveOperationButton = new JButton(Messages.EDIT_OPERATION_BUTTON.get());
         WINDOW.setConstraintsXY(constraints, 0, 7);
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 4;
         add(saveOperationButton, constraints);
 
         setVisibilityNewOperation(false);
