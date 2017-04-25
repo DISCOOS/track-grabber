@@ -39,6 +39,7 @@ public enum Messages {
     OPERATION_START_DATE("Startdato: "),
     EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
     NEW_OPERATION_BUTTON("Ny operasjon"),
+    CHOOSE_OTHER_OPERATION("Velg en annen operasjon"),
     EDIT_OPERATION_TIME("Endre starttid: "),
     EDIT_OPERATION_BUTTON("Lagre operasjonsinfo"),
     EDIT_INFO_SHOW_BUTTON("Rediger operasjon"),

@@ -43,6 +43,8 @@ public class OperationPanel extends JPanel {
     private JButton newOperationButton;
     private JButton existingOperationButton;
 
+    private JButton switchOperationButton;
+
     private JButton toggleEditInfoButton;
     private JLabel editDateLabel;
     private DatePicker editDatePicker;
@@ -59,12 +61,12 @@ public class OperationPanel extends JPanel {
         constraints = new GridBagConstraints();
         WINDOW.setConstraintsInsets(constraints, 5);
 
-        // New operation label and input
+        // New operation label
         operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
         add(operationNameLabel, constraints);
 
-        // Already existing operation label and input
+        // Already existing operation label
         existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
         add(existingOperationLabel, constraints);
@@ -74,11 +76,13 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
         add(newOperationButton, constraints);
 
+        // New operation name input
         operationNameInput = new JTextField();
-        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 2);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 4);
         constraints.fill = GridBagConstraints.BOTH;
         add(operationNameInput, constraints);
 
+        // Already existing operation input
         existingOperationInput = new JComboBox<>();
         WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 2);
         add(existingOperationInput, constraints);
@@ -87,6 +91,11 @@ public class OperationPanel extends JPanel {
         toggleEditInfoButton = new JButton(Messages.EDIT_INFO_SHOW_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 4);
         add(toggleEditInfoButton, constraints);
+
+        // Switch operation
+        switchOperationButton = new JButton(Messages.CHOOSE_OTHER_OPERATION.get());
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 4);
+        add(switchOperationButton, constraints);
 
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
@@ -177,6 +186,7 @@ public class OperationPanel extends JPanel {
         registerNewOperationButtonListener();
         toggleEditInfoButtonListener();
         saveOperationButtonListener();
+        switchOperationListener();
         backButtonListener();
 
     }
@@ -253,8 +263,10 @@ public class OperationPanel extends JPanel {
         saveOperationButton.setVisible(visibility);
         if (visibility) {
             toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
+            switchOperationButton.setVisible(false);
         } else {
             toggleEditInfoButton.setText(Messages.EDIT_INFO_SHOW_BUTTON.get());
+            switchOperationButton.setVisible(true);
         }
     }
 
@@ -265,6 +277,7 @@ public class OperationPanel extends JPanel {
      */
     private void setVisibilityToggleEditInfo(boolean visibility) {
         toggleEditInfoButton.setVisible(visibility);
+        switchOperationButton.setVisible(visibility);
     }
 
     /**
@@ -379,6 +392,19 @@ public class OperationPanel extends JPanel {
                 int minute = editTimePicker.getTime().getMinute();
                 OPERATION_MANAGER.updateCurrentOperation(year, month, day, hour, minute);
                 setVisibilityEditInfo(false);
+            }
+        });
+    }
+
+    /**
+     * Setup the listener for the button to switch operation
+     */
+    private void switchOperationListener () {
+        switchOperationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisibilityToggleEditInfo(false);
+                setVisibilityOperationButtons(true);
             }
         });
     }
