@@ -61,120 +61,111 @@ public class OperationPanel extends JPanel {
 
         // New operation label and input
         operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 0, 2);
-        constraints.anchor = GridBagConstraints.SOUTHWEST;
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
         add(operationNameLabel, constraints);
 
+        // Already existing operation label and input
+        existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
+        add(existingOperationLabel, constraints);
+
+        // New operation button
+        newOperationButton = new JButton(Messages.NEW_OPERATION_BUTTON.get());
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
+        add(newOperationButton, constraints);
+
         operationNameInput = new JTextField();
-        WINDOW.setConstraintsXY(constraints, 0, 3);
-        constraints.gridwidth = 2;
-        constraints.weightx = 2;
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 2);
         constraints.fill = GridBagConstraints.BOTH;
         add(operationNameInput, constraints);
 
-        // Error message label
-        errorMessageLabel = WINDOW.makeLabel(" ", WINDOW.TEXT_FONT_SIZE);
-        errorMessageLabel.setForeground(Color.RED);
-        WINDOW.setConstraintsXY(constraints, 2, 3);
-        add(errorMessageLabel, constraints);
-        errorMessageLabel.setVisible(false);
+        existingOperationInput = new JComboBox<>();
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 2);
+        add(existingOperationInput, constraints);
 
-        // Awaiting GPS label
-        awaitingGPSLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 1, 0);
-        add(awaitingGPSLabel, constraints);
-        awaitingGPSLabel.setVisible(false);
+        // Edit info toggle button
+        toggleEditInfoButton = new JButton(Messages.EDIT_INFO_SHOW_BUTTON.get());
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 4);
+        add(toggleEditInfoButton, constraints);
 
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 0, 4);
-        constraints.anchor = GridBagConstraints.SOUTHWEST;
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
         add(operationDateLabel, constraints);
+
+        // Edit operation date label
+        editDateLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION_TIME.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 4);
+        add(editDateLabel, constraints);
 
         datePicker = new DatePicker();
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         dateSettings.setAllowEmptyDates(false);
         datePicker.setSettings(dateSettings);
-        WINDOW.setConstraintsXY(constraints, 0, 5);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 2);
         add(datePicker, constraints);
-
-        TimePickerSettings timeSettings = new TimePickerSettings();
-        timeSettings.initialTime = LocalTime.now();
-        timePicker = new TimePicker(timeSettings);
-        WINDOW.setConstraintsXY(constraints, 2, 5);
-        constraints.anchor = GridBagConstraints.WEST;
-        add(timePicker, constraints);
-
-        // Already existing operation label and input
-        existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 0, 2);
-        add(existingOperationLabel, constraints);
-
-        existingOperationInput = new JComboBox<String>();
-        WINDOW.setConstraintsXY(constraints, 0, 3);
-        constraints.anchor = GridBagConstraints.WEST;
-        add(existingOperationInput, constraints);
-
-        // Register new operation
-        registerNewButton = new JButton(Messages.REGISTER_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 2, 6);
-        add(registerNewButton, constraints);
-
-        // Register existing operation
-        registerExistingButton = new JButton(Messages.REGISTER_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 2, 3);
-        add(registerExistingButton, constraints);
-
-        // New operation button
-        newOperationButton = new JButton(Messages.NEW_OPERATION_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 0, 2);
-        add(newOperationButton, constraints);
-
-        // Existing operation button
-        existingOperationButton = new JButton(Messages.EXISTING_OPERATION_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 2, 2);
-        add(existingOperationButton, constraints);
-
-        // Edit info toggle button
-        toggleEditInfoButton = new JButton(Messages.EDIT_INFO_SHOW_BUTTON.get());
-        constraints.gridwidth = 4;
-        WINDOW.setConstraintsXY(constraints, 0, 3);
-        add(toggleEditInfoButton, constraints);
-
-        // Edit operation date label
-        editDateLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION_TIME.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 0, 4);
-        add(editDateLabel, constraints);
 
         // Edit date of operation
         DatePickerSettings dateEditSettings = new DatePickerSettings();
         dateEditSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         dateEditSettings.setAllowEmptyDates(false);
         editDatePicker = new DatePicker(dateEditSettings);
-        WINDOW.setConstraintsXY(constraints, 0, 5);
+        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 4);
         add(editDatePicker, constraints);
 
         // Edit time of operation
         TimePickerSettings timeEditSettings = new TimePickerSettings();
         timeEditSettings.initialTime = LocalTime.now();
         editTimePicker = new TimePicker(timeEditSettings);
-        WINDOW.setConstraintsXY(constraints, 0, 6);
+        WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.CENTER, 4);
         add(editTimePicker, constraints);
 
         // Save edited operation button
         saveOperationButton = new JButton(Messages.EDIT_OPERATION_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 0, 7);
-        constraints.gridwidth = 4;
+        WINDOW.modifyConstraints(constraints, 0, 7, GridBagConstraints.CENTER, 4);
         add(saveOperationButton, constraints);
 
         // Back button
         backButton = new JButton(Messages.GO_BACK.get());
         WINDOW.modifyConstraints(constraints, 0, 8, GridBagConstraints.WEST, 1);
         add(backButton, constraints);
-        backButton.setVisible(false);
 
+        // Awaiting GPS label
+        awaitingGPSLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.modifyConstraints(constraints, 1, 0, GridBagConstraints.CENTER, 2);
+        add(awaitingGPSLabel, constraints);
+        awaitingGPSLabel.setVisible(false);
+
+        // Existing operation button
+        existingOperationButton = new JButton(Messages.EXISTING_OPERATION_BUTTON.get());
+        WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.CENTER, 2);
+        add(existingOperationButton, constraints);
+
+        // Error message label
+        errorMessageLabel = WINDOW.makeLabel(" ", WINDOW.TEXT_FONT_SIZE);
+        errorMessageLabel.setForeground(Color.RED);
+        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.CENTER, 2);
+        add(errorMessageLabel, constraints);
+        errorMessageLabel.setVisible(false);
+
+        // Register existing operation
+        registerExistingButton = new JButton(Messages.REGISTER_BUTTON.get());
+        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.CENTER, 2);
+        add(registerExistingButton, constraints);
+
+        TimePickerSettings timeSettings = new TimePickerSettings();
+        timeSettings.initialTime = LocalTime.now();
+        timePicker = new TimePicker(timeSettings);
+        WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.WEST, 2);
+        add(timePicker, constraints);
+
+        // Register new operation
+        registerNewButton = new JButton(Messages.REGISTER_BUTTON.get());
+        WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.CENTER, 2);
+        add(registerNewButton, constraints);
+
+        backButton.setVisible(false);
         setVisibilityNewOperation(false);
         setVisibilityExistingOperation(false);
         setVisibilityEditInfo(false);
@@ -252,6 +243,7 @@ public class OperationPanel extends JPanel {
 
     /**
      * Set the visibility of the items required to edit data about an operation.
+     *
      * @param visibility the new visibility.
      */
     private void setVisibilityEditInfo(boolean visibility) {
@@ -268,6 +260,7 @@ public class OperationPanel extends JPanel {
 
     /**
      * Set the visibility of the edit info toggle button.
+     *
      * @param visibility the new visibility.
      */
     private void setVisibilityToggleEditInfo(boolean visibility) {
