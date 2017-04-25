@@ -178,7 +178,6 @@ public class OperationPanel extends JPanel {
         registerNewOperationButtonListener();
         toggleEditInfoButtonListener();
         saveOperationButtonListener();
-
     }
 
     /**
