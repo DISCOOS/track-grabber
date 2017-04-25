@@ -107,26 +107,17 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 4);
         add(editDateLabel, constraints);
 
-        datePicker = new DatePicker();
-        DatePickerSettings dateSettings = new DatePickerSettings();
-        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-        dateSettings.setAllowEmptyDates(false);
-        datePicker.setSettings(dateSettings);
+        datePicker = new DatePicker(createDateSettings());
         WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 2);
         add(datePicker, constraints);
 
         // Edit date of operation
-        DatePickerSettings dateEditSettings = new DatePickerSettings();
-        dateEditSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-        dateEditSettings.setAllowEmptyDates(false);
-        editDatePicker = new DatePicker(dateEditSettings);
+        editDatePicker = new DatePicker(createDateSettings());
         WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 4);
         add(editDatePicker, constraints);
 
         // Edit time of operation
-        TimePickerSettings timeEditSettings = new TimePickerSettings();
-        timeEditSettings.initialTime = LocalTime.now();
-        editTimePicker = new TimePicker(timeEditSettings);
+        editTimePicker = new TimePicker(createTimeSettings());
         WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.CENTER, 4);
         add(editTimePicker, constraints);
 
@@ -163,9 +154,7 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.CENTER, 2);
         add(registerExistingButton, constraints);
 
-        TimePickerSettings timeSettings = new TimePickerSettings();
-        timeSettings.initialTime = LocalTime.now();
-        timePicker = new TimePicker(timeSettings);
+        timePicker = new TimePicker(createTimeSettings());
         WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.WEST, 2);
         add(timePicker, constraints);
 
@@ -189,6 +178,19 @@ public class OperationPanel extends JPanel {
         switchOperationListener();
         backButtonListener();
 
+    }
+
+    private DatePickerSettings createDateSettings() {
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        dateSettings.setAllowEmptyDates(false);
+        return dateSettings;
+    }
+
+    private TimePickerSettings createTimeSettings() {
+        TimePickerSettings timeEditSettings = new TimePickerSettings();
+        timeEditSettings.initialTime = LocalTime.now();
+        return timeEditSettings;
     }
 
     /**
