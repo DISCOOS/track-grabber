@@ -423,7 +423,7 @@ public class OperationPanel extends JPanel {
         importFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO
+                OPERATION_MANAGER.processFileFromFileExplorer(OperationPanel.this);
             }
         });
     }

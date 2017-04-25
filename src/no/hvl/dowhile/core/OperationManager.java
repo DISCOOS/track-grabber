@@ -9,6 +9,7 @@ import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,22 +140,30 @@ public class OperationManager {
             return;
         }
         for (File file : gpxFiles) {
-            GPX gpx = TrackTools.parseFileAsGPX(file);
-            if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-                if (!fileManager.fileAlreadyImported(gpx)) {
-                    fileManager.saveRawGpxFile(gpx, file.getName());
-                    queue.add(file);
-                } else {
-                    System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
-                }
-            } else {
-                System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
-            }
+            processFile(file);
         }
         if (!queue.isEmpty()) {
             prepareNextFile();
         } else {
             window.showDialog(Messages.NO_RELEVANT_FILES_FOUND.get());
+        }
+    }
+
+    /**
+     * Processes a single GPX file.
+     * @param file
+     */
+    public void processFile(File file) {
+        GPX gpx = TrackTools.parseFileAsGPX(file);
+        if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
+            if (!fileManager.fileAlreadyImported(gpx)) {
+                fileManager.saveRawGpxFile(gpx, file.getName());
+                queue.add(file);
+            } else {
+                System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
+            }
+        } else {
+            System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
         }
     }
 
@@ -169,6 +178,15 @@ public class OperationManager {
         currentTrackCutter.setTrackFile(gpx);
         window.updateCurrentFile(file.getName(), queue.size());
         window.openTrackPanel();
+    }
+
+    /**
+     * Fetches the file that the user chose from the file explorer and processes it.
+     * @param component
+     */
+    public void processFileFromFileExplorer(Component component) {
+        File file = fileManager.getFileFromFileExplorer(component);
+        processFile(file);
     }
 
     /**

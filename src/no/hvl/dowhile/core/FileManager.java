@@ -7,8 +7,11 @@ import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 import org.alternativevision.gpx.beans.Waypoint;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -278,6 +281,23 @@ public class FileManager {
             }
         } catch (IOException ex) {
             System.err.println("Failed while reading from config file.");
+        }
+    }
+
+    /**
+     * Lets the user manually import a GPX file from the system's file explorer.
+     * @param parent
+     * @return the chosen GPX file
+     */
+    public File getFileFromFileExplorer(Component parent) {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("GPX Files", "gpx");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(parent);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFile();
+        } else {
+            return null;
         }
     }
 }
