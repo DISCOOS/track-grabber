@@ -151,9 +151,9 @@ public class OperationManager {
 
     /**
      * Processes a single GPX file.
-     * @param file
+     * @param file the file to process.
      */
-    public void processFile(File file) {
+    private void processFile(File file) {
         GPX gpx = TrackTools.parseFileAsGPX(file);
         if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
             if (!fileManager.fileAlreadyImported(gpx)) {
@@ -182,11 +182,16 @@ public class OperationManager {
 
     /**
      * Fetches the file that the user chose from the file explorer and processes it.
-     * @param component
+     * @param component the parent component.
      */
     public void processFileFromFileExplorer(Component component) {
         File file = fileManager.getFileFromFileExplorer(component);
         processFile(file);
+        if (!queue.isEmpty()) {
+            prepareNextFile();
+        } else {
+            window.showDialog(Messages.NO_RELEVANT_FILES_FOUND.get());
+        }
     }
 
     /**
