@@ -38,6 +38,8 @@ public class OperationPanel extends JPanel {
     private JButton registerNewButton;
     private JButton registerExistingButton;
 
+    private JButton backButton;
+
     private JButton newOperationButton;
     private JButton existingOperationButton;
 
@@ -167,6 +169,12 @@ public class OperationPanel extends JPanel {
         constraints.gridwidth = 4;
         add(saveOperationButton, constraints);
 
+        // Back button
+        backButton = new JButton(Messages.GO_BACK.get());
+        WINDOW.modifyConstraints(constraints, 0, 8, GridBagConstraints.WEST, 1);
+        add(backButton, constraints);
+        backButton.setVisible(false);
+
         setVisibilityNewOperation(false);
         setVisibilityExistingOperation(false);
         setVisibilityEditInfo(false);
@@ -178,6 +186,7 @@ public class OperationPanel extends JPanel {
         registerNewOperationButtonListener();
         toggleEditInfoButtonListener();
         saveOperationButtonListener();
+        backButtonListener();
 
     }
 
@@ -216,6 +225,7 @@ public class OperationPanel extends JPanel {
         datePicker.setVisible(visibility);
         timePicker.setVisible(visibility);
         registerNewButton.setVisible(visibility);
+        backButton.setVisible(visibility);
     }
 
     /**
@@ -227,6 +237,7 @@ public class OperationPanel extends JPanel {
         existingOperationLabel.setVisible(visibility);
         existingOperationInput.setVisible(visibility);
         registerExistingButton.setVisible(visibility);
+        backButton.setVisible(visibility);
     }
 
     /**
@@ -375,6 +386,20 @@ public class OperationPanel extends JPanel {
                 int minute = editTimePicker.getTime().getMinute();
                 OPERATION_MANAGER.updateCurrentOperation(year, month, day, hour, minute);
                 setVisibilityEditInfo(false);
+            }
+        });
+    }
+
+    /**
+     * Setup the listener for the button to go back in both new operation and existing operation
+     */
+    public void backButtonListener() {
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisibilityExistingOperation(false);
+                setVisibilityNewOperation(false);
+                setVisibilityOperationButtons(true);
             }
         });
     }
