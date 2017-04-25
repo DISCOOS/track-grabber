@@ -43,8 +43,8 @@ public class OperationPanel extends JPanel {
     private JButton newOperationButton;
     private JButton existingOperationButton;
 
+    private JButton importFileButton;
     private JButton switchOperationButton;
-
     private JButton toggleEditInfoButton;
     private JLabel editDateLabel;
     private DatePicker editDatePicker;
@@ -87,14 +87,19 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 2);
         add(existingOperationInput, constraints);
 
+        // Import local GPX-file button
+        importFileButton = new JButton(Messages.IMPORT_LOCAL_FILE.get());
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 4);
+        add(importFileButton, constraints);
+
         // Edit info toggle button
         toggleEditInfoButton = new JButton(Messages.EDIT_INFO_SHOW_BUTTON.get());
-        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 4);
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
         add(toggleEditInfoButton, constraints);
 
         // Switch operation
         switchOperationButton = new JButton(Messages.CHOOSE_OTHER_OPERATION.get());
-        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 4);
+        WINDOW.modifyConstraints(constraints, 2, 4, GridBagConstraints.CENTER, 2);
         add(switchOperationButton, constraints);
 
         // Date for operation and input
@@ -177,6 +182,7 @@ public class OperationPanel extends JPanel {
         saveOperationButtonListener();
         switchOperationListener();
         backButtonListener();
+        importFileButtonListener();
 
     }
 
@@ -266,9 +272,11 @@ public class OperationPanel extends JPanel {
         if (visibility) {
             toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
             switchOperationButton.setVisible(false);
+            importFileButton.setVisible(false);
         } else {
             toggleEditInfoButton.setText(Messages.EDIT_INFO_SHOW_BUTTON.get());
             switchOperationButton.setVisible(true);
+            importFileButton.setVisible(true);
         }
     }
 
@@ -278,6 +286,7 @@ public class OperationPanel extends JPanel {
      * @param visibility the new visibility.
      */
     private void setVisibilityToggleEditInfo(boolean visibility) {
+        importFileButton.setVisible(visibility);
         toggleEditInfoButton.setVisible(visibility);
         switchOperationButton.setVisible(visibility);
     }
@@ -394,6 +403,18 @@ public class OperationPanel extends JPanel {
                 int minute = editTimePicker.getTime().getMinute();
                 OPERATION_MANAGER.updateCurrentOperation(year, month, day, hour, minute);
                 setVisibilityEditInfo(false);
+            }
+        });
+    }
+
+    /**
+     * Setup the listener for the import file button
+     */
+    private void importFileButtonListener() {
+        importFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO
             }
         });
     }
