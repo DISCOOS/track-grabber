@@ -46,7 +46,8 @@ public enum Messages {
     EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
     AWAITING_GPS("Venter på at en GPS-enhet kobles til..."),
     INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
-    OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet.");
+    OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
+    GO_BACK("Tilbake");
 
     private String message;
 
