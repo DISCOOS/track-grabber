@@ -19,6 +19,7 @@ public class Window extends JFrame {
     protected final int TEXT_FONT_SIZE = 16;
     private final OperationManager OPERATION_MANAGER;
     private JPanel cardPanel;
+    private HeaderPanel headerPanel;
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
 
@@ -30,6 +31,7 @@ public class Window extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
+        headerPanel = new HeaderPanel(this);
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
 
@@ -37,6 +39,9 @@ public class Window extends JFrame {
         cardPanel.add(operationPanel, "Operation");
         cardPanel.add(trackPanel, "Track");
         add(cardPanel, BorderLayout.NORTH);
+
+        getContentPane().add(headerPanel, BorderLayout.NORTH);
+        getContentPane().add(cardPanel, BorderLayout.CENTER);
 
         open();
         openOperationPanel();
@@ -92,7 +97,7 @@ public class Window extends JFrame {
      */
     public void updateOperationInfo(Operation operation) {
         operationPanel.updateOperationInfo(operation);
-        trackPanel.updateOperationInfo(operation);
+        headerPanel.updateOperationInfo(operation);
     }
 
     /**
@@ -126,6 +131,22 @@ public class Window extends JFrame {
         theLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, fontSize));
 
         return theLabel;
+    }
+
+    /**
+     * Utility method to set the data for the constraints.
+     *
+     * @param constraints the constraints to modify.
+     * @param x           X-coordinate.
+     * @param y           Y-coordinate.
+     * @param anchor      Anchor to define how the object will "float" in the window.
+     * @param gridWidth   The amount of grids the element should cover.
+     */
+    public void modifyConstraints(GridBagConstraints constraints, int x, int y, int anchor, int gridWidth) {
+        constraints.gridx = x;
+        constraints.gridy = y;
+        constraints.anchor = anchor;
+        constraints.gridwidth = gridWidth;
     }
 
     /**
