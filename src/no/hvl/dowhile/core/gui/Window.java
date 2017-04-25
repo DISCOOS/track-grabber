@@ -15,17 +15,14 @@ import java.util.List;
  * The class has different panels for displaying information depending on certain events in the application.
  */
 public class Window extends JFrame {
-    protected final int HEADER_FONT_SIZE = 24;
-    protected final int TEXT_FONT_SIZE = 16;
-    private final OperationManager OPERATION_MANAGER;
+    final int HEADER_FONT_SIZE = 24;
+    final int TEXT_FONT_SIZE = 16;
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
 
     public Window(final OperationManager OPERATION_MANAGER) {
-        this.OPERATION_MANAGER = OPERATION_MANAGER;
-
         setTitle(Messages.PROJECT_NAME.get());
         setSize(800, 400);
         setLocationRelativeTo(null);

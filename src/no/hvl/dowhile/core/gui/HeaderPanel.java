@@ -7,6 +7,9 @@ import no.hvl.dowhile.utility.StringTools;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class has labels for displaying application name and info about the current operation.
+ */
 public class HeaderPanel extends JPanel {
     private final Window WINDOW;
     private GridBagConstraints constraints;
