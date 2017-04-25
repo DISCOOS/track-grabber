@@ -177,9 +177,13 @@ public class OperationPanel extends JPanel {
         saveOperationButtonListener();
         switchOperationListener();
         backButtonListener();
-
     }
 
+    /**
+     * Creating a settings object to use when creating a date picker.
+     *
+     * @return settings for a date picker.
+     */
     private DatePickerSettings createDateSettings() {
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
@@ -187,10 +191,14 @@ public class OperationPanel extends JPanel {
         return dateSettings;
     }
 
+    /**
+     * Creating a settings object to use when creating a time picker.
+     * @return settings for a time picker.
+     */
     private TimePickerSettings createTimeSettings() {
-        TimePickerSettings timeEditSettings = new TimePickerSettings();
-        timeEditSettings.initialTime = LocalTime.now();
-        return timeEditSettings;
+        TimePickerSettings timeSettings = new TimePickerSettings();
+        timeSettings.initialTime = LocalTime.now();
+        return timeSettings;
     }
 
     /**
