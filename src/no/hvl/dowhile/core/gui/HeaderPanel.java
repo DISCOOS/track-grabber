@@ -11,6 +11,7 @@ public class HeaderPanel extends JPanel {
     private final Window WINDOW;
     private GridBagConstraints constraints;
     private JLabel appName;
+    private JLabel spacer;
     private JLabel operationInfoHeader;
     private JLabel operationInfoName;
     private JLabel operationInfoStart;
@@ -25,6 +26,7 @@ public class HeaderPanel extends JPanel {
         this.WINDOW = WINDOW;
         this.constraints = new GridBagConstraints();
         this.appName = WINDOW.makeLabel(Messages.PROJECT_NAME.get(), WINDOW.HEADER_FONT_SIZE);
+        this.spacer = WINDOW.makeLabel(Messages.SPACER.get(), WINDOW.HEADER_FONT_SIZE);
         this.operationInfoHeader = WINDOW.makeLabel(Messages.OPERATION_INFO.get(), WINDOW.TEXT_FONT_SIZE);
         this.operationInfoName = WINDOW.makeLabel(Messages.OPERATION_INFO_NAME.get("Ingen operasjon valgt."), WINDOW.TEXT_FONT_SIZE);
         this.operationInfoStart = WINDOW.makeLabel(Messages.OPERATION_INFO_START.get("Ingen operasjon valgt."), WINDOW.TEXT_FONT_SIZE);
@@ -33,11 +35,13 @@ public class HeaderPanel extends JPanel {
 
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
         add(appName, constraints);
-        WINDOW.modifyConstraints(constraints, 1, 0, GridBagConstraints.EAST, 1);
+        WINDOW.modifyConstraints(constraints, 1, 0, GridBagConstraints.NORTH, 4);
+        add(spacer, constraints);
+        WINDOW.modifyConstraints(constraints, 5, 0, GridBagConstraints.WEST, 1);
         add(operationInfoHeader, constraints);
-        WINDOW.modifyConstraints(constraints, 1, 1, GridBagConstraints.EAST, 1);
+        WINDOW.modifyConstraints(constraints, 5, 1, GridBagConstraints.WEST, 1);
         add(operationInfoName, constraints);
-        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.EAST, 1);
+        WINDOW.modifyConstraints(constraints, 5, 2, GridBagConstraints.WEST, 1);
         add(operationInfoStart, constraints);
     }
 

@@ -19,6 +19,7 @@ public enum Messages {
     GPS_OFFLINE("GPS: Koblet fra."),
     PROJECT_NAME("Track Grabber"),
     CONFIRM_EXIT("Vil du virkelig avslutte Track Grabber? Alle endringer vil bli lagret."),
+    SPACER("                                                  "),
 
     // Track panel
     CREW_NUMBER("Gruppenummer: "),
