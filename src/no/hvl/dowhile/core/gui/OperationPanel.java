@@ -355,7 +355,7 @@ public class OperationPanel extends JPanel {
     /**
      * Setup the listener for the button to load an existing operation.
      */
-    public void registerExistingOperationButtonListener() {
+    private void registerExistingOperationButtonListener() {
         registerExistingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -375,7 +375,7 @@ public class OperationPanel extends JPanel {
     /**
      * Setup the listener for the button to save an edited operation.
      */
-    public void saveOperationButtonListener() {
+    private void saveOperationButtonListener() {
         saveOperationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -393,7 +393,7 @@ public class OperationPanel extends JPanel {
     /**
      * Setup the listener for the button to go back in both new operation and existing operation
      */
-    public void backButtonListener() {
+    private void backButtonListener() {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
