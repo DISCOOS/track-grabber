@@ -34,9 +34,7 @@ public class TrackPanel extends JPanel {
         // Current file imported from GPS
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + "Ingen fil.";
         currentImportLabel = WINDOW.makeLabel(currentImportedFile, WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 0, 1);
-        constraints.gridwidth = 4;
-        constraints.anchor = GridBagConstraints.WEST;
+        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 4);
         add(currentImportLabel, constraints);
 
         // adding buttons
@@ -47,57 +45,55 @@ public class TrackPanel extends JPanel {
 
         // Label and input for team number
         JLabel crewNumberLabel = WINDOW.makeLabel(Messages.CREW_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 1, 3);
-        constraints.gridwidth = 1;
+        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
         add(crewNumberLabel, constraints);
 
         SpinnerModel crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner groupNumberSpinner = new JSpinner(crewNumberInput);
-        WINDOW.setConstraintsXY(constraints, 1, 4);
+        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 1);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(groupNumberSpinner, constraints);
 
         // Label and input for crew count
         JLabel crewCountLabel = WINDOW.makeLabel(Messages.CREW_COUNT.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 1, 5);
+        WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.WEST, 1);
         add(crewCountLabel, constraints);
 
         SpinnerModel crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner crewCountSpinner = new JSpinner(crewCountInput);
-        WINDOW.setConstraintsXY(constraints, 1, 6);
+        WINDOW.modifyConstraints(constraints, 1, 6, GridBagConstraints.WEST, 1);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(crewCountSpinner, constraints);
 
         // Label and input for area searched
         JLabel areaLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 3, 3);
+        WINDOW.modifyConstraints(constraints, 3, 3, GridBagConstraints.WEST, 1);
         add(areaLabel, constraints);
 
         JTextField areaInput = new JTextField();
-        WINDOW.setConstraintsXY(constraints, 3, 4);
+        WINDOW.modifyConstraints(constraints, 3, 4, GridBagConstraints.WEST, 1);
         add(areaInput, constraints);
 
         // Label and input for track number
         JLabel trackNumberLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 3, 5);
+        WINDOW.modifyConstraints(constraints, 3, 5, GridBagConstraints.WEST, 1);
         add(trackNumberLabel, constraints);
 
         SpinnerModel trackNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
         JSpinner trackNumberSpinner = new JSpinner(trackNumberInput);
-        WINDOW.setConstraintsXY(constraints, 3, 6);
+        WINDOW.modifyConstraints(constraints, 3, 6, GridBagConstraints.WEST, 1);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(trackNumberSpinner, constraints);
 
         // Register button
         JButton registerButton = new JButton(Messages.REGISTER_BUTTON.get());
-        WINDOW.setConstraintsXY(constraints, 0, 9);
-        constraints.gridwidth = 4;
+        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 4);
         add(registerButton, constraints);
 
         // Remaining files imported from GPS waiting to be processed
         String remainingFiles = Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get("" + 0);
         remainingFilesLabel = WINDOW.makeLabel(remainingFiles, WINDOW.TEXT_FONT_SIZE);
-        WINDOW.setConstraintsXY(constraints, 0, 10);
+        WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 4);
         add(remainingFilesLabel, constraints);
 
         registerButton.addActionListener(new ActionListener() {
