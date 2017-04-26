@@ -116,9 +116,7 @@ public class TrackPanel extends JPanel {
 
                 // Message to user
                 String dialogText = Messages.SAVE_FILE.get();
-                JOptionPane.showMessageDialog(
-                        JOptionPane.getRootFrame(),
-                        dialogText);
+                JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
             }
         });
     }
@@ -137,20 +135,16 @@ public class TrackPanel extends JPanel {
     }
 
     /**
-     * places the radio buttons in the given coordinates in the panel
+     * Places the radio buttons in the given coordinates in the panel
      */
     private void setButtonsInWindow() {
-        int startY = 3;
+        int y = 3;
         int x = 0;
-
-        for (JRadioButton rb : radioButtons) {
-            WINDOW.setConstraintsXY(constraints, x, startY);
-            constraints.anchor = GridBagConstraints.WEST;
-            add(rb, constraints);
-
-            startY++;
+        for (JRadioButton radioButton : radioButtons) {
+            WINDOW.modifyConstraints(constraints, x, y, GridBagConstraints.WEST, 1);
+            add(radioButton, constraints);
+            y++;
         }
-
     }
 
     /**
@@ -160,17 +154,13 @@ public class TrackPanel extends JPanel {
      * @return a List with the radio buttons
      */
     private List<JRadioButton> generateButtons(List<String> crewNames) {
-        List<JRadioButton> rbs = new ArrayList<>();
-
-        JRadioButton radioButton = null;
-        for (String n : crewNames) {
-            radioButton = new JRadioButton(n);
-            radioButton.setText(n);
-            rbs.add(radioButton);
+        List<JRadioButton> radioButtons = new ArrayList<>();
+        for (String crewName : crewNames) {
+            JRadioButton radioButton = new JRadioButton(crewName);
+            radioButtons.add(radioButton);
             radioButtonGroup.add(radioButton);
         }
-
-        return rbs;
+        return radioButtons;
     }
 
     /**
@@ -196,9 +186,9 @@ public class TrackPanel extends JPanel {
      */
     private String getSelectedRadioButton() {
         String chosenRadioButton = "";
-        for (JRadioButton rb : radioButtons) {
-            if (rb.isSelected()) {
-                chosenRadioButton = rb.getText();
+        for (JRadioButton radioButton : radioButtons) {
+            if (radioButton.isSelected()) {
+                chosenRadioButton = radioButton.getText();
             }
         }
         return chosenRadioButton;

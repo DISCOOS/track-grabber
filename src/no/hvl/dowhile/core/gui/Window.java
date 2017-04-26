@@ -124,10 +124,9 @@ public class Window extends JFrame {
      * @return a JLabel with given text and font size
      */
     public JLabel makeLabel(String text, int fontSize) {
-        JLabel theLabel = new JLabel(text);
-        theLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, fontSize));
-
-        return theLabel;
+        JLabel label = new JLabel(text);
+        label.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, fontSize));
+        return label;
     }
 
     /**
@@ -144,18 +143,6 @@ public class Window extends JFrame {
         constraints.gridy = y;
         constraints.anchor = anchor;
         constraints.gridwidth = gridWidth;
-    }
-
-    /**
-     * Setting the constraints for x and y coordinates
-     *
-     * @param constraints the GridBagConstraints for which we will set the x and y coordinate
-     * @param x           x coordinate for contstraints
-     * @param y           y coordinate for contstraints
-     */
-    public void setConstraintsXY(GridBagConstraints constraints, int x, int y) {
-        constraints.gridx = x;
-        constraints.gridy = y;
     }
 
     /**
