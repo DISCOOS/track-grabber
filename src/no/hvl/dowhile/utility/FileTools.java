@@ -145,10 +145,10 @@ public class FileTools {
 
     /**
      * Search for a given substring in the given text file
-     * @param file
-     * @param substring
+     * @param file the file to check.
+     * @param substring the substring to look for.
      * @return true if the substring is found, false if not
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file doesn't exist.
      */
     public static boolean txtFileContainsString(File file, String substring) throws FileNotFoundException {
         final Scanner scanner = new Scanner(file);

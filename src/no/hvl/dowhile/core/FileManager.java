@@ -181,7 +181,7 @@ public class FileManager {
      */
     public boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
         for (File rawFile : rawFiles) {
-            GPX rawGpx = TrackTools.parseFileAsGPX(rawFile);
+            GPX rawGpx = TrackTools.getGpxFromFile(rawFile);
             if (rawGpx != null) {
                 Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
                 if (rawTrack != null) {
