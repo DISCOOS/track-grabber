@@ -422,6 +422,7 @@ public class OperationPanel extends JPanel {
         switchOperationButton.addActionListener(actionEvent -> {
             setVisibilityToggleEditInfo(false);
             setVisibilityOperationButtons(true);
+            awaitingGPSLabel.setVisible(false);
         });
     }
 
