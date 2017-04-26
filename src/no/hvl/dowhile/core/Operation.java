@@ -2,7 +2,9 @@ package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.utility.StringTools;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -27,7 +29,7 @@ public class Operation {
     public Operation(String name, int day, int month, int year, int hour, int minute) {
         this.name = name;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day, hour, minute);
+        calendar.set(year, month - 1, day, hour, minute);
         calendar.setTimeZone(TimeZone.getTimeZone("CET"));
         this.startTime = calendar.getTime();
     }
@@ -66,6 +68,22 @@ public class Operation {
     }
 
     /**
+     * Updating the start time of the operation.
+     *
+     * @param year   the year it started.
+     * @param month  the month it started.
+     * @param day    the day it started.
+     * @param hour   the hour it started.
+     * @param minute the minute it started.
+     */
+    public void updateStartTime(int year, int month, int day, int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day, hour, minute);
+        calendar.setTimeZone(TimeZone.getTimeZone("CET"));
+        this.startTime = calendar.getTime();
+    }
+
+    /**
      * Get the name of the operation.
      *
      * @return the name of the operation.
@@ -84,22 +102,15 @@ public class Operation {
     }
 
     /**
-     * Writing information about this operation to the file.
-     *
-     * @param file the file to write the data to.
+     * Get the content to be saved in the file representing this operation.
      */
-    public void writeToFile(File file) {
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write("# Operasjon " + name + System.lineSeparator());
-            fileWriter.write("# Starttid: " + StringTools.formatDate(startTime) + System.lineSeparator());
-            fileWriter.write("# Du kan ikke endre på dataen her. Det må gjøres i programmet." + System.lineSeparator());
-            fileWriter.write("name=" + name.trim().replace(" ", "_") + System.lineSeparator());
-            fileWriter.write("starttime=" + startTime.getTime());
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException ex) {
-            System.err.println("Failed while writing operation to file.");
-        }
+    public String[] getFileContent() {
+        return new String[]{
+                "# Operasjon " + name,
+                "# Starttid: " + StringTools.formatDate(startTime),
+                "# Du kan ikke endre på dataen her. Det må gjøres i programmet.",
+                "name=" + name.trim().replace(" ", "_"),
+                "starttime=" + startTime.getTime(),
+        };
     }
 }

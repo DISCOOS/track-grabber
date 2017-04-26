@@ -30,20 +30,6 @@ public class TrackTools {
     }
 
     /**
-     * Replaces the track in a GPX file with a new one
-     *
-     * @param gpx
-     * @param newTrack
-     */
-    public static GPX replaceTrack(GPX gpx, Track newTrack) {
-        HashSet<Track> tracks = new HashSet<>();
-        tracks.add(newTrack);
-        gpx.getTracks().clear();
-        gpx.setTracks(tracks);
-        return gpx;
-    }
-
-    /**
      * Checks if the track is older the operation, and therefore is irrelevant.
      *
      * @param gpx                the gpx to import.
@@ -51,7 +37,7 @@ public class TrackTools {
      * @return true if the track was stopped before the operation, false if not.
      */
     public static boolean trackCreatedBeforeStartTime(GPX gpx, Date operationStartTime) {
-        Track track = TrackTools.getTrackFromGPXFile(gpx);
+        Track track = getTrackFromGPXFile(gpx);
         if (track == null) {
             return false;
         }
@@ -69,18 +55,18 @@ public class TrackTools {
      * @param file the file to parse.
      * @return file as GPX.
      */
-    public static GPX parseFileAsGPX(File file) {
-        GPX gpxVersion = null;
+    public static GPX getGpxFromFile(File file) {
+        GPX gpx = null;
         GPXParser gpxParser = new GPXParser();
         DisplayColorExtensionParser colorParser = new DisplayColorExtensionParser();
         gpxParser.addExtensionParser(colorParser);
         try {
-            gpxVersion = gpxParser.parseGPX(new FileInputStream(file));
+            gpx = gpxParser.parseGPX(new FileInputStream(file));
         } catch (Exception ex) {
             System.err.println("File not found or something.");
             ex.printStackTrace();
         }
-        return gpxVersion;
+        return gpx;
     }
 
     /**
@@ -91,15 +77,6 @@ public class TrackTools {
      * @return true if the points are matching, false if not.
      */
     public static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
-        if (!waypoint1.getLatitude().equals(waypoint2.getLatitude())) {
-            return false;
-        }
-        if (!waypoint1.getLongitude().equals(waypoint2.getLongitude())) {
-            return false;
-        }
-        if (!waypoint1.getElevation().equals(waypoint2.getElevation())) {
-            return false;
-        }
-        return true;
+        return waypoint1.getLatitude().equals(waypoint2.getLatitude()) && waypoint1.getLongitude().equals(waypoint2.getLongitude()) && waypoint1.getElevation().equals(waypoint2.getElevation());
     }
 }

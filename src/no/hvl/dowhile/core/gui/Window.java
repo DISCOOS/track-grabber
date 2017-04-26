@@ -8,27 +8,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 /**
  * This class represents the Window exposed to the user for configuring the application.
  * The class has different panels for displaying information depending on certain events in the application.
  */
 public class Window extends JFrame {
-    protected final int HEADER_FONT_SIZE = 24;
-    protected final int TEXT_FONT_SIZE = 16;
-    private final OperationManager OPERATION_MANAGER;
+    final int HEADER_FONT_SIZE = 24;
+    final int TEXT_FONT_SIZE = 16;
     private JPanel cardPanel;
+    private HeaderPanel headerPanel;
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
 
     public Window(final OperationManager OPERATION_MANAGER) {
-        this.OPERATION_MANAGER = OPERATION_MANAGER;
-
         setTitle(Messages.PROJECT_NAME.get());
         setSize(800, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
+        headerPanel = new HeaderPanel(this);
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
 
@@ -36,6 +36,9 @@ public class Window extends JFrame {
         cardPanel.add(operationPanel, "Operation");
         cardPanel.add(trackPanel, "Track");
         add(cardPanel, BorderLayout.NORTH);
+
+        getContentPane().add(headerPanel, BorderLayout.NORTH);
+        getContentPane().add(cardPanel, BorderLayout.CENTER);
 
         open();
         openOperationPanel();
@@ -76,12 +79,12 @@ public class Window extends JFrame {
     }
 
     /**
-     * Set the status of whether a gps is connected or not.
+     * Shows a dialog with the given text.
      *
-     * @param status the new status.
+     * @param text the text to show in the dialog.
      */
-    public void setStatus(String status) {
-        operationPanel.setStatus(status);
+    public void showDialog(String text) {
+        JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), text);
     }
 
     /**
@@ -91,11 +94,26 @@ public class Window extends JFrame {
      */
     public void updateOperationInfo(Operation operation) {
         operationPanel.updateOperationInfo(operation);
-        trackPanel.updateOperationInfo(operation);
+        headerPanel.updateOperationInfo(operation);
     }
 
+    /**
+     * Telling the track panel to update the info about which file is currently processed.
+     *
+     * @param filename  the name of the file.
+     * @param filesLeft the amount of files left after the one currently processing.
+     */
     public void updateCurrentFile(String filename, int filesLeft) {
         trackPanel.updateCurrentFile(filename, filesLeft);
+    }
+
+    /**
+     * Tell the operation panel to add existing operations to the selector in the user interface.
+     *
+     * @param operations the operations to add.
+     */
+    public void showExistingOperations(List<Operation> operations) {
+        operationPanel.showExistingOperations(operations);
     }
 
     /**
@@ -106,22 +124,25 @@ public class Window extends JFrame {
      * @return a JLabel with given text and font size
      */
     public JLabel makeLabel(String text, int fontSize) {
-        JLabel theLabel = new JLabel(text);
-        theLabel.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, fontSize));
-
-        return theLabel;
+        JLabel label = new JLabel(text);
+        label.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, fontSize));
+        return label;
     }
 
     /**
-     * Setting the constraints for x and y coordinates
+     * Utility method to set the data for the constraints.
      *
-     * @param constraints the GridBagConstraints for which we will set the x and y coordinate
-     * @param x           x coordinate for contstraints
-     * @param y           y coordinate for contstraints
+     * @param constraints the constraints to modify.
+     * @param x           X-coordinate.
+     * @param y           Y-coordinate.
+     * @param anchor      Anchor to define how the object will "float" in the window.
+     * @param gridWidth   The amount of grids the element should cover.
      */
-    public void setConstraintsXY(GridBagConstraints constraints, int x, int y) {
+    public void modifyConstraints(GridBagConstraints constraints, int x, int y, int anchor, int gridWidth) {
         constraints.gridx = x;
         constraints.gridy = y;
+        constraints.anchor = anchor;
+        constraints.gridwidth = gridWidth;
     }
 
     /**

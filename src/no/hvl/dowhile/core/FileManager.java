@@ -10,6 +10,7 @@ import org.alternativevision.gpx.beans.Waypoint;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,6 @@ import java.util.List;
 public class FileManager {
     private final OperationManager OPERATION_MANAGER;
     private File appFolder;
-    private File operationFolder;
     private File processedFolder;
     private File rawFolder;
 
@@ -33,47 +33,110 @@ public class FileManager {
      */
     public void setupLocalFolders(File listRoot) {
         appFolder = setupFolder(listRoot, "TrackGrabber");
+        setupConfig(appFolder);
+        parseFilenameFromConfig();
+    }
 
-        boolean configCreated = false;
-        File[] appFolderFiles = appFolder.listFiles();
-        if (appFolderFiles != null) {
-            for (File file : appFolderFiles) {
-                if (file.getName().equals("config.txt")) {
-                    configCreated = true;
-                }
-            }
-        }
-        if (!configCreated) {
+    /**
+     * Setting up the config file.
+     */
+    public void setupConfig(File folder) {
+        File config = FileTools.getFile(folder, "config.txt");
+        if (config == null) {
             System.err.println("Config doesn't exist. Creating.");
-            File file = new File(appFolder, "config.txt");
+            File file = new File(folder, "config.txt");
             try {
                 file.createNewFile();
-                FileWriter writer = new FileWriter(file);
-                for (String line : OPERATION_MANAGER.getConfig().getConfigTemplate()) {
-                    writer.write(line + System.lineSeparator());
-                }
-                writer.flush();
-                writer.close();
+                FileTools.writeToFile(OPERATION_MANAGER.getConfig().getConfigTemplate(), file);
                 System.err.println("Config created.");
             } catch (IOException ex) {
                 System.err.println("Failed while creating config file.");
             }
         }
-        parseFilenameFromConfig();
     }
 
+    /**
+     * Finding the operation folders and parsing the operation files.
+     *
+     * @return list of the operations existing in the file system.
+     */
+    public List<Operation> loadExistingOperations(File folder) {
+        List<Operation> operations = new ArrayList<>();
+        File[] filesInAppFolder = folder.listFiles();
+        if (filesInAppFolder == null || filesInAppFolder.length == 0) {
+            return operations;
+        }
+        for (File file : filesInAppFolder) {
+            if (file.isDirectory()) {
+                File[] operationFiles = file.listFiles();
+                if (operationFiles != null && operationFiles.length != 0) {
+                    for (File fileInOperationFolder : operationFiles) {
+                        if (fileInOperationFolder.getName().endsWith(".txt")) {
+                            try {
+                                Operation operation = new Operation(fileInOperationFolder);
+                                operations.add(operation);
+                            } catch (Exception ex) {
+                                System.err.println("Failed while parsing operation file.");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return operations;
+    }
+
+    /**
+     * Setting up the folder for the operation with a raw folder, processed folder and operation info file.
+     *
+     * @param operation the operation to setup.
+     */
     public void setupOperationFolder(Operation operation) {
-        operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
+        File operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
         rawFolder = setupFolder(operationFolder, "Raw");
         processedFolder = setupFolder(operationFolder, "Processed");
-        File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
-        try {
-            operationFile.createNewFile();
-        } catch (IOException ex) {
-            System.err.println("Failed to create operation file.");
-        }
-        OPERATION_MANAGER.getOperation().writeToFile(operationFile);
+        createOperationFile(operation, operationFolder);
         System.err.println("Done creating folders for operation " + operation.getName());
+    }
+
+    /**
+     * Creates an operation file for the given Operation, into the given operation folder.
+     * @param operation the operation to create the file for.
+     * @param folder the folder to save the file to.
+     */
+    public void createOperationFile(Operation operation, File folder) {
+        File operationFile = new File(folder, operation.getName().trim().replace(" ", "_") + ".txt");
+        if (!operationFile.exists()) {
+            try {
+                operationFile.createNewFile();
+            } catch (IOException ex) {
+                System.err.println("Failed to create operation file.");
+            }
+        }
+        FileTools.writeToFile(operation.getFileContent(), operationFile);
+    }
+
+    /**
+     * Replacing the content of the operation file with the new operation info.
+     * @param operation
+     * @param folder
+     */
+    public void updateOperationFile(Operation operation, File folder) {
+        try {
+            File operationFolder = new File(folder, operation.getName().trim().replace(" ", "_"));
+            if (!operationFolder.exists()) {
+                operationFolder.mkdir();
+            }
+            File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
+            if (!operationFile.exists()) {
+                operationFile.createNewFile();
+            } else {
+                FileTools.clearFile(operationFile);
+            }
+            FileTools.writeToFile(operation.getFileContent(), operationFile);
+        } catch (IOException ex) {
+            System.err.println("Failed to update operation file.");
+        }
     }
 
     /**
@@ -83,7 +146,7 @@ public class FileManager {
      * @param name         the name of the new folder.
      * @return the folder which was created.
      */
-    private File setupFolder(File parentFolder, String name) {
+    public File setupFolder(File parentFolder, String name) {
         File folder = new File(parentFolder, name);
         boolean folderCreated = folder.mkdir();
         if (folderCreated) {
@@ -96,34 +159,29 @@ public class FileManager {
      * Checking if a file has been saved in the rawfolder already.
      *
      * @param newGpx The gpx file to check.
+     * @param rawFolder The operation's raw folder.
      * @return true if the file is matching a file, false if not.
      */
-    public boolean fileAlreadyImported(GPX newGpx) {
+    public boolean fileAlreadyImported(GPX newGpx, File rawFolder) {
         File[] rawFiles = rawFolder.listFiles();
         if (rawFiles == null || rawFiles.length == 0) {
             return false;
         }
         Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);
-        if (newTrack == null) {
-            return false;
-        }
-        if (trackPointsAreEqual(rawFiles, newTrack)) {
-            return true;
-        }
-        return false;
+        return newTrack != null && trackPointsAreEqual(rawFiles, newTrack);
     }
 
     /**
      * Compares all track points in the new track with the track points of every other track files.
      * Concludes based on this if the track already exists in the folder.
      *
-     * @param rawFiles
-     * @param newTrack
-     * @return
+     * @param rawFiles the files in the raw folder.
+     * @param newTrack the new track to import.
+     * @return true if the file matches an existing file, false if not.
      */
     public boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
         for (File rawFile : rawFiles) {
-            GPX rawGpx = TrackTools.parseFileAsGPX(rawFile);
+            GPX rawGpx = TrackTools.getGpxFromFile(rawFile);
             if (rawGpx != null) {
                 Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
                 if (rawTrack != null) {
@@ -154,7 +212,7 @@ public class FileManager {
      * @param rawGpx   the gpx file to save.
      * @param filename the name for the new file.
      */
-    public void saveRawGpxFile(GPX rawGpx, String filename) {
+    public void saveRawGpxFile(GPX rawGpx, String filename, File rawFolder) {
         saveGpxFile(rawGpx, filename, rawFolder);
     }
 
@@ -164,7 +222,7 @@ public class FileManager {
      * @param processedGpx the gpx file to save.
      * @param filename     the name for the new file.
      */
-    public void saveProcessedGpxFile(GPX processedGpx, String filename) {
+    public void saveProcessedGpxFile(GPX processedGpx, String filename, File processedFolder) {
         saveGpxFile(processedGpx, filename, processedFolder);
     }
 
@@ -175,7 +233,7 @@ public class FileManager {
      * @param filename the name for the new file.
      * @param folder   the folder to save it in.
      */
-    private void saveGpxFile(GPX gpx, String filename, File folder) {
+    public void saveGpxFile(GPX gpx, String filename, File folder) {
         try {
             File file = new File(folder, filename);
             if (!file.exists()) {
@@ -200,9 +258,13 @@ public class FileManager {
      * Gets the filename pattern from the config file.
      */
     private void parseFilenameFromConfig() {
-        File file = new File(appFolder, "config.txt");
+        File config = FileTools.getFile(appFolder, "config.txt");
+        if (config == null) {
+            System.err.println("Config didn't exist when trying to parse filename pattern.");
+            return;
+        }
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = new BufferedReader(new FileReader(config));
             String line = reader.readLine();
             while (line != null) {
                 if (!line.startsWith("#")) {
@@ -220,5 +282,29 @@ public class FileManager {
         } catch (IOException ex) {
             System.err.println("Failed while reading from config file.");
         }
+    }
+
+    /**
+     * Gets the app folder.
+     * @return the app folder
+     */
+    public File getAppFolder() {
+        return appFolder;
+    }
+
+    /**
+     * Gets the raw folder.
+     * @return the raw folder
+     */
+    public File getRawFolder() {
+        return rawFolder;
+    }
+
+    /**
+     * Gets the processed folder.
+     * @return the processed folder
+     */
+    public File getProcessedFolder() {
+        return processedFolder;
     }
 }

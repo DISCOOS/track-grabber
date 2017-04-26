@@ -24,6 +24,7 @@ public class OperationManager {
     private FileManager fileManager;
     private Config config;
     private Operation operation;
+    private List<Operation> existingOperations;
     private TrackCutter currentTrackCutter;
     private List<File> queue;
 
@@ -33,6 +34,7 @@ public class OperationManager {
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager(this);
         this.config = new Config();
+        this.existingOperations = new ArrayList<>();
         this.queue = new ArrayList<>();
     }
 
@@ -46,22 +48,29 @@ public class OperationManager {
         return active;
     }
 
+    /**
+     * Gives you the current operation.
+     *
+     * @return the current operation.
+     */
     public Operation getOperation() {
         return operation;
     }
 
     /**
-     * Start components which needs to perform operations from the beginning.
+     * Method to check whether an operation is set or not.
+     *
+     * @return true if an operation is set, false if not.
      */
-    public void start() {
-        new Thread(driveDetector).start();
+    public boolean hasOperation() {
+        return operation != null;
     }
 
     /**
-     * Open the window.
+     * Starts listening for new drives connected.
      */
-    public void openWindow() {
-        window.open();
+    public void start() {
+        new Thread(driveDetector).start();
     }
 
     /**
@@ -70,10 +79,49 @@ public class OperationManager {
      * @param operation the current operation.
      * @see FileManager
      */
-    public void createOperation(Operation operation) {
+    public void setupOperation(Operation operation) {
         this.operation = operation;
         window.updateOperationInfo(operation);
         fileManager.setupOperationFolder(operation);
+    }
+
+    /**
+     * Set the date and time of the current operation and updating info in window and the file.
+     *
+     * @param year   the year it started.
+     * @param month  the month it started.
+     * @param day    the day it started.
+     * @param hour   the hour it started.
+     * @param minute the minute it started.
+     */
+    public void updateCurrentOperation(int year, int month, int day, int hour, int minute) {
+        operation.updateStartTime(year, month, day, hour, minute);
+        window.updateOperationInfo(operation);
+        fileManager.updateOperationFile(operation, fileManager.getAppFolder());
+    }
+
+    /**
+     * Tell the FileManager to load existing operations from the file system.
+     *
+     * @return the list of current operations.
+     * @see FileManager
+     */
+    public List<Operation> getExistingOperations() {
+        if (existingOperations.isEmpty()) {
+            List<Operation> operations = fileManager.loadExistingOperations(fileManager.getAppFolder());
+            existingOperations.addAll(operations);
+        }
+        return existingOperations;
+    }
+
+    /**
+     * Tell the window to add the existing operations to the selector in the user interface.
+     *
+     * @param operations the existing operations to show.
+     * @see Window
+     */
+    public void showExistingOperations(List<Operation> operations) {
+        window.showExistingOperations(operations);
     }
 
     /**
@@ -83,7 +131,6 @@ public class OperationManager {
      * @see GPSDrive
      */
     public void handleGPSDrive(GPSDrive gpsDrive) {
-        setStatus("Koblet til.");
         File currentFolder = gpsDrive.getCurrentFolder();
         File archiveFolder = gpsDrive.getArchiveFolder();
         Set<File> gpxFiles = FileTools.findGpxFiles(archiveFolder);
@@ -92,20 +139,49 @@ public class OperationManager {
             return;
         }
         for (File file : gpxFiles) {
-            GPX gpx = TrackTools.parseFileAsGPX(file);
-            if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-                if (!fileManager.fileAlreadyImported(gpx)) {
-                    fileManager.saveRawGpxFile(gpx, file.getName());
-                    queue.add(file);
-                } else {
-                    System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
-                }
-            } else {
-                System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
-            }
+            processFile(file);
         }
         if (!queue.isEmpty()) {
             prepareNextFile();
+        } else {
+            window.showDialog(Messages.NO_RELEVANT_FILES_FOUND.get());
+        }
+    }
+
+    /**
+     * Getting the file, checking for duplicate, processing it and saving.
+     *
+     * @param file the file selected.
+     */
+    public void handleImportedFile(File file) {
+        processFile(file);
+        if (!queue.isEmpty()) {
+            prepareNextFile();
+        } else {
+            window.showDialog(Messages.NO_RELEVANT_FILES_FOUND.get());
+        }
+    }
+
+    /**
+     * Processes a single GPX file.
+     *
+     * @param file the file to process.
+     */
+    private void processFile(File file) {
+        GPX gpx = TrackTools.getGpxFromFile(file);
+        if (gpx == null) {
+            System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
+            return;
+        }
+        if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
+            if (!fileManager.fileAlreadyImported(gpx, fileManager.getRawFolder())) {
+                fileManager.saveRawGpxFile(gpx, file.getName(), fileManager.getRawFolder());
+                queue.add(file);
+            } else {
+                System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
+            }
+        } else {
+            System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
         }
     }
 
@@ -113,10 +189,10 @@ public class OperationManager {
      * Assigns a new file to the TrackCutter and updates the GUI panel.
      * This method is used when a gps is connected and one or more gpx-files are located.
      */
-    public void prepareNextFile() {
+    private void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
         File file = queue.remove(0);
-        GPX gpx = TrackTools.parseFileAsGPX(file);
+        GPX gpx = TrackTools.getGpxFromFile(file);
         currentTrackCutter.setTrackFile(gpx);
         window.updateCurrentFile(file.getName(), queue.size());
         window.openTrackPanel();
@@ -138,7 +214,7 @@ public class OperationManager {
         String newName = config.generateFilename(trackInfo);
         Track track = TrackTools.getTrackFromGPXFile(gpxFile);
         track.setName(newName);
-        fileManager.saveProcessedGpxFile(gpxFile, newName);
+        fileManager.saveProcessedGpxFile(gpxFile, newName, fileManager.getProcessedFolder());
         if (queue.isEmpty()) {
             window.openOperationPanel();
         } else {
@@ -147,13 +223,21 @@ public class OperationManager {
     }
 
     /**
-     * Tell the Window to update the status about the current GPS connected.
+     * Checks if a given operation name is already taken by another operation.
      *
-     * @param status the status message to display.
-     * @see Window
+     * @param name the name of the new operation.
+     * @return true if the names are equal, false if not.
      */
-    public void setStatus(String status) {
-        window.setStatus(status);
+    public boolean operationNameAlreadyExists(String name) {
+        boolean alreadyExists = false;
+        String nameCopy = "";
+        for (Operation op : existingOperations) {
+            nameCopy = op.getName().replace("_", " ");
+            if (name.equals(nameCopy)) {
+                alreadyExists = true;
+            }
+        }
+        return alreadyExists;
     }
 
     /**

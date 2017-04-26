@@ -4,17 +4,30 @@ import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
  * Utility methods to work with files.
  */
 public class FileTools {
+    /**
+     * Clear the specified file.
+     *
+     * @param file the file to clear.
+     */
+    public static void clearFile(File file) {
+        try {
+            PrintWriter writer = new PrintWriter(file);
+            writer.print("");
+            writer.close();
+        } catch (IOException ex) {
+            System.err.println("Failed while attempting to clear file " + file.getName());
+        }
+    }
+
     /**
      * Utility method to find all .gpx files in the folders.
      *
@@ -36,6 +49,52 @@ public class FileTools {
         return gpxFiles;
     }
 
+    /**
+     * Checks the folder and returns the file with the given name.
+     *
+     * @param folder   the folder to check.
+     * @param filename the name of the file to find.
+     * @return the file or null if it doesn't exist.
+     */
+    public static File getFile(File folder, String filename) {
+        File[] files = folder.listFiles();
+        if (files == null || files.length == 0) {
+            return null;
+        }
+        for (File file : files) {
+            if (file.getName().equals(filename)) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Write the lines to the given file.
+     *
+     * @param lines the array of lines to write.
+     * @param file  the file to write to.
+     */
+    public static void writeToFile(String[] lines, File file) {
+        try {
+            FileWriter writer = new FileWriter(file);
+            for (String line : lines) {
+                writer.write(line + System.lineSeparator());
+            }
+            writer.flush();
+            writer.close();
+        } catch (IOException ex) {
+            System.err.println("Error occured while writing to file " + file.getName());
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * This method will insert some data to the XML file to ensure Basecamp is able to handle it.
+     *
+     * @param gpx  the gpx to edit.
+     * @param file the file representing the gpx.
+     */
     public static void insertXmlData(GPX gpx, File file) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -54,6 +113,12 @@ public class FileTools {
         }
     }
 
+    /**
+     * Method to get the color from the gpx file and insert it correctly into the xml file.
+     *
+     * @param gpx  the gpx to edit.
+     * @param file the file representing the gpx.
+     */
     public static void insertDisplayColor(GPX gpx, File file) {
         Track track = TrackTools.getTrackFromGPXFile(gpx);
         String displayColor = (String) track.getExtensionData(new DisplayColorExtensionParser().getId());
@@ -76,5 +141,29 @@ public class FileTools {
         } catch (Exception ex) {
             System.err.println("Failed while inserting xml data.");
         }
+    }
+
+    /**
+     * Search for a given substring in the given text file
+     * @param file the file to check.
+     * @param substring the substring to look for.
+     * @return true if the substring is found, false if not
+     * @throws FileNotFoundException if the file doesn't exist.
+     */
+    public static boolean txtFileContainsString(File file, String substring) throws FileNotFoundException {
+        boolean found = false;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = reader.readLine();
+            while (line != null) {
+                if (!line.contains(substring)) {
+                    found = true;
+                }
+                line = reader.readLine();
+            }
+        } catch (IOException ex) {
+            System.err.println("Failed while reading from file.");
+        }
+        return found;
     }
 }
