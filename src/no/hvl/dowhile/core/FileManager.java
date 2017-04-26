@@ -7,11 +7,8 @@ import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 import org.alternativevision.gpx.beans.Waypoint;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -157,13 +154,7 @@ public class FileManager {
             return false;
         }
         Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);
-        if (newTrack == null) {
-            return false;
-        }
-        if (trackPointsAreEqual(rawFiles, newTrack)) {
-            return true;
-        }
-        return false;
+        return newTrack != null && trackPointsAreEqual(rawFiles, newTrack);
     }
 
     /**
@@ -253,9 +244,13 @@ public class FileManager {
      * Gets the filename pattern from the config file.
      */
     private void parseFilenameFromConfig() {
-        File file = new File(appFolder, "config.txt");
+        File config = FileTools.getFile(appFolder, "config.txt");
+        if (config == null) {
+            System.err.println("Config didn't exist when trying to parse filename pattern.");
+            return;
+        }
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = new BufferedReader(new FileReader(config));
             String line = reader.readLine();
             while (line != null) {
                 if (!line.startsWith("#")) {
@@ -272,23 +267,6 @@ public class FileManager {
             }
         } catch (IOException ex) {
             System.err.println("Failed while reading from config file.");
-        }
-    }
-
-    /**
-     * Lets the user manually import a GPX file from the system's file explorer.
-     * @param parent
-     * @return the chosen GPX file
-     */
-    public File getFileFromFileExplorer(Component parent) {
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("GPX Files", "gpx");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(parent);
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-            return chooser.getSelectedFile();
-        } else {
-            return null;
         }
     }
 }
