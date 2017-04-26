@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class FileManagerTest {
     private File rawFolder;
     private File processedFolder;
     private Operation operation;
+    private String operationName;
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -35,7 +37,7 @@ public class FileManagerTest {
         opManager = new OperationManager();
         fileManager = new FileManager(opManager);
         appFolder = tempFolder.newFolder("TrackGrabberTest");
-        operationFolder = fileManager.setupFolder(appFolder, "TestOp");
+        operationFolder = fileManager.setupFolder(appFolder, operationName);
         rawFolder = fileManager.setupFolder(operationFolder, "Raw");
         processedFolder = fileManager.setupFolder(operationFolder, "Processed");
         operation = new Operation("TestOp", 30, 11, 2016, 11, 56);
@@ -69,7 +71,7 @@ public class FileManagerTest {
     }
 
     @Test
-    public void folderWithoutConfigGetsConfig() {
+    public void appFolderWithoutConfigGetsConfig() {
         fileManager.setupConfig(appFolder);
         File config = FileTools.getFile(appFolder, "config.txt");
         assertNotNull(config);
@@ -77,18 +79,26 @@ public class FileManagerTest {
 
     @Test
     public void existingOperationsAreLoaded() {
+        fileManager.createOperationFile(operation, operationFolder);
         List<Operation> operations = fileManager.loadExistingOperations(appFolder);
         assertNotNull(operations.get(0));
     }
 
     @Test
     public void existingOperationsAreNotLoadedFromEmptyFolder() {
-
+        operationFolder.delete();
+        List<Operation> operations = fileManager.loadExistingOperations(appFolder);
+        assertTrue(operations.isEmpty());
     }
 
     @Test
-    public void operationFileIsUpdated() {
-
+    public void operationFileIsUpdated() throws FileNotFoundException {
+        fileManager.createOperationFile(operation, operationFolder);
+        operation.updateStartTime(2014, 10, 21, 10, 34);
+        fileManager.updateOperationFile(operation);
+        File updatedConfig = FileTools.getFile(operationFolder, operationName);
+        String updatedDateString = "# Starttid: 21-10/2014 10:34 CET";
+        assertTrue(FileTools.txtFileContainsString(updatedConfig, updatedDateString));
     }
 
     @Test

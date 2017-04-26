@@ -6,6 +6,7 @@ import org.alternativevision.gpx.beans.Track;
 
 import java.io.*;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -140,5 +141,24 @@ public class FileTools {
         } catch (Exception ex) {
             System.err.println("Failed while inserting xml data.");
         }
+    }
+
+    /**
+     * Search for a given substring in the given text file
+     * @param file
+     * @param substring
+     * @return true if the substring is found, false if not
+     * @throws FileNotFoundException
+     */
+    public static boolean txtFileContainsString(File file, String substring) throws FileNotFoundException {
+        final Scanner scanner = new Scanner(file);
+        boolean found = false;
+        while (scanner.hasNextLine()) {
+            final String lineFromFile = scanner.nextLine();
+            if(lineFromFile.contains(substring)) {
+                found = true;
+            }
+        }
+        return found;
     }
 }

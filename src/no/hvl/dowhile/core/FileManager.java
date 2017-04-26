@@ -44,7 +44,7 @@ public class FileManager {
         File config = FileTools.getFile(folder, "config.txt");
         if (config == null) {
             System.err.println("Config doesn't exist. Creating.");
-            File file = new File(appFolder, "config.txt");
+            File file = new File(folder, "config.txt");
             try {
                 file.createNewFile();
                 FileTools.writeToFile(OPERATION_MANAGER.getConfig().getConfigTemplate(), file);
