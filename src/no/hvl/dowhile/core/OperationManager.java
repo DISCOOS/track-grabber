@@ -97,7 +97,7 @@ public class OperationManager {
     public void updateCurrentOperation(int year, int month, int day, int hour, int minute) {
         operation.updateStartTime(year, month, day, hour, minute);
         window.updateOperationInfo(operation);
-        fileManager.updateOperationFile(operation);
+        fileManager.updateOperationFile(operation, fileManager.getAppFolder());
     }
 
     /**

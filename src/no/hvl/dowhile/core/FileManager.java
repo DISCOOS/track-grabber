@@ -119,12 +119,12 @@ public class FileManager {
 
     /**
      * Replacing the content of the operation file with the new operation info.
-     *
-     * @param operation the operation to update.
+     * @param operation
+     * @param folder
      */
-    public void updateOperationFile(Operation operation) {
+    public void updateOperationFile(Operation operation, File folder) {
         try {
-            File operationFolder = new File(appFolder, operation.getName().trim().replace(" ", "_"));
+            File operationFolder = new File(folder, operation.getName().trim().replace(" ", "_"));
             if (!operationFolder.exists()) {
                 operationFolder.mkdir();
             }

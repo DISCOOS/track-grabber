@@ -36,11 +36,12 @@ public class FileManagerTest {
     public void before() throws IOException {
         opManager = new OperationManager();
         fileManager = new FileManager(opManager);
+        operationName = "TestOp";
         appFolder = tempFolder.newFolder("TrackGrabberTest");
         operationFolder = fileManager.setupFolder(appFolder, operationName);
         rawFolder = fileManager.setupFolder(operationFolder, "Raw");
         processedFolder = fileManager.setupFolder(operationFolder, "Processed");
-        operation = new Operation("TestOp", 30, 11, 2016, 11, 56);
+        operation = new Operation(operationName, 30, 11, 2016, 11, 56);
     }
 
     @Test
@@ -95,10 +96,10 @@ public class FileManagerTest {
     public void operationFileIsUpdated() throws FileNotFoundException {
         fileManager.createOperationFile(operation, operationFolder);
         operation.updateStartTime(2014, 10, 21, 10, 34);
-        fileManager.updateOperationFile(operation);
-        File updatedConfig = FileTools.getFile(operationFolder, operationName);
+        fileManager.updateOperationFile(operation, appFolder);
+        File updatedOpFile = FileTools.getFile(operationFolder, operationName + ".txt");
         String updatedDateString = "# Starttid: 21-10/2014 10:34 CET";
-        assertTrue(FileTools.txtFileContainsString(updatedConfig, updatedDateString));
+        assertTrue(FileTools.txtFileContainsString(updatedOpFile, updatedDateString));
     }
 
     @Test

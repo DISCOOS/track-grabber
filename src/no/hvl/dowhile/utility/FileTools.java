@@ -144,20 +144,25 @@ public class FileTools {
     }
 
     /**
-     * Search for a given substring in the given text file
+     * Search for a given substring in a given .txt file.
      * @param file
      * @param substring
-     * @return true if the substring is found, false if not
+     * @return true if the substring is found, false if not.
      * @throws FileNotFoundException
      */
     public static boolean txtFileContainsString(File file, String substring) throws FileNotFoundException {
-        final Scanner scanner = new Scanner(file);
         boolean found = false;
-        while (scanner.hasNextLine()) {
-            final String lineFromFile = scanner.nextLine();
-            if(lineFromFile.contains(substring)) {
-                found = true;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = reader.readLine();
+            while (line != null) {
+                if (!line.contains(substring)) {
+                    found = true;
+                }
+                line = reader.readLine();
             }
+        } catch (IOException ex) {
+            System.err.println("Failed while reading from file.");
         }
         return found;
     }
