@@ -6,8 +6,6 @@ import no.hvl.dowhile.utility.Messages;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,28 +94,25 @@ public class TrackPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 4);
         add(remainingFilesLabel, constraints);
 
-        registerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Fetching the input data and sending it to the OperationManager
-                String crew = getSelectedRadioButton();
-                int crewCount = Integer.parseInt(crewCountSpinner.getModel().getValue().toString());
-                int crewNumber = Integer.parseInt(groupNumberSpinner.getModel().getValue().toString());
-                String areaSearched = areaInput.getText();
-                int trackNumber = Integer.parseInt(trackNumberSpinner.getModel().getValue().toString());
-                TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackNumber);
-                OPERATION_MANAGER.initiateTrackCutter(trackInfo);
+        registerButton.addActionListener(actionEvent -> {
+            // Fetching the input data and sending it to the OperationManager
+            String crew = getSelectedRadioButton();
+            int crewCount = Integer.parseInt(crewCountSpinner.getModel().getValue().toString());
+            int crewNumber = Integer.parseInt(groupNumberSpinner.getModel().getValue().toString());
+            String areaSearched = areaInput.getText();
+            int trackNumber = Integer.parseInt(trackNumberSpinner.getModel().getValue().toString());
+            TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackNumber);
+            OPERATION_MANAGER.initiateTrackCutter(trackInfo);
 
-                // Resetting all input fields
-                crewCountSpinner.setValue(0);
-                groupNumberSpinner.setValue(0);
-                areaInput.setText("");
-                trackNumberSpinner.setValue(0);
+            // Resetting all input fields
+            crewCountSpinner.setValue(0);
+            groupNumberSpinner.setValue(0);
+            areaInput.setText("");
+            trackNumberSpinner.setValue(0);
 
-                // Message to user
-                String dialogText = Messages.SAVE_FILE.get();
-                JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
-            }
+            // Message to user
+            String dialogText = Messages.SAVE_FILE.get();
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
         });
     }
 
