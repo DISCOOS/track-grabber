@@ -36,17 +36,8 @@ public class FileManager {
      */
     public void setupLocalFolders(File listRoot) {
         appFolder = setupFolder(listRoot, "TrackGrabber");
-
-        boolean configCreated = false;
-        File[] appFolderFiles = appFolder.listFiles();
-        if (appFolderFiles != null) {
-            for (File file : appFolderFiles) {
-                if (file.getName().equals("config.txt")) {
-                    configCreated = true;
-                }
-            }
-        }
-        if (!configCreated) {
+        File config = FileTools.getFile(appFolder, "config.txt");
+        if (config == null) {
             System.err.println("Config doesn't exist. Creating.");
             File file = new File(appFolder, "config.txt");
             try {
@@ -299,16 +290,5 @@ public class FileManager {
         } else {
             return null;
         }
-    }
-
-    public File getFile(File folder, String name) {
-        File[] files = folder.listFiles();
-        File foundFile = null;
-        for(File f : files) {
-            if(f.getName().equals(name)) {
-                foundFile = f;
-            }
-        }
-        return foundFile;
     }
 }

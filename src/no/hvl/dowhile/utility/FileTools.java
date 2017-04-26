@@ -49,6 +49,26 @@ public class FileTools {
     }
 
     /**
+     * Checks the folder and returns the file with the given name.
+     *
+     * @param folder   the folder to check.
+     * @param filename the name of the file to find.
+     * @return the file or null if it doesn't exist.
+     */
+    public static File getFile(File folder, String filename) {
+        File[] files = folder.listFiles();
+        if (files == null || files.length == 0) {
+            return null;
+        }
+        for (File file : files) {
+            if (file.getName().equals(filename)) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    /**
      * This method will insert some data to the XML file to ensure Basecamp is able to handle it.
      *
      * @param gpx  the gpx to edit.
