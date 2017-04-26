@@ -167,12 +167,14 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.CENTER, 2);
         add(registerNewButton, constraints);
 
+        // Setting stuff invisible
         backButton.setVisible(false);
         setVisibilityNewOperation(false);
         setVisibilityExistingOperation(false);
         setVisibilityEditInfo(false);
         setVisibilityToggleEditInfo(false);
 
+        // Starting button listeners
         newOperationButtonListener();
         existingOperationButtonListener();
         registerExistingOperationButtonListener();

@@ -1,8 +1,10 @@
 package no.hvl.dowhile.tests;
 
 import no.hvl.dowhile.core.FileManager;
+import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
@@ -15,29 +17,26 @@ public class FileManagerTest {
 
     private OperationManager opManager;
     private FileManager fileManager;
-    private TemporaryFolder tempFolder;
     private File appFolder;
-    private File operationFolder;
-    private File processedFolder;
-    private File rawFolder;
+    private Operation operation;
+
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Before
     public void before() throws IOException {
         opManager = new OperationManager();
         fileManager = new FileManager(opManager);
-        tempFolder = new TemporaryFolder();
         appFolder = tempFolder.newFile("TrackGrabberTest");
-        operationFolder = fileManager.setupFolder(appFolder, "A Testing Operation");
-        rawFolder = fileManager.setupFolder(operationFolder, "Raw");
-        processedFolder = fileManager.setupFolder(operationFolder, "Processed");
+        operation = new Operation("TestOp", )
+        //operationFolder = fileManager.setupFolder(appFolder, "ATestingOperation");
+        //rawFolder = fileManager.setupFolder(operationFolder, "Raw");
+        //processedFolder = fileManager.setupFolder(operationFolder, "Processed");
     }
 
     @Test
     public void foldersAreSetUp() {
-        assertTrue(appFolder.mkdir());
-        assertTrue(operationFolder.mkdir());
-        assertTrue(rawFolder.mkdir());
-        assertTrue(processedFolder.mkdir());
+
     }
 
     @Test
