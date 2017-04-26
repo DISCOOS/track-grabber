@@ -142,7 +142,7 @@ public class OperationPanel extends JPanel {
         add(existingOperationButton, constraints);
 
         // Register existing operation
-        registerExistingButton = new JButton(Messages.REGISTER_BUTTON.get());
+        registerExistingButton = new JButton(Messages.REGISTER_EXISTING_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 2, 1, GridBagConstraints.CENTER, 2);
         add(registerExistingButton, constraints);
 
@@ -163,7 +163,7 @@ public class OperationPanel extends JPanel {
         errorMessageLabel.setVisible(false);
 
         // Register new operation
-        registerNewButton = new JButton(Messages.REGISTER_BUTTON.get());
+        registerNewButton = new JButton(Messages.REGISTER_NEW_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.CENTER, 2);
         add(registerNewButton, constraints);
 
