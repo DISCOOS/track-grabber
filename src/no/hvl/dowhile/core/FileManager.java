@@ -39,12 +39,7 @@ public class FileManager {
             File file = new File(appFolder, "config.txt");
             try {
                 file.createNewFile();
-                FileWriter writer = new FileWriter(file);
-                for (String line : OPERATION_MANAGER.getConfig().getConfigTemplate()) {
-                    writer.write(line + System.lineSeparator());
-                }
-                writer.flush();
-                writer.close();
+                FileTools.writeToFile(OPERATION_MANAGER.getConfig().getConfigTemplate(), file);
                 System.err.println("Config created.");
             } catch (IOException ex) {
                 System.err.println("Failed while creating config file.");
@@ -94,12 +89,14 @@ public class FileManager {
         rawFolder = setupFolder(operationFolder, "Raw");
         processedFolder = setupFolder(operationFolder, "Processed");
         File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
-        try {
-            operationFile.createNewFile();
-        } catch (IOException ex) {
-            System.err.println("Failed to create operation file.");
+        if (!operationFile.exists()) {
+            try {
+                operationFile.createNewFile();
+            } catch (IOException ex) {
+                System.err.println("Failed to create operation file.");
+            }
         }
-        operation.writeToFile(operationFile);
+        FileTools.writeToFile(operation.getFileContent(), operationFile);
         System.err.println("Done creating folders for operation " + operation.getName());
     }
 
@@ -120,7 +117,7 @@ public class FileManager {
             } else {
                 FileTools.clearFile(operationFile);
             }
-            operation.writeToFile(operationFile);
+            FileTools.writeToFile(operation.getFileContent(), operationFile);
         } catch (IOException ex) {
             System.err.println("Failed to update operation file.");
         }

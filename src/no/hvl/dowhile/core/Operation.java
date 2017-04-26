@@ -2,7 +2,9 @@ package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.utility.StringTools;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -100,22 +102,15 @@ public class Operation {
     }
 
     /**
-     * Writing information about this operation to the file.
-     *
-     * @param file the file to write the data to.
+     * Get the content to be saved in the file representing this operation.
      */
-    public void writeToFile(File file) {
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write("# Operasjon " + name + System.lineSeparator());
-            fileWriter.write("# Starttid: " + StringTools.formatDate(startTime) + System.lineSeparator());
-            fileWriter.write("# Du kan ikke endre på dataen her. Det må gjøres i programmet." + System.lineSeparator());
-            fileWriter.write("name=" + name.trim().replace(" ", "_") + System.lineSeparator());
-            fileWriter.write("starttime=" + startTime.getTime());
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException ex) {
-            System.err.println("Failed while writing operation to file.");
-        }
+    public String[] getFileContent() {
+        return new String[]{
+                "# Operasjon " + name,
+                "# Starttid: " + StringTools.formatDate(startTime),
+                "# Du kan ikke endre på dataen her. Det må gjøres i programmet.",
+                "name=" + name.trim().replace(" ", "_"),
+                "starttime=" + startTime.getTime(),
+        };
     }
 }

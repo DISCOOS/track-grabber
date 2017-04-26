@@ -69,6 +69,26 @@ public class FileTools {
     }
 
     /**
+     * Write the lines to the given file.
+     *
+     * @param lines the array of lines to write.
+     * @param file  the file to write to.
+     */
+    public static void writeToFile(String[] lines, File file) {
+        try {
+            FileWriter writer = new FileWriter(file);
+            for (String line : lines) {
+                writer.write(line + System.lineSeparator());
+            }
+            writer.flush();
+            writer.close();
+        } catch (IOException ex) {
+            System.err.println("Error occured while writing to file " + file.getName());
+            ex.printStackTrace();
+        }
+    }
+
+    /**
      * This method will insert some data to the XML file to ensure Basecamp is able to handle it.
      *
      * @param gpx  the gpx to edit.
@@ -94,7 +114,8 @@ public class FileTools {
 
     /**
      * Method to get the color from the gpx file and insert it correctly into the xml file.
-     * @param gpx the gpx to edit.
+     *
+     * @param gpx  the gpx to edit.
      * @param file the file representing the gpx.
      */
     public static void insertDisplayColor(GPX gpx, File file) {
