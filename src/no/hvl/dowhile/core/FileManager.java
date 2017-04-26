@@ -33,6 +33,14 @@ public class FileManager {
      */
     public void setupLocalFolders(File listRoot) {
         appFolder = setupFolder(listRoot, "TrackGrabber");
+        setupConfig();
+        parseFilenameFromConfig();
+    }
+
+    /**
+     * Setting up the config file.
+     */
+    public void setupConfig() {
         File config = FileTools.getFile(appFolder, "config.txt");
         if (config == null) {
             System.err.println("Config doesn't exist. Creating.");
@@ -45,7 +53,6 @@ public class FileManager {
                 System.err.println("Failed while creating config file.");
             }
         }
-        parseFilenameFromConfig();
     }
 
     /**
