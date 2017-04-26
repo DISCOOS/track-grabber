@@ -28,14 +28,12 @@ public class FileManagerTest {
         opManager = new OperationManager();
         fileManager = new FileManager(opManager);
         appFolder = tempFolder.newFile("TrackGrabberTest");
-        operation = new Operation("TestOp", )
-        //operationFolder = fileManager.setupFolder(appFolder, "ATestingOperation");
-        //rawFolder = fileManager.setupFolder(operationFolder, "Raw");
-        //processedFolder = fileManager.setupFolder(operationFolder, "Processed");
+        operation = new Operation("TestOp", 30, 11, 2016, 11, 56);
     }
 
     @Test
     public void foldersAreSetUp() {
+        fileManager.setupOperationFolder(operation);
 
     }
 
@@ -83,7 +81,4 @@ public class FileManagerTest {
     public void processedGPXFileIsSaved() {
 
     }
-
-
-
 }

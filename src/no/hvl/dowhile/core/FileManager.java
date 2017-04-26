@@ -300,4 +300,15 @@ public class FileManager {
             return null;
         }
     }
+
+    public File getFile(File folder, String name) {
+        File[] files = folder.listFiles();
+        File foundFile = null;
+        for(File f : files) {
+            if(f.getName().equals(name)) {
+                foundFile = f;
+            }
+        }
+        return foundFile;
+    }
 }
