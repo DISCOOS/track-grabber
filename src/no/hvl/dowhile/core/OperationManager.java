@@ -108,7 +108,7 @@ public class OperationManager {
      */
     public List<Operation> getExistingOperations() {
         if (existingOperations.isEmpty()) {
-            List<Operation> operations = fileManager.loadExistingOperations();
+            List<Operation> operations = fileManager.loadExistingOperations(fileManager.getAppFolder());
             existingOperations.addAll(operations);
         }
         return existingOperations;

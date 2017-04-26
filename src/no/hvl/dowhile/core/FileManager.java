@@ -33,15 +33,15 @@ public class FileManager {
      */
     public void setupLocalFolders(File listRoot) {
         appFolder = setupFolder(listRoot, "TrackGrabber");
-        setupConfig();
+        setupConfig(appFolder);
         parseFilenameFromConfig();
     }
 
     /**
      * Setting up the config file.
      */
-    public void setupConfig() {
-        File config = FileTools.getFile(appFolder, "config.txt");
+    public void setupConfig(File folder) {
+        File config = FileTools.getFile(folder, "config.txt");
         if (config == null) {
             System.err.println("Config doesn't exist. Creating.");
             File file = new File(appFolder, "config.txt");
@@ -60,9 +60,9 @@ public class FileManager {
      *
      * @return list of the operations existing in the file system.
      */
-    public List<Operation> loadExistingOperations() {
+    public List<Operation> loadExistingOperations(File folder) {
         List<Operation> operations = new ArrayList<>();
-        File[] filesInAppFolder = appFolder.listFiles();
+        File[] filesInAppFolder = folder.listFiles();
         if (filesInAppFolder == null || filesInAppFolder.length == 0) {
             return operations;
         }
@@ -282,5 +282,13 @@ public class FileManager {
         } catch (IOException ex) {
             System.err.println("Failed while reading from config file.");
         }
+    }
+
+    /**
+     * Gets the app folder.
+     * @return the app folder
+     */
+    public File getAppFolder() {
+        return appFolder;
     }
 }

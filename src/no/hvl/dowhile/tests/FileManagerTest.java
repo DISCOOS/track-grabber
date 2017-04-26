@@ -4,7 +4,6 @@ import no.hvl.dowhile.core.FileManager;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.FileTools;
-import no.hvl.dowhile.utility.TrackTools;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,6 +11,7 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
@@ -62,18 +62,23 @@ public class FileManagerTest {
     }
 
     @Test
-    public void folderWithoutConfigGetsConfig() {
-
+    public void operationFileIsCreated() {
+        fileManager.createOperationFile(operation, operationFolder);
+        File opFile = FileTools.getFile(operationFolder, operation.getName() + ".txt");
+        assertNotNull(opFile);
     }
 
     @Test
-    public void folderWithConfigDoesNotGetConfig() {
-
+    public void folderWithoutConfigGetsConfig() {
+        fileManager.setupConfig(appFolder);
+        File config = FileTools.getFile(appFolder, "config.txt");
+        assertNotNull(config);
     }
 
     @Test
     public void existingOperationsAreLoaded() {
-
+        List<Operation> operations = fileManager.loadExistingOperations(appFolder);
+        assertNotNull(operations.get(0));
     }
 
     @Test
