@@ -99,11 +99,6 @@ public class FileManager {
      */
     public void createOperationFile(Operation operation, File folder) {
         File operationFile = new File(folder, operation.getName().trim().replace(" ", "_") + ".txt");
-        try {
-            operationFile.createNewFile();
-        } catch (IOException ex) {
-            System.err.println("Failed to create operation file.");
-        File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
         if (!operationFile.exists()) {
             try {
                 operationFile.createNewFile();
@@ -111,7 +106,6 @@ public class FileManager {
                 System.err.println("Failed to create operation file.");
             }
         }
-        operation.writeToFile(operationFile);
         FileTools.writeToFile(operation.getFileContent(), operationFile);
         System.err.println("Done creating folders for operation " + operation.getName());
     }
