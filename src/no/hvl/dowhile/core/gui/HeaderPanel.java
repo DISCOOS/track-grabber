@@ -46,6 +46,10 @@ public class HeaderPanel extends JPanel {
         add(operationInfoName, constraints);
         WINDOW.modifyConstraints(constraints, 5, 2, GridBagConstraints.WEST, 1);
         add(operationInfoStart, constraints);
+
+        operationInfoHeader.setName("operationInfoHeader");
+        operationInfoName.setName("operationInfoName");
+        operationInfoStart.setName("operationInfoStart");
     }
 
     /**

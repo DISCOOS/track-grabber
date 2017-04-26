@@ -185,6 +185,11 @@ public class OperationPanel extends JPanel {
         backButtonListener();
         importFileButtonListener();
 
+        newOperationButton.setName("newOperationButton");
+        existingOperationButton.setName("existingOperationButton");
+        operationNameInput.setName("operationNameInput");
+        registerNewButton.setName("registerNewButton");
+        registerExistingButton.setName("registerExistingButton");
     }
 
     /**
