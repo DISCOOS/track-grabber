@@ -101,8 +101,8 @@ public class FileManager {
 
     /**
      * Creates an operation file for the given Operation, into the given operation folder.
-     * @param operation
-     * @param folder
+     * @param operation the operation to create the file for.
+     * @param folder the folder to save the file to.
      */
     public void createOperationFile(Operation operation, File folder) {
         File operationFile = new File(folder, operation.getName().trim().replace(" ", "_") + ".txt");
@@ -114,7 +114,6 @@ public class FileManager {
             }
         }
         FileTools.writeToFile(operation.getFileContent(), operationFile);
-        System.err.println("Done creating folders for operation " + operation.getName());
     }
 
     /**
@@ -181,7 +180,7 @@ public class FileManager {
      */
     public boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
         for (File rawFile : rawFiles) {
-            GPX rawGpx = TrackTools.parseFileAsGPX(rawFile);
+            GPX rawGpx = TrackTools.getGpxFromFile(rawFile);
             if (rawGpx != null) {
                 Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
                 if (rawTrack != null) {

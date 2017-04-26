@@ -18,7 +18,6 @@ import static org.junit.Assert.assertTrue;
 
 public class TrackToolsTest {
 
-    private GPX gpxFile;
     Track track;
     ArrayList<Waypoint> trackPoints;
     SimpleDateFormat format;
@@ -27,10 +26,11 @@ public class TrackToolsTest {
     Waypoint trackPoint0;
     Waypoint trackPoint1;
     Waypoint trackPoint1Copy;
+    private GPX gpxFile;
 
     @Before
     public void before() {
-        gpxFile = TrackTools.parseFileAsGPX(new File("src/testFile.gpx"));
+        gpxFile = TrackTools.getGpxFromFile(new File("src/testFile.gpx"));
         track = TrackTools.getTrackFromGPXFile(gpxFile);
         trackPoints = track.getTrackPoints();
 

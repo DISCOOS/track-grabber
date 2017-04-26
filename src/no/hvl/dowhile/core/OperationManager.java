@@ -168,7 +168,7 @@ public class OperationManager {
      * @param file the file to process.
      */
     private void processFile(File file) {
-        GPX gpx = TrackTools.parseFileAsGPX(file);
+        GPX gpx = TrackTools.getGpxFromFile(file);
         if (gpx == null) {
             System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
             return;
@@ -192,7 +192,7 @@ public class OperationManager {
     private void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
         File file = queue.remove(0);
-        GPX gpx = TrackTools.parseFileAsGPX(file);
+        GPX gpx = TrackTools.getGpxFromFile(file);
         currentTrackCutter.setTrackFile(gpx);
         window.updateCurrentFile(file.getName(), queue.size());
         window.openTrackPanel();

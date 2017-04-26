@@ -144,11 +144,11 @@ public class FileTools {
     }
 
     /**
-     * Search for a given substring in a given .txt file.
-     * @param file
-     * @param substring
-     * @return true if the substring is found, false if not.
-     * @throws FileNotFoundException
+     * Search for a given substring in the given text file
+     * @param file the file to check.
+     * @param substring the substring to look for.
+     * @return true if the substring is found, false if not
+     * @throws FileNotFoundException if the file doesn't exist.
      */
     public static boolean txtFileContainsString(File file, String substring) throws FileNotFoundException {
         boolean found = false;
