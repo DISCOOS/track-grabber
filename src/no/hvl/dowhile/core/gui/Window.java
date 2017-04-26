@@ -112,8 +112,8 @@ public class Window extends JFrame {
      *
      * @param operations the operations to add.
      */
-    public void addExistingOperations(List<Operation> operations) {
-        operationPanel.addExistingOperations(operations);
+    public void showExistingOperations(List<Operation> operations) {
+        operationPanel.showExistingOperations(operations);
     }
 
     /**

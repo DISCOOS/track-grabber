@@ -46,6 +46,8 @@ public enum Messages {
     EDIT_INFO_SHOW_BUTTON("Rediger operasjon"),
     EDIT_INFO_HIDE_BUTTON("Skjul redigeringsinfo"),
     EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
+    REGISTER_NEW_BUTTON("Opprett operasjon"),
+    REGISTER_EXISTING_BUTTON("Last inn operasjon"),
     AWAITING_GPS("Venter på at en GPS-enhet kobles til..."),
     INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
     OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
