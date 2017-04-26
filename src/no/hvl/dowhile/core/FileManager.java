@@ -145,7 +145,7 @@ public class FileManager {
      * @param name         the name of the new folder.
      * @return the folder which was created.
      */
-    private File setupFolder(File parentFolder, String name) {
+    public File setupFolder(File parentFolder, String name) {
         File folder = new File(parentFolder, name);
         boolean folderCreated = folder.mkdir();
         if (folderCreated) {
