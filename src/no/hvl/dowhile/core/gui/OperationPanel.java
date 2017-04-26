@@ -10,6 +10,7 @@ import no.hvl.dowhile.utility.Messages;
 import no.hvl.dowhile.utility.StringTools;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -200,6 +201,7 @@ public class OperationPanel extends JPanel {
 
     /**
      * Creating a settings object to use when creating a time picker.
+     *
      * @return settings for a time picker.
      */
     private TimePickerSettings createTimeSettings() {
@@ -423,7 +425,13 @@ public class OperationPanel extends JPanel {
         importFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                OPERATION_MANAGER.processFileFromFileExplorer(OperationPanel.this);
+                JFileChooser fileChooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("GPX Files", "gpx");
+                fileChooser.setFileFilter(filter);
+                int option = fileChooser.showOpenDialog(JOptionPane.getRootFrame());
+                if (option == JFileChooser.APPROVE_OPTION) {
+                    OPERATION_MANAGER.handleImportedFile(fileChooser.getSelectedFile());
+                }
             }
         });
     }
@@ -431,7 +439,7 @@ public class OperationPanel extends JPanel {
     /**
      * Setup the listener for the button to switch operation
      */
-    private void switchOperationListener () {
+    private void switchOperationListener() {
         switchOperationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

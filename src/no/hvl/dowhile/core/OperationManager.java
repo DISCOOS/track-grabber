@@ -9,7 +9,6 @@ import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
-import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -150,11 +149,30 @@ public class OperationManager {
     }
 
     /**
+     * Getting the file, checking for duplicate, processing it and saving.
+     *
+     * @param file the file selected.
+     */
+    public void handleImportedFile(File file) {
+        processFile(file);
+        if (!queue.isEmpty()) {
+            prepareNextFile();
+        } else {
+            window.showDialog(Messages.NO_RELEVANT_FILES_FOUND.get());
+        }
+    }
+
+    /**
      * Processes a single GPX file.
+     *
      * @param file the file to process.
      */
     private void processFile(File file) {
         GPX gpx = TrackTools.parseFileAsGPX(file);
+        if (gpx == null) {
+            System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
+            return;
+        }
         if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
             if (!fileManager.fileAlreadyImported(gpx)) {
                 fileManager.saveRawGpxFile(gpx, file.getName());
@@ -171,27 +189,13 @@ public class OperationManager {
      * Assigns a new file to the TrackCutter and updates the GUI panel.
      * This method is used when a gps is connected and one or more gpx-files are located.
      */
-    public void prepareNextFile() {
+    private void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
         File file = queue.remove(0);
         GPX gpx = TrackTools.parseFileAsGPX(file);
         currentTrackCutter.setTrackFile(gpx);
         window.updateCurrentFile(file.getName(), queue.size());
         window.openTrackPanel();
-    }
-
-    /**
-     * Fetches the file that the user chose from the file explorer and processes it.
-     * @param component the parent component.
-     */
-    public void processFileFromFileExplorer(Component component) {
-        File file = fileManager.getFileFromFileExplorer(component);
-        processFile(file);
-        if (!queue.isEmpty()) {
-            prepareNextFile();
-        } else {
-            window.showDialog(Messages.NO_RELEVANT_FILES_FOUND.get());
-        }
     }
 
     /**
