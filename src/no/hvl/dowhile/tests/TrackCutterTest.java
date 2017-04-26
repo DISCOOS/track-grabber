@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class TrackCutterTest {
 
@@ -28,7 +26,7 @@ public class TrackCutterTest {
 
     @Before
     public void before() {
-        gpxFile = TrackTools.parseFileAsGPX(new File("src/testFile.gpx"));
+        gpxFile = TrackTools.getGpxFromFile(new File("src/testFile.gpx"));
         track = TrackTools.getTrackFromGPXFile(gpxFile);
         trackPoints = track.getTrackPoints();
         opManager = new OperationManager();
