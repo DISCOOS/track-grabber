@@ -227,7 +227,7 @@ public class OperationPanel extends JPanel {
      *
      * @param operations the operations to add.
      */
-    public void addExistingOperations(List<Operation> operations) {
+    public void showExistingOperations(List<Operation> operations) {
         for (Operation operation : operations) {
             existingOperationInput.addItem(operation.getName());
         }

@@ -117,11 +117,11 @@ public class OperationManager {
     /**
      * Tell the window to add the existing operations to the selector in the user interface.
      *
-     * @param operations the existing operations to add.
+     * @param operations the existing operations to show.
      * @see Window
      */
-    public void addExistingOperations(List<Operation> operations) {
-        window.addExistingOperations(operations);
+    public void showExistingOperations(List<Operation> operations) {
+        window.showExistingOperations(operations);
     }
 
     /**
