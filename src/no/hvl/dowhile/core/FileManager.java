@@ -159,9 +159,10 @@ public class FileManager {
      * Checking if a file has been saved in the rawfolder already.
      *
      * @param newGpx The gpx file to check.
+     * @param rawFolder The operation's raw folder.
      * @return true if the file is matching a file, false if not.
      */
-    public boolean fileAlreadyImported(GPX newGpx) {
+    public boolean fileAlreadyImported(GPX newGpx, File rawFolder) {
         File[] rawFiles = rawFolder.listFiles();
         if (rawFiles == null || rawFiles.length == 0) {
             return false;
@@ -211,7 +212,7 @@ public class FileManager {
      * @param rawGpx   the gpx file to save.
      * @param filename the name for the new file.
      */
-    public void saveRawGpxFile(GPX rawGpx, String filename) {
+    public void saveRawGpxFile(GPX rawGpx, String filename, File rawFolder) {
         saveGpxFile(rawGpx, filename, rawFolder);
     }
 
@@ -221,7 +222,7 @@ public class FileManager {
      * @param processedGpx the gpx file to save.
      * @param filename     the name for the new file.
      */
-    public void saveProcessedGpxFile(GPX processedGpx, String filename) {
+    public void saveProcessedGpxFile(GPX processedGpx, String filename, File processedFolder) {
         saveGpxFile(processedGpx, filename, processedFolder);
     }
 
@@ -232,7 +233,7 @@ public class FileManager {
      * @param filename the name for the new file.
      * @param folder   the folder to save it in.
      */
-    private void saveGpxFile(GPX gpx, String filename, File folder) {
+    public void saveGpxFile(GPX gpx, String filename, File folder) {
         try {
             File file = new File(folder, filename);
             if (!file.exists()) {
@@ -289,5 +290,21 @@ public class FileManager {
      */
     public File getAppFolder() {
         return appFolder;
+    }
+
+    /**
+     * Gets the raw folder.
+     * @return the raw folder
+     */
+    public File getRawFolder() {
+        return rawFolder;
+    }
+
+    /**
+     * Gets the processed folder.
+     * @return the processed folder
+     */
+    public File getProcessedFolder() {
+        return processedFolder;
     }
 }

@@ -174,8 +174,8 @@ public class OperationManager {
             return;
         }
         if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-            if (!fileManager.fileAlreadyImported(gpx)) {
-                fileManager.saveRawGpxFile(gpx, file.getName());
+            if (!fileManager.fileAlreadyImported(gpx, fileManager.getRawFolder())) {
+                fileManager.saveRawGpxFile(gpx, file.getName(), fileManager.getRawFolder());
                 queue.add(file);
             } else {
                 System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
@@ -214,7 +214,7 @@ public class OperationManager {
         String newName = config.generateFilename(trackInfo);
         Track track = TrackTools.getTrackFromGPXFile(gpxFile);
         track.setName(newName);
-        fileManager.saveProcessedGpxFile(gpxFile, newName);
+        fileManager.saveProcessedGpxFile(gpxFile, newName, fileManager.getProcessedFolder());
         if (queue.isEmpty()) {
             window.openOperationPanel();
         } else {
