@@ -13,8 +13,8 @@ public class GPSDrive extends Drive {
     private File currentFolder;
     private File archiveFolder;
 
-    public GPSDrive(String driveLetter, String path) {
-        super(driveLetter, path);
+    public GPSDrive(String driveLetter) {
+        super(driveLetter);
     }
 
     /**

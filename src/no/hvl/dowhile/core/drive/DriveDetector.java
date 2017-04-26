@@ -2,8 +2,8 @@ package no.hvl.dowhile.core.drive;
 
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
+import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.Messages;
-import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.ThreadTools;
 
 import java.io.File;
@@ -44,15 +44,10 @@ public class DriveDetector implements Runnable {
                 for (File listRoot : listRoots) {
                     String driveLetter = listRoot.getAbsolutePath().substring(0, 1);
                     if (!detectedDrives.containsKey(driveLetter)) {
-                        if (listRoot.getAbsolutePath().startsWith("C")) {
+                        if (driveLetter.equals("C")) {
                             OPERATION_MANAGER.setupLocalFolders(listRoot);
                             List<Operation> operations = OPERATION_MANAGER.getExistingOperations();
-                            for (Operation operation : operations) {
-                                System.err.println("Existing operation: ");
-                                System.err.println("Name: " + operation.getName());
-                                System.err.println("Start time: " + StringTools.formatDate(operation.getStartTime()));
-                            }
-                            OPERATION_MANAGER.addExistingOperations(operations);
+                            OPERATION_MANAGER.showExistingOperations(operations);
                             registerConnectedDrive(driveLetter, listRoot);
                         }
                         if (OPERATION_MANAGER.hasOperation()) {
@@ -83,7 +78,7 @@ public class DriveDetector implements Runnable {
             System.err.println("GPS drive detected. There are now " + detectedDrives.size() + " connected.");
         } else {
             // Drive is not a GPS.
-            Drive drive = new Drive(driveLetter, listRoot.getAbsolutePath());
+            Drive drive = new Drive(driveLetter);
             detectedDrives.put(driveLetter, drive);
             System.err.println("Normal drive detected. There are now " + detectedDrives.size() + " connected.");
         }
@@ -130,40 +125,20 @@ public class DriveDetector implements Runnable {
         if (filesInRootFolder == null) {
             return null;
         }
-        GPSDrive gpsDrive = new GPSDrive(driveLetter, listRoot.getAbsolutePath());
-        gpsDrive.setGarminFolder(findFileInFolder(listRoot, "Garmin"));
+        GPSDrive gpsDrive = new GPSDrive(driveLetter);
+        gpsDrive.setGarminFolder(FileTools.getFile(listRoot, "Garmin"));
         if (!gpsDrive.hasGarminFolder()) {
             return null;
         }
-        gpsDrive.setGpxFolder(findFileInFolder(gpsDrive.getGarminFolder(), "GPX"));
+        gpsDrive.setGpxFolder(FileTools.getFile(gpsDrive.getGarminFolder(), "GPX"));
         if (!gpsDrive.hasGpxFolder()) {
             return null;
         }
-        gpsDrive.setCurrentFolder(findFileInFolder(gpsDrive.getGpxFolder(), "Current"));
-        gpsDrive.setArchiveFolder(findFileInFolder(gpsDrive.getGpxFolder(), "Archive"));
+        gpsDrive.setCurrentFolder(FileTools.getFile(gpsDrive.getGpxFolder(), "Current"));
+        gpsDrive.setArchiveFolder(FileTools.getFile(gpsDrive.getGpxFolder(), "Archive"));
         if (!gpsDrive.isValidGPSDrive()) {
             return null;
         }
         return gpsDrive;
-    }
-
-    /**
-     * Finding the file with specified name in the parent folder.
-     *
-     * @param parentFolder the folder to check.
-     * @param filename     the name of the file to find.
-     * @return the file which was found, null if the file doesn't exist in folder.
-     */
-    private File findFileInFolder(File parentFolder, String filename) {
-        File[] filesInParent = parentFolder.listFiles();
-        if (filesInParent == null || filesInParent.length == 0) {
-            return null;
-        }
-        for (File file : filesInParent) {
-            if (file.getName().equals(filename)) {
-                return file;
-            }
-        }
-        return null;
     }
 }

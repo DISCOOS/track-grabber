@@ -7,11 +7,8 @@ import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 import org.alternativevision.gpx.beans.Waypoint;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,33 +33,26 @@ public class FileManager {
      */
     public void setupLocalFolders(File listRoot) {
         appFolder = setupFolder(listRoot, "TrackGrabber");
+        setupConfig(appFolder);
+        parseFilenameFromConfig();
+    }
 
-        boolean configCreated = false;
-        File[] appFolderFiles = appFolder.listFiles();
-        if (appFolderFiles != null) {
-            for (File file : appFolderFiles) {
-                if (file.getName().equals("config.txt")) {
-                    configCreated = true;
-                }
-            }
-        }
-        if (!configCreated) {
+    /**
+     * Setting up the config file.
+     */
+    public void setupConfig(File folder) {
+        File config = FileTools.getFile(folder, "config.txt");
+        if (config == null) {
             System.err.println("Config doesn't exist. Creating.");
-            File file = new File(appFolder, "config.txt");
+            File file = new File(folder, "config.txt");
             try {
                 file.createNewFile();
-                FileWriter writer = new FileWriter(file);
-                for (String line : OPERATION_MANAGER.getConfig().getConfigTemplate()) {
-                    writer.write(line + System.lineSeparator());
-                }
-                writer.flush();
-                writer.close();
+                FileTools.writeToFile(OPERATION_MANAGER.getConfig().getConfigTemplate(), file);
                 System.err.println("Config created.");
             } catch (IOException ex) {
                 System.err.println("Failed while creating config file.");
             }
         }
-        parseFilenameFromConfig();
     }
 
     /**
@@ -70,9 +60,9 @@ public class FileManager {
      *
      * @return list of the operations existing in the file system.
      */
-    public List<Operation> loadExistingOperations() {
+    public List<Operation> loadExistingOperations(File folder) {
         List<Operation> operations = new ArrayList<>();
-        File[] filesInAppFolder = appFolder.listFiles();
+        File[] filesInAppFolder = folder.listFiles();
         if (filesInAppFolder == null || filesInAppFolder.length == 0) {
             return operations;
         }
@@ -105,14 +95,25 @@ public class FileManager {
         File operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
         rawFolder = setupFolder(operationFolder, "Raw");
         processedFolder = setupFolder(operationFolder, "Processed");
-        File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
-        try {
-            operationFile.createNewFile();
-        } catch (IOException ex) {
-            System.err.println("Failed to create operation file.");
-        }
-        operation.writeToFile(operationFile);
+        createOperationFile(operation, operationFolder);
         System.err.println("Done creating folders for operation " + operation.getName());
+    }
+
+    /**
+     * Creates an operation file for the given Operation, into the given operation folder.
+     * @param operation the operation to create the file for.
+     * @param folder the folder to save the file to.
+     */
+    public void createOperationFile(Operation operation, File folder) {
+        File operationFile = new File(folder, operation.getName().trim().replace(" ", "_") + ".txt");
+        if (!operationFile.exists()) {
+            try {
+                operationFile.createNewFile();
+            } catch (IOException ex) {
+                System.err.println("Failed to create operation file.");
+            }
+        }
+        FileTools.writeToFile(operation.getFileContent(), operationFile);
     }
 
     /**
@@ -132,7 +133,7 @@ public class FileManager {
             } else {
                 FileTools.clearFile(operationFile);
             }
-            operation.writeToFile(operationFile);
+            FileTools.writeToFile(operation.getFileContent(), operationFile);
         } catch (IOException ex) {
             System.err.println("Failed to update operation file.");
         }
@@ -166,13 +167,7 @@ public class FileManager {
             return false;
         }
         Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);
-        if (newTrack == null) {
-            return false;
-        }
-        if (trackPointsAreEqual(rawFiles, newTrack)) {
-            return true;
-        }
-        return false;
+        return newTrack != null && trackPointsAreEqual(rawFiles, newTrack);
     }
 
     /**
@@ -185,7 +180,7 @@ public class FileManager {
      */
     public boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
         for (File rawFile : rawFiles) {
-            GPX rawGpx = TrackTools.parseFileAsGPX(rawFile);
+            GPX rawGpx = TrackTools.getGpxFromFile(rawFile);
             if (rawGpx != null) {
                 Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
                 if (rawTrack != null) {
@@ -262,9 +257,13 @@ public class FileManager {
      * Gets the filename pattern from the config file.
      */
     private void parseFilenameFromConfig() {
-        File file = new File(appFolder, "config.txt");
+        File config = FileTools.getFile(appFolder, "config.txt");
+        if (config == null) {
+            System.err.println("Config didn't exist when trying to parse filename pattern.");
+            return;
+        }
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = new BufferedReader(new FileReader(config));
             String line = reader.readLine();
             while (line != null) {
                 if (!line.startsWith("#")) {
@@ -285,19 +284,10 @@ public class FileManager {
     }
 
     /**
-     * Lets the user manually import a GPX file from the system's file explorer.
-     * @param parent
-     * @return the chosen GPX file
+     * Gets the app folder.
+     * @return the app folder
      */
-    public File getFileFromFileExplorer(Component parent) {
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("GPX Files", "gpx");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(parent);
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-            return chooser.getSelectedFile();
-        } else {
-            return null;
-        }
+    public File getAppFolder() {
+        return appFolder;
     }
 }

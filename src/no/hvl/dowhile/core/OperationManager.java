@@ -108,7 +108,7 @@ public class OperationManager {
      */
     public List<Operation> getExistingOperations() {
         if (existingOperations.isEmpty()) {
-            List<Operation> operations = fileManager.loadExistingOperations();
+            List<Operation> operations = fileManager.loadExistingOperations(fileManager.getAppFolder());
             existingOperations.addAll(operations);
         }
         return existingOperations;
@@ -117,11 +117,11 @@ public class OperationManager {
     /**
      * Tell the window to add the existing operations to the selector in the user interface.
      *
-     * @param operations the existing operations to add.
+     * @param operations the existing operations to show.
      * @see Window
      */
-    public void addExistingOperations(List<Operation> operations) {
-        window.addExistingOperations(operations);
+    public void showExistingOperations(List<Operation> operations) {
+        window.showExistingOperations(operations);
     }
 
     /**
@@ -168,7 +168,7 @@ public class OperationManager {
      * @param file the file to process.
      */
     private void processFile(File file) {
-        GPX gpx = TrackTools.parseFileAsGPX(file);
+        GPX gpx = TrackTools.getGpxFromFile(file);
         if (gpx == null) {
             System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
             return;
@@ -192,7 +192,7 @@ public class OperationManager {
     private void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
         File file = queue.remove(0);
-        GPX gpx = TrackTools.parseFileAsGPX(file);
+        GPX gpx = TrackTools.getGpxFromFile(file);
         currentTrackCutter.setTrackFile(gpx);
         window.updateCurrentFile(file.getName(), queue.size());
         window.openTrackPanel();

@@ -12,8 +12,6 @@ import no.hvl.dowhile.utility.StringTools;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -144,7 +142,7 @@ public class OperationPanel extends JPanel {
         add(existingOperationButton, constraints);
 
         // Register existing operation
-        registerExistingButton = new JButton(Messages.REGISTER_BUTTON.get());
+        registerExistingButton = new JButton(Messages.REGISTER_EXISTING_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 2, 1, GridBagConstraints.CENTER, 2);
         add(registerExistingButton, constraints);
 
@@ -165,7 +163,7 @@ public class OperationPanel extends JPanel {
         errorMessageLabel.setVisible(false);
 
         // Register new operation
-        registerNewButton = new JButton(Messages.REGISTER_BUTTON.get());
+        registerNewButton = new JButton(Messages.REGISTER_NEW_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.CENTER, 2);
         add(registerNewButton, constraints);
 
@@ -229,7 +227,7 @@ public class OperationPanel extends JPanel {
      *
      * @param operations the operations to add.
      */
-    public void addExistingOperations(List<Operation> operations) {
+    public void showExistingOperations(List<Operation> operations) {
         for (Operation operation : operations) {
             existingOperationInput.addItem(operation.getName());
         }
@@ -308,12 +306,9 @@ public class OperationPanel extends JPanel {
      * Setup the listener for the new operation button.
      */
     private void newOperationButtonListener() {
-        newOperationButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisibilityOperationButtons(false);
-                setVisibilityNewOperation(true);
-            }
+        newOperationButton.addActionListener(actionEvent -> {
+            setVisibilityOperationButtons(false);
+            setVisibilityNewOperation(true);
         });
     }
 
@@ -321,12 +316,9 @@ public class OperationPanel extends JPanel {
      * Setup the listener for the existing operation button.
      */
     private void existingOperationButtonListener() {
-        existingOperationButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisibilityOperationButtons(false);
-                setVisibilityExistingOperation(true);
-            }
+        existingOperationButton.addActionListener(actionEvent -> {
+            setVisibilityOperationButtons(false);
+            setVisibilityExistingOperation(true);
         });
     }
 
@@ -334,16 +326,13 @@ public class OperationPanel extends JPanel {
      * Setup the listener for the edit info toggle button.
      */
     private void toggleEditInfoButtonListener() {
-        toggleEditInfoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_SHOW_BUTTON.get())) {
-                    setVisibilityEditInfo(true);
-                    toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
-                } else if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_HIDE_BUTTON.get())) {
-                    setVisibilityEditInfo(false);
-                    toggleEditInfoButton.setText(Messages.EDIT_INFO_SHOW_BUTTON.get());
-                }
+        toggleEditInfoButton.addActionListener(actionEvent -> {
+            if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_SHOW_BUTTON.get())) {
+                setVisibilityEditInfo(true);
+                toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
+            } else if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_HIDE_BUTTON.get())) {
+                setVisibilityEditInfo(false);
+                toggleEditInfoButton.setText(Messages.EDIT_INFO_SHOW_BUTTON.get());
             }
         });
     }
@@ -352,32 +341,29 @@ public class OperationPanel extends JPanel {
      * Setup the listener for the button to register a new operation.
      */
     private void registerNewOperationButtonListener() {
-        registerNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int day = datePicker.getDate().getDayOfMonth();
-                int month = datePicker.getDate().getMonthValue();
-                int year = datePicker.getDate().getYear();
-                int hour = timePicker.getTime().getHour();
-                int minute = timePicker.getTime().getMinute();
-                String operationName = operationNameInput.getText();
+        registerNewButton.addActionListener(actionEvent -> {
+            int day = datePicker.getDate().getDayOfMonth();
+            int month = datePicker.getDate().getMonthValue();
+            int year = datePicker.getDate().getYear();
+            int hour = timePicker.getTime().getHour();
+            int minute = timePicker.getTime().getMinute();
+            String operationName = operationNameInput.getText();
 
-                if (StringTools.isValidOperationName(operationName)) {
-                    if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
-                        errorMessageLabel.setText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
-                        errorMessageLabel.setVisible(true);
-                    } else {
-                        Operation operation = new Operation(operationName, day, month, year, hour, minute);
-                        OPERATION_MANAGER.setupOperation(operation);
-                        setVisibilityNewOperation(false);
-                        setVisibilityToggleEditInfo(true);
-                        errorMessageLabel.setVisible(false);
-                        awaitingGPSLabel.setVisible(true);
-                    }
-                } else {
-                    errorMessageLabel.setText(Messages.INVALID_OPERATION_NAME.get());
+            if (StringTools.isValidOperationName(operationName)) {
+                if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
+                    errorMessageLabel.setText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
                     errorMessageLabel.setVisible(true);
+                } else {
+                    Operation operation = new Operation(operationName, day, month, year, hour, minute);
+                    OPERATION_MANAGER.setupOperation(operation);
+                    setVisibilityNewOperation(false);
+                    setVisibilityToggleEditInfo(true);
+                    errorMessageLabel.setVisible(false);
+                    awaitingGPSLabel.setVisible(true);
                 }
+            } else {
+                errorMessageLabel.setText(Messages.INVALID_OPERATION_NAME.get());
+                errorMessageLabel.setVisible(true);
             }
         });
     }
@@ -386,19 +372,16 @@ public class OperationPanel extends JPanel {
      * Setup the listener for the button to load an existing operation.
      */
     private void registerExistingOperationButtonListener() {
-        registerExistingButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedOperationName = (String) existingOperationInput.getSelectedItem();
-                for (Operation operation : OPERATION_MANAGER.getExistingOperations()) {
-                    if (operation.getName().endsWith(selectedOperationName)) {
-                        OPERATION_MANAGER.setupOperation(operation);
-                        awaitingGPSLabel.setVisible(true);
-                    }
+        registerExistingButton.addActionListener(actionEvent -> {
+            String selectedOperationName = (String) existingOperationInput.getSelectedItem();
+            for (Operation operation : OPERATION_MANAGER.getExistingOperations()) {
+                if (operation.getName().endsWith(selectedOperationName)) {
+                    OPERATION_MANAGER.setupOperation(operation);
+                    awaitingGPSLabel.setVisible(true);
                 }
-                setVisibilityExistingOperation(false);
-                setVisibilityToggleEditInfo(true);
             }
+            setVisibilityExistingOperation(false);
+            setVisibilityToggleEditInfo(true);
         });
     }
 
@@ -406,17 +389,14 @@ public class OperationPanel extends JPanel {
      * Setup the listener for the button to save an edited operation.
      */
     private void saveOperationButtonListener() {
-        saveOperationButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int year = editDatePicker.getDate().getYear();
-                int month = editDatePicker.getDate().getMonthValue();
-                int day = editDatePicker.getDate().getDayOfMonth();
-                int hour = editTimePicker.getTime().getHour();
-                int minute = editTimePicker.getTime().getMinute();
-                OPERATION_MANAGER.updateCurrentOperation(year, month, day, hour, minute);
-                setVisibilityEditInfo(false);
-            }
+        saveOperationButton.addActionListener(actionEvent -> {
+            int year = editDatePicker.getDate().getYear();
+            int month = editDatePicker.getDate().getMonthValue();
+            int day = editDatePicker.getDate().getDayOfMonth();
+            int hour = editTimePicker.getTime().getHour();
+            int minute = editTimePicker.getTime().getMinute();
+            OPERATION_MANAGER.updateCurrentOperation(year, month, day, hour, minute);
+            setVisibilityEditInfo(false);
         });
     }
 
@@ -424,16 +404,13 @@ public class OperationPanel extends JPanel {
      * Setup the listener for the import file button
      */
     private void importFileButtonListener() {
-        importFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("GPX Files", "gpx");
-                fileChooser.setFileFilter(filter);
-                int option = fileChooser.showOpenDialog(JOptionPane.getRootFrame());
-                if (option == JFileChooser.APPROVE_OPTION) {
-                    OPERATION_MANAGER.handleImportedFile(fileChooser.getSelectedFile());
-                }
+        importFileButton.addActionListener(actionEvent -> {
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("GPX Files", "gpx");
+            fileChooser.setFileFilter(filter);
+            int option = fileChooser.showOpenDialog(JOptionPane.getRootFrame());
+            if (option == JFileChooser.APPROVE_OPTION) {
+                OPERATION_MANAGER.handleImportedFile(fileChooser.getSelectedFile());
             }
         });
     }
@@ -442,12 +419,10 @@ public class OperationPanel extends JPanel {
      * Setup the listener for the button to switch operation
      */
     private void switchOperationListener() {
-        switchOperationButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisibilityToggleEditInfo(false);
-                setVisibilityOperationButtons(true);
-            }
+        switchOperationButton.addActionListener(actionEvent -> {
+            setVisibilityToggleEditInfo(false);
+            setVisibilityOperationButtons(true);
+            awaitingGPSLabel.setVisible(false);
         });
     }
 
@@ -455,13 +430,10 @@ public class OperationPanel extends JPanel {
      * Setup the listener for the button to go back in both new operation and existing operation
      */
     private void backButtonListener() {
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisibilityExistingOperation(false);
-                setVisibilityNewOperation(false);
-                setVisibilityOperationButtons(true);
-            }
+        backButton.addActionListener(actionEvent -> {
+            setVisibilityExistingOperation(false);
+            setVisibilityNewOperation(false);
+            setVisibilityOperationButtons(true);
         });
     }
 }
