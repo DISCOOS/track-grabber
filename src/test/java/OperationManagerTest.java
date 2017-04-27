@@ -1,6 +1,7 @@
 import no.hvl.dowhile.core.FileManager;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
+import no.hvl.dowhile.core.TrackCutter;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,7 +21,7 @@ public class OperationManagerTest {
     public TemporaryFolder tempFolder = new TemporaryFolder();
 
     private OperationManager operationManager;
-    FileManager fileManager;
+    private FileManager fileManager;
     private Operation operation1;
     private Operation operation2;
     private File testGPX;
@@ -85,6 +86,8 @@ public class OperationManagerTest {
 
     @Test
     public void nextFileIsPrepared() {
+        operationManager.processFile(testGPX);
+        operationManager.prepareNextFile();
 
     }
 

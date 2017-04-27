@@ -196,7 +196,7 @@ public class OperationManager {
      * Assigns a new file to the TrackCutter and updates the GUI panel.
      * This method is used when a gps is connected and one or more gpx-files are located.
      */
-    private void prepareNextFile() {
+    public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
         File file = queue.remove(0);
         GPX gpx = TrackTools.getGpxFromFile(file);
@@ -282,7 +282,19 @@ public class OperationManager {
         this.fileManager = fileManager;
     }
 
+    /**
+     * Gets the file queue.
+     * @return the file queue
+     */
     public List<File> getQueue() {
         return queue;
+    }
+
+    /**
+     * Gets the track cutter for the current track.
+     * @return the track cutter for the current track.
+     */
+    public TrackCutter getCurrentTrackCutter() {
+        return currentTrackCutter;
     }
 }
