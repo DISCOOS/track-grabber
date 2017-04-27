@@ -96,6 +96,10 @@ public class OperationPanel extends JPanel {
         setBackground(new Color(255, 245, 252));
     }
 
+    /**
+     * Creates the universal buttons in the GUI
+     */
+
     private void universalButtonsGUI() {
         // Back button
         backButton = new JButton(Messages.GO_BACK.get());
@@ -103,6 +107,9 @@ public class OperationPanel extends JPanel {
         add(backButton, constraints);
     }
 
+    /**
+     * Creates the start buttons for creating an new operation or choosing an existing operation in the GUI
+     */
     private void chooseOperationGUI() {
         // New operation button
         newOperationButton = new JButton(Messages.NEW_OPERATION_BUTTON.get());
@@ -119,6 +126,9 @@ public class OperationPanel extends JPanel {
         add(existingOperationButton, constraints);
     }
 
+    /**
+     * Creates the GUI for choosing an existing operation
+     */
     private void existingOperationGUI() {
         // Already existing operation label
         existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
@@ -137,6 +147,9 @@ public class OperationPanel extends JPanel {
         add(registerExistingButton, constraints);
     }
 
+    /**
+     * Creates the GUI for creating an new operation
+     */
     private void createNewOperationGUI() {
         // New operation label
         operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
@@ -174,6 +187,9 @@ public class OperationPanel extends JPanel {
         add(registerNewButton, constraints);
     }
 
+    /**
+     * Creates the GUI for choices on an active operation
+     */
     private void activeOperationGUI() {
         // Awaiting GPS label
         awaitingGPSLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get(), WINDOW.TEXT_FONT_SIZE);
@@ -197,6 +213,9 @@ public class OperationPanel extends JPanel {
         add(switchOperationButton, constraints);
     }
 
+    /**
+     * Creates the GUI for editing an active operation
+     */
     private void editActiveOperationGUI() {
         // Edit operation date label
         editDateLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION_TIME.get(), WINDOW.TEXT_FONT_SIZE);
