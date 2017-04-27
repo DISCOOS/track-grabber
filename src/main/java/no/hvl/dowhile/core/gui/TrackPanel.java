@@ -114,6 +114,8 @@ public class TrackPanel extends JPanel {
             String dialogText = Messages.SAVE_FILE.get();
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
         });
+
+        setBackground(new Color(255, 245, 252));
     }
 
     /**

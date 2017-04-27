@@ -69,6 +69,7 @@ public class OperationPanel extends JPanel {
 
         // Setting stuff invisible
         backButton.setVisible(false);
+        errorMessageLabel.setVisible(false);
         setVisibilityNewOperation(false);
         setVisibilityExistingOperation(false);
         setVisibilityEditInfo(false);
@@ -90,6 +91,8 @@ public class OperationPanel extends JPanel {
         operationNameInput.setName("operationNameInput");
         registerNewButton.setName("registerNewButton");
         registerExistingButton.setName("registerExistingButton");
+
+        setBackground(new Color(255, 245, 252));
     }
 
     private void universalButtonsGUI() {
@@ -103,28 +106,33 @@ public class OperationPanel extends JPanel {
         // New operation button
         newOperationButton = new JButton(Messages.NEW_OPERATION_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.CENTER, 2);
+        newOperationButton.setPreferredSize(new Dimension(200, 50));
+        newOperationButton.setBackground(new Color(242, 94, 94));
         add(newOperationButton, constraints);
 
         // Existing operation button
         existingOperationButton = new JButton(Messages.EXISTING_OPERATION_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 2, 0, GridBagConstraints.CENTER, 2);
+        existingOperationButton.setPreferredSize(new Dimension(200, 50));
+        existingOperationButton.setBackground(new Color(242, 94, 94));
         add(existingOperationButton, constraints);
     }
 
     private void existingOperationGUI() {
         // Already existing operation label
         existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.CENTER, 2);
+        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 3);
         add(existingOperationLabel, constraints);
 
         // Already existing operation input
         existingOperationInput = new JComboBox<>();
-        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 2);
+        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 3);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         add(existingOperationInput, constraints);
 
         // Register existing operation
         registerExistingButton = new JButton(Messages.REGISTER_EXISTING_BUTTON.get());
-        WINDOW.modifyConstraints(constraints, 2, 1, GridBagConstraints.CENTER, 2);
+        WINDOW.modifyConstraints(constraints, 3, 1, GridBagConstraints.CENTER, 1);
         add(registerExistingButton, constraints);
     }
 
@@ -145,19 +153,18 @@ public class OperationPanel extends JPanel {
         errorMessageLabel.setForeground(Color.RED);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 4);
         add(errorMessageLabel, constraints);
-        errorMessageLabel.setVisible(false);
 
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 2);
         add(operationDateLabel, constraints);
 
         datePicker = new DatePicker(createDateSettings());
-        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 2);
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
         add(datePicker, constraints);
 
         timePicker = new TimePicker(createTimeSettings());
-        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.WEST, 2);
+        WINDOW.modifyConstraints(constraints, 2, 4, GridBagConstraints.WEST, 2);
         add(timePicker, constraints);
 
         // Register new operation
@@ -270,6 +277,8 @@ public class OperationPanel extends JPanel {
         timePicker.setVisible(visibility);
         registerNewButton.setVisible(visibility);
         backButton.setVisible(visibility);
+        errorMessageLabel.setText(" ");
+        errorMessageLabel.setVisible(visibility);
     }
 
     /**
@@ -376,7 +385,6 @@ public class OperationPanel extends JPanel {
             if (StringTools.isValidOperationName(operationName)) {
                 if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
                     errorMessageLabel.setText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
-                    errorMessageLabel.setVisible(true);
                 } else {
                     Operation operation = new Operation(operationName, day, month, year, hour, minute);
                     OPERATION_MANAGER.setupOperation(operation);
@@ -388,7 +396,6 @@ public class OperationPanel extends JPanel {
                 }
             } else {
                 errorMessageLabel.setText(Messages.INVALID_OPERATION_NAME.get());
-                errorMessageLabel.setVisible(true);
             }
         });
     }
