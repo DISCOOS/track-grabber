@@ -35,11 +35,19 @@ public class OperationPanelTest {
     }
 
     @Test
-    public void errorMessageLabelTest() {
+    public void errorMessageOnInvalidCharactersInOperationName() {
         windowFixture.button("newOperationButton").click();
         windowFixture.textBox("operationNameInput").enterText("TestWrong-.-");
         windowFixture.button("registerNewButton").click();
         windowFixture.label("errorMessageLabel").requireText(Messages.INVALID_OPERATION_NAME.get());
+    }
+
+    @Test
+    public void errorMessageWhenTryingToCreateExistingNameOnOperation() {
+        windowFixture.button("newOperationButton").click();
+        windowFixture.textBox("operationNameInput").enterText("Tester GUI på Voss");
+        windowFixture.button("registerNewButton").click();
+        windowFixture.label("errorMessageLabel").requireText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
     }
 
     @After

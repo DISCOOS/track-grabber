@@ -294,12 +294,30 @@ public class FileManager {
     }
 
     /**
+     * Sets the app folder.
+     *
+     * @param appFolder an app folder
+     */
+    public void setAppFolder(File appFolder) {
+        this.appFolder = appFolder;
+    }
+
+    /**
      * Gets the raw folder.
      *
      * @return the raw folder
      */
     public File getRawFolder() {
         return rawFolder;
+    }
+
+    /**
+     * Sets the raw folder.
+     *
+     * @param rawFolder a raw folder
+     */
+    public void setRawFolder(File rawFolder) {
+        this.rawFolder = rawFolder;
     }
 
     /**
@@ -312,26 +330,10 @@ public class FileManager {
     }
 
     /**
-     * Sets the app folder.
-     * @param aF an app folder
-     */
-    public void setAppFolder(File aF) {
-        this.appFolder = aF;
-    }
-
-    /**
-     * Sets the raw folder.
-     * @param rF a raw folder
-     */
-    public void setRawFolder(File rF) {
-        this.rawFolder = rF;
-    }
-
-    /**
      * Sets the processed folder.
-     * @param pF a processed folder
+     * @param processedFolder a processed folder
      */
-    public void setProcessedFolder(File pF) {
-        this.processedFolder = pF;
+    public void setProcessedFolder(File processedFolder) {
+        this.processedFolder = processedFolder;
     }
 }
