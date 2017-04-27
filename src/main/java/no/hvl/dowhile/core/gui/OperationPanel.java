@@ -91,6 +91,8 @@ public class OperationPanel extends JPanel {
         operationNameInput.setName("operationNameInput");
         registerNewButton.setName("registerNewButton");
         registerExistingButton.setName("registerExistingButton");
+
+        setBackground(new Color(255, 245, 252));
     }
 
     private void universalButtonsGUI() {
