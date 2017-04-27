@@ -99,6 +99,7 @@ public class OperationPanel extends JPanel {
         backButton = new JButton(Messages.GO_BACK.get());
         WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.WEST, 1);
         add(backButton, constraints);
+        backButton.setName("backButton");
     }
 
     /**
