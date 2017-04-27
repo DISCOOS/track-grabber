@@ -60,6 +60,7 @@ public class OperationPanel extends JPanel {
         constraints = new GridBagConstraints();
         WINDOW.setConstraintsInsets(constraints, 5);
 
+        // creating buttons, labels, textfields
         universalButtonsGUI();
         chooseOperationGUI();
         existingOperationGUI();
