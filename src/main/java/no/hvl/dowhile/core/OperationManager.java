@@ -97,7 +97,7 @@ public class OperationManager {
     public void updateCurrentOperation(int year, int month, int day, int hour, int minute) {
         operation.updateStartTime(year, month, day, hour, minute);
         window.updateOperationInfo(operation);
-        fileManager.updateOperationFile(operation, fileManager.getAppFolder());
+        fileManager.updateOperationFile(operation);
     }
 
     /**
@@ -108,7 +108,7 @@ public class OperationManager {
      */
     public List<Operation> getExistingOperations() {
         if (existingOperations.isEmpty()) {
-            List<Operation> operations = fileManager.loadExistingOperations(fileManager.getAppFolder());
+            List<Operation> operations = fileManager.loadExistingOperations();
             existingOperations.addAll(operations);
         }
         return existingOperations;
@@ -118,7 +118,7 @@ public class OperationManager {
      * Checking the file system to load all operations.
      */
     public void reloadExistingOperations() {
-        existingOperations = fileManager.loadExistingOperations(fileManager.getAppFolder());
+        existingOperations = fileManager.loadExistingOperations();
     }
 
     /**
@@ -181,8 +181,8 @@ public class OperationManager {
             return;
         }
         if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-            if (!fileManager.fileAlreadyImported(gpx, fileManager.getRawFolder())) {
-                fileManager.saveRawGpxFile(gpx, file.getName(), fileManager.getRawFolder());
+            if (!fileManager.fileAlreadyImported(gpx)) {
+                fileManager.saveRawGpxFile(gpx, file.getName());
                 queue.add(file);
             } else {
                 System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
@@ -221,7 +221,7 @@ public class OperationManager {
         String newName = config.generateFilename(trackInfo);
         Track track = TrackTools.getTrackFromGPXFile(gpxFile);
         track.setName(newName);
-        fileManager.saveProcessedGpxFile(gpxFile, newName, fileManager.getProcessedFolder());
+        fileManager.saveProcessedGpxFile(gpxFile, newName);
         if (queue.isEmpty()) {
             window.openOperationPanel();
         } else {
