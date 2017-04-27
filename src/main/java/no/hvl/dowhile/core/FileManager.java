@@ -60,9 +60,9 @@ public class FileManager {
      *
      * @return list of the operations existing in the file system.
      */
-    public List<Operation> loadExistingOperations(File folder) {
+    public List<Operation> loadExistingOperations() {
         List<Operation> operations = new ArrayList<>();
-        File[] filesInAppFolder = folder.listFiles();
+        File[] filesInAppFolder = appFolder.listFiles();
         if (filesInAppFolder == null || filesInAppFolder.length == 0) {
             return operations;
         }
@@ -121,11 +121,10 @@ public class FileManager {
      * Replacing the content of the operation file with the new operation info.
      *
      * @param operation
-     * @param folder
      */
-    public void updateOperationFile(Operation operation, File folder) {
+    public void updateOperationFile(Operation operation) {
         try {
-            File operationFolder = new File(folder, operation.getName().trim().replace(" ", "_"));
+            File operationFolder = new File(appFolder, operation.getName().trim().replace(" ", "_"));
             if (!operationFolder.exists()) {
                 operationFolder.mkdir();
             }
@@ -161,10 +160,9 @@ public class FileManager {
      * Checking if a file has been saved in the rawfolder already.
      *
      * @param newGpx    The gpx file to check.
-     * @param rawFolder The operation's raw folder.
      * @return true if the file is matching a file, false if not.
      */
-    public boolean fileAlreadyImported(GPX newGpx, File rawFolder) {
+    public boolean fileAlreadyImported(GPX newGpx) {
         File[] rawFiles = rawFolder.listFiles();
         if (rawFiles == null || rawFiles.length == 0) {
             return false;
@@ -214,7 +212,7 @@ public class FileManager {
      * @param rawGpx   the gpx file to save.
      * @param filename the name for the new file.
      */
-    public void saveRawGpxFile(GPX rawGpx, String filename, File rawFolder) {
+    public void saveRawGpxFile(GPX rawGpx, String filename) {
         saveGpxFile(rawGpx, filename, rawFolder);
     }
 
@@ -224,7 +222,7 @@ public class FileManager {
      * @param processedGpx the gpx file to save.
      * @param filename     the name for the new file.
      */
-    public void saveProcessedGpxFile(GPX processedGpx, String filename, File processedFolder) {
+    public void saveProcessedGpxFile(GPX processedGpx, String filename) {
         saveGpxFile(processedGpx, filename, processedFolder);
     }
 
@@ -311,5 +309,17 @@ public class FileManager {
      */
     public File getProcessedFolder() {
         return processedFolder;
+    }
+
+    public void setAppFolder(File aF) {
+        this.appFolder = aF;
+    }
+
+    public void setRawFolder(File rF) {
+        this.rawFolder = rF;
+    }
+
+    public void setProcessedFolder(File pF) {
+        this.processedFolder = pF;
     }
 }
