@@ -17,12 +17,15 @@ import java.util.List;
 public class Window extends JFrame {
     final int HEADER_FONT_SIZE = 24;
     final int TEXT_FONT_SIZE = 16;
+    private final OperationManager OPERATION_MANAGER;
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
 
     public Window(final OperationManager OPERATION_MANAGER) {
+        this.OPERATION_MANAGER = OPERATION_MANAGER;
+
         setTitle(Messages.PROJECT_NAME.get());
         setSize(800, 400);
         setLocationRelativeTo(null);
@@ -52,6 +55,10 @@ public class Window extends JFrame {
                 }
             }
         });
+    }
+
+    public OperationManager getOPERATION_MANAGER() {
+        return OPERATION_MANAGER;
     }
 
     /**
