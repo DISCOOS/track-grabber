@@ -115,6 +115,13 @@ public class OperationManager {
     }
 
     /**
+     * Checking the file system to load all operations.
+     */
+    public void reloadExistingOperations() {
+        existingOperations = fileManager.loadExistingOperations(fileManager.getAppFolder());
+    }
+
+    /**
      * Tell the window to add the existing operations to the selector in the user interface.
      *
      * @param operations the existing operations to show.

@@ -380,6 +380,7 @@ public class OperationPanel extends JPanel {
                 } else {
                     Operation operation = new Operation(operationName, day, month, year, hour, minute);
                     OPERATION_MANAGER.setupOperation(operation);
+                    OPERATION_MANAGER.reloadExistingOperations();
                     setVisibilityNewOperation(false);
                     setVisibilityToggleEditInfo(true);
                     errorMessageLabel.setVisible(false);
