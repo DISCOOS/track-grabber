@@ -1,5 +1,6 @@
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.gui.Window;
+import no.hvl.dowhile.utility.Messages;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.edt.GuiTask;
@@ -34,11 +35,11 @@ public class OperationPanelTest {
     }
 
     @Test
-    public void test() {
+    public void errorMessageLabelTest() {
         windowFixture.button("newOperationButton").click();
-        windowFixture.textBox("operationNameInput").enterText("Tester GUI på Voss");
+        windowFixture.textBox("operationNameInput").enterText("TestWrong-.-");
         windowFixture.button("registerNewButton").click();
-        windowFixture.label("operationInfoName").requireText("Tester GUI på Voss");
+        windowFixture.label("errorMessageLabel").requireText(Messages.INVALID_OPERATION_NAME.get());
     }
 
     @After
