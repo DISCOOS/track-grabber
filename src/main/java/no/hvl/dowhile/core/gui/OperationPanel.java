@@ -87,13 +87,6 @@ public class OperationPanel extends JPanel {
         backButtonListener();
         importFileButtonListener();
 
-        newOperationButton.setName("newOperationButton");
-        existingOperationButton.setName("existingOperationButton");
-        operationNameInput.setName("operationNameInput");
-        registerNewButton.setName("registerNewButton");
-        registerExistingButton.setName("registerExistingButton");
-        errorMessageLabel.setName("errorMessageLabel");
-
         setBackground(new Color(255, 245, 252));
     }
 
@@ -118,6 +111,7 @@ public class OperationPanel extends JPanel {
         newOperationButton.setPreferredSize(new Dimension(200, 50));
         newOperationButton.setBackground(new Color(242, 94, 94));
         add(newOperationButton, constraints);
+        newOperationButton.setName("newOperationButton");
 
         // Existing operation button
         existingOperationButton = new JButton(Messages.EXISTING_OPERATION_BUTTON.get());
@@ -125,6 +119,7 @@ public class OperationPanel extends JPanel {
         existingOperationButton.setPreferredSize(new Dimension(200, 50));
         existingOperationButton.setBackground(new Color(242, 94, 94));
         add(existingOperationButton, constraints);
+        existingOperationButton.setName("existingOperationButton");
     }
 
     /**
@@ -146,6 +141,7 @@ public class OperationPanel extends JPanel {
         registerExistingButton = new JButton(Messages.REGISTER_EXISTING_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 3, 1, GridBagConstraints.CENTER, 1);
         add(registerExistingButton, constraints);
+        registerExistingButton.setName("registerExistingButton");
     }
 
     /**
@@ -156,23 +152,27 @@ public class OperationPanel extends JPanel {
         operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 2);
         add(operationNameLabel, constraints);
+        operationNameLabel.setName("operationNameLabel");
 
         // New operation name input
         operationNameInput = new JTextField();
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.CENTER, 4);
         constraints.fill = GridBagConstraints.BOTH;
         add(operationNameInput, constraints);
+        operationNameInput.setName("operationNameInput");
 
         // Error message label
         errorMessageLabel = WINDOW.makeLabel(" ", WINDOW.TEXT_FONT_SIZE);
         errorMessageLabel.setForeground(Color.RED);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 4);
         add(errorMessageLabel, constraints);
+        errorMessageLabel.setName("errorMessageLabel");
 
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 2);
         add(operationDateLabel, constraints);
+        operationDateLabel.setName("operationDateLabel");
 
         datePicker = new DatePicker(createDateSettings());
         WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
@@ -186,6 +186,7 @@ public class OperationPanel extends JPanel {
         registerNewButton = new JButton(Messages.REGISTER_NEW_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.CENTER, 2);
         add(registerNewButton, constraints);
+        registerNewButton.setName("registerNewButton");
     }
 
     /**
