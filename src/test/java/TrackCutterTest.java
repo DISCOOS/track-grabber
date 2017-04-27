@@ -12,6 +12,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static junit.framework.TestCase.assertFalse;
+
 public class TrackCutterTest {
 
     OperationManager opManager;
