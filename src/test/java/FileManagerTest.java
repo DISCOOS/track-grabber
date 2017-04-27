@@ -103,8 +103,8 @@ public class FileManagerTest {
 
     @Test
     public void trackPointsOfTwoSimilarFilesAreEqual() {
-        GPX gpx1 = TrackTools.getGpxFromFile(new File("src/testFile.gpx"));
-        GPX gpx2 = TrackTools.getGpxFromFile(new File("src/testFile.gpx"));
+        GPX gpx1 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
+        GPX gpx2 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         fileManager.saveGpxFile(gpx1, "Filnavn", rawFolder);
         File[] rawFiles = rawFolder.listFiles();
         assertTrue(fileManager.trackPointsAreEqual(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
@@ -112,8 +112,8 @@ public class FileManagerTest {
 
     @Test
     public void trackPointsOfTwoDifferentFilesAreDifferent() {
-        GPX gpx1 = TrackTools.getGpxFromFile(new File("src/testFile.gpx"));
-        GPX gpx2 = TrackTools.getGpxFromFile(new File("src/testFile2.gpx"));
+        GPX gpx1 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
+        GPX gpx2 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile2.gpx"));
         fileManager.saveGpxFile(gpx1, "Filnavn", rawFolder);
         File[] rawFiles = rawFolder.listFiles();
         assertFalse(fileManager.trackPointsAreEqual(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
@@ -121,14 +121,14 @@ public class FileManagerTest {
 
     @Test
     public void alreadyImportedFileIsAlreadyImported() {
-        GPX gpx = TrackTools.getGpxFromFile(new File("src/testFile.gpx"));
+        GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         fileManager.saveRawGpxFile(gpx, "Filnavn", rawFolder);
         assertTrue(fileManager.fileAlreadyImported(gpx, rawFolder));
     }
 
     @Test
     public void rawGPXFileIsSaved() {
-        GPX gpx = TrackTools.getGpxFromFile(new File("src/testFile.gpx"));
+        GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         fileManager.saveRawGpxFile(gpx, "Filnavn", rawFolder);
         File savedRawFile = FileTools.getFile(rawFolder, "Filnavn");
         assertNotNull(savedRawFile);
@@ -136,7 +136,7 @@ public class FileManagerTest {
 
     @Test
     public void processedGPXFileIsSaved() {
-        GPX gpx = TrackTools.getGpxFromFile(new File("src/testFile.gpx"));
+        GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         fileManager.saveProcessedGpxFile(gpx, "Filnavn", processedFolder);
         File savedProcessedFile = FileTools.getFile(processedFolder, "Filnavn");
         assertNotNull(savedProcessedFile);
