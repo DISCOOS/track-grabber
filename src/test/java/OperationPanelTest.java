@@ -1,5 +1,3 @@
-package no.hvl.dowhile.tests.guitests;
-
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.gui.Window;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;

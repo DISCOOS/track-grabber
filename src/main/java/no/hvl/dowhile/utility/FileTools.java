@@ -6,7 +6,6 @@ import org.alternativevision.gpx.beans.Track;
 
 import java.io.*;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -145,7 +144,8 @@ public class FileTools {
 
     /**
      * Search for a given substring in the given text file
-     * @param file the file to check.
+     *
+     * @param file      the file to check.
      * @param substring the substring to look for.
      * @return true if the substring is found, false if not
      * @throws FileNotFoundException if the file doesn't exist.

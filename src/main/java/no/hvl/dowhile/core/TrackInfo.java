@@ -28,7 +28,7 @@ public class TrackInfo {
      * @param crewCount    number of people on the crew.
      * @param crewNumber   the number of this crew.
      * @param areaSearched the area they were searching in.
-     * @param trackNumber the number of track (if multiple tracks for a team etc).
+     * @param trackNumber  the number of track (if multiple tracks for a team etc).
      */
     public TrackInfo(String crewType, int crewCount, int crewNumber, String areaSearched, int trackNumber) {
         this.crewType = crewType;
@@ -58,6 +58,7 @@ public class TrackInfo {
 
     /**
      * Get the number of people on this crew.
+     *
      * @return the number of people on this creative.
      */
     public int getCrewCount() {
@@ -66,6 +67,7 @@ public class TrackInfo {
 
     /**
      * Set the number of people on this crew.
+     *
      * @param crewCount the number of people on this crew.
      */
     public void setCrewCount(int crewCount) {
@@ -74,6 +76,7 @@ public class TrackInfo {
 
     /**
      * Get the number of this crew.
+     *
      * @return the number of this crew.
      */
     public int getCrewNumber() {
@@ -82,6 +85,7 @@ public class TrackInfo {
 
     /**
      * Set the number of this crew.
+     *
      * @param groupNumber the number of this crew.
      */
     public void setCrewNumber(int groupNumber) {
@@ -90,6 +94,7 @@ public class TrackInfo {
 
     /**
      * Get the area where this team were searching.
+     *
      * @return the area where this team were searching.
      */
     public String getAreaSearched() {
@@ -98,6 +103,7 @@ public class TrackInfo {
 
     /**
      * Set the area where this team were searching.
+     *
      * @param areaSearched the area where this team were searching.
      */
     public void setAreaSearched(String areaSearched) {

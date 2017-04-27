@@ -36,6 +36,7 @@ public class Config {
 
     /**
      * Get the current pattern to use for the filenames.
+     *
      * @return the pattern for the filenames.
      */
     public String getPattern() {
@@ -44,6 +45,7 @@ public class Config {
 
     /**
      * Set the pattern to use for the filenames.
+     *
      * @param pattern the pattern for the filenames.
      */
     public void setPattern(String pattern) {
@@ -52,6 +54,7 @@ public class Config {
 
     /**
      * Insert track info data into the pattern to generate the filename.
+     *
      * @param trackInfo the info to insert.
      * @return the filename.
      */

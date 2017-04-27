@@ -29,6 +29,7 @@ public class StringTools {
 
     /**
      * Checks if a given name is a valid operation name (contains only letters and/or numbers).
+     *
      * @param operationName the name to check.
      * @return true if the name is valid, false if not.
      */

@@ -1,5 +1,3 @@
-package no.hvl.dowhile.tests;
-
 import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;

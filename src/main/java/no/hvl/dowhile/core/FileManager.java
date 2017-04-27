@@ -101,8 +101,9 @@ public class FileManager {
 
     /**
      * Creates an operation file for the given Operation, into the given operation folder.
+     *
      * @param operation the operation to create the file for.
-     * @param folder the folder to save the file to.
+     * @param folder    the folder to save the file to.
      */
     public void createOperationFile(Operation operation, File folder) {
         File operationFile = new File(folder, operation.getName().trim().replace(" ", "_") + ".txt");
@@ -118,6 +119,7 @@ public class FileManager {
 
     /**
      * Replacing the content of the operation file with the new operation info.
+     *
      * @param operation
      * @param folder
      */
@@ -158,7 +160,7 @@ public class FileManager {
     /**
      * Checking if a file has been saved in the rawfolder already.
      *
-     * @param newGpx The gpx file to check.
+     * @param newGpx    The gpx file to check.
      * @param rawFolder The operation's raw folder.
      * @return true if the file is matching a file, false if not.
      */
@@ -286,6 +288,7 @@ public class FileManager {
 
     /**
      * Gets the app folder.
+     *
      * @return the app folder
      */
     public File getAppFolder() {
@@ -294,6 +297,7 @@ public class FileManager {
 
     /**
      * Gets the raw folder.
+     *
      * @return the raw folder
      */
     public File getRawFolder() {
@@ -302,6 +306,7 @@ public class FileManager {
 
     /**
      * Gets the processed folder.
+     *
      * @return the processed folder
      */
     public File getProcessedFolder() {

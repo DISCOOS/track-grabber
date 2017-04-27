@@ -1,5 +1,3 @@
-package no.hvl.dowhile.tests;
-
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.TrackCutter;
 import no.hvl.dowhile.core.TrackInfo;
@@ -13,8 +11,6 @@ import org.junit.Test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-
-import static junit.framework.TestCase.assertFalse;
 
 public class TrackCutterTest {
 
@@ -39,7 +35,7 @@ public class TrackCutterTest {
     public void trackIsFilteredOnStartTime() {
 
         Waypoint firstTrackpoint = trackPoints.get(0);
-        Waypoint lastTrackpoint = trackPoints.get(trackPoints.size()-1);
+        Waypoint lastTrackpoint = trackPoints.get(trackPoints.size() - 1);
 
         long firstPointStart = firstTrackpoint.getTime().getTime();
         long lastPointStart = lastTrackpoint.getTime().getTime();

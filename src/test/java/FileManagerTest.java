@@ -1,5 +1,3 @@
-package no.hvl.dowhile.tests;
-
 import no.hvl.dowhile.core.FileManager;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
@@ -17,12 +15,13 @@ import java.io.IOException;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class FileManagerTest {
 
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
     private OperationManager opManager;
     private FileManager fileManager;
     private File appFolder;
@@ -31,9 +30,6 @@ public class FileManagerTest {
     private File processedFolder;
     private Operation operation;
     private String operationName;
-
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Before
     public void before() throws IOException {
