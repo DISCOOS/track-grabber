@@ -174,7 +174,7 @@ public class OperationManager {
      *
      * @param file the file to process.
      */
-    private void processFile(File file) {
+    public void processFile(File file) {
         GPX gpx = TrackTools.getGpxFromFile(file);
         if (gpx == null) {
             System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
@@ -264,5 +264,25 @@ public class OperationManager {
      */
     public Config getConfig() {
         return config;
+    }
+
+    /**
+     * Gets the file manager.
+     * @return the file manager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * Sets the file manager.
+     * @param fileManager a file manager
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
+
+    public List<File> getQueue() {
+        return queue;
     }
 }

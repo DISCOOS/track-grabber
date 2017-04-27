@@ -1,7 +1,6 @@
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.drive.Drive;
 import no.hvl.dowhile.core.drive.DriveDetector;
-import no.hvl.dowhile.core.drive.GPSDrive;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
