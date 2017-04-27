@@ -70,7 +70,7 @@ public class DriveDetector implements Runnable {
      * @param driveLetter the letter of the drive to check.
      * @param listRoot    the actual drive to check.
      */
-    private void registerConnectedDrive(String driveLetter, File listRoot) {
+    public void registerConnectedDrive(String driveLetter, File listRoot) {
         GPSDrive gpsDrive = validateDrive(driveLetter, listRoot);
         if (gpsDrive != null) {
             OPERATION_MANAGER.handleGPSDrive(gpsDrive);
@@ -90,7 +90,7 @@ public class DriveDetector implements Runnable {
      *
      * @param listRoots the drives currently connected.
      */
-    private void unregisterRemovedDrives(File[] listRoots) {
+    public void unregisterRemovedDrives(File[] listRoots) {
         Set<String> listRootLetters = new HashSet<>();
         Set<String> drivesToRemove = new HashSet<>();
         for (File listRoot : listRoots) {
