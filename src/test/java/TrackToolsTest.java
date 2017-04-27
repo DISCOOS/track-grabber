@@ -28,7 +28,7 @@ public class TrackToolsTest {
 
     @Before
     public void before() {
-        gpxFile = TrackTools.getGpxFromFile(new File("src/testFile.gpx"));
+        gpxFile = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         track = TrackTools.getTrackFromGPXFile(gpxFile);
         trackPoints = track.getTrackPoints();
 
