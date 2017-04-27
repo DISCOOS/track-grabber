@@ -311,14 +311,26 @@ public class FileManager {
         return processedFolder;
     }
 
+    /**
+     * Sets the app folder.
+     * @param aF an app folder
+     */
     public void setAppFolder(File aF) {
         this.appFolder = aF;
     }
 
+    /**
+     * Sets the raw folder.
+     * @param rF a raw folder
+     */
     public void setRawFolder(File rF) {
         this.rawFolder = rF;
     }
 
+    /**
+     * Sets the processed folder.
+     * @param pF a processed folder
+     */
     public void setProcessedFolder(File pF) {
         this.processedFolder = pF;
     }
