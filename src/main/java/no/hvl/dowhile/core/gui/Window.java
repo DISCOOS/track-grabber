@@ -4,10 +4,14 @@ import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -30,6 +34,11 @@ public class Window extends JFrame {
         setSize(800, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        Image logo = getLogo();
+        if (logo != null) {
+            setIconImage(logo);
+        }
 
         headerPanel = new HeaderPanel(this);
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
@@ -55,6 +64,16 @@ public class Window extends JFrame {
                 }
             }
         });
+    }
+
+    private Image getLogo() {
+        BufferedImage bufferedImage;
+        try {
+            bufferedImage = ImageIO.read(new File("src/main/resources/red_cross_icon.jpg"));
+        } catch (IOException ex) {
+            return null;
+        }
+        return bufferedImage;
     }
 
     public OperationManager getOPERATION_MANAGER() {
