@@ -45,43 +45,22 @@ public class OperationPanelTest {
 
     @Test
     public void newOperationFieldsIsVisibleAfterClick() {
-        windowFixture.button("newOperationButton").click();
-        windowFixture.label("operationNameLabel").requireVisible();
-        windowFixture.textBox("operationNameInput").requireVisible();
-        windowFixture.label("errorMessageLabel").requireVisible();
-        windowFixture.label("operationDateLabel").requireVisible();
-        windowFixture.button("registerNewButton").requireVisible();
-        windowFixture.button("backButton").requireVisible();
+
     }
 
     @Test
     public void newOperationFieldsIsHiddenAfterBackButtonClick() {
-        windowFixture.button("newOperationButton").click();
-        windowFixture.button("backButton").click();
-        windowFixture.label("operationNameLabel").requireNotVisible();
-        windowFixture.textBox("operationNameInput").requireNotVisible();
-        windowFixture.label("errorMessageLabel").requireNotVisible();
-        windowFixture.label("operationDateLabel").requireNotVisible();
-        windowFixture.button("registerNewButton").requireNotVisible();
+
     }
 
     @Test
     public void existingOperationFieldsIsVisibleAfterClick() {
-        windowFixture.button("existingOperationButton").click();
-        windowFixture.label("existingOperationLabel").requireVisible();
-        windowFixture.comboBox("existingOperationInput").requireVisible();
-        windowFixture.label("registerExistingButton").requireVisible();
-        windowFixture.button("backButton").requireVisible();
+
     }
 
     @Test
     public void existingOperationFieldsIsHiddenAfterBackButtonClick() {
-        windowFixture.button("existingOperationButton").click();
-        windowFixture.button("backButton").click();
-        windowFixture.label("existingOperationLabel").requireNotVisible();
-        windowFixture.comboBox("existingOperationInput").requireNotVisible();
-        windowFixture.label("registerExistingButton").requireNotVisible();
-        windowFixture.button("backButton").requireNotVisible();
+
     }
 
     /*@Test
