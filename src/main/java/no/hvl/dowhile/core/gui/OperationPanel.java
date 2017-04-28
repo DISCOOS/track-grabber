@@ -108,19 +108,19 @@ public class OperationPanel extends JPanel {
     private void chooseOperationGUI() {
         // New operation button
         newOperationButton = new JButton(Messages.NEW_OPERATION_BUTTON.get());
+        newOperationButton.setName("newOperationButton");
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.CENTER, 2);
         newOperationButton.setPreferredSize(new Dimension(200, 50));
         newOperationButton.setBackground(new Color(242, 94, 94));
         add(newOperationButton, constraints);
-        newOperationButton.setName("newOperationButton");
 
         // Existing operation button
         existingOperationButton = new JButton(Messages.EXISTING_OPERATION_BUTTON.get());
+        existingOperationButton.setName("existingOperationButton");
         WINDOW.modifyConstraints(constraints, 2, 0, GridBagConstraints.CENTER, 2);
         existingOperationButton.setPreferredSize(new Dimension(200, 50));
         existingOperationButton.setBackground(new Color(242, 94, 94));
         add(existingOperationButton, constraints);
-        existingOperationButton.setName("existingOperationButton");
     }
 
     /**
@@ -129,20 +129,22 @@ public class OperationPanel extends JPanel {
     private void existingOperationGUI() {
         // Already existing operation label
         existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
+        existingOperationLabel.setName("existingOperationLabel");
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 3);
         add(existingOperationLabel, constraints);
 
         // Already existing operation input
         existingOperationInput = new JComboBox<>();
+        existingOperationInput.setName("existingOperationInput");
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 3);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(existingOperationInput, constraints);
 
         // Register existing operation
         registerExistingButton = new JButton(Messages.REGISTER_EXISTING_BUTTON.get());
+        registerExistingButton.setName("registerExistingButton");
         WINDOW.modifyConstraints(constraints, 3, 1, GridBagConstraints.CENTER, 1);
         add(registerExistingButton, constraints);
-        registerExistingButton.setName("registerExistingButton");
     }
 
     /**
@@ -151,29 +153,29 @@ public class OperationPanel extends JPanel {
     private void createNewOperationGUI() {
         // New operation label
         operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
+        operationNameLabel.setName("operationNameLabel");
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 2);
         add(operationNameLabel, constraints);
-        operationNameLabel.setName("operationNameLabel");
 
         // New operation name input
         operationNameInput = new JTextField();
+        operationNameInput.setName("operationNameInput");
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.CENTER, 4);
         constraints.fill = GridBagConstraints.BOTH;
         add(operationNameInput, constraints);
-        operationNameInput.setName("operationNameInput");
 
         // Error message label
         errorMessageLabel = WINDOW.makeLabel(" ", WINDOW.TEXT_FONT_SIZE);
+        errorMessageLabel.setName("errorMessageLabel");
         errorMessageLabel.setForeground(Color.RED);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 4);
         add(errorMessageLabel, constraints);
-        errorMessageLabel.setName("errorMessageLabel");
 
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
+        operationDateLabel.setName("operationDateLabel");
         WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 2);
         add(operationDateLabel, constraints);
-        operationDateLabel.setName("operationDateLabel");
 
         datePicker = new DatePicker(createDateSettings());
         WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
@@ -185,9 +187,9 @@ public class OperationPanel extends JPanel {
 
         // Register new operation
         registerNewButton = new JButton(Messages.REGISTER_NEW_BUTTON.get());
+        registerNewButton.setName("registerNewButton");
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.CENTER, 2);
         add(registerNewButton, constraints);
-        registerNewButton.setName("registerNewButton");
     }
 
     /**
@@ -196,22 +198,26 @@ public class OperationPanel extends JPanel {
     private void activeOperationGUI() {
         // Awaiting GPS label
         awaitingGPSLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get(), WINDOW.TEXT_FONT_SIZE);
+        awaitingGPSLabel.setName("awaitingGPSLabel");
         WINDOW.modifyConstraints(constraints, 1, 0, GridBagConstraints.CENTER, 2);
         add(awaitingGPSLabel, constraints);
         awaitingGPSLabel.setVisible(false);
 
         // Import local GPX-file button
         importFileButton = new JButton(Messages.IMPORT_LOCAL_FILE.get());
+        importFileButton.setName("importFileButton");
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.CENTER, 4);
         add(importFileButton, constraints);
 
         // Edit info toggle button
         toggleEditInfoButton = new JButton(Messages.EDIT_INFO_SHOW_BUTTON.get());
+        toggleEditInfoButton.setName("toggleEditInfoButton");
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
         add(toggleEditInfoButton, constraints);
 
         // Switch operation
         switchOperationButton = new JButton(Messages.CHOOSE_OTHER_OPERATION.get());
+        switchOperationButton.setName("switchOperationButton");
         WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.CENTER, 2);
         add(switchOperationButton, constraints);
     }

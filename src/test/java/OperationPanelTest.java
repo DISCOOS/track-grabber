@@ -65,6 +65,25 @@ public class OperationPanelTest {
         windowFixture.button("registerNewButton").requireNotVisible();
     }
 
+    @Test
+    public void existingOperationFieldsIsVisibleAfterClick() {
+        windowFixture.button("existingOperationButton").click();
+        windowFixture.label("existingOperationLabel").requireVisible();
+        windowFixture.comboBox("existingOperationInput").requireVisible();
+        windowFixture.label("registerExistingButton").requireVisible();
+        windowFixture.button("backButton").requireVisible();
+    }
+
+    @Test
+    public void existingOperationFieldsIsHiddenAfterBackButtonClick() {
+        windowFixture.button("existingOperationButton").click();
+        windowFixture.button("backButton").click();
+        windowFixture.label("existingOperationLabel").requireNotVisible();
+        windowFixture.comboBox("existingOperationInput").requireNotVisible();
+        windowFixture.label("registerExistingButton").requireNotVisible();
+        windowFixture.button("backButton").requireNotVisible();
+    }
+
     /*@Test
     public void errorMessageWhenTryingToCreateExistingNameOnOperation() {
         windowFixture.button("newOperationButton").click();
