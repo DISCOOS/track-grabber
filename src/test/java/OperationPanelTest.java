@@ -5,6 +5,9 @@ import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.edt.GuiTask;
 import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.JButtonFixture;
+import org.assertj.swing.fixture.JLabelFixture;
+import org.assertj.swing.fixture.JTextComponentFixture;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
@@ -45,7 +48,25 @@ public class OperationPanelTest {
 
     @Test
     public void newOperationFieldsIsVisibleAfterClick() {
+        JButtonFixture newOperationButton = windowFixture.button("newOperationButton");
+        JLabelFixture operationNameLabel = windowFixture.label("operationNameLabel");
+        JTextComponentFixture operationNameInput = windowFixture.textBox("operationNameInput");
+        JLabelFixture operationDateLabel = windowFixture.label("operationDateLabel");
+        JButtonFixture registerNewButton = windowFixture.button("registerNewButton");
 
+        newOperationButton.requireVisible();
+
+        operationNameLabel.requireNotVisible();
+        operationNameInput.requireNotVisible();
+        operationDateLabel.requireNotVisible();
+        registerNewButton.requireNotVisible();
+
+        newOperationButton.click();
+
+        operationNameLabel.requireVisible();
+        operationNameInput.requireVisible();
+        operationDateLabel.requireVisible();
+        registerNewButton.requireVisible();
     }
 
     @Test
