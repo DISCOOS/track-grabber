@@ -138,9 +138,8 @@ public class OperationManager {
      * @see GPSDrive
      */
     public void handleGPSDrive(GPSDrive gpsDrive) {
-        File currentFolder = gpsDrive.getCurrentFolder();
-        File archiveFolder = gpsDrive.getArchiveFolder();
-        Set<File> gpxFiles = FileTools.findGpxFiles(archiveFolder);
+        File gpxFolder = gpsDrive.getGpxFolder();
+        Set<File> gpxFiles = FileTools.findGpxFiles(gpxFolder);
         if (gpxFiles.isEmpty()) {
             System.err.println("No gpx files.");
             return;
@@ -178,6 +177,10 @@ public class OperationManager {
         GPX gpx = TrackTools.getGpxFromFile(file);
         if (gpx == null) {
             System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
+            return;
+        }
+        if (!TrackTools.fileHasTrack(gpx)) {
+            System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
         }
         if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {

@@ -31,11 +31,12 @@ public class TrackTools {
 
     /**
      * Checks if the given file has a track or not.
-     * @param gpx
+     * @param gpx the gpx to check.
      * @return true if the file has a track, false if not.
      */
     public static boolean fileHasTrack(GPX gpx) {
-        return getTrackFromGPXFile(gpx) != null;
+        Track track = getTrackFromGPXFile(gpx);
+        return track != null && !track.getTrackPoints().isEmpty();
     }
 
     /**
