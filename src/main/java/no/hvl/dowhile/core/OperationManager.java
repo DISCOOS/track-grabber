@@ -26,7 +26,7 @@ public class OperationManager {
     private Operation operation;
     private List<Operation> existingOperations;
     private TrackCutter currentTrackCutter;
-    private List<File> queue;
+    private List<GPX> queue;
 
     public OperationManager() {
         this.active = true;
@@ -186,7 +186,7 @@ public class OperationManager {
         if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
             if (!fileManager.fileAlreadyImported(gpx)) {
                 fileManager.saveRawGpxFile(gpx, file.getName());
-                queue.add(file);
+                queue.add(gpx);
             } else {
                 System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
             }
@@ -201,10 +201,9 @@ public class OperationManager {
      */
     public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
-        File file = queue.remove(0);
-        GPX gpx = TrackTools.getGpxFromFile(file);
+        GPX gpx = queue.remove(0);
         currentTrackCutter.setTrackFile(gpx);
-        window.updateCurrentFile(file.getName(), queue.size());
+        window.updateCurrentFile("Under utvikling.", queue.size()); //TODO: Fiks navnet.
         window.openTrackPanel();
     }
 
@@ -271,6 +270,7 @@ public class OperationManager {
 
     /**
      * Gets the file manager.
+     *
      * @return the file manager
      */
     public FileManager getFileManager() {
@@ -279,6 +279,7 @@ public class OperationManager {
 
     /**
      * Sets the file manager.
+     *
      * @param fileManager a file manager
      */
     public void setFileManager(FileManager fileManager) {
@@ -287,14 +288,16 @@ public class OperationManager {
 
     /**
      * Gets the file queue.
+     *
      * @return the file queue
      */
-    public List<File> getQueue() {
+    public List<GPX> getQueue() {
         return queue;
     }
 
     /**
      * Gets the track cutter for the current track.
+     *
      * @return the track cutter for the current track.
      */
     public TrackCutter getCurrentTrackCutter() {
