@@ -10,8 +10,6 @@ import java.io.File;
 public class GPSDrive extends Drive {
     private File garminFolder;
     private File gpxFolder;
-    private File currentFolder;
-    private File archiveFolder;
 
     public GPSDrive(String driveLetter) {
         super(driveLetter);
@@ -23,7 +21,7 @@ public class GPSDrive extends Drive {
      * @return true if the folders are matching a GPS, false if not.
      */
     public boolean isValidGPSDrive() {
-        return garminFolder != null && gpxFolder != null && currentFolder != null && archiveFolder != null && garminFolder.getName().equals("Garmin") && gpxFolder.getName().equals("GPX") && currentFolder.getName().equals("Current") && archiveFolder.getName().equals("Archive");
+        return garminFolder != null && gpxFolder != null && garminFolder.getName().equals("Garmin") && gpxFolder.getName().equals("GPX");
     }
 
     /**
@@ -42,24 +40,6 @@ public class GPSDrive extends Drive {
      */
     public boolean hasGpxFolder() {
         return gpxFolder != null && gpxFolder.getName().equals("GPX");
-    }
-
-    /**
-     * Checking if the Current folder has been set.
-     *
-     * @return true if the folder has been set, false if not.
-     */
-    public boolean hasCurrentFolder() {
-        return currentFolder != null && currentFolder.getName().equals("Current");
-    }
-
-    /**
-     * Checking if the Archive folder has been set.
-     *
-     * @return true if the folder has been set, false if not.
-     */
-    public boolean hasArchiveFolder() {
-        return archiveFolder != null && archiveFolder.getName().equals("Archive");
     }
 
     /**
@@ -100,21 +80,5 @@ public class GPSDrive extends Drive {
      */
     public void setGpxFolder(File gpxFolder) {
         this.gpxFolder = gpxFolder;
-    }
-
-    public File getCurrentFolder() {
-        return currentFolder;
-    }
-
-    public void setCurrentFolder(File currentFolder) {
-        this.currentFolder = currentFolder;
-    }
-
-    public File getArchiveFolder() {
-        return archiveFolder;
-    }
-
-    public void setArchiveFolder(File archiveFolder) {
-        this.archiveFolder = archiveFolder;
     }
 }

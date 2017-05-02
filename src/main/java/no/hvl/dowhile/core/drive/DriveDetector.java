@@ -134,8 +134,6 @@ public class DriveDetector implements Runnable {
         if (!gpsDrive.hasGpxFolder()) {
             return null;
         }
-        gpsDrive.setCurrentFolder(FileTools.getFile(gpsDrive.getGpxFolder(), "Current"));
-        gpsDrive.setArchiveFolder(FileTools.getFile(gpsDrive.getGpxFolder(), "Archive"));
         if (!gpsDrive.isValidGPSDrive()) {
             return null;
         }
