@@ -55,7 +55,8 @@ public class OperationPanelTest {
 
     @Test
     public void existingOperationFieldsIsVisibleAfterClick() {
-
+        windowFixture.button("existingOperationButton").click();
+        windowFixture.comboBox("existingOperationInput").requireVisible();
     }
 
     @Test
