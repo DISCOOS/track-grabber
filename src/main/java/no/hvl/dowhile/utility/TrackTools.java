@@ -30,6 +30,15 @@ public class TrackTools {
     }
 
     /**
+     * Checks if the given file has a track or not.
+     * @param gpx
+     * @return true if the file has a track, false if not.
+     */
+    public static boolean fileHasTrack(GPX gpx) {
+        return getTrackFromGPXFile(gpx) != null;
+    }
+
+    /**
      * Checks if the track is older the operation, and therefore is irrelevant.
      *
      * @param gpx                the gpx to import.
