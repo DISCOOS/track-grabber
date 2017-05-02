@@ -22,8 +22,6 @@ public class DriveDetectorTest {
     private File rootFolder;
     private File garminFolder;
     private File gpxFolder;
-    private File currentFolder;
-    private File archiveFolder;
 
     private OperationManager operationManager;
     private Map<String, Drive> detectedDrives;
@@ -36,8 +34,6 @@ public class DriveDetectorTest {
         rootFolder = tempFolder.newFolder("Root");
         garminFolder = new File(rootFolder, "Garmin");
         gpxFolder = new File(garminFolder, "GPX");
-        currentFolder = new File(gpxFolder, "Current");
-        archiveFolder = new File(gpxFolder, "Archive");
     }
 
     @Test
@@ -52,34 +48,9 @@ public class DriveDetectorTest {
     }
 
     @Test
-    public void driveWithoutCurrentAndArchiveFolderIsInvalid() {
-        garminFolder.mkdir();
-        gpxFolder.mkdir();
-        assertNull(driveDetector.validateDrive("E", rootFolder));
-    }
-
-    @Test
-    public void driveWithoutCurrentFolderIsInvalid() {
-        garminFolder.mkdir();
-        gpxFolder.mkdir();
-        currentFolder.mkdir();
-        assertNull(driveDetector.validateDrive("E", rootFolder));
-    }
-
-    @Test
-    public void driveWithoutArchiveFolderIsInvalid() {
-        garminFolder.mkdir();
-        gpxFolder.mkdir();
-        archiveFolder.mkdir();
-        assertNull(driveDetector.validateDrive("E", rootFolder));
-    }
-
-    @Test
     public void validDriveIsValid() {
         garminFolder.mkdir();
         gpxFolder.mkdir();
-        currentFolder.mkdir();
-        archiveFolder.mkdir();
         assertTrue(driveDetector.validateDrive("E", rootFolder) != null);
     }
 
