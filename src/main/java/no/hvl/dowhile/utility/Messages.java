@@ -16,7 +16,6 @@ public enum Messages {
     FONT_NAME("Times New Roman"),
 
     // Window
-    GPS_OFFLINE("GPS: Koblet fra."),
     PROJECT_NAME("Track Grabber"),
     CONFIRM_EXIT("Vil du virkelig avslutte Track Grabber? Alle endringer vil bli lagret."),
     SPACER("                                                  "),
