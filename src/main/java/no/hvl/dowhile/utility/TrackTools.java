@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Utility methods to work with GPX files and tracks.
@@ -80,13 +81,48 @@ public class TrackTools {
     }
 
     /**
+     * Compares all track points in the new track with the track points of every other track files.
+     * Concludes based on this if the track already exists in the folder.
+     *
+     * @param rawFiles the files in the raw folder.
+     * @param newTrack the new track to import.
+     * @return true if the file matches an existing file, false if not.
+     */
+    public static boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
+        for (File rawFile : rawFiles) {
+            GPX rawGpx = TrackTools.getGpxFromFile(rawFile);
+            if (rawGpx != null) {
+                Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
+                if (rawTrack != null) {
+                    List<Waypoint> newPoints = newTrack.getTrackPoints();
+                    List<Waypoint> rawPoints = rawTrack.getTrackPoints();
+                    if (newPoints != null && rawPoints != null) {
+                        if (newPoints.size() == rawPoints.size()) {
+                            boolean trackPointsMatching = true;
+                            for (int i = 0; trackPointsMatching && i < newPoints.size() && i < rawPoints.size(); i++) {
+                                if (!matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
+                                    trackPointsMatching = false;
+                                }
+                            }
+                            if (trackPointsMatching) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Comparing latitude, longitude and elevation.
      *
      * @param waypoint1 waypoint to check.
      * @param waypoint2 waypoint to compare with.
      * @return true if the points are matching, false if not.
      */
-    public static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
+    private static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
         return waypoint1.getLatitude().equals(waypoint2.getLatitude()) && waypoint1.getLongitude().equals(waypoint2.getLongitude()) && waypoint1.getElevation().equals(waypoint2.getElevation());
     }
 }
