@@ -111,7 +111,7 @@ public class OperationManager {
      * @param minute the minute it started.
      */
     public void updateCurrentOperation(int year, int month, int day, int hour, int minute) {
-        operation.updateStartTime(year, month, day, hour, minute);
+        operation.setStartTime(year, month, day, hour, minute);
         window.updateOperationInfo(operation);
         fileManager.updateOperationFile(operation);
     }

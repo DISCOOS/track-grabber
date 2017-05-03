@@ -43,7 +43,7 @@ public class FileManagerTest {
         fileManager.setAppFolder(appFolder);
         fileManager.setRawFolder(rawFolder);
         fileManager.setProcessedFolder(processedFolder);
-        operation = new Operation(operationName, 30, 11, 2016, 11, 56);
+        operation = new Operation(operationName, 10, 30, 11, 2016, 11, 56);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class FileManagerTest {
     @Test
     public void operationFileIsUpdated() throws FileNotFoundException {
         fileManager.createOperationFile(operation, operationFolder);
-        operation.updateStartTime(2014, 10, 21, 10, 34);
+        operation.setStartTime(2014, 10, 21, 10, 34);
         fileManager.updateOperationFile(operation);
         File updatedOpFile = FileTools.getFile(operationFolder, operationName + ".txt");
         String updatedDateString = "# Starttid: 21-10/2014 10:34 CET";
