@@ -26,7 +26,7 @@ public class OperationManager {
     private Operation operation;
     private List<Operation> existingOperations;
     private TrackCutter currentTrackCutter;
-    private List<GPXFile> queue;
+    private List<GpxFile> queue;
 
     public OperationManager() {
         this.active = true;
@@ -186,8 +186,7 @@ public class OperationManager {
         if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
             if (!fileManager.fileAlreadyImported(gpx)) {
                 fileManager.saveRawGpxFile(gpx, file.getName());
-                GPXFile gpxFile = new GPXFile(file.getName(), gpx);
-                queue.add(gpxFile);
+                queue.add(new GpxFile(file.getName(), gpx));
             } else {
                 System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
             }
@@ -202,7 +201,7 @@ public class OperationManager {
      */
     public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
-        GPXFile gpxFile = queue.remove(0);
+        GpxFile gpxFile = queue.remove(0);
         currentTrackCutter.setTrackFile(gpxFile.getGpx());
         window.updateCurrentFile(gpxFile.getFilename(), queue.size());
         window.openTrackPanel();
@@ -292,7 +291,7 @@ public class OperationManager {
      *
      * @return the file queue
      */
-    public List<GPXFile> getQueue() {
+    public List<GpxFile> getQueue() {
         return queue;
     }
 
