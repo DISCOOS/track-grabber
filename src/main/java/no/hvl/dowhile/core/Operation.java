@@ -29,6 +29,7 @@ public class Operation {
      */
     public Operation(String name, int numberOfAreas, int day, int month, int year, int hour, int minute) {
         this.name = name;
+        this.numberOfAreas = numberOfAreas;
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, day, hour, minute);
         calendar.setTimeZone(TimeZone.getTimeZone("CET"));
