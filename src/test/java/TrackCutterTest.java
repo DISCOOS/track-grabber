@@ -30,7 +30,7 @@ public class TrackCutterTest {
         opManager = new OperationManager();
         cutter = new TrackCutter(opManager);
         cutter.setTrackInfo(new TrackInfo("", 0, 0, "", 0));
-        cutter.setTrackFile(gpxFile);
+        // cutter.setTrackFile(gpxFile);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class TrackCutterTest {
         long lastPointStart = lastTrackpoint.getTime().getTime();
         long middleTime = (firstPointStart + lastPointStart) / 2;
 
-        GPX cutFile = cutter.filterOnTimeStarted(new Date(middleTime));
+        cutter.filterOnTimeStarted(new Date(middleTime));
 
         assertFalse(track.getTrackPoints().contains(firstTrackpoint));
     }
