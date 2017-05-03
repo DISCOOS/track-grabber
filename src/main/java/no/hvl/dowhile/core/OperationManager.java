@@ -67,10 +67,26 @@ public class OperationManager {
     }
 
     /**
+     * Get the current instance of the Window.
+     *
+     * @return the current instance of the Window.
+     */
+    public Window getWindow() {
+        return window;
+    }
+
+    /**
      * Starts listening for new drives connected.
      */
     public void start() {
         new Thread(driveDetector).start();
+    }
+
+    /**
+     * Perform actions required to be done before the program is shutdown.
+     */
+    public void stop() {
+        removeUnprocessedFiles();
     }
 
     /**
@@ -202,7 +218,7 @@ public class OperationManager {
     public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
         GpxFile gpxFile = queue.remove(0);
-        currentTrackCutter.setTrackFile(gpxFile.getGpx());
+        currentTrackCutter.setGpxFile(gpxFile);
         window.updateCurrentFile(gpxFile.getFilename(), queue.size());
         window.openTrackPanel();
     }
@@ -213,21 +229,33 @@ public class OperationManager {
      * @param trackInfo info about the currently imported track.
      */
     public void initiateTrackCutter(TrackInfo trackInfo) {
-        if (currentTrackCutter == null || currentTrackCutter.getTrackFile() == null) {
+        if (currentTrackCutter == null || currentTrackCutter.getGpxFile() == null) {
             Messages.ERROR_NO_TRACK_FOR_INFO.print();
             return;
         }
         currentTrackCutter.setTrackInfo(trackInfo);
         currentTrackCutter.process();
-        GPX gpxFile = currentTrackCutter.getTrackFile();
+        GpxFile gpxFile = currentTrackCutter.getGpxFile();
         String newName = config.generateFilename(trackInfo);
-        Track track = TrackTools.getTrackFromGPXFile(gpxFile);
+        Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
         track.setName(newName);
-        fileManager.saveProcessedGpxFile(gpxFile, newName);
+        fileManager.saveProcessedGpxFile(gpxFile.getGpx(), newName);
         if (queue.isEmpty()) {
             window.openOperationPanel();
         } else {
             prepareNextFile();
+        }
+    }
+
+    /**
+     * This method will remove the files from the raw folder as they are not yet processed when in the queue.
+     */
+    public void removeUnprocessedFiles() {
+        for (GpxFile gpxFile : queue) {
+            fileManager.deleteRawFile(gpxFile.getFilename());
+        }
+        if (currentTrackCutter != null && currentTrackCutter.getGpxFile() != null) {
+            fileManager.deleteRawFile(currentTrackCutter.getGpxFile().getFilename());
         }
     }
 

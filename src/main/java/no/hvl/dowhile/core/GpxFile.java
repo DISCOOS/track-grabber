@@ -35,4 +35,8 @@ public class GpxFile {
     public GPX getGpx() {
         return gpx;
     }
+
+    public void setGpx(GPX gpx) {
+        this.gpx = gpx;
+    }
 }

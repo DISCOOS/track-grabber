@@ -27,6 +27,78 @@ public class FileManager {
     }
 
     /**
+     * Gets the app folder.
+     *
+     * @return the app folder
+     */
+    public File getAppFolder() {
+        return appFolder;
+    }
+
+    /**
+     * Sets the app folder.
+     *
+     * @param appFolder an app folder
+     */
+    public void setAppFolder(File appFolder) {
+        this.appFolder = appFolder;
+    }
+
+    /**
+     * Gets the raw folder.
+     *
+     * @return the raw folder
+     */
+    public File getRawFolder() {
+        return rawFolder;
+    }
+
+    /**
+     * Sets the raw folder.
+     *
+     * @param rawFolder a raw folder
+     */
+    public void setRawFolder(File rawFolder) {
+        this.rawFolder = rawFolder;
+    }
+
+    /**
+     * Gets the processed folder.
+     *
+     * @return the processed folder
+     */
+    public File getProcessedFolder() {
+        return processedFolder;
+    }
+
+    /**
+     * Sets the processed folder.
+     *
+     * @param processedFolder a processed folder
+     */
+    public void setProcessedFolder(File processedFolder) {
+        this.processedFolder = processedFolder;
+    }
+
+    /**
+     * Deletes the specified file from the rawfolder.
+     *
+     * @param filename the name of the file to delete.
+     */
+    public void deleteRawFile(String filename) {
+        File file = new File(rawFolder, filename);
+        if (!file.exists()) {
+            return;
+        }
+        boolean deleted = file.delete();
+        if (deleted) {
+            System.err.println("File " + filename + " deleted.");
+        } else {
+            System.err.println("Tried to delete " + filename + " from rawfolder, however it didn't work.");
+        }
+    }
+
+    /**
      * Setting up folder for storing processed and raw files.
      *
      * @param listRoot the drive to store the files.
@@ -159,7 +231,7 @@ public class FileManager {
     /**
      * Checking if a file has been saved in the rawfolder already.
      *
-     * @param newGpx    The gpx file to check.
+     * @param newGpx The gpx file to check.
      * @return true if the file is matching a file, false if not.
      */
     public boolean fileAlreadyImported(GPX newGpx) {
@@ -282,58 +354,5 @@ public class FileManager {
         } catch (IOException ex) {
             System.err.println("Failed while reading from config file.");
         }
-    }
-
-    /**
-     * Gets the app folder.
-     *
-     * @return the app folder
-     */
-    public File getAppFolder() {
-        return appFolder;
-    }
-
-    /**
-     * Sets the app folder.
-     *
-     * @param appFolder an app folder
-     */
-    public void setAppFolder(File appFolder) {
-        this.appFolder = appFolder;
-    }
-
-    /**
-     * Gets the raw folder.
-     *
-     * @return the raw folder
-     */
-    public File getRawFolder() {
-        return rawFolder;
-    }
-
-    /**
-     * Sets the raw folder.
-     *
-     * @param rawFolder a raw folder
-     */
-    public void setRawFolder(File rawFolder) {
-        this.rawFolder = rawFolder;
-    }
-
-    /**
-     * Gets the processed folder.
-     *
-     * @return the processed folder
-     */
-    public File getProcessedFolder() {
-        return processedFolder;
-    }
-
-    /**
-     * Sets the processed folder.
-     * @param processedFolder a processed folder
-     */
-    public void setProcessedFolder(File processedFolder) {
-        this.processedFolder = processedFolder;
     }
 }

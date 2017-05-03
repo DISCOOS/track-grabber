@@ -60,6 +60,7 @@ public class Window extends JFrame {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
                 if (JOptionPane.showConfirmDialog(JOptionPane.getRootFrame(), Messages.CONFIRM_EXIT.get(), Messages.PROJECT_NAME.get(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    OPERATION_MANAGER.stop();
                     System.exit(0);
                 }
             }
