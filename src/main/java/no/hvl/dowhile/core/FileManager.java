@@ -311,7 +311,9 @@ public class FileManager {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            new GPXParser().writeGPX(gpx, new FileOutputStream(file));
+            FileOutputStream outputStream = new FileOutputStream(file);
+            new GPXParser().writeGPX(gpx, outputStream);
+            outputStream.close();
             FileTools.insertXmlData(gpx, file);
             FileTools.insertDisplayColor(gpx, file);
         } catch (IOException ex) {
