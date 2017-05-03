@@ -1,3 +1,4 @@
+import no.hvl.dowhile.core.GpxFile;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.TrackCutter;
 import no.hvl.dowhile.core.TrackInfo;
@@ -18,19 +19,21 @@ public class TrackCutterTest {
 
     OperationManager opManager;
     TrackCutter cutter;
-    GPX gpxFile;
+    GPX gpx;
     Track track;
     ArrayList<Waypoint> trackPoints;
 
     @Before
     public void before() {
-        gpxFile = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
-        track = TrackTools.getTrackFromGPXFile(gpxFile);
+        File file = new File("src/test/resources/testFile.gpx");
+        gpx = TrackTools.getGpxFromFile(file);
+        track = TrackTools.getTrackFromGPXFile(gpx);
         trackPoints = track.getTrackPoints();
         opManager = new OperationManager();
+        GpxFile gpxFile = new GpxFile(file.getName(), gpx);
         cutter = new TrackCutter(opManager);
         cutter.setTrackInfo(new TrackInfo("", 0, 0, "", 0));
-        // cutter.setTrackFile(gpxFile);
+        cutter.setGpxFile(gpxFile);
     }
 
     @Test
