@@ -162,12 +162,13 @@ public class FileTools {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
-            while (line != null) {
-                if (!line.contains(substring)) {
+            while (line != null && !found) {
+                if (line.contains(substring)) {
                     found = true;
                 }
                 line = reader.readLine();
             }
+            reader.close();
         } catch (IOException ex) {
             System.err.println("Failed while reading from file.");
         }
