@@ -5,7 +5,6 @@ import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -24,60 +23,6 @@ public class FileManager {
 
     public FileManager(final OperationManager OPERATION_MANAGER) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
-    }
-
-    /**
-     * Gets the app folder.
-     *
-     * @return the app folder
-     */
-    public File getAppFolder() {
-        return appFolder;
-    }
-
-    /**
-     * Sets the app folder.
-     *
-     * @param appFolder an app folder
-     */
-    public void setAppFolder(File appFolder) {
-        this.appFolder = appFolder;
-    }
-
-    /**
-     * Gets the raw folder.
-     *
-     * @return the raw folder
-     */
-    public File getRawFolder() {
-        return rawFolder;
-    }
-
-    /**
-     * Sets the raw folder.
-     *
-     * @param rawFolder a raw folder
-     */
-    public void setRawFolder(File rawFolder) {
-        this.rawFolder = rawFolder;
-    }
-
-    /**
-     * Gets the processed folder.
-     *
-     * @return the processed folder
-     */
-    public File getProcessedFolder() {
-        return processedFolder;
-    }
-
-    /**
-     * Sets the processed folder.
-     *
-     * @param processedFolder a processed folder
-     */
-    public void setProcessedFolder(File processedFolder) {
-        this.processedFolder = processedFolder;
     }
 
     /**
@@ -192,7 +137,7 @@ public class FileManager {
     /**
      * Replacing the content of the operation file with the new operation info.
      *
-     * @param operation
+     * @param operation the current operation.
      */
     public void updateOperationFile(Operation operation) {
         try {
@@ -240,42 +185,7 @@ public class FileManager {
             return false;
         }
         Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);
-        return newTrack != null && trackPointsAreEqual(rawFiles, newTrack);
-    }
-
-    /**
-     * Compares all track points in the new track with the track points of every other track files.
-     * Concludes based on this if the track already exists in the folder.
-     *
-     * @param rawFiles the files in the raw folder.
-     * @param newTrack the new track to import.
-     * @return true if the file matches an existing file, false if not.
-     */
-    public boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
-        for (File rawFile : rawFiles) {
-            GPX rawGpx = TrackTools.getGpxFromFile(rawFile);
-            if (rawGpx != null) {
-                Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
-                if (rawTrack != null) {
-                    List<Waypoint> newPoints = newTrack.getTrackPoints();
-                    List<Waypoint> rawPoints = rawTrack.getTrackPoints();
-                    if (newPoints != null && rawPoints != null) {
-                        if (newPoints.size() == rawPoints.size()) {
-                            boolean trackPointsMatching = true;
-                            for (int i = 0; trackPointsMatching && i < newPoints.size() && i < rawPoints.size(); i++) {
-                                if (!TrackTools.matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
-                                    trackPointsMatching = false;
-                                }
-                            }
-                            if (trackPointsMatching) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return false;
+        return newTrack != null && TrackTools.trackPointsAreEqual(rawFiles, newTrack);
     }
 
     /**
@@ -356,5 +266,32 @@ public class FileManager {
         } catch (IOException ex) {
             System.err.println("Failed while reading from config file.");
         }
+    }
+
+    /**
+     * Sets the folder for the application.
+     *
+     * @param appFolder an app folder
+     */
+    public void setAppFolder(File appFolder) {
+        this.appFolder = appFolder;
+    }
+
+    /**
+     * Sets the raw folder for the current operation.
+     *
+     * @param rawFolder the folder to save raw files.
+     */
+    public void setRawFolder(File rawFolder) {
+        this.rawFolder = rawFolder;
+    }
+
+    /**
+     * Sets the processed folder for the current operation.
+     *
+     * @param processedFolder the folder to save processed files.
+     */
+    public void setProcessedFolder(File processedFolder) {
+        this.processedFolder = processedFolder;
     }
 }
