@@ -264,7 +264,7 @@ public class OperationPanel extends JPanel {
         editAreasLabel = WINDOW.makeLabel(Messages.NUMBER_OF_AREAS.get(), WINDOW.TEXT_FONT_SIZE);
         editAreasLabel.setName("editAreasLabel");
         WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 2);
-        add(areasLabel, constraints);
+        add(editAreasLabel, constraints);
 
         // Spinner for crew count input
         SpinnerModel editAreasSpinner = new SpinnerNumberModel(0, 0, 999, 1);
@@ -311,6 +311,7 @@ public class OperationPanel extends JPanel {
     public void updateOperationInfo(Operation operation) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(operation.getStartTime());
+        editAreasInput.setValue(operation.getNumberOfAreas());
         editDatePicker.setDate(LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH)));
         editTimePicker.setTime(LocalTime.of(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
     }
@@ -376,6 +377,8 @@ public class OperationPanel extends JPanel {
         editDateLabel.setVisible(visibility);
         editDatePicker.setVisible(visibility);
         editTimePicker.setVisible(visibility);
+        editAreasLabel.setVisible(visibility);
+        editAreasInput.setVisible(visibility);
         saveOperationButton.setVisible(visibility);
         if (visibility) {
             toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
