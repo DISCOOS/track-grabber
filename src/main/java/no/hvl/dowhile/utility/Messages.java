@@ -51,6 +51,8 @@ public enum Messages {
     INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
     OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
     GO_BACK("Tilbake"),
+    CHOOSE_AREA("Velg"),
+    CHOOSE_AREA_DIALOG("Velg teig"),
 
     // Crew type
     CREW_ATV("ATV"),

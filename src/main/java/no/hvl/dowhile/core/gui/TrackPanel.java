@@ -14,6 +14,7 @@ import java.util.List;
  * This class has an interface for configuring details related to one track.
  */
 public class TrackPanel extends JPanel {
+
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private JLabel currentImportLabel;
@@ -25,12 +26,19 @@ public class TrackPanel extends JPanel {
     private JSpinner groupNumberSpinner;
     private JSpinner crewCountSpinner;
     private JSpinner trackNumberSpinner;
-    private JTextField areaInput;
+    private JButton areaInputButton;
+    private JLabel areaSearchedLabel;
+
+    private int numberOfAreas;
+    private List<JCheckBox> areaCheckBoxes;
+    private List<String> areaSearchedString;
 
 
     public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
+        numberOfAreas = 15;
+        areaSearchedString = new ArrayList<String>();
 
         setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();
@@ -45,8 +53,18 @@ public class TrackPanel extends JPanel {
         setButtonsInWindow();
 
         registerButtonListener();
+        areaInputButtonListener();
 
         setBackground(new Color(255, 245, 252));
+    }
+
+
+    public int getNumberOfAreas() {
+        return numberOfAreas;
+    }
+
+    public void setNumberOfAreas(int numberOfAreas) {
+        this.numberOfAreas = numberOfAreas;
     }
 
     /**
@@ -89,10 +107,16 @@ public class TrackPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 3, 3, GridBagConstraints.WEST, 1);
         add(areaLabel, constraints);
 
-        // text field input for the area searched
-        areaInput = new JTextField();
+        // button for the area searched dialog
+        areaInputButton = new JButton(Messages.CHOOSE_AREA.get());
         WINDOW.modifyConstraints(constraints, 3, 4, GridBagConstraints.WEST, 1);
-        add(areaInput, constraints);
+        add(areaInputButton, constraints);
+
+        // Label for showing areas chosen
+        areaSearchedLabel = new JLabel();
+        WINDOW.modifyConstraints(constraints, 3, 4, GridBagConstraints.WEST, 1);
+        add(areaSearchedLabel, constraints);
+        areaSearchedLabel.setVisible(false);
 
         // Label and input for track number
         JLabel trackNumberLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
@@ -116,6 +140,18 @@ public class TrackPanel extends JPanel {
         remainingFilesLabel = WINDOW.makeLabel(remainingFiles, WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 4);
         add(remainingFilesLabel, constraints);
+    }
+
+    /**
+     * Creates a dialog with options for choosing area
+     */
+    private Object[] areaDialogBox() {
+        areaCheckBoxes = new ArrayList<JCheckBox>();
+        for (int i = 1; i <= numberOfAreas; i++ ) {
+            JCheckBox checkBox = new JCheckBox(Integer.toString(i));
+            areaCheckBoxes.add(checkBox);
+        }
+        return areaCheckBoxes.toArray(new Object[areaCheckBoxes.size()]);
     }
 
     /**
@@ -195,7 +231,7 @@ public class TrackPanel extends JPanel {
             String crew = getSelectedRadioButton();
             int crewCount = Integer.parseInt(crewCountSpinner.getModel().getValue().toString());
             int crewNumber = Integer.parseInt(groupNumberSpinner.getModel().getValue().toString());
-            String areaSearched = areaInput.getText();
+            String areaSearched = areaSearchedString.toString();
             int trackNumber = Integer.parseInt(trackNumberSpinner.getModel().getValue().toString());
             TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackNumber);
             OPERATION_MANAGER.initiateTrackCutter(trackInfo);
@@ -203,12 +239,31 @@ public class TrackPanel extends JPanel {
             // Resetting all input fields
             crewCountSpinner.setValue(0);
             groupNumberSpinner.setValue(0);
-            areaInput.setText("");
+            areaInputButton.setVisible(true);
+            areaSearchedLabel.setVisible(false);
             trackNumberSpinner.setValue(0);
 
             // Message to user
             String dialogText = Messages.SAVE_FILE.get();
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
+        });
+    }
+
+    private void areaInputButtonListener() {
+        areaInputButton.addActionListener(actionEvent -> {
+            int dialog = JOptionPane.showConfirmDialog(this, areaDialogBox(), Messages.CHOOSE_AREA_DIALOG.get() ,JOptionPane.OK_CANCEL_OPTION);
+            if (dialog == JOptionPane.OK_OPTION) {
+                for (JCheckBox cb : areaCheckBoxes) {
+                    if (cb.isSelected()) {
+                        areaSearchedString.add(cb.getText());
+                    }
+                }
+                areaSearchedLabel.setText(areaSearchedString.toString());
+                areaSearchedLabel.setVisible(true);
+                areaInputButton.setVisible(false);
+            }
+
+
         });
     }
 }
