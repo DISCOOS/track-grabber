@@ -51,7 +51,16 @@ public enum Messages {
     AWAITING_GPS("Venter på at en GPS-enhet kobles til..."),
     INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
     OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
-    GO_BACK("Tilbake");
+    GO_BACK("Tilbake"),
+
+    // Crew type
+    CREW_ATV("ATV"),
+    CREW_BOAT("Båt"),
+    CREW_CAR("Bil"),
+    CREW_DOG("Hund"),
+    CREW_HELICOPTER("Helikopter"),
+    CREW_MEN("Lag")
+    ;
 
     private String message;
 
