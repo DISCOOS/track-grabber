@@ -122,7 +122,7 @@ public class TrackTools {
      * @param waypoint2 waypoint to compare with.
      * @return true if the points are matching, false if not.
      */
-    private static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
+    public static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
         return waypoint1.getLatitude().equals(waypoint2.getLatitude()) && waypoint1.getLongitude().equals(waypoint2.getLongitude()) && waypoint1.getElevation().equals(waypoint2.getElevation());
     }
 }

@@ -110,7 +110,7 @@ public class FileManagerTest {
         GPX gpx2 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         fileManager.saveGpxFile(gpx1, "Filnavn", rawFolder);
         File[] rawFiles = rawFolder.listFiles();
-        assertTrue(fileManager.trackPointsAreEqual(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
+        assertTrue(TrackTools.trackPointsAreEqual(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class FileManagerTest {
         GPX gpx2 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile2.gpx"));
         fileManager.saveGpxFile(gpx1, "Filnavn", rawFolder);
         File[] rawFiles = rawFolder.listFiles();
-        assertFalse(fileManager.trackPointsAreEqual(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
+        assertFalse(TrackTools.trackPointsAreEqual(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
     }
 
     @Test
