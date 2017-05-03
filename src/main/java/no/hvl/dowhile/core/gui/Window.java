@@ -110,8 +110,8 @@ public class Window extends JFrame {
      *
      * @param text the text to show in the dialog.
      */
-    public void showDialog(String text) {
-        JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), text);
+    public void showDialog(String title, String text) {
+        JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), text, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
