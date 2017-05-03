@@ -241,6 +241,7 @@ public class TrackPanel extends JPanel {
             groupNumberSpinner.setValue(0);
             areaInputButton.setVisible(true);
             areaSearchedLabel.setVisible(false);
+            areaSearchedString.clear();
             trackNumberSpinner.setValue(0);
 
             // Message to user
