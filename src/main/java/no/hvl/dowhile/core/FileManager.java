@@ -8,7 +8,9 @@ import org.alternativevision.gpx.beans.Track;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +53,6 @@ public class FileManager {
     public void setupLocalFolders(File listRoot) {
         appFolder = setupFolder(listRoot, "TrackGrabber");
         setupConfig(appFolder);
-        parseFilenameFromConfig();
     }
 
     /**
@@ -70,6 +71,7 @@ public class FileManager {
                 System.err.println("Failed while creating config file.");
             }
         }
+        OPERATION_MANAGER.getConfig().parseConfigFile(config);
     }
 
     /**
@@ -235,36 +237,6 @@ public class FileManager {
         } catch (TransformerException ex) {
             System.err.println("Failed to transform raw file.");
             ex.printStackTrace();
-        }
-    }
-
-    /**
-     * Gets the filename pattern from the config file.
-     */
-    private void parseFilenameFromConfig() {
-        File config = FileTools.getFile(appFolder, "config.txt");
-        if (config == null) {
-            System.err.println("Config didn't exist when trying to parse filename pattern.");
-            return;
-        }
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(config));
-            String line = reader.readLine();
-            while (line != null) {
-                if (!line.startsWith("#")) {
-                    if (line.startsWith("filename")) {
-                        String[] parts = line.split("=");
-                        if (parts.length == 2) {
-                            String pattern = parts[1];
-                            OPERATION_MANAGER.getConfig().setPattern(pattern);
-                            System.err.println("Sporene vil lagres på følgende format: " + pattern);
-                        }
-                    }
-                }
-                line = reader.readLine();
-            }
-        } catch (IOException ex) {
-            System.err.println("Failed while reading from config file.");
         }
     }
 
