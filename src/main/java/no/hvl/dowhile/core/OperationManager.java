@@ -163,6 +163,7 @@ public class OperationManager {
             return;
         }
         for (File file : gpxFiles) {
+            System.err.println(file.getName());
             processFile(file);
         }
         if (!queue.isEmpty()) {
@@ -201,15 +202,19 @@ public class OperationManager {
             System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
         }
-        if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-            if (!fileManager.fileAlreadyImported(gpx)) {
-                fileManager.saveRawGpxFile(gpx, file.getName());
-                queue.add(new GpxFile(file.getName(), gpx));
+        if (!fileManager.fileAlreadyImported(gpx)) {
+            if(!TrackTools.trackIsAnArea(gpx)) {
+                if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
+                    queue.add(new GpxFile(file.getName(), gpx));
+                } else {
+                    System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
+                }
             } else {
-                System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
+                fileManager.saveAreaGpxFile(gpx, file.getName());
             }
+            fileManager.saveRawGpxFile(gpx, file.getName());
         } else {
-            System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
+            System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
         }
     }
 
