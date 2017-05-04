@@ -78,6 +78,14 @@ public class Config {
         return teamTypes;
     }
 
+    public List<String> getTeamNames() {
+        List<String> teamNames = new ArrayList<>();
+        for (TeamType teamType : teamTypes) {
+            teamNames.add(teamType.getName());
+        }
+        return teamNames;
+    }
+
     public void parseConfigFile(File file) {
         if (file == null || !file.getName().equals("config.txt")) {
             return;

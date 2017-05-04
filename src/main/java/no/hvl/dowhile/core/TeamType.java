@@ -5,19 +5,35 @@ package no.hvl.dowhile.core;
  * Example: Helicopter, Car, ATV.
  */
 public class TeamType {
-    private String type;
+    private String name;
     private String color;
 
-    public TeamType(String type, String color) {
-        this.type = type;
+    /**
+     * Constructor taking the name and color of this team type.
+     *
+     * @param name  the name of this team type.
+     * @param color the color of this team type.
+     */
+    public TeamType(String name, String color) {
+        this.name = name;
         this.color = color;
     }
 
-    public String getColor() {
-        return color;
+    /**
+     * Get the name of this team type.
+     *
+     * @return the name of this team type.
+     */
+    public String getName() {
+        return name;
     }
 
-    public String getType() {
-        return type;
+    /**
+     * Get the color for this team type.
+     *
+     * @return the color for this team type.
+     */
+    public String getColor() {
+        return color;
     }
 }
