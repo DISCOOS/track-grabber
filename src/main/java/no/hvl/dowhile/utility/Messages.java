@@ -10,13 +10,13 @@ public enum Messages {
     DRIVE_DETECTOR_STOP("Systemet lytter ikke lenger etter enheter som kobles til."),
     ERROR_THREAD("En tråd ga en error mens den ventet på neste kjøring."),
     ERROR_NO_TRACK_FOR_INFO("Systemet prøvde å starte prosessering av fil som ikke finnes."),
-    NO_RELEVANT_FILES_FOUND("Oppdaget GPS, men fant ingen relevante filer! \n Mulige årsaker: \n - GPSen inneholder ingen filer \n - Filene er for gamle (de ble laget før operasjonsstart) \n - Filene er allerede overført"),
+    NO_RELEVANT_FILES_TITLE("Ingen relevante filer på GPS"),
+    NO_RELEVANT_FILES_DESCRIPTION("Oppdaget GPS, men fant ingen relevante filer! \n Mulige årsaker: \n - GPSen inneholder ingen filer \n - Filene er for gamle (de ble laget før operasjonsstart) \n - Filene er allerede overført"),
 
     // Font
     FONT_NAME("Times New Roman"),
 
     // Window
-    GPS_OFFLINE("GPS: Koblet fra."),
     PROJECT_NAME("Track Grabber"),
     CONFIRM_EXIT("Vil du virkelig avslutte Track Grabber? Alle endringer vil bli lagret."),
     SPACER("                                                  "),
@@ -37,6 +37,7 @@ public enum Messages {
     // Operation panel
     OPERATION_NAME("Navn på operasjon: "),
     OPERATION_START_DATE("Startdato: "),
+    NUMBER_OF_AREAS("Totalt antall teiger:"),
     EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
     NEW_OPERATION_BUTTON("Ny operasjon"),
     IMPORT_LOCAL_FILE("Importer GPS-fil fra maskin"),
@@ -51,7 +52,18 @@ public enum Messages {
     AWAITING_GPS("Venter på at en GPS-enhet kobles til..."),
     INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
     OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
-    GO_BACK("Tilbake");
+    GO_BACK("Tilbake"),
+    CHOOSE_AREA("Velg"),
+    CHOOSE_AREA_DIALOG("Velg teig"),
+
+    // Crew type
+    CREW_ATV("ATV"),
+    CREW_BOAT("Båt"),
+    CREW_CAR("Bil"),
+    CREW_DOG("Hund"),
+    CREW_HELICOPTER("Helikopter"),
+    CREW_MEN("Lag")
+    ;
 
     private String message;
 

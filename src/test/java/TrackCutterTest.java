@@ -1,3 +1,4 @@
+import no.hvl.dowhile.core.GpxFile;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.TrackCutter;
 import no.hvl.dowhile.core.TrackInfo;
@@ -12,23 +13,27 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static junit.framework.TestCase.assertFalse;
+
 public class TrackCutterTest {
 
     OperationManager opManager;
     TrackCutter cutter;
-    GPX gpxFile;
+    GPX gpx;
     Track track;
     ArrayList<Waypoint> trackPoints;
 
     @Before
     public void before() {
-        gpxFile = TrackTools.getGpxFromFile(new File("src/testFile.gpx"));
-        track = TrackTools.getTrackFromGPXFile(gpxFile);
+        File file = new File("src/test/resources/testFile.gpx");
+        gpx = TrackTools.getGpxFromFile(file);
+        track = TrackTools.getTrackFromGPXFile(gpx);
         trackPoints = track.getTrackPoints();
         opManager = new OperationManager();
+        GpxFile gpxFile = new GpxFile(file.getName(), gpx);
         cutter = new TrackCutter(opManager);
         cutter.setTrackInfo(new TrackInfo("", 0, 0, "", 0));
-        cutter.setTrackFile(gpxFile);
+        cutter.setGpxFile(gpxFile);
     }
 
     @Test
@@ -41,7 +46,7 @@ public class TrackCutterTest {
         long lastPointStart = lastTrackpoint.getTime().getTime();
         long middleTime = (firstPointStart + lastPointStart) / 2;
 
-        GPX cutFile = cutter.filterOnTimeStarted(new Date(middleTime));
+        cutter.filterOnTimeStarted(new Date(middleTime));
 
         assertFalse(track.getTrackPoints().contains(firstTrackpoint));
     }

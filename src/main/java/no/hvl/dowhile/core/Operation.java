@@ -14,6 +14,7 @@ import java.util.TimeZone;
  */
 public class Operation {
     private String name;
+    private int numberOfAreas;
     private Date startTime;
 
     /**
@@ -26,8 +27,9 @@ public class Operation {
      * @param hour   the hour the operation started.
      * @param minute the minute the operation started.
      */
-    public Operation(String name, int day, int month, int year, int hour, int minute) {
+    public Operation(String name, int numberOfAreas, int day, int month, int year, int hour, int minute) {
         this.name = name;
+        this.numberOfAreas = numberOfAreas;
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, day, hour, minute);
         calendar.setTimeZone(TimeZone.getTimeZone("CET"));
@@ -52,6 +54,13 @@ public class Operation {
                     } else {
                         throw new Exception("Failed to parse name from file.");
                     }
+                } else if (line.startsWith("numberOfAreas")) {
+                    String[] numberOfAreasAndValue = line.split("=");
+                    if (numberOfAreasAndValue.length == 2) {
+                        numberOfAreas = Integer.parseInt(numberOfAreasAndValue[1]);
+                    } else {
+                        throw new Exception("Failed to parse number of areas from file.");
+                    }
                 } else if (line.startsWith("starttime")) {
                     String[] startTimeAndValue = line.split("=");
                     if (startTimeAndValue.length == 2) {
@@ -68,28 +77,30 @@ public class Operation {
     }
 
     /**
-     * Updating the start time of the operation.
-     *
-     * @param year   the year it started.
-     * @param month  the month it started.
-     * @param day    the day it started.
-     * @param hour   the hour it started.
-     * @param minute the minute it started.
-     */
-    public void updateStartTime(int year, int month, int day, int hour, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day, hour, minute);
-        calendar.setTimeZone(TimeZone.getTimeZone("CET"));
-        this.startTime = calendar.getTime();
-    }
-
-    /**
      * Get the name of the operation.
      *
      * @return the name of the operation.
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Get the number of areas for this operation.
+     *
+     * @return number of areas for this operation.
+     */
+    public int getNumberOfAreas() {
+        return numberOfAreas;
+    }
+
+    /**
+     * Set the number of areas for this operation.
+     *
+     * @param numberOfAreas number of areas for this operation.
+     */
+    public void setNumberOfAreas(int numberOfAreas) {
+        this.numberOfAreas = numberOfAreas;
     }
 
     /**
@@ -102,14 +113,32 @@ public class Operation {
     }
 
     /**
+     * Updating the start time of the operation.
+     *
+     * @param year   the year it started.
+     * @param month  the month it started.
+     * @param day    the day it started.
+     * @param hour   the hour it started.
+     * @param minute the minute it started.
+     */
+    public void setStartTime(int year, int month, int day, int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day, hour, minute);
+        calendar.setTimeZone(TimeZone.getTimeZone("CET"));
+        this.startTime = calendar.getTime();
+    }
+
+    /**
      * Get the content to be saved in the file representing this operation.
      */
     public String[] getFileContent() {
         return new String[]{
                 "# Operasjon " + name,
+                "# Antall teiger: " + numberOfAreas,
                 "# Starttid: " + StringTools.formatDate(startTime),
                 "# Du kan ikke endre på dataen her. Det må gjøres i programmet.",
                 "name=" + name.trim().replace(" ", "_"),
+                "numberOfAreas=" + numberOfAreas,
                 "starttime=" + startTime.getTime(),
         };
     }

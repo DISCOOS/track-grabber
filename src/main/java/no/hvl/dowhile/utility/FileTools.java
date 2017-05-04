@@ -39,8 +39,12 @@ public class FileTools {
             File[] files = folder.listFiles();
             if (files != null) {
                 for (File file : files) {
-                    if (file.getName().endsWith(".gpx")) {
-                        gpxFiles.add(file);
+                    if (file.isDirectory()) {
+                        gpxFiles.addAll(findGpxFiles(file));
+                    } else {
+                        if (file.getName().endsWith(".gpx")) {
+                            gpxFiles.add(file);
+                        }
                     }
                 }
             }
@@ -120,6 +124,9 @@ public class FileTools {
      */
     public static void insertDisplayColor(GPX gpx, File file) {
         Track track = TrackTools.getTrackFromGPXFile(gpx);
+        if (track == null) {
+            return;
+        }
         String displayColor = (String) track.getExtensionData(new DisplayColorExtensionParser().getId());
         if (displayColor == null) {
             return;
@@ -155,12 +162,13 @@ public class FileTools {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
-            while (line != null) {
-                if (!line.contains(substring)) {
+            while (line != null && !found) {
+                if (line.contains(substring)) {
                     found = true;
                 }
                 line = reader.readLine();
             }
+            reader.close();
         } catch (IOException ex) {
             System.err.println("Failed while reading from file.");
         }

@@ -2,6 +2,7 @@ package no.hvl.dowhile.core.gui;
 
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.TrackInfo;
+import no.hvl.dowhile.utility.CrewStrings;
 import no.hvl.dowhile.utility.Messages;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.util.List;
  * This class has an interface for configuring details related to one track.
  */
 public class TrackPanel extends JPanel {
+
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private JLabel currentImportLabel;
@@ -20,34 +22,70 @@ public class TrackPanel extends JPanel {
     private GridBagConstraints constraints;
     private List<JRadioButton> radioButtons;
     private ButtonGroup radioButtonGroup;
+    private JButton registerButton;
+    private JSpinner groupNumberSpinner;
+    private JSpinner crewCountSpinner;
+    private JSpinner trackNumberSpinner;
+    private JButton areaInputButton;
+    private JLabel areaSearchedLabel;
+
+    private int numberOfAreas;
+    private List<JCheckBox> areaCheckBoxes;
+    private List<String> areaSearchedString;
+
 
     public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
+        numberOfAreas = 15;
+        areaSearchedString = new ArrayList<String>();
 
         setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();
         WINDOW.setConstraintsInsets(constraints, 5);
 
+        createButtonsAndInputFields();
+
+        // adding buttons
+        radioButtonGroup = new ButtonGroup();
+        constraints.gridwidth = 1;
+        radioButtons = generateButtons(getCrewNames());
+        setButtonsInWindow();
+
+        registerButtonListener();
+        areaInputButtonListener();
+
+        setBackground(new Color(255, 245, 252));
+    }
+
+
+    public int getNumberOfAreas() {
+        return numberOfAreas;
+    }
+
+    public void setNumberOfAreas(int numberOfAreas) {
+        this.numberOfAreas = numberOfAreas;
+    }
+
+    /**
+     * Adds the buttons and input fields and sets them in the gridbaglayout
+     */
+
+    public void createButtonsAndInputFields() {
         // Current file imported from GPS
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + "Ingen fil.";
         currentImportLabel = WINDOW.makeLabel(currentImportedFile, WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 4);
         add(currentImportLabel, constraints);
 
-        // adding buttons
-        radioButtonGroup = new ButtonGroup();
-        constraints.gridwidth = 1;
-        radioButtons = generateButtons(generateNames());
-        setButtonsInWindow();
-
         // Label and input for team number
         JLabel crewNumberLabel = WINDOW.makeLabel(Messages.CREW_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
         add(crewNumberLabel, constraints);
 
+        // Spinner for crew number input
         SpinnerModel crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
-        JSpinner groupNumberSpinner = new JSpinner(crewNumberInput);
+        groupNumberSpinner = new JSpinner(crewNumberInput);
         WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 1);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(groupNumberSpinner, constraints);
@@ -57,8 +95,9 @@ public class TrackPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.WEST, 1);
         add(crewCountLabel, constraints);
 
+        // Spinner for crew count input
         SpinnerModel crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
-        JSpinner crewCountSpinner = new JSpinner(crewCountInput);
+        crewCountSpinner = new JSpinner(crewCountInput);
         WINDOW.modifyConstraints(constraints, 1, 6, GridBagConstraints.WEST, 1);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(crewCountSpinner, constraints);
@@ -68,23 +107,31 @@ public class TrackPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 3, 3, GridBagConstraints.WEST, 1);
         add(areaLabel, constraints);
 
-        JTextField areaInput = new JTextField();
+        // button for the area searched dialog
+        areaInputButton = new JButton(Messages.CHOOSE_AREA.get());
         WINDOW.modifyConstraints(constraints, 3, 4, GridBagConstraints.WEST, 1);
-        add(areaInput, constraints);
+        add(areaInputButton, constraints);
+
+        // Label for showing areas chosen
+        areaSearchedLabel = new JLabel();
+        WINDOW.modifyConstraints(constraints, 3, 4, GridBagConstraints.WEST, 1);
+        add(areaSearchedLabel, constraints);
+        areaSearchedLabel.setVisible(false);
 
         // Label and input for track number
         JLabel trackNumberLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 3, 5, GridBagConstraints.WEST, 1);
         add(trackNumberLabel, constraints);
 
+        // Spinner input for the track number
         SpinnerModel trackNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
-        JSpinner trackNumberSpinner = new JSpinner(trackNumberInput);
+        trackNumberSpinner = new JSpinner(trackNumberInput);
         WINDOW.modifyConstraints(constraints, 3, 6, GridBagConstraints.WEST, 1);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(trackNumberSpinner, constraints);
 
         // Register button
-        JButton registerButton = new JButton(Messages.REGISTER_BUTTON.get());
+        registerButton = new JButton(Messages.REGISTER_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 4);
         add(registerButton, constraints);
 
@@ -93,27 +140,18 @@ public class TrackPanel extends JPanel {
         remainingFilesLabel = WINDOW.makeLabel(remainingFiles, WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 4);
         add(remainingFilesLabel, constraints);
+    }
 
-        registerButton.addActionListener(actionEvent -> {
-            // Fetching the input data and sending it to the OperationManager
-            String crew = getSelectedRadioButton();
-            int crewCount = Integer.parseInt(crewCountSpinner.getModel().getValue().toString());
-            int crewNumber = Integer.parseInt(groupNumberSpinner.getModel().getValue().toString());
-            String areaSearched = areaInput.getText();
-            int trackNumber = Integer.parseInt(trackNumberSpinner.getModel().getValue().toString());
-            TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackNumber);
-            OPERATION_MANAGER.initiateTrackCutter(trackInfo);
-
-            // Resetting all input fields
-            crewCountSpinner.setValue(0);
-            groupNumberSpinner.setValue(0);
-            areaInput.setText("");
-            trackNumberSpinner.setValue(0);
-
-            // Message to user
-            String dialogText = Messages.SAVE_FILE.get();
-            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
-        });
+    /**
+     * Creates a dialog with options for choosing area
+     */
+    private Object[] areaDialogBox() {
+        areaCheckBoxes = new ArrayList<JCheckBox>();
+        for (int i = 1; i <= numberOfAreas; i++ ) {
+            JCheckBox checkBox = new JCheckBox(Integer.toString(i));
+            areaCheckBoxes.add(checkBox);
+        }
+        return areaCheckBoxes.toArray(new Object[areaCheckBoxes.size()]);
     }
 
     /**
@@ -163,14 +201,8 @@ public class TrackPanel extends JPanel {
      *
      * @return a List with the names
      */
-    private List<String> generateNames() {
-        List<String> crewNames = new ArrayList<>();
-        crewNames.add("Lag");
-        crewNames.add("Hund");
-        crewNames.add("Bil");
-        crewNames.add("ATV");
-        crewNames.add("Helikopter");
-        crewNames.add("Båt");
+    private List<String> getCrewNames() {
+        List<String> crewNames = CrewStrings.getCrewStrings();
         return crewNames;
     }
 
@@ -187,5 +219,52 @@ public class TrackPanel extends JPanel {
             }
         }
         return chosenRadioButton;
+    }
+
+    /**
+     * Listener for the registerbutton
+     */
+
+    private void registerButtonListener() {
+        registerButton.addActionListener(actionEvent -> {
+            // Fetching the input data and sending it to the OperationManager
+            String crew = getSelectedRadioButton();
+            int crewCount = Integer.parseInt(crewCountSpinner.getModel().getValue().toString());
+            int crewNumber = Integer.parseInt(groupNumberSpinner.getModel().getValue().toString());
+            String areaSearched = areaSearchedString.toString();
+            int trackNumber = Integer.parseInt(trackNumberSpinner.getModel().getValue().toString());
+            TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackNumber);
+            OPERATION_MANAGER.initiateTrackCutter(trackInfo);
+
+            // Resetting all input fields
+            crewCountSpinner.setValue(0);
+            groupNumberSpinner.setValue(0);
+            areaInputButton.setVisible(true);
+            areaSearchedLabel.setVisible(false);
+            areaSearchedString.clear();
+            trackNumberSpinner.setValue(0);
+
+            // Message to user
+            String dialogText = Messages.SAVE_FILE.get();
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
+        });
+    }
+
+    private void areaInputButtonListener() {
+        areaInputButton.addActionListener(actionEvent -> {
+            int dialog = JOptionPane.showConfirmDialog(this, areaDialogBox(), Messages.CHOOSE_AREA_DIALOG.get() ,JOptionPane.OK_CANCEL_OPTION);
+            if (dialog == JOptionPane.OK_OPTION) {
+                for (JCheckBox cb : areaCheckBoxes) {
+                    if (cb.isSelected()) {
+                        areaSearchedString.add(cb.getText());
+                    }
+                }
+                areaSearchedLabel.setText(areaSearchedString.toString());
+                areaSearchedLabel.setVisible(true);
+                areaInputButton.setVisible(false);
+            }
+
+
+        });
     }
 }

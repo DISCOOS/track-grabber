@@ -37,8 +37,10 @@ public class HeaderPanel extends JPanel {
         setLayout(new GridBagLayout());
 
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
+        constraints.gridheight = 3;
         add(appName, constraints);
         WINDOW.modifyConstraints(constraints, 1, 0, GridBagConstraints.NORTH, 4);
+        constraints.gridheight = 1; // Reset the above height.
         add(spacer, constraints);
         WINDOW.modifyConstraints(constraints, 5, 0, GridBagConstraints.WEST, 1);
         add(operationInfoHeader, constraints);
@@ -50,6 +52,8 @@ public class HeaderPanel extends JPanel {
         operationInfoHeader.setName("operationInfoHeader");
         operationInfoName.setName("operationInfoName");
         operationInfoStart.setName("operationInfoStart");
+
+        setBackground(new Color(242, 94, 94));
     }
 
     /**

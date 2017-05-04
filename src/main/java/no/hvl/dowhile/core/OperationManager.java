@@ -26,7 +26,7 @@ public class OperationManager {
     private Operation operation;
     private List<Operation> existingOperations;
     private TrackCutter currentTrackCutter;
-    private List<File> queue;
+    private List<GpxFile> queue;
 
     public OperationManager() {
         this.active = true;
@@ -67,10 +67,26 @@ public class OperationManager {
     }
 
     /**
+     * Get the current instance of the Window.
+     *
+     * @return the current instance of the Window.
+     */
+    public Window getWindow() {
+        return window;
+    }
+
+    /**
      * Starts listening for new drives connected.
      */
     public void start() {
         new Thread(driveDetector).start();
+    }
+
+    /**
+     * Perform actions required to be done before the program is shutdown.
+     */
+    public void stop() {
+        removeUnprocessedFiles();
     }
 
     /**
@@ -88,16 +104,18 @@ public class OperationManager {
     /**
      * Set the date and time of the current operation and updating info in window and the file.
      *
+     * @param numberOfAreas The number of areas for this operation.
      * @param year   the year it started.
      * @param month  the month it started.
      * @param day    the day it started.
      * @param hour   the hour it started.
      * @param minute the minute it started.
      */
-    public void updateCurrentOperation(int year, int month, int day, int hour, int minute) {
-        operation.updateStartTime(year, month, day, hour, minute);
+    public void updateCurrentOperation(int numberOfAreas, int year, int month, int day, int hour, int minute) {
+        operation.setStartTime(year, month, day, hour, minute);
+        operation.setNumberOfAreas(numberOfAreas);
         window.updateOperationInfo(operation);
-        fileManager.updateOperationFile(operation, fileManager.getAppFolder());
+        fileManager.updateOperationFile(operation);
     }
 
     /**
@@ -108,10 +126,17 @@ public class OperationManager {
      */
     public List<Operation> getExistingOperations() {
         if (existingOperations.isEmpty()) {
-            List<Operation> operations = fileManager.loadExistingOperations(fileManager.getAppFolder());
+            List<Operation> operations = fileManager.loadExistingOperations();
             existingOperations.addAll(operations);
         }
         return existingOperations;
+    }
+
+    /**
+     * Checking the file system to load all operations.
+     */
+    public void reloadExistingOperations() {
+        existingOperations = fileManager.loadExistingOperations();
     }
 
     /**
@@ -131,9 +156,8 @@ public class OperationManager {
      * @see GPSDrive
      */
     public void handleGPSDrive(GPSDrive gpsDrive) {
-        File currentFolder = gpsDrive.getCurrentFolder();
-        File archiveFolder = gpsDrive.getArchiveFolder();
-        Set<File> gpxFiles = FileTools.findGpxFiles(archiveFolder);
+        File gpxFolder = gpsDrive.getGpxFolder();
+        Set<File> gpxFiles = FileTools.findGpxFiles(gpxFolder);
         if (gpxFiles.isEmpty()) {
             System.err.println("No gpx files.");
             return;
@@ -144,7 +168,7 @@ public class OperationManager {
         if (!queue.isEmpty()) {
             prepareNextFile();
         } else {
-            window.showDialog(Messages.NO_RELEVANT_FILES_FOUND.get());
+            window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_DESCRIPTION.get());
         }
     }
 
@@ -158,7 +182,7 @@ public class OperationManager {
         if (!queue.isEmpty()) {
             prepareNextFile();
         } else {
-            window.showDialog(Messages.NO_RELEVANT_FILES_FOUND.get());
+            window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_DESCRIPTION.get());
         }
     }
 
@@ -167,16 +191,20 @@ public class OperationManager {
      *
      * @param file the file to process.
      */
-    private void processFile(File file) {
+    public void processFile(File file) {
         GPX gpx = TrackTools.getGpxFromFile(file);
         if (gpx == null) {
             System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
             return;
         }
+        if (!TrackTools.fileHasTrack(gpx)) {
+            System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
+            return;
+        }
         if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-            if (!fileManager.fileAlreadyImported(gpx, fileManager.getRawFolder())) {
-                fileManager.saveRawGpxFile(gpx, file.getName(), fileManager.getRawFolder());
-                queue.add(file);
+            if (!fileManager.fileAlreadyImported(gpx)) {
+                fileManager.saveRawGpxFile(gpx, file.getName());
+                queue.add(new GpxFile(file.getName(), gpx));
             } else {
                 System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
             }
@@ -189,12 +217,11 @@ public class OperationManager {
      * Assigns a new file to the TrackCutter and updates the GUI panel.
      * This method is used when a gps is connected and one or more gpx-files are located.
      */
-    private void prepareNextFile() {
+    public void prepareNextFile() {
         currentTrackCutter = new TrackCutter(this);
-        File file = queue.remove(0);
-        GPX gpx = TrackTools.getGpxFromFile(file);
-        currentTrackCutter.setTrackFile(gpx);
-        window.updateCurrentFile(file.getName(), queue.size());
+        GpxFile gpxFile = queue.remove(0);
+        currentTrackCutter.setGpxFile(gpxFile);
+        window.updateCurrentFile(gpxFile.getFilename(), queue.size());
         window.openTrackPanel();
     }
 
@@ -204,21 +231,33 @@ public class OperationManager {
      * @param trackInfo info about the currently imported track.
      */
     public void initiateTrackCutter(TrackInfo trackInfo) {
-        if (currentTrackCutter == null || currentTrackCutter.getTrackFile() == null) {
+        if (currentTrackCutter == null || currentTrackCutter.getGpxFile() == null) {
             Messages.ERROR_NO_TRACK_FOR_INFO.print();
             return;
         }
         currentTrackCutter.setTrackInfo(trackInfo);
         currentTrackCutter.process();
-        GPX gpxFile = currentTrackCutter.getTrackFile();
+        GpxFile gpxFile = currentTrackCutter.getGpxFile();
         String newName = config.generateFilename(trackInfo);
-        Track track = TrackTools.getTrackFromGPXFile(gpxFile);
+        Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
         track.setName(newName);
-        fileManager.saveProcessedGpxFile(gpxFile, newName, fileManager.getProcessedFolder());
+        fileManager.saveProcessedGpxFile(gpxFile.getGpx(), newName);
         if (queue.isEmpty()) {
             window.openOperationPanel();
         } else {
             prepareNextFile();
+        }
+    }
+
+    /**
+     * This method will remove the files from the raw folder as they are not yet processed when in the queue.
+     */
+    public void removeUnprocessedFiles() {
+        for (GpxFile gpxFile : queue) {
+            fileManager.deleteRawFile(gpxFile.getFilename());
+        }
+        if (currentTrackCutter != null && currentTrackCutter.getGpxFile() != null) {
+            fileManager.deleteRawFile(currentTrackCutter.getGpxFile().getFilename());
         }
     }
 
@@ -257,5 +296,41 @@ public class OperationManager {
      */
     public Config getConfig() {
         return config;
+    }
+
+    /**
+     * Gets the file manager.
+     *
+     * @return the file manager
+     */
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * Sets the file manager.
+     *
+     * @param fileManager a file manager
+     */
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
+
+    /**
+     * Gets the file queue.
+     *
+     * @return the file queue
+     */
+    public List<GpxFile> getQueue() {
+        return queue;
+    }
+
+    /**
+     * Gets the track cutter for the current track.
+     *
+     * @return the track cutter for the current track.
+     */
+    public TrackCutter getCurrentTrackCutter() {
+        return currentTrackCutter;
     }
 }

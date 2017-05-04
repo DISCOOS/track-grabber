@@ -70,7 +70,7 @@ public class DriveDetector implements Runnable {
      * @param driveLetter the letter of the drive to check.
      * @param listRoot    the actual drive to check.
      */
-    private void registerConnectedDrive(String driveLetter, File listRoot) {
+    public void registerConnectedDrive(String driveLetter, File listRoot) {
         GPSDrive gpsDrive = validateDrive(driveLetter, listRoot);
         if (gpsDrive != null) {
             OPERATION_MANAGER.handleGPSDrive(gpsDrive);
@@ -90,7 +90,7 @@ public class DriveDetector implements Runnable {
      *
      * @param listRoots the drives currently connected.
      */
-    private void unregisterRemovedDrives(File[] listRoots) {
+    public void unregisterRemovedDrives(File[] listRoots) {
         Set<String> listRootLetters = new HashSet<>();
         Set<String> drivesToRemove = new HashSet<>();
         for (File listRoot : listRoots) {
@@ -120,7 +120,7 @@ public class DriveDetector implements Runnable {
      * @param listRoot    the root of the drive to check.
      * @return the GPSDrive with the folders needed, or null if it's not a GPS.
      */
-    private GPSDrive validateDrive(String driveLetter, File listRoot) {
+    public GPSDrive validateDrive(String driveLetter, File listRoot) {
         File[] filesInRootFolder = listRoot.listFiles();
         if (filesInRootFolder == null) {
             return null;
@@ -134,11 +134,13 @@ public class DriveDetector implements Runnable {
         if (!gpsDrive.hasGpxFolder()) {
             return null;
         }
-        gpsDrive.setCurrentFolder(FileTools.getFile(gpsDrive.getGpxFolder(), "Current"));
-        gpsDrive.setArchiveFolder(FileTools.getFile(gpsDrive.getGpxFolder(), "Archive"));
         if (!gpsDrive.isValidGPSDrive()) {
             return null;
         }
         return gpsDrive;
+    }
+
+    public Map<String, Drive> getDetectedDrives() {
+        return detectedDrives;
     }
 }

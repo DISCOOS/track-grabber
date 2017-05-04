@@ -4,10 +4,14 @@ import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,16 +21,24 @@ import java.util.List;
 public class Window extends JFrame {
     final int HEADER_FONT_SIZE = 24;
     final int TEXT_FONT_SIZE = 16;
+    private final OperationManager OPERATION_MANAGER;
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
 
     public Window(final OperationManager OPERATION_MANAGER) {
+        this.OPERATION_MANAGER = OPERATION_MANAGER;
+
         setTitle(Messages.PROJECT_NAME.get());
         setSize(800, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        Image logo = getLogo();
+        if (logo != null) {
+            setIconImage(logo);
+        }
 
         headerPanel = new HeaderPanel(this);
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
@@ -48,10 +60,25 @@ public class Window extends JFrame {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
                 if (JOptionPane.showConfirmDialog(JOptionPane.getRootFrame(), Messages.CONFIRM_EXIT.get(), Messages.PROJECT_NAME.get(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    OPERATION_MANAGER.stop();
                     System.exit(0);
                 }
             }
         });
+    }
+
+    private Image getLogo() {
+        BufferedImage bufferedImage;
+        try {
+            bufferedImage = ImageIO.read(new File("src/main/resources/red_cross_icon.jpg"));
+        } catch (IOException ex) {
+            return null;
+        }
+        return bufferedImage;
+    }
+
+    public OperationManager getOPERATION_MANAGER() {
+        return OPERATION_MANAGER;
     }
 
     /**
@@ -83,8 +110,8 @@ public class Window extends JFrame {
      *
      * @param text the text to show in the dialog.
      */
-    public void showDialog(String text) {
-        JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), text);
+    public void showDialog(String title, String text) {
+        JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), text, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**

@@ -1,7 +1,6 @@
 package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.utility.TrackTools;
-import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 import org.alternativevision.gpx.beans.Waypoint;
 
@@ -13,11 +12,11 @@ import java.util.Date;
  */
 public class TrackCutter {
     private final OperationManager OPERATION_MANAGER;
-    private GPX trackFile;
+    private GpxFile gpxFile;
     private TrackInfo trackInfo;
 
     /**
-     * Default constructor taking the track to be processed and info about it.
+     * Constructor taking the current OperationManager instance to get info from it.
      */
     public TrackCutter(final OperationManager OPERATION_MANAGER) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
@@ -27,7 +26,7 @@ public class TrackCutter {
      * Processing the file to remove unnecessary data.
      */
     public void process() {
-        trackFile = filterOnTimeStarted(OPERATION_MANAGER.getOperation().getStartTime());
+        filterOnTimeStarted(OPERATION_MANAGER.getOperation().getStartTime());
     }
 
     /**
@@ -54,8 +53,8 @@ public class TrackCutter {
     /**
      * Removes all track points that were created before a given time
      */
-    public GPX filterOnTimeStarted(Date startTime) {
-        Track track = TrackTools.getTrackFromGPXFile(trackFile);
+    public void filterOnTimeStarted(Date startTime) {
+        Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
         ArrayList<Waypoint> trackPoints = track.getTrackPoints();
         ArrayList<Waypoint> pointsToRemove = new ArrayList<>();
         long startTimeMillis = startTime.getTime();
@@ -68,21 +67,38 @@ public class TrackCutter {
         }
         trackPoints.removeAll(pointsToRemove);
         track.setTrackPoints(trackPoints);
-        return trackFile;
     }
 
-    public GPX getTrackFile() {
-        return trackFile;
+    /**
+     * Get the current GpxFile.
+     *
+     * @return the current GpxFile.
+     */
+    public GpxFile getGpxFile() {
+        return gpxFile;
     }
 
-    public void setTrackFile(GPX trackFile) {
-        this.trackFile = trackFile;
+    /**
+     * Set the current GpxFile.
+     *
+     * @param gpxFile the current GpxFile to be set.
+     */
+    public void setGpxFile(GpxFile gpxFile) {
+        this.gpxFile = gpxFile;
     }
 
+    /**
+     * Get info about the current track.
+     * @return info about the current track.
+     */
     public TrackInfo getTrackInfo() {
         return trackInfo;
     }
 
+    /**
+     * Set info about the current track.
+     * @param trackInfo info about the current track.
+     */
     public void setTrackInfo(TrackInfo trackInfo) {
         this.trackInfo = trackInfo;
     }

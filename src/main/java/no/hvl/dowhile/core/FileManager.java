@@ -5,7 +5,6 @@ import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -24,6 +23,24 @@ public class FileManager {
 
     public FileManager(final OperationManager OPERATION_MANAGER) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
+    }
+
+    /**
+     * Deletes the specified file from the rawfolder.
+     *
+     * @param filename the name of the file to delete.
+     */
+    public void deleteRawFile(String filename) {
+        File file = new File(rawFolder, filename);
+        if (!file.exists()) {
+            return;
+        }
+        boolean deleted = file.delete();
+        if (deleted) {
+            System.err.println("File " + filename + " deleted.");
+        } else {
+            System.err.println("Tried to delete " + filename + " from rawfolder, however it didn't work.");
+        }
     }
 
     /**
@@ -60,9 +77,9 @@ public class FileManager {
      *
      * @return list of the operations existing in the file system.
      */
-    public List<Operation> loadExistingOperations(File folder) {
+    public List<Operation> loadExistingOperations() {
         List<Operation> operations = new ArrayList<>();
-        File[] filesInAppFolder = folder.listFiles();
+        File[] filesInAppFolder = appFolder.listFiles();
         if (filesInAppFolder == null || filesInAppFolder.length == 0) {
             return operations;
         }
@@ -120,12 +137,11 @@ public class FileManager {
     /**
      * Replacing the content of the operation file with the new operation info.
      *
-     * @param operation
-     * @param folder
+     * @param operation the current operation.
      */
-    public void updateOperationFile(Operation operation, File folder) {
+    public void updateOperationFile(Operation operation) {
         try {
-            File operationFolder = new File(folder, operation.getName().trim().replace(" ", "_"));
+            File operationFolder = new File(appFolder, operation.getName().trim().replace(" ", "_"));
             if (!operationFolder.exists()) {
                 operationFolder.mkdir();
             }
@@ -160,52 +176,16 @@ public class FileManager {
     /**
      * Checking if a file has been saved in the rawfolder already.
      *
-     * @param newGpx    The gpx file to check.
-     * @param rawFolder The operation's raw folder.
+     * @param newGpx The gpx file to check.
      * @return true if the file is matching a file, false if not.
      */
-    public boolean fileAlreadyImported(GPX newGpx, File rawFolder) {
+    public boolean fileAlreadyImported(GPX newGpx) {
         File[] rawFiles = rawFolder.listFiles();
         if (rawFiles == null || rawFiles.length == 0) {
             return false;
         }
         Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);
-        return newTrack != null && trackPointsAreEqual(rawFiles, newTrack);
-    }
-
-    /**
-     * Compares all track points in the new track with the track points of every other track files.
-     * Concludes based on this if the track already exists in the folder.
-     *
-     * @param rawFiles the files in the raw folder.
-     * @param newTrack the new track to import.
-     * @return true if the file matches an existing file, false if not.
-     */
-    public boolean trackPointsAreEqual(File[] rawFiles, Track newTrack) {
-        for (File rawFile : rawFiles) {
-            GPX rawGpx = TrackTools.getGpxFromFile(rawFile);
-            if (rawGpx != null) {
-                Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
-                if (rawTrack != null) {
-                    List<Waypoint> newPoints = newTrack.getTrackPoints();
-                    List<Waypoint> rawPoints = rawTrack.getTrackPoints();
-                    if (newPoints != null && rawPoints != null) {
-                        if (newPoints.size() == rawPoints.size()) {
-                            boolean trackPointsMatching = true;
-                            for (int i = 0; trackPointsMatching && i < newPoints.size() && i < rawPoints.size(); i++) {
-                                if (!TrackTools.matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
-                                    trackPointsMatching = false;
-                                }
-                            }
-                            if (trackPointsMatching) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return false;
+        return newTrack != null && TrackTools.trackPointsAreEqual(rawFiles, newTrack);
     }
 
     /**
@@ -214,7 +194,7 @@ public class FileManager {
      * @param rawGpx   the gpx file to save.
      * @param filename the name for the new file.
      */
-    public void saveRawGpxFile(GPX rawGpx, String filename, File rawFolder) {
+    public void saveRawGpxFile(GPX rawGpx, String filename) {
         saveGpxFile(rawGpx, filename, rawFolder);
     }
 
@@ -224,7 +204,7 @@ public class FileManager {
      * @param processedGpx the gpx file to save.
      * @param filename     the name for the new file.
      */
-    public void saveProcessedGpxFile(GPX processedGpx, String filename, File processedFolder) {
+    public void saveProcessedGpxFile(GPX processedGpx, String filename) {
         saveGpxFile(processedGpx, filename, processedFolder);
     }
 
@@ -241,7 +221,9 @@ public class FileManager {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            new GPXParser().writeGPX(gpx, new FileOutputStream(file));
+            FileOutputStream outputStream = new FileOutputStream(file);
+            new GPXParser().writeGPX(gpx, outputStream);
+            outputStream.close();
             FileTools.insertXmlData(gpx, file);
             FileTools.insertDisplayColor(gpx, file);
         } catch (IOException ex) {
@@ -287,29 +269,29 @@ public class FileManager {
     }
 
     /**
-     * Gets the app folder.
+     * Sets the folder for the application.
      *
-     * @return the app folder
+     * @param appFolder an app folder
      */
-    public File getAppFolder() {
-        return appFolder;
+    public void setAppFolder(File appFolder) {
+        this.appFolder = appFolder;
     }
 
     /**
-     * Gets the raw folder.
+     * Sets the raw folder for the current operation.
      *
-     * @return the raw folder
+     * @param rawFolder the folder to save raw files.
      */
-    public File getRawFolder() {
-        return rawFolder;
+    public void setRawFolder(File rawFolder) {
+        this.rawFolder = rawFolder;
     }
 
     /**
-     * Gets the processed folder.
+     * Sets the processed folder for the current operation.
      *
-     * @return the processed folder
+     * @param processedFolder the folder to save processed files.
      */
-    public File getProcessedFolder() {
-        return processedFolder;
+    public void setProcessedFolder(File processedFolder) {
+        this.processedFolder = processedFolder;
     }
 }
