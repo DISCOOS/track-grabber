@@ -33,6 +33,7 @@ public enum Messages {
     TRACK_NUMBER("Spornummer: "),
     IMPORTED_FROM_GPS("Oppgi data for fil: "),
     IMPORTED_FILES_LEFT_TO_PROCESS("Det er nå %1 filer i kø for prosessering."),
+    TRACK_COMMENT("Kommentar til sporfilen: "),
 
     // Operation panel
     OPERATION_NAME("Navn på operasjon: "),
