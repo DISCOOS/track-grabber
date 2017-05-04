@@ -32,6 +32,7 @@ public class Window extends JFrame {
 
         setTitle(Messages.PROJECT_NAME.get());
         setSize(800, 400);
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
