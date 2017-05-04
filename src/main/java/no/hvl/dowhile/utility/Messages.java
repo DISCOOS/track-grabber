@@ -22,6 +22,8 @@ public enum Messages {
     SPACER("                                                  "),
 
     // Track panel
+    BACK("Tilbake"),
+    NEXT("Neste"),
     CREW_NUMBER("Gruppenummer: "),
     CREW_COUNT("Antall mann: "),
     AREA_SEARCHED("Teiger: "),

@@ -2,7 +2,6 @@ package no.hvl.dowhile.core.gui;
 
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.TrackInfo;
-import no.hvl.dowhile.utility.CrewStrings;
 import no.hvl.dowhile.utility.Messages;
 
 import javax.swing.*;
@@ -14,35 +13,35 @@ import java.util.List;
  * This class has an interface for configuring details related to one track.
  */
 public class TrackPanel extends JPanel {
-
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
 
+    // Info about the current file and progress, if multiple files.
     private JLabel currentImportLabel;
     private JLabel remainingFilesLabel;
-
+    // Check boxes for selecting type of team.
     private List<JRadioButton> radioButtons;
     private ButtonGroup radioButtonGroup;
-
+    // Starts the processing of the file.
     private JButton registerButton;
-
+    // Getting the number of the team.
     private JLabel crewNumberLabel;
     private JSpinner crewNumberSpinner;
-
+    // Getting the amount of people on the team.
     private JLabel crewCountLabel;
     private JSpinner crewCountSpinner;
-
+    // Getting the number of the track, if multiple tracks on a team etc.
     private JLabel trackNumberLabel;
     private JSpinner trackNumberSpinner;
-
+    // Getting info about the area searched.
     private JLabel areaLabel;
     private JButton areaInputButton;
     private JLabel areaSearchedLabel;
-
+    // Getting extra comments about the track.
     private JLabel trackCommentLabel;
     private JTextField trackCommentInput;
-
+    // Controlling navigation flow.
     private JButton nextButton;
     private JButton backButton;
     private int viewCount;
@@ -58,8 +57,8 @@ public class TrackPanel extends JPanel {
         this.WINDOW = WINDOW;
         numberOfAreas = 15;
         viewCount = 0;
-        areaSearchedString = new ArrayList<String>();
-        allInputComponents = new ArrayList<JComponent>();
+        areaSearchedString = new ArrayList<>();
+        allInputComponents = new ArrayList<>();
 
         setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();
@@ -189,11 +188,11 @@ public class TrackPanel extends JPanel {
     }
 
     private void nextAndBackButtons() {
-        nextButton = new JButton("Neste");
+        nextButton = new JButton(Messages.NEXT.get());
         WINDOW.modifyConstraints(constraints, 3, 11, GridBagConstraints.CENTER, 1);
         add(nextButton, constraints);
 
-        backButton = new JButton("Tilbake");
+        backButton = new JButton(Messages.BACK.get());
         WINDOW.modifyConstraints(constraints, 0, 11, GridBagConstraints.CENTER, 1);
         add(backButton, constraints);
     }
@@ -202,7 +201,7 @@ public class TrackPanel extends JPanel {
      * Creates a dialog with options for choosing area
      */
     private Object[] areaDialogBox() {
-        areaCheckBoxes = new ArrayList<JCheckBox>();
+        areaCheckBoxes = new ArrayList<>();
         for (int i = 1; i <= numberOfAreas; i++ ) {
             JCheckBox checkBox = new JCheckBox(Integer.toString(i));
             areaCheckBoxes.add(checkBox);
@@ -259,8 +258,7 @@ public class TrackPanel extends JPanel {
      * @return a List with the names
      */
     private List<String> getCrewNames() {
-        List<String> crewNames = OPERATION_MANAGER.getConfig().getTeamNames();
-        return crewNames;
+        return OPERATION_MANAGER.getConfig().getTeamNames();
     }
 
     /**
@@ -290,9 +288,9 @@ public class TrackPanel extends JPanel {
     }
 
     /**
-     * Sets all JComponents visible/invisible other than the give components
+     * Sets all JComponents visible/invisible other than the give components.
+     * @param visibility true if visible, false if not.
      */
-
     private void setVisibilityComponents(boolean visibility) {
         for (JComponent c : allInputComponents) {
                 c.setVisible(visibility);
@@ -303,7 +301,6 @@ public class TrackPanel extends JPanel {
     /**
      * Listener for the registerbutton
      */
-
     private void registerButtonListener() {
         registerButton.addActionListener(actionEvent -> {
             // Fetching the input data and sending it to the OperationManager
@@ -334,6 +331,9 @@ public class TrackPanel extends JPanel {
         });
     }
 
+    /**
+     * Button for displaying the next "page".
+     */
     private void nextButtonListener() {
         nextButton.addActionListener(actionEvent -> {
             viewCount++;
@@ -384,6 +384,9 @@ public class TrackPanel extends JPanel {
         });
     }
 
+    /**
+     * Button for displaying the previous "page".
+     */
     private void backButtonListener() {
         backButton.addActionListener(actionEvent -> {
             viewCount--;
@@ -429,6 +432,9 @@ public class TrackPanel extends JPanel {
         });
     }
 
+    /**
+     * Showing dialog to get info about the area searched.
+     */
     private void areaInputButtonListener() {
         areaInputButton.addActionListener(actionEvent -> {
             int dialog = JOptionPane.showConfirmDialog(this, areaDialogBox(), Messages.CHOOSE_AREA_DIALOG.get() ,JOptionPane.OK_CANCEL_OPTION);
@@ -442,8 +448,6 @@ public class TrackPanel extends JPanel {
                 areaSearchedLabel.setVisible(true);
                 areaInputButton.setVisible(false);
             }
-
-
         });
     }
 }
