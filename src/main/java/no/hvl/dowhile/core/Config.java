@@ -78,6 +78,11 @@ public class Config {
         return teamTypes;
     }
 
+    /**
+     * Get a list with the names of the team types.
+     *
+     * @return list with names of the team types.
+     */
     public List<String> getTeamNames() {
         List<String> teamNames = new ArrayList<>();
         for (TeamType teamType : teamTypes) {
@@ -90,6 +95,7 @@ public class Config {
         if (file == null || !file.getName().equals("config.txt")) {
             return;
         }
+        teamTypes.clear();// Removing values to avoid duplicates.
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
