@@ -106,11 +106,11 @@ public class OperationManager {
      * Set the date and time of the current operation and updating info in window and the file.
      *
      * @param numberOfAreas The number of areas for this operation.
-     * @param year   the year it started.
-     * @param month  the month it started.
-     * @param day    the day it started.
-     * @param hour   the hour it started.
-     * @param minute the minute it started.
+     * @param year          the year it started.
+     * @param month         the month it started.
+     * @param day           the day it started.
+     * @param hour          the hour it started.
+     * @param minute        the minute it started.
      */
     public void updateCurrentOperation(int numberOfAreas, int year, int month, int day, int hour, int minute) {
         operation.setStartTime(year, month, day, hour, minute);
@@ -164,6 +164,7 @@ public class OperationManager {
             return;
         }
         for (File file : gpxFiles) {
+            System.err.println(file.getName());
             processFile(file);
         }
         if (!queue.isEmpty()) {
@@ -202,15 +203,19 @@ public class OperationManager {
             System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
         }
-        if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-            if (!fileManager.fileAlreadyImported(gpx)) {
-                fileManager.saveRawGpxFile(gpx, file.getName());
+        if (!fileManager.fileAlreadyImported(gpx)) {
+            System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
+            return;
+        }
+        fileManager.saveRawGpxFile(gpx, file.getName());
+        if (TrackTools.trackIsAnArea(gpx)) {
+            fileManager.saveAreaGpxFile(gpx, file.getName());
+        } else {
+            if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
                 queue.add(new GpxFile(file.getName(), gpx));
             } else {
-                System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
+                System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
             }
-        } else {
-            System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
         }
     }
 

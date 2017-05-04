@@ -116,13 +116,27 @@ public class TrackTools {
     }
 
     /**
-     * Comparing latitude, longitude and elevation.
+     * Comparing latitude, longitude and elevation. If elevation doesn't exist, compare only latitude and longitude.
      *
      * @param waypoint1 waypoint to check.
      * @param waypoint2 waypoint to compare with.
      * @return true if the points are matching, false if not.
      */
     public static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
-        return waypoint1.getLatitude().equals(waypoint2.getLatitude()) && waypoint1.getLongitude().equals(waypoint2.getLongitude()) && waypoint1.getElevation().equals(waypoint2.getElevation());
+        if(waypoint1.getElevation() == null || waypoint2.getElevation() == null) {
+            return waypoint1.getLatitude().equals(waypoint2.getLatitude()) && waypoint1.getLongitude().equals(waypoint2.getLongitude());
+        } else {
+            return waypoint1.getLatitude().equals(waypoint2.getLatitude()) && waypoint1.getLongitude().equals(waypoint2.getLongitude()) && waypoint1.getElevation().equals(waypoint2.getElevation());
+        }
+    }
+
+    /**
+     * Checks if the file only contains an area and not a track (the waypoints don't have timetags).
+     * @return true if the file is an area, false if not
+     */
+    public static boolean trackIsAnArea(GPX gpx) {
+        Track track = getTrackFromGPXFile(gpx);
+
+        return track.getTrackPoints().get(0).getTime() == null;
     }
 }

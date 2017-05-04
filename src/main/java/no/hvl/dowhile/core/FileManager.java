@@ -22,6 +22,7 @@ public class FileManager {
     private File appFolder;
     private File processedFolder;
     private File rawFolder;
+    private File areaFolder;
 
     public FileManager(final OperationManager OPERATION_MANAGER) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
@@ -114,6 +115,7 @@ public class FileManager {
         File operationFolder = setupFolder(appFolder, operation.getName().trim().replace(" ", "_"));
         rawFolder = setupFolder(operationFolder, "Raw");
         processedFolder = setupFolder(operationFolder, "Processed");
+        areaFolder = setupFolder(operationFolder, "Areas");
         createOperationFile(operation, operationFolder);
         System.err.println("Done creating folders for operation " + operation.getName());
     }
@@ -211,6 +213,16 @@ public class FileManager {
     }
 
     /**
+     * Saves the area file in the area folder as the specified filename.
+     *
+     * @param areaGPX   the gpx file to save.
+     * @param filename  the name for the new file.
+     */
+    public void saveAreaGpxFile(GPX areaGPX, String filename) {
+        saveGpxFile(areaGPX, filename, areaFolder);
+    }
+
+    /**
      * Saving the file in the specified folder as the specified filename.
      *
      * @param gpx      the gpx to save.
@@ -265,5 +277,14 @@ public class FileManager {
      */
     public void setProcessedFolder(File processedFolder) {
         this.processedFolder = processedFolder;
+    }
+
+    /**
+     * Sets the area folder for the current operation.
+     *
+     * @param areaFolder the folder to save area files.
+     */
+    public void setAreaFolder(File areaFolder) {
+        this.areaFolder = areaFolder;
     }
 }
