@@ -5,9 +5,7 @@ import no.hvl.dowhile.utility.StringTools;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Represents the current operation and has information such as name and start time.
@@ -16,6 +14,7 @@ public class Operation {
     private String name;
     private int numberOfAreas;
     private Date startTime;
+    private List<String> paths;
 
     /**
      * Constructor taking the information needed to create the operation.
@@ -34,6 +33,7 @@ public class Operation {
         calendar.set(year, month - 1, day, hour, minute);
         calendar.setTimeZone(TimeZone.getTimeZone("CET"));
         this.startTime = calendar.getTime();
+        this.paths = new ArrayList<>();
     }
 
     /**
@@ -67,6 +67,13 @@ public class Operation {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTimeInMillis(Long.parseLong(startTimeAndValue[1]));
                         startTime = calendar.getTime();
+                    } else {
+                        throw new Exception("Failed to parse time from file.");
+                    }
+                } else if (line.startsWith("path")) {
+                    String[] pathAndValue = line.split("=");
+                    if (pathAndValue.length == 2) {
+                        paths.add(pathAndValue[1]);
                     } else {
                         throw new Exception("Failed to parse time from file.");
                     }
@@ -129,17 +136,38 @@ public class Operation {
     }
 
     /**
+     * Get the paths for this operation.
+     *
+     * @return list of paths.
+     */
+    public List<String> getPaths() {
+        return paths;
+    }
+
+    /**
+     * Add a path to store files to this operation.
+     *
+     * @param path the path to add.
+     */
+    public void addPath(String path) {
+        paths.add(path);
+    }
+
+    /**
      * Get the content to be saved in the file representing this operation.
      */
     public String[] getFileContent() {
-        return new String[]{
-                "# Operasjon " + name,
-                "# Antall teiger: " + numberOfAreas,
-                "# Starttid: " + StringTools.formatDate(startTime),
-                "# Du kan ikke endre på dataen her. Det må gjøres i programmet.",
-                "name=" + name.trim().replace(" ", "_"),
-                "numberOfAreas=" + numberOfAreas,
-                "starttime=" + startTime.getTime(),
-        };
+        List<String> lines = new ArrayList<>();
+        lines.add("# Operasjon " + name);
+        lines.add("# Antall teiger: " + numberOfAreas);
+        lines.add("# Starttid: " + StringTools.formatDate(startTime));
+        lines.add("# Du kan ikke endre på dataen her. Det må gjøres i programmet.");
+        lines.add("name=" + name.trim().replace(" ", "_"));
+        lines.add("numberOfAreas=" + numberOfAreas);
+        lines.add("starttime=" + startTime.getTime());
+        for (String path : paths) {
+            lines.add("path=" + path);
+        }
+        return lines.toArray(new String[lines.size()]);
     }
 }
