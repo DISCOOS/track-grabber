@@ -20,7 +20,10 @@ public class TrackPanel extends JPanel {
     // Info about the current file and progress, if multiple files.
     private JLabel currentImportLabel;
     private JLabel remainingFilesLabel;
-    // Check boxes for selecting type of team.
+    // Info for user at start of prosessing file
+    private JLabel startInfoLabel;
+    // Check boxes for selecting type of team and a label.
+    private JLabel crewTypeLabel;
     private List<JRadioButton> radioButtons;
     private ButtonGroup radioButtonGroup;
     // Starts the processing of the file.
@@ -64,14 +67,14 @@ public class TrackPanel extends JPanel {
         constraints = new GridBagConstraints();
         WINDOW.setConstraintsInsets(constraints, 5);
 
-        createButtonsAndInputFields();
-        nextAndBackButtons();
-
-        // adding buttons
-        radioButtonGroup = new ButtonGroup();
-        constraints.gridwidth = 1;
-        radioButtons = generateButtons(getCrewNames());
-        setButtonsInWindow();
+        infoGUI();
+        crewTypeButtonsGUI();
+        crewNumberGUI();
+        crewCountGUI();
+        areaSearchedGUI();
+        trackNumberGUI();
+        trackCommentGUI();
+        buttonsGUI();
 
         initialVisibility();
 
@@ -96,14 +99,41 @@ public class TrackPanel extends JPanel {
      * Adds the buttons and input fields and sets them in the gridbaglayout
      */
 
-    private void createButtonsAndInputFields() {
+    private void infoGUI() {
         // Current file imported from GPS
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + "Ingen fil.";
         currentImportLabel = WINDOW.makeLabel(currentImportedFile, WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 4);
+        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 4);
         add(currentImportLabel, constraints);
 
-        // Label and input for team number
+        // Remaining files imported from GPS waiting to be processed
+        String remainingFiles = Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get("" + 0);
+        remainingFilesLabel = WINDOW.makeLabel(remainingFiles, WINDOW.TEXT_FONT_SIZE);
+        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 4);
+        add(remainingFilesLabel, constraints);
+
+        // Start info before importing file
+        startInfoLabel = WINDOW.makeLabel(Messages.TRACK_START_INFO.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 4);
+        add(startInfoLabel, constraints);
+        allInputComponents.add(startInfoLabel);
+    }
+
+    private void crewTypeButtonsGUI() {
+        // adding radio buttons for type of crew
+        crewTypeLabel = WINDOW.makeLabel(Messages.CREW_TYPE_MESSAGE.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
+        add(crewTypeLabel, constraints);
+        allInputComponents.add(crewTypeLabel);
+
+        radioButtonGroup = new ButtonGroup();
+        constraints.gridwidth = 1;
+        radioButtons = generateButtons(getCrewNames());
+        setButtonsInWindow();
+    }
+
+    private void crewNumberGUI() {
+        // Label and input for crew number
         crewNumberLabel = WINDOW.makeLabel(Messages.CREW_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
         add(crewNumberLabel, constraints);
@@ -116,7 +146,9 @@ public class TrackPanel extends JPanel {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(crewNumberSpinner, constraints);
         allInputComponents.add(crewNumberSpinner);
+    }
 
+    private void crewCountGUI() {
         // Label and input for crew count
         crewCountLabel = WINDOW.makeLabel(Messages.CREW_COUNT.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.WEST, 1);
@@ -130,7 +162,9 @@ public class TrackPanel extends JPanel {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(crewCountSpinner, constraints);
         allInputComponents.add(crewCountSpinner);
+    }
 
+    private void areaSearchedGUI() {
         // Label and input for area searched
         areaLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 3, 3, GridBagConstraints.WEST, 1);
@@ -148,7 +182,9 @@ public class TrackPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 3, 4, GridBagConstraints.WEST, 1);
         add(areaSearchedLabel, constraints);
         areaSearchedLabel.setVisible(false);
+    }
 
+    private void trackNumberGUI() {
         // Label and input for track number
         trackNumberLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 3, 5, GridBagConstraints.WEST, 1);
@@ -162,7 +198,9 @@ public class TrackPanel extends JPanel {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(trackNumberSpinner, constraints);
         allInputComponents.add(trackNumberSpinner);
+    }
 
+    private void trackCommentGUI() {
         // Label for comment to the track
         trackCommentLabel = WINDOW.makeLabel(Messages.TRACK_COMMENT.get(), WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 1, 7, GridBagConstraints.WEST, 3);
@@ -174,20 +212,9 @@ public class TrackPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 1, 8, GridBagConstraints.WEST, 3);
         add(trackCommentInput, constraints);
         allInputComponents.add(trackCommentInput);
-
-        // Register button
-        registerButton = new JButton(Messages.REGISTER_BUTTON.get());
-        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 4);
-        add(registerButton, constraints);
-
-        // Remaining files imported from GPS waiting to be processed
-        String remainingFiles = Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get("" + 0);
-        remainingFilesLabel = WINDOW.makeLabel(remainingFiles, WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 4);
-        add(remainingFilesLabel, constraints);
     }
 
-    private void nextAndBackButtons() {
+    private void buttonsGUI() {
         nextButton = new JButton(Messages.NEXT.get());
         WINDOW.modifyConstraints(constraints, 3, 11, GridBagConstraints.CENTER, 1);
         add(nextButton, constraints);
@@ -195,6 +222,11 @@ public class TrackPanel extends JPanel {
         backButton = new JButton(Messages.BACK.get());
         WINDOW.modifyConstraints(constraints, 0, 11, GridBagConstraints.CENTER, 1);
         add(backButton, constraints);
+
+        // Register button
+        registerButton = new JButton(Messages.REGISTER_BUTTON.get());
+        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 4);
+        add(registerButton, constraints);
     }
 
     /**
@@ -246,6 +278,7 @@ public class TrackPanel extends JPanel {
         List<JRadioButton> radioButtons = new ArrayList<>();
         for (String crewName : crewNames) {
             JRadioButton radioButton = new JRadioButton(crewName);
+            radioButton.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, WINDOW.TEXT_FONT_SIZE));
             radioButtons.add(radioButton);
             radioButtonGroup.add(radioButton);
         }
@@ -283,6 +316,7 @@ public class TrackPanel extends JPanel {
         for( JComponent c : allInputComponents) {
             c.setVisible(false);
         }
+        startInfoLabel.setVisible(true);
         backButton.setVisible(false);
         registerButton.setVisible(false);
     }
@@ -340,10 +374,12 @@ public class TrackPanel extends JPanel {
             switch (viewCount) {
                 case 0:
                     setVisibilityComponents(false);
+                    startInfoLabel.setVisible(true);
                     backButton.setVisible(false);
                     break;
                 case 1:
                     setVisibilityComponents(false);
+                    crewTypeLabel.setVisible(true);
                     for(JRadioButton rb : radioButtons) {
                         rb.setVisible(true);
                     }
@@ -393,6 +429,7 @@ public class TrackPanel extends JPanel {
             switch (viewCount) {
                 case 1:
                     setVisibilityComponents(false);
+                    crewTypeLabel.setVisible(true);
                     for(JRadioButton rb : radioButtons) {
                         rb.setVisible(true);
                     }
