@@ -136,7 +136,11 @@ public class TrackTools {
      */
     public static boolean trackIsAnArea(GPX gpx) {
         Track track = getTrackFromGPXFile(gpx);
-
         return track.getTrackPoints().get(0).getTime() == null;
+    }
+
+    public static boolean isOnlyOneWayPoint(GPX gpx) {
+        Track track = getTrackFromGPXFile(gpx);
+        return track.getTrackPoints().size() == 1;
     }
 }

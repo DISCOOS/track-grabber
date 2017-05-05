@@ -223,11 +223,15 @@ public class OperationManager {
      * This method is used when a gps is connected and one or more gpx-files are located.
      */
     public void prepareNextFile() {
-        currentTrackCutter = new TrackCutter(this);
         GpxFile gpxFile = queue.remove(0);
-        currentTrackCutter.setGpxFile(gpxFile);
         window.updateCurrentFile(gpxFile.getFilename(), queue.size());
-        window.openTrackPanel();
+        if(TrackTools.isOnlyOneWayPoint(gpxFile.getGpx())) {
+            //window.openWayPointPanel();
+        } else {
+            currentTrackCutter = new TrackCutter(this);
+            currentTrackCutter.setGpxFile(gpxFile);
+            window.openTrackPanel();
+        }
     }
 
     /**

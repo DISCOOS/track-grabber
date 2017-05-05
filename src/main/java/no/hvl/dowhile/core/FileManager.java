@@ -23,6 +23,7 @@ public class FileManager {
     private File processedFolder;
     private File rawFolder;
     private File areaFolder;
+    private File wayPointFolder;
 
     public FileManager(final OperationManager OPERATION_MANAGER) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
@@ -116,6 +117,23 @@ public class FileManager {
         rawFolder = setupFolder(operationFolder, "Raw");
         processedFolder = setupFolder(operationFolder, "Processed");
         areaFolder = setupFolder(operationFolder, "Areas");
+        wayPointFolder = setupFolder(operationFolder, "WayPoints");
+        createOperationFile(operation, operationFolder);
+        System.err.println("Done creating folders for operation " + operation.getName());
+    }
+
+    /**
+     * Sets up the folder for the operation with all its belonging folders and files to a specified folder.
+     *
+     * @param operation the operation to setup
+     * @param pathname the specified path
+     */
+    public void setupOperationFolderInSpecifiedPath(Operation operation, String pathname) {
+        File operationFolder = setupFolder((new File(pathname)), operation.getName().trim().replace(" ", "_"));
+        rawFolder = setupFolder(operationFolder, "Raw");
+        processedFolder = setupFolder(operationFolder, "Processed");
+        areaFolder = setupFolder(operationFolder, "Areas");
+        wayPointFolder = setupFolder(operationFolder, "WayPoints");
         createOperationFile(operation, operationFolder);
         System.err.println("Done creating folders for operation " + operation.getName());
     }
@@ -223,6 +241,15 @@ public class FileManager {
     }
 
     /**
+     * Saves the waypoint file in the waypoint folder as the specified filename.
+     * @param wayPointGPX
+     * @param filename
+     */
+    public void saveWayPointFile(GPX wayPointGPX, String filename) {
+        saveGpxFile(wayPointGPX, filename, wayPointFolder);
+    }
+
+    /**
      * Saving the file in the specified folder as the specified filename.
      *
      * @param gpx      the gpx to save.
@@ -286,5 +313,14 @@ public class FileManager {
      */
     public void setAreaFolder(File areaFolder) {
         this.areaFolder = areaFolder;
+    }
+
+    /**
+     * Sets the waypoint folder to save waypoint files.
+     *
+     * @param waypointFolder the folder to save waypoint files.
+     */
+    public void setWaypointFolder(File waypointFolder) {
+        this.wayPointFolder = waypointFolder;
     }
 }
