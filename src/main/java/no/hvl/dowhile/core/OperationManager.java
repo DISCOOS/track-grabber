@@ -208,7 +208,7 @@ public class OperationManager {
             System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
         }
-        if (!fileManager.fileAlreadyImported(gpx)) {
+        if (fileManager.fileAlreadyImported(gpx)) {
             System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
             return;
         }

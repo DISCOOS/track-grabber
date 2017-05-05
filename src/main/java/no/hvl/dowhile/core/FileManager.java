@@ -25,6 +25,7 @@ public class FileManager {
 
     public FileManager(final OperationManager OPERATION_MANAGER) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
+        this.extraOperationFolders = new ArrayList<>();
     }
 
     public String getMainOperationFolderPath() {
