@@ -125,14 +125,14 @@ public class FileManagerTest {
     @Test
     public void alreadyImportedFileIsAlreadyImported() {
         GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
-        fileManager.saveRawGpxFile(gpx, "Filnavn");
+        fileManager.saveRawGpxFileInFolders(gpx, "Filnavn");
         assertTrue(fileManager.fileAlreadyImported(gpx));
     }
 
     @Test
     public void rawGPXFileIsSaved() {
         GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
-        fileManager.saveRawGpxFile(gpx, "Filnavn");
+        fileManager.saveRawGpxFileInFolders(gpx, "Filnavn");
         File savedRawFile = FileTools.getFile(rawFolder, "Filnavn");
         assertNotNull(savedRawFile);
     }
@@ -140,7 +140,7 @@ public class FileManagerTest {
     @Test
     public void processedGPXFileIsSaved() {
         GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
-        fileManager.saveProcessedGpxFile(gpx, "Filnavn");
+        fileManager.saveProcessedGpxFileInFolders(gpx, "Filnavn");
         File savedProcessedFile = FileTools.getFile(processedFolder, "Filnavn");
         assertNotNull(savedProcessedFile);
     }

@@ -93,6 +93,22 @@ public class FileTools {
     }
 
     /**
+     * Sets up a folder if it doesn't already exist.
+     *
+     * @param parentFolder the folder where you want to create the new folder.
+     * @param name         the name of the new folder.
+     * @return the folder which was created.
+     */
+    public static File setupFolder(File parentFolder, String name) {
+        File folder = new File(parentFolder, name);
+        boolean folderCreated = folder.mkdir();
+        if (folderCreated) {
+            System.err.println(name + " folder didn't exist. Created!");
+        }
+        return folder;
+    }
+
+    /**
      * This method will insert some data to the XML file to ensure Basecamp is able to handle it.
      *
      * @param gpx  the gpx to edit.
