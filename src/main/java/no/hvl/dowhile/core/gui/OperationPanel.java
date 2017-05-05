@@ -497,12 +497,12 @@ public class OperationPanel extends JPanel {
 
     private void definePathButtonListener() {
         definePathButton.addActionListener(actionEvent -> {
-            JFileChooser f = new JFileChooser();
-            f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            f.showSaveDialog(null);
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fileChooser.showSaveDialog(null);
 
-            System.out.println(f.getCurrentDirectory());
-            System.out.println(f.getSelectedFile());
+            OPERATION_MANAGER.getOperation().addPath(fileChooser.getSelectedFile().getAbsolutePath());
+            OPERATION_MANAGER.updateOperationFile();
         });
     }
 

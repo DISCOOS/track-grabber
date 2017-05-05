@@ -125,6 +125,13 @@ public class OperationManager {
     }
 
     /**
+     * Update the operation file.
+     */
+    public void updateOperationFile() {
+        fileManager.updateOperationFile(operation);
+    }
+
+    /**
      * Tell the FileManager to load existing operations from the file system.
      *
      * @return the list of current operations.
