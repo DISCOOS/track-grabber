@@ -24,6 +24,8 @@ public enum Messages {
     // Track panel
     BACK("Tilbake"),
     NEXT("Neste"),
+    TRACK_START_INFO("Her er noe info om hva du skal gjøre for prosessering av GPS-data"),
+    CREW_TYPE_MESSAGE("Velg type mannskap"),
     CREW_NUMBER("Gruppenummer: "),
     CREW_COUNT("Antall mann: "),
     AREA_SEARCHED("Teiger: "),

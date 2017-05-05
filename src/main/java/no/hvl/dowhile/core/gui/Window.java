@@ -19,8 +19,8 @@ import java.util.List;
  * The class has different panels for displaying information depending on certain events in the application.
  */
 public class Window extends JFrame {
-    final int HEADER_FONT_SIZE = 24;
-    final int TEXT_FONT_SIZE = 16;
+    final int HEADER_FONT_SIZE = 32;
+    final int TEXT_FONT_SIZE = 24;
     private final OperationManager OPERATION_MANAGER;
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
