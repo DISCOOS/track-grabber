@@ -28,12 +28,13 @@ public class OperationManager {
     private TrackCutter currentTrackCutter;
     private List<GpxFile> queue;
 
+
     public OperationManager() {
+        this.config = new Config();
         this.active = true;
         this.window = new Window(this);
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager(this);
-        this.config = new Config();
         this.existingOperations = new ArrayList<>();
         this.queue = new ArrayList<>();
     }
