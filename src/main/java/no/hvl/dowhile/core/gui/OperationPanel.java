@@ -53,6 +53,7 @@ public class OperationPanel extends JPanel {
     private JLabel editAreasLabel;
     private JSpinner editAreasInput;
     private JButton saveOperationButton;
+    private JButton definePathButton;
 
     private GridBagConstraints constraints;
 
@@ -90,6 +91,7 @@ public class OperationPanel extends JPanel {
         switchOperationListener();
         backButtonListener();
         importFileButtonListener();
+        definePathButtonListener();
 
         setBackground(new Color(255, 245, 252));
     }
@@ -203,10 +205,16 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.WEST, 2);
         add(timePicker, constraints);
 
+        // Button for choosing path(s) to save operation to
+        definePathButton = new JButton(Messages.DEFINE_OPERATION_PATH.get());
+        definePathButton.setName("definePathButton");
+        WINDOW.modifyConstraints(constraints, 0, 8, GridBagConstraints.CENTER, 2);
+        add(definePathButton, constraints);
+
         // Register new operation
         registerNewButton = new JButton(Messages.REGISTER_NEW_BUTTON.get());
         registerNewButton.setName("registerNewButton");
-        WINDOW.modifyConstraints(constraints, 2, 7, GridBagConstraints.CENTER, 2);
+        WINDOW.modifyConstraints(constraints, 2, 8, GridBagConstraints.CENTER, 2);
         add(registerNewButton, constraints);
     }
 
@@ -340,6 +348,7 @@ public class OperationPanel extends JPanel {
         areasInput.setVisible(visibility);
         datePicker.setVisible(visibility);
         timePicker.setVisible(visibility);
+        definePathButton.setVisible(visibility);
         registerNewButton.setVisible(visibility);
         backButton.setVisible(visibility);
         errorMessageLabel.setText(" ");
@@ -379,6 +388,7 @@ public class OperationPanel extends JPanel {
         editTimePicker.setVisible(visibility);
         editAreasLabel.setVisible(visibility);
         editAreasInput.setVisible(visibility);
+        definePathButton.setVisible(visibility);
         saveOperationButton.setVisible(visibility);
         if (visibility) {
             toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
@@ -482,6 +492,17 @@ public class OperationPanel extends JPanel {
             }
             setVisibilityExistingOperation(false);
             setVisibilityToggleEditInfo(true);
+        });
+    }
+
+    private void definePathButtonListener() {
+        definePathButton.addActionListener(actionEvent -> {
+            JFileChooser f = new JFileChooser();
+            f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            f.showSaveDialog(null);
+
+            System.out.println(f.getCurrentDirectory());
+            System.out.println(f.getSelectedFile());
         });
     }
 
