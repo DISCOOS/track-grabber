@@ -44,6 +44,7 @@ public enum Messages {
     OPERATION_NAME("Navn på operasjon: "),
     OPERATION_START_DATE("Startdato: "),
     NUMBER_OF_AREAS("Totalt antall teiger:"),
+    DEFINE_OPERATION_PATH("Legg til ekstra lagringssted"),
     EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
     NEW_OPERATION_BUTTON("Ny operasjon"),
     IMPORT_LOCAL_FILE("Importer GPS-fil fra maskin"),

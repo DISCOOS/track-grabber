@@ -43,6 +43,7 @@ public class Operation {
      * @throws Exception if the file doesn't have the required data.
      */
     public Operation(File file) throws Exception {
+        this.paths = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = reader.readLine();
         while (line != null) {

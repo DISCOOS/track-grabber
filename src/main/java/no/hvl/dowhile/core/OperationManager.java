@@ -99,7 +99,12 @@ public class OperationManager {
     public void setupOperation(Operation operation) {
         this.operation = operation;
         window.updateOperationInfo(operation);
-        fileManager.setupOperationFolder(operation);
+        fileManager.setupMainOperationFolder(operation);
+        for (String path : operation.getPaths()) {
+            if (!fileManager.getMainOperationFolderPath().equals(path)) {
+                fileManager.setupExtraOperationFolder(operation, path);
+            }
+        }
     }
 
     /**
@@ -116,6 +121,13 @@ public class OperationManager {
         operation.setStartTime(year, month, day, hour, minute);
         operation.setNumberOfAreas(numberOfAreas);
         window.updateOperationInfo(operation);
+        fileManager.updateOperationFile(operation);
+    }
+
+    /**
+     * Update the operation file.
+     */
+    public void updateOperationFile() {
         fileManager.updateOperationFile(operation);
     }
 
@@ -203,13 +215,13 @@ public class OperationManager {
             System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
         }
-        if (!fileManager.fileAlreadyImported(gpx)) {
+        if (fileManager.fileAlreadyImported(gpx)) {
             System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
             return;
         }
-        fileManager.saveRawGpxFile(gpx, file.getName());
+        fileManager.saveRawGpxFileInFolders(gpx, file.getName());
         if (TrackTools.trackIsAnArea(gpx)) {
-            fileManager.saveAreaGpxFile(gpx, file.getName());
+            fileManager.saveAreaGpxFileInFolders(gpx, file.getName());
         } else {
             if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
                 queue.add(new GpxFile(file.getName(), gpx));
@@ -251,7 +263,7 @@ public class OperationManager {
         String newName = config.generateFilename(trackInfo);
         Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
         track.setName(newName);
-        fileManager.saveProcessedGpxFile(gpxFile.getGpx(), newName);
+        fileManager.saveProcessedGpxFileInFolders(gpxFile.getGpx(), newName);
         if (queue.isEmpty()) {
             window.openOperationPanel();
         } else {
@@ -264,10 +276,10 @@ public class OperationManager {
      */
     public void removeUnprocessedFiles() {
         for (GpxFile gpxFile : queue) {
-            fileManager.deleteRawFile(gpxFile.getFilename());
+            fileManager.deleteRawFileInFolders(gpxFile.getFilename());
         }
         if (currentTrackCutter != null && currentTrackCutter.getGpxFile() != null) {
-            fileManager.deleteRawFile(currentTrackCutter.getGpxFile().getFilename());
+            fileManager.deleteRawFileInFolders(currentTrackCutter.getGpxFile().getFilename());
         }
     }
 
