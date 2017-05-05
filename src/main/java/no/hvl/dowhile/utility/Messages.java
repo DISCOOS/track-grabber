@@ -38,6 +38,7 @@ public enum Messages {
     IMPORTED_FROM_GPS("Oppgi data for fil: "),
     IMPORTED_FILES_LEFT_TO_PROCESS("Det er nå %1 filer i kø for prosessering."),
     TRACK_COMMENT("Kommentar til sporfilen: "),
+    CHOOSE_AREA("Legg til"),
 
     // Operation panel
     OPERATION_NAME("Navn på operasjon: "),
@@ -58,8 +59,7 @@ public enum Messages {
     INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
     OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
     GO_BACK("Tilbake"),
-    CHOOSE_AREA("Velg"),
-    CHOOSE_AREA_DIALOG("Velg teig"),
+
 
     // Crew type
     CREW_ATV("ATV"),
