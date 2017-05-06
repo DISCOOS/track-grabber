@@ -59,6 +59,7 @@ public enum Messages {
     AWAITING_GPS("Venter på at en GPS-enhet kobles til..."),
     INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
     OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
+    ALL_SAVED_PATHS("Mapper filene lagres til:"),
     GO_BACK("Tilbake"),
 
 

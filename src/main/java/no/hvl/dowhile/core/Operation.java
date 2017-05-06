@@ -154,6 +154,14 @@ public class Operation {
         paths.add(path);
     }
 
+    public String pathsToString() {
+        String pathsString = "";
+        for(String p : paths) {
+            pathsString += p;
+        }
+        return pathsString;
+    }
+
     /**
      * Get the content to be saved in the file representing this operation.
      */

@@ -33,6 +33,8 @@ public class OperationPanel extends JPanel {
     private TimePicker timePicker;
     private JLabel awaitingGPSLabel;
     private JLabel errorMessageLabel;
+    private JLabel allSavedPathsHeaderLabel;
+    private JLabel allSavedPathsLabel;
 
     private JLabel existingOperationLabel;
     private JComboBox<String> existingOperationInput;
@@ -76,6 +78,8 @@ public class OperationPanel extends JPanel {
         // Setting stuff invisible
         backButton.setVisible(false);
         errorMessageLabel.setVisible(false);
+        allSavedPathsHeaderLabel.setVisible(false);
+        allSavedPathsLabel.setVisible(false);
         setVisibilityNewOperation(false);
         setVisibilityExistingOperation(false);
         setVisibilityEditInfo(false);
@@ -205,12 +209,6 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.WEST, 2);
         add(timePicker, constraints);
 
-        // Button for choosing path(s) to save operation to
-        definePathButton = new JButton(Messages.DEFINE_OPERATION_PATH.get());
-        definePathButton.setName("definePathButton");
-        WINDOW.modifyConstraints(constraints, 0, 8, GridBagConstraints.CENTER, 2);
-        add(definePathButton, constraints);
-
         // Register new operation
         registerNewButton = new JButton(Messages.REGISTER_NEW_BUTTON.get());
         registerNewButton.setName("registerNewButton");
@@ -286,6 +284,20 @@ public class OperationPanel extends JPanel {
         saveOperationButton = new JButton(Messages.EDIT_OPERATION_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 0, 7, GridBagConstraints.CENTER, 4);
         add(saveOperationButton, constraints);
+
+        // Button for choosing path(s) to save operation to
+        definePathButton = new JButton(Messages.DEFINE_OPERATION_PATH.get());
+        definePathButton.setName("definePathButton");
+        WINDOW.modifyConstraints(constraints, 3, 8, GridBagConstraints.CENTER, 1);
+        add(definePathButton, constraints);
+
+        allSavedPathsHeaderLabel = WINDOW.makeLabel(Messages.ALL_SAVED_PATHS.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.modifyConstraints(constraints, 0, 8, GridBagConstraints.CENTER, 4);
+        add(allSavedPathsHeaderLabel, constraints);
+
+        allSavedPathsLabel = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
+        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.CENTER, 4);
+        add(allSavedPathsLabel, constraints);
     }
 
     /**
@@ -348,7 +360,6 @@ public class OperationPanel extends JPanel {
         areasInput.setVisible(visibility);
         datePicker.setVisible(visibility);
         timePicker.setVisible(visibility);
-        definePathButton.setVisible(visibility);
         registerNewButton.setVisible(visibility);
         backButton.setVisible(visibility);
         errorMessageLabel.setText(" ");
@@ -439,9 +450,16 @@ public class OperationPanel extends JPanel {
         toggleEditInfoButton.addActionListener(actionEvent -> {
             if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_SHOW_BUTTON.get())) {
                 setVisibilityEditInfo(true);
+                allSavedPathsLabel.setText(OPERATION_MANAGER.getOperation().pathsToString());
+                allSavedPathsHeaderLabel.setVisible(true);
+                allSavedPathsLabel.setVisible(true);
+                definePathButton.setVisible(true);
                 toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
             } else if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_HIDE_BUTTON.get())) {
                 setVisibilityEditInfo(false);
+                definePathButton.setVisible(false);
+                allSavedPathsHeaderLabel.setVisible(false);
+                allSavedPathsLabel.setVisible(false);
                 toggleEditInfoButton.setText(Messages.EDIT_INFO_SHOW_BUTTON.get());
             }
         });
@@ -499,10 +517,12 @@ public class OperationPanel extends JPanel {
         definePathButton.addActionListener(actionEvent -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            fileChooser.showSaveDialog(null);
-
-            OPERATION_MANAGER.getOperation().addPath(fileChooser.getSelectedFile().getAbsolutePath());
-            OPERATION_MANAGER.updateOperationFile();
+            //fileChooser.showSaveDialog(null);
+            int option = fileChooser.showSaveDialog(JOptionPane.getRootFrame());
+            if (option == JFileChooser.APPROVE_OPTION) {
+                OPERATION_MANAGER.getOperation().addPath(fileChooser.getSelectedFile().getAbsolutePath());
+                OPERATION_MANAGER.updateOperationFile();
+            }
         });
     }
 
