@@ -455,6 +455,8 @@ public class TrackPanel extends JPanel {
             trackNumberSpinner.setValue(0);
             trackCommentInput.setText("");
 
+            initialVisibility();
+
             // Message to user
             String dialogText = Messages.SAVE_FILE.get();
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
