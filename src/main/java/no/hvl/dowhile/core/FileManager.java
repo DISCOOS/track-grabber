@@ -257,7 +257,7 @@ public class FileManager {
         saveGpxFile(areaGPX, filename, areaFolder);
     }
 
-    public void saveWayPpointGpxFileInFolders(GPX wayPointGpx, String filename) {
+    public void saveWaypointGpxFileInFolders(GPX wayPointGpx, String filename) {
         saveWayPointFile(mainOperationFolder.getWayPointFolder(), wayPointGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
             saveWayPointFile(operationFolder.getWayPointFolder(), wayPointGpx, filename);

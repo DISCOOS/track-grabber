@@ -441,6 +441,8 @@ public class OperationPanel extends JPanel {
             if (StringTools.isValidOperationName(operationName)) {
                 if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
                     errorMessageLabel.setText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
+                } else if (!StringTools.operationNameLengthIsValid(operationName)) {
+                    errorMessageLabel.setText(Messages.OPERATION_NAME_IS_TOO_LONG_OR_SHORT.get());
                 } else {
                     Operation operation = new Operation(operationName, day, month, year, hour, minute);
                     OPERATION_MANAGER.setupOperation(operation);

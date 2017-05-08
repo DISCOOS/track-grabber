@@ -248,11 +248,11 @@ public class OperationManager {
     public void prepareNextFile() {
         GpxFile gpxFile = queue.remove(0);
         window.updateCurrentFile(gpxFile.getFilename(), queue.size());
+        currentTrackCutter = new TrackCutter(this);
+        currentTrackCutter.setGpxFile(gpxFile);
         if (TrackTools.isOnlyOneWayPoint(gpxFile.getGpx())) {
             window.openWayPointPanel();
         } else {
-            currentTrackCutter = new TrackCutter(this);
-            currentTrackCutter.setGpxFile(gpxFile);
             window.openTrackPanel();
         }
     }
@@ -275,6 +275,18 @@ public class OperationManager {
         track.setName(newName);
         fileManager.saveProcessedGpxFileInFolders(gpxFile.getGpx(), newName);
         if (queue.isEmpty()) {
+            window.openOperationPanel();
+        } else {
+            prepareNextFile();
+        }
+    }
+
+    public void assignNameToWaypoint(String name) {
+        GpxFile gpxFile = currentTrackCutter.getGpxFile();
+        Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
+        track.setName(name);
+        fileManager.saveWaypointGpxFileInFolders(gpxFile.getGpx(), name);
+        if(queue.isEmpty()) {
             window.openOperationPanel();
         } else {
             prepareNextFile();
