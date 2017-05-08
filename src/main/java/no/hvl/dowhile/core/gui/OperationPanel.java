@@ -484,7 +484,7 @@ public class OperationPanel extends JPanel {
             if (option == JFileChooser.APPROVE_OPTION) {
                 OPERATION_MANAGER.getOperation().addPath(fileChooser.getSelectedFile().getAbsolutePath());
                 OPERATION_MANAGER.updateOperationFile();
-
+                OPERATION_MANAGER.updateOperationFolders();
             }
         });
     }
