@@ -2,10 +2,10 @@ package no.hvl.dowhile.core.gui;
 
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
+import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.awt.*;
-import org.jdesktop.swingx.prompt.PromptSupport;
 
 /**
  * Created by JonKjetil on 08.05.2017.
@@ -65,7 +65,7 @@ public class WaypointPanel extends JPanel {
         confirmNameButton.addActionListener(actionEvent -> {
             String name = waypointNameInput.getText();
 
-            OPERATION_MANAGER.assignNameToWaypoint(name);
+            OPERATION_MANAGER.saveWaypoint(name);
             waypointNameInput.setText("");
 
             String dialogText = Messages.SAVE_FILE.get();
