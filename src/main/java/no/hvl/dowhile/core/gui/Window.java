@@ -3,6 +3,7 @@ package no.hvl.dowhile.core.gui;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
+import org.alternativevision.gpx.beans.Waypoint;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,6 +27,7 @@ public class Window extends JFrame {
     private HeaderPanel headerPanel;
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
+    private WaypointPanel waypointPanel;
 
     public Window(final OperationManager OPERATION_MANAGER) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
@@ -44,17 +46,19 @@ public class Window extends JFrame {
         headerPanel = new HeaderPanel(this);
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
+        waypointPanel = new WaypointPanel(OPERATION_MANAGER, this);
 
         cardPanel = new JPanel(new CardLayout());
         cardPanel.add(operationPanel, "Operation");
         cardPanel.add(trackPanel, "Track");
+        cardPanel.add(waypointPanel, "Waypoint");
         add(cardPanel, BorderLayout.NORTH);
 
         getContentPane().add(headerPanel, BorderLayout.NORTH);
         getContentPane().add(cardPanel, BorderLayout.CENTER);
 
         open();
-        openTrackPanel();
+        openOperationPanel();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {
@@ -104,6 +108,11 @@ public class Window extends JFrame {
     public void openTrackPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Track");
+    }
+
+    public void openWaypointPanel() {
+        CardLayout cl = (CardLayout) (cardPanel.getLayout());
+        cl.show(cardPanel, "Waypoint");
     }
 
     /**
