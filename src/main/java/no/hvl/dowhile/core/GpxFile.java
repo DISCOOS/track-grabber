@@ -2,30 +2,32 @@ package no.hvl.dowhile.core;
 
 import org.alternativevision.gpx.beans.GPX;
 
+import java.io.File;
+
 /**
- * Wrapper class for storing filename along with a GPX object.
+ * Wrapper class for storing the file along with the GPX object.
  */
 public class GpxFile {
-    private String filename;
+    private File file;
     private GPX gpx;
 
     /**
      * Constructor taking the data required to create the object.
      *
-     * @param filename the name of the file.
+     * @param file actual file.
      * @param gpx      the parsed GPX object.
      */
-    public GpxFile(String filename, GPX gpx) {
-        this.filename = filename;
+    public GpxFile(File file, GPX gpx) {
+        this.file = file;
         this.gpx = gpx;
     }
 
     /**
-     * Get the filename associated with this GPX object.
-     * @return the filename.
+     * Get the file associated with this GPX object.
+     * @return the file.
      */
-    public String getFilename() {
-        return filename;
+    public File getFile() {
+        return file;
     }
 
     /**

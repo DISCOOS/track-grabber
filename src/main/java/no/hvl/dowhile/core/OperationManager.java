@@ -217,6 +217,10 @@ public class OperationManager {
             System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
             return;
         }
+        if (TrackTools.hasWaypoints(gpx)) {
+            queue.add(new GpxFile(file, gpx));
+            return;
+        }
         if (!TrackTools.fileHasTrack(gpx)) {
             System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
@@ -230,7 +234,7 @@ public class OperationManager {
             fileManager.saveAreaGpxFileInFolders(gpx, file.getName());
         } else {
             if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-                queue.add(new GpxFile(file.getName(), gpx));
+                queue.add(new GpxFile(file, gpx));
             } else {
                 System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
             }
@@ -243,10 +247,10 @@ public class OperationManager {
      */
     public void prepareNextFile() {
         GpxFile gpxFile = queue.remove(0);
-        window.updateCurrentFile(gpxFile.getFilename(), queue.size());
+        window.updateCurrentFile(gpxFile.getFile().getName(), queue.size());
         currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setGpxFile(gpxFile);
-        if (TrackTools.isOnlyOneWayPoint(gpxFile.getGpx())) {
+        if (TrackTools.hasWaypoints(gpxFile.getGpx())) {
             window.openWaypointPanel();
         } else {
             window.openTrackPanel();
@@ -283,9 +287,7 @@ public class OperationManager {
             return;
         }
         GpxFile gpxFile = currentTrackCutter.getGpxFile();
-        Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
-        track.setName(name);
-        fileManager.saveWaypointGpxFileInFolders(gpxFile.getGpx(), name);
+        fileManager.saveWaypointFileInFolders(gpxFile.getFile(), name + ".gpx");
         checkForMoreFiles();
     }
 
@@ -305,10 +307,10 @@ public class OperationManager {
      */
     public void removeUnprocessedFiles() {
         for (GpxFile gpxFile : queue) {
-            fileManager.deleteRawFileInFolders(gpxFile.getFilename());
+            fileManager.deleteRawFileInFolders(gpxFile.getFile().getName());
         }
         if (currentTrackCutter != null && currentTrackCutter.getGpxFile() != null) {
-            fileManager.deleteRawFileInFolders(currentTrackCutter.getGpxFile().getFilename());
+            fileManager.deleteRawFileInFolders(currentTrackCutter.getGpxFile().getFile().getName());
         }
     }
 
