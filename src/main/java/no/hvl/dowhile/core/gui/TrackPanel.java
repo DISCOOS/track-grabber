@@ -227,56 +227,56 @@ public class TrackPanel extends JPanel {
     private void summaryGUI() {
         // Type of crew
         crewTypeSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_TYPE.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 1, 7, GridBagConstraints.WEST, 1);
         add(crewTypeSummaryLabel, constraints);
 
         crewTypeSummaryData = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 2, 7, GridBagConstraints.WEST, 1);
         add(crewTypeSummaryData, constraints);;
 
         // CrewNumber
         crewNumberSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 1, 6, GridBagConstraints.WEST, 1);
         add(crewNumberSummaryLabel, constraints);
 
         crewNumberSummaryData = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 2, 4, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.WEST, 1);
         add(crewNumberSummaryData, constraints);
 
         // TrackNumber
         trackNumberSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_TRACK_NUMBER.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.WEST, 1);
         add(trackNumberSummaryLabel, constraints);
 
         trackNumberSummaryData = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.WEST, 1);
         add(trackNumberSummaryData, constraints);
 
         // CrewCount
         crewCountSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_COUNT.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 1);
         add(crewCountSummaryLabel, constraints);
 
         crewCountSummaryData = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 2, 4, GridBagConstraints.WEST, 1);
         add(crewCountSummaryData, constraints);
 
         // AreaSearched
         areaSearchedSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_AREA_SEARCHED.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 1, 1, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
         add(areaSearchedSummaryLabel, constraints);
 
         areaSearchedSummaryData = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 2, 1, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.WEST, 1);
         add(areaSearchedSummaryData, constraints);
 
         // TrackComment
         trackCommentSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_TRACK_COMMENT.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 1, 0, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.WEST, 1);
         add(trackCommentSummaryLabel, constraints);
 
         trackCommentSummaryData = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 2, 0, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.WEST, 1);
         add(trackCommentSummaryData, constraints);
     }
 
