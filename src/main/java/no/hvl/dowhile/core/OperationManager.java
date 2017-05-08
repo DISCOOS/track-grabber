@@ -251,7 +251,7 @@ public class OperationManager {
         currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setGpxFile(gpxFile);
         if (TrackTools.isOnlyOneWayPoint(gpxFile.getGpx())) {
-            window.openWayPointPanel();
+            window.openWaypointPanel();
         } else {
             window.openTrackPanel();
         }
