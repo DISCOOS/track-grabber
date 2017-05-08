@@ -196,6 +196,11 @@ public class OperationPanel extends JPanel {
         registerNewButton.setName("registerNewButton");
         WINDOW.modifyConstraints(constraints, 2, 8, GridBagConstraints.CENTER, 2);
         add(registerNewButton, constraints);
+
+        // List of saved paths
+        allSavedPathsLabel = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
+        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.CENTER, 4);
+        add(allSavedPathsLabel, constraints);
     }
 
     /**
@@ -226,6 +231,17 @@ public class OperationPanel extends JPanel {
         switchOperationButton.setName("switchOperationButton");
         WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.CENTER, 2);
         add(switchOperationButton, constraints);
+
+        // Button for choosing path(s) to save operation to
+        definePathButton = new JButton(Messages.DEFINE_OPERATION_PATH.get());
+        definePathButton.setName("definePathButton");
+        WINDOW.modifyConstraints(constraints, 3, 4, GridBagConstraints.CENTER, 1);
+        add(definePathButton, constraints);
+
+        // Saved paths header
+        allSavedPathsHeaderLabel = WINDOW.makeLabel(Messages.ALL_SAVED_PATHS.get(), WINDOW.TEXT_FONT_SIZE);
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
+        add(allSavedPathsHeaderLabel, constraints);
     }
 
     /**
@@ -251,20 +267,6 @@ public class OperationPanel extends JPanel {
         saveOperationButton = new JButton(Messages.EDIT_OPERATION_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 0, 7, GridBagConstraints.CENTER, 4);
         add(saveOperationButton, constraints);
-
-        // Button for choosing path(s) to save operation to
-        definePathButton = new JButton(Messages.DEFINE_OPERATION_PATH.get());
-        definePathButton.setName("definePathButton");
-        WINDOW.modifyConstraints(constraints, 3, 8, GridBagConstraints.CENTER, 1);
-        add(definePathButton, constraints);
-
-        allSavedPathsHeaderLabel = WINDOW.makeLabel(Messages.ALL_SAVED_PATHS.get(), WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 0, 8, GridBagConstraints.CENTER, 4);
-        add(allSavedPathsHeaderLabel, constraints);
-
-        allSavedPathsLabel = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.CENTER, 4);
-        add(allSavedPathsLabel, constraints);
     }
 
     /**
@@ -384,6 +386,9 @@ public class OperationPanel extends JPanel {
         importFileButton.setVisible(visibility);
         toggleEditInfoButton.setVisible(visibility);
         switchOperationButton.setVisible(visibility);
+        definePathButton.setVisible(visibility);
+        allSavedPathsHeaderLabel.setVisible(visibility);
+        allSavedPathsLabel.setVisible(visibility);
     }
 
     /**
@@ -413,16 +418,9 @@ public class OperationPanel extends JPanel {
         toggleEditInfoButton.addActionListener(actionEvent -> {
             if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_SHOW_BUTTON.get())) {
                 setVisibilityEditInfo(true);
-                allSavedPathsLabel.setText(OPERATION_MANAGER.getOperation().pathsToString());
-                allSavedPathsHeaderLabel.setVisible(true);
-                allSavedPathsLabel.setVisible(true);
-                definePathButton.setVisible(true);
                 toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
             } else if (toggleEditInfoButton.getText().equals(Messages.EDIT_INFO_HIDE_BUTTON.get())) {
                 setVisibilityEditInfo(false);
-                definePathButton.setVisible(false);
-                allSavedPathsHeaderLabel.setVisible(false);
-                allSavedPathsLabel.setVisible(false);
                 toggleEditInfoButton.setText(Messages.EDIT_INFO_SHOW_BUTTON.get());
             }
         });
@@ -451,6 +449,7 @@ public class OperationPanel extends JPanel {
                     setVisibilityToggleEditInfo(true);
                     errorMessageLabel.setVisible(false);
                     awaitingGPSLabel.setVisible(true);
+                    allSavedPathsLabel.setText(OPERATION_MANAGER.getOperation().pathsToString());
                 }
             } else {
                 errorMessageLabel.setText(Messages.INVALID_OPERATION_NAME.get());
@@ -472,6 +471,7 @@ public class OperationPanel extends JPanel {
             }
             setVisibilityExistingOperation(false);
             setVisibilityToggleEditInfo(true);
+            allSavedPathsLabel.setText(OPERATION_MANAGER.getOperation().pathsToString());
         });
     }
 
@@ -485,6 +485,7 @@ public class OperationPanel extends JPanel {
                 OPERATION_MANAGER.getOperation().addPath(fileChooser.getSelectedFile().getAbsolutePath());
                 OPERATION_MANAGER.updateOperationFile();
                 OPERATION_MANAGER.updateOperationFolders();
+                allSavedPathsLabel.setText(OPERATION_MANAGER.getOperation().pathsToString());
             }
         });
     }

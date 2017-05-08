@@ -128,11 +128,12 @@ public class Operation {
     }
 
     public String pathsToString() {
-        StringBuilder allPaths = new StringBuilder("");
+        String allPaths = new String("<html>");
         for (String p : paths) {
-            allPaths.append(p).append("\n");
+            allPaths += p += "<br>";
         }
-        return allPaths.toString();
+        allPaths += "</html>";
+        return allPaths;
     }
 
     /**
