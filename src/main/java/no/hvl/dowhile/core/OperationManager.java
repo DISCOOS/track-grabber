@@ -249,7 +249,7 @@ public class OperationManager {
         GpxFile gpxFile = queue.remove(0);
         window.updateCurrentFile(gpxFile.getFilename(), queue.size());
         if (TrackTools.isOnlyOneWayPoint(gpxFile.getGpx())) {
-            //window.openWayPointPanel();
+            window.openWayPointPanel();
         } else {
             currentTrackCutter = new TrackCutter(this);
             currentTrackCutter.setGpxFile(gpxFile);

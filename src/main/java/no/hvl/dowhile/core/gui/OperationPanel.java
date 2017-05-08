@@ -479,7 +479,6 @@ public class OperationPanel extends JPanel {
         definePathButton.addActionListener(actionEvent -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            //fileChooser.showSaveDialog(null);
             int option = fileChooser.showSaveDialog(JOptionPane.getRootFrame());
             if (option == JFileChooser.APPROVE_OPTION) {
                 OPERATION_MANAGER.getOperation().addPath(fileChooser.getSelectedFile().getAbsolutePath());
