@@ -62,6 +62,9 @@ public enum Messages {
     ALL_SAVED_PATHS("Mapper filene lagres til:"),
     GO_BACK("Tilbake"),
 
+    // Waypoint panel
+    NEW_NAME("Nytt navn"),
+
 
     // Crew type
     CREW_ATV("ATV"),

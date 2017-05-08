@@ -5,6 +5,7 @@ import no.hvl.dowhile.utility.Messages;
 
 import javax.swing.*;
 import java.awt.*;
+import org.jdesktop.swingx.prompt.PromptSupport;
 
 /**
  * Created by JonKjetil on 08.05.2017.
@@ -29,6 +30,14 @@ public class WaypointPanel extends JPanel {
         constraints = new GridBagConstraints();
         WINDOW.setConstraintsInsets(constraints, 5);
 
+        wayPointGUI();
+
+        confirmButtonListener();
+
+        setBackground(new Color(255, 245, 252));
+    }
+
+    private void wayPointGUI() {
         // Label with the current waypoint file
         currentWaypointLabel = WINDOW.makeLabel("Prosesserer: ", WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
@@ -37,6 +46,7 @@ public class WaypointPanel extends JPanel {
         // Input field for new name for the waypoint file
         waypointNameInput = new JTextField();
         waypointNameInput.setToolTipText("Nytt navn");
+        PromptSupport.setPrompt("Nytt navn", waypointNameInput);
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(waypointNameInput, constraints);
@@ -50,7 +60,17 @@ public class WaypointPanel extends JPanel {
         queueLabel = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
         WINDOW.modifyConstraints(constraints, 0,2, GridBagConstraints.WEST, 1);
         add(queueLabel, constraints);
+    }
 
-        setBackground(new Color(255, 245, 252));
+    private void confirmButtonListener() {
+        confirmNameButton.addActionListener(actionEvent -> {
+            String name = waypointNameInput.getText();
+
+            OPERATION_MANAGER.assignNameToWaypoint(name);
+            waypointNameInput.setText("");
+
+            String dialogText = Messages.SAVE_FILE.get();
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
+        });
     }
 }
