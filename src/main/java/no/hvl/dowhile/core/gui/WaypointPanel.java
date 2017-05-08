@@ -31,13 +31,14 @@ public class WaypointPanel extends JPanel {
 
         // Label with the current waypoint file
         currentWaypointLabel = WINDOW.makeLabel("Prosesserer: ", WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 3);
+        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
         add(currentWaypointLabel, constraints);
 
         // Input field for new name for the waypoint file
         waypointNameInput = new JTextField();
         waypointNameInput.setToolTipText("Nytt navn");
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 2);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         add(waypointNameInput, constraints);
 
         // Confirm button
@@ -47,7 +48,7 @@ public class WaypointPanel extends JPanel {
 
         // Queue with remaining waypoint files
         queueLabel = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
-        WINDOW.modifyConstraints(constraints, 0,2, GridBagConstraints.WEST, 3);
+        WINDOW.modifyConstraints(constraints, 0,2, GridBagConstraints.WEST, 1);
         add(queueLabel, constraints);
 
         setBackground(new Color(255, 245, 252));
