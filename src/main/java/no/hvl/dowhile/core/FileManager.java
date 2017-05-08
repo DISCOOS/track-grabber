@@ -257,21 +257,21 @@ public class FileManager {
         saveGpxFile(areaGPX, filename, areaFolder);
     }
 
-    public void saveWaypointGpxFileInFolders(GPX wayPointGpx, String filename) {
-        saveWayPointFile(mainOperationFolder.getWayPointFolder(), wayPointGpx, filename);
+    public void saveWaypointGpxFileInFolders(GPX waypointGpx, String filename) {
+        saveWaypointFile(mainOperationFolder.getWaypointFolder(), waypointGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveWayPointFile(operationFolder.getWayPointFolder(), wayPointGpx, filename);
+            saveWaypointFile(operationFolder.getWaypointFolder(), waypointGpx, filename);
         }
     }
 
     /**
      * Saves the waypoint file in the waypoint folder as the specified filename.
      *
-     * @param wayPointGPX
-     * @param filename
+     * @param waypointGPX the GPX to save.
+     * @param filename the name to save it as.
      */
-    private void saveWayPointFile(File wayPointFolder, GPX wayPointGPX, String filename) {
-        saveGpxFile(wayPointGPX, filename, wayPointFolder);
+    private void saveWaypointFile(File waypointFolder, GPX waypointGPX, String filename) {
+        saveGpxFile(waypointGPX, filename, waypointFolder);
     }
 
     /**
@@ -346,6 +346,6 @@ public class FileManager {
      * @param waypointFolder the folder to save waypoint files.
      */
     public void setWaypointFolder(File waypointFolder) {
-        mainOperationFolder.setWayPointFolder(waypointFolder);
+        mainOperationFolder.setWaypointFolder(waypointFolder);
     }
 }
