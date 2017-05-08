@@ -13,7 +13,7 @@ public class OperationFolder {
     private File processedFolder;
     private File rawFolder;
     private File areaFolder;
-    private File wayPointFolder;
+    private File waypointFolder;
 
     /**
      * Constructor taking data to create the folders.
@@ -27,7 +27,7 @@ public class OperationFolder {
         rawFolder = FileTools.setupFolder(operationFolder, "Raw");
         processedFolder = FileTools.setupFolder(operationFolder, "Processed");
         areaFolder = FileTools.setupFolder(operationFolder, "Areas");
-        wayPointFolder = FileTools.setupFolder(operationFolder, "WayPoints");
+        waypointFolder = FileTools.setupFolder(operationFolder, "Waypoints");
         if (mainFolder) {
             createOperationFile(operation);
         }
@@ -102,16 +102,16 @@ public class OperationFolder {
      * Get the folder to store waypoints.
      * @return the folder to store waypoints.
      */
-    public File getWayPointFolder() {
-        return wayPointFolder;
+    public File getWaypointFolder() {
+        return waypointFolder;
     }
 
     /**
      * Set the folder to store waypoints.
-     * @param wayPointFolder the folder to store waypoints.
+     * @param waypointFolder the folder to store waypoints.
      */
-    public void setWayPointFolder(File wayPointFolder) {
-        this.wayPointFolder = wayPointFolder;
+    public void setWaypointFolder(File waypointFolder) {
+        this.waypointFolder = waypointFolder;
     }
 
     /**
