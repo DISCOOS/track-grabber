@@ -65,14 +65,11 @@ public class TrackPanel extends JPanel {
     private int viewCount;
 
     private List<JComponent> allInputComponents;
-
-    private int numberOfAreas;
     private List<String> areaSearchedStrings;
 
     public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
-        numberOfAreas = 15;
         viewCount = 0;
         areaSearchedStrings = new ArrayList<>();
         allInputComponents = new ArrayList<>();
@@ -99,15 +96,6 @@ public class TrackPanel extends JPanel {
         backButtonListener();
 
         setBackground(new Color(255, 245, 252));
-    }
-
-
-    public int getNumberOfAreas() {
-        return numberOfAreas;
-    }
-
-    public void setNumberOfAreas(int numberOfAreas) {
-        this.numberOfAreas = numberOfAreas;
     }
 
     /**

@@ -108,6 +108,18 @@ public class OperationManager {
     }
 
     /**
+     * Create folders to store files for the current operation.
+     */
+    public void updateOperationFolders() {
+        fileManager.setupMainOperationFolder(operation);
+        for (String path : operation.getPaths()) {
+            if (!fileManager.getMainOperationFolderPath().equals(path)) {
+                fileManager.setupExtraOperationFolder(operation, path);
+            }
+        }
+    }
+
+    /**
      * Set the date and time of the current operation and updating info in window and the file.
      *
      * @param year   the year it started.
