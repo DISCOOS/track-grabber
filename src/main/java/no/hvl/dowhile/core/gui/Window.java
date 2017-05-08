@@ -122,7 +122,7 @@ public class Window extends JFrame {
         cl.show(cardPanel, "Track");
     }
 
-    public void openWayPointPanel() {
+    public void openWaypointPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Waypoint");
     }
