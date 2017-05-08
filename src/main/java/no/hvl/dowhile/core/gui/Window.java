@@ -63,7 +63,7 @@ public class Window extends JFrame {
         getContentPane().add(cardPanel, BorderLayout.CENTER);
 
         open();
-        openOperationPanel();
+        openWaypointPanel();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {
@@ -122,7 +122,7 @@ public class Window extends JFrame {
         cl.show(cardPanel, "Track");
     }
 
-    public void openWaypointPanel() {
+    public void openWayPointPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Waypoint");
     }
