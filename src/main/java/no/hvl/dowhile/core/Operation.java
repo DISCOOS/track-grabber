@@ -155,11 +155,11 @@ public class Operation {
     }
 
     public String pathsToString() {
-        String pathsString = "";
+        StringBuilder allPaths = new StringBuilder("");
         for(String p : paths) {
-            pathsString += p;
+            allPaths.append(p).append("\n");
         }
-        return pathsString;
+        return allPaths.toString();
     }
 
     /**

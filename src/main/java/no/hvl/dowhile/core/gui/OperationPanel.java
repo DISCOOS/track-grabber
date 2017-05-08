@@ -342,6 +342,7 @@ public class OperationPanel extends JPanel {
      * @param operations the operations to add.
      */
     public void showExistingOperations(List<Operation> operations) {
+        existingOperationInput.removeAll(); // Avoid duplicates.
         for (Operation operation : operations) {
             existingOperationInput.addItem(operation.getName());
         }
@@ -522,6 +523,7 @@ public class OperationPanel extends JPanel {
             if (option == JFileChooser.APPROVE_OPTION) {
                 OPERATION_MANAGER.getOperation().addPath(fileChooser.getSelectedFile().getAbsolutePath());
                 OPERATION_MANAGER.updateOperationFile();
+
             }
         });
     }
