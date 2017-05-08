@@ -39,6 +39,13 @@ public enum Messages {
     IMPORTED_FILES_LEFT_TO_PROCESS("Det er nå %1 filer i kø for prosessering."),
     TRACK_COMMENT("Kommentar til sporfilen: "),
     CHOOSE_AREA("Legg til"),
+    SUMMARY_CREW_TYPE("Mannskap: "),
+    SUMMARY_CREW_NUMBER("Gruppenummer: "),
+    SUMMARY_TRACK_NUMBER("Spornummer: "),
+    SUMMARY_CREW_COUNT("Antall mann: "),
+    SUMMARY_AREA_SEARCHED("Teiger: "),
+    SUMMARY_TRACK_COMMENT("Sporkommentar: "),
+
 
     // Operation panel
     OPERATION_NAME("Navn på operasjon: "),
