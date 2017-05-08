@@ -26,8 +26,6 @@ public class OperationPanel extends JPanel {
     private final Window WINDOW;
     private JLabel operationNameLabel;
     private JTextField operationNameInput;
-    private JLabel areasLabel;
-    private JSpinner areasInput;
     private JLabel operationDateLabel;
     private DatePicker datePicker;
     private TimePicker timePicker;
@@ -52,8 +50,6 @@ public class OperationPanel extends JPanel {
     private JLabel editDateLabel;
     private DatePicker editDatePicker;
     private TimePicker editTimePicker;
-    private JLabel editAreasLabel;
-    private JSpinner editAreasInput;
     private JButton saveOperationButton;
     private JButton definePathButton;
 
@@ -181,20 +177,6 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 4);
         add(errorMessageLabel, constraints);
 
-        // Number of areas label and input
-        areasLabel = WINDOW.makeLabel(Messages.NUMBER_OF_AREAS.get(), WINDOW.TEXT_FONT_SIZE);
-        areasLabel.setName("areasLabel");
-        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 2);
-        add(areasLabel, constraints);
-
-        // Spinner for crew count input
-        SpinnerModel numberOfAreasSpinner = new SpinnerNumberModel(0, 0, 999, 1);
-        areasInput = new JSpinner(numberOfAreasSpinner);
-        areasInput.setName("areasInput");
-        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        add(areasInput, constraints);
-
         // Date for operation and input
         operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
         operationDateLabel.setName("operationDateLabel");
@@ -265,21 +247,6 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 4);
         add(editTimePicker, constraints);
 
-
-        // Number of areas label and input
-        editAreasLabel = WINDOW.makeLabel(Messages.NUMBER_OF_AREAS.get(), WINDOW.TEXT_FONT_SIZE);
-        editAreasLabel.setName("editAreasLabel");
-        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 2);
-        add(editAreasLabel, constraints);
-
-        // Spinner for crew count input
-        SpinnerModel editAreasSpinner = new SpinnerNumberModel(0, 0, 999, 1);
-        editAreasInput = new JSpinner(editAreasSpinner);
-        editAreasInput.setName("editAreasInput");
-        WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.CENTER, 2);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        add(editAreasInput, constraints);
-
         // Save edited operation button
         saveOperationButton = new JButton(Messages.EDIT_OPERATION_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 0, 7, GridBagConstraints.CENTER, 4);
@@ -331,7 +298,6 @@ public class OperationPanel extends JPanel {
     public void updateOperationInfo(Operation operation) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(operation.getStartTime());
-        editAreasInput.setValue(operation.getNumberOfAreas());
         editDatePicker.setDate(LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH)));
         editTimePicker.setTime(LocalTime.of(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
     }
@@ -357,8 +323,6 @@ public class OperationPanel extends JPanel {
         operationNameInput.setVisible(visibility);
         operationDateLabel.setVisible(visibility);
         operationNameLabel.setVisible(visibility);
-        areasLabel.setVisible(visibility);
-        areasInput.setVisible(visibility);
         datePicker.setVisible(visibility);
         timePicker.setVisible(visibility);
         registerNewButton.setVisible(visibility);
@@ -398,8 +362,6 @@ public class OperationPanel extends JPanel {
         editDateLabel.setVisible(visibility);
         editDatePicker.setVisible(visibility);
         editTimePicker.setVisible(visibility);
-        editAreasLabel.setVisible(visibility);
-        editAreasInput.setVisible(visibility);
         definePathButton.setVisible(visibility);
         saveOperationButton.setVisible(visibility);
         if (visibility) {
@@ -471,7 +433,6 @@ public class OperationPanel extends JPanel {
      */
     private void registerNewOperationButtonListener() {
         registerNewButton.addActionListener(actionEvent -> {
-            int numberOfAreas = Integer.parseInt(areasInput.getModel().getValue().toString());
             int day = datePicker.getDate().getDayOfMonth();
             int month = datePicker.getDate().getMonthValue();
             int year = datePicker.getDate().getYear();
@@ -483,7 +444,7 @@ public class OperationPanel extends JPanel {
                 if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
                     errorMessageLabel.setText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
                 } else {
-                    Operation operation = new Operation(operationName, numberOfAreas, day, month, year, hour, minute);
+                    Operation operation = new Operation(operationName, day, month, year, hour, minute);
                     OPERATION_MANAGER.setupOperation(operation);
                     OPERATION_MANAGER.reloadExistingOperations();
                     setVisibilityNewOperation(false);
@@ -533,13 +494,12 @@ public class OperationPanel extends JPanel {
      */
     private void saveOperationButtonListener() {
         saveOperationButton.addActionListener(actionEvent -> {
-            int numberOfAreas = Integer.parseInt(editAreasInput.getModel().getValue().toString());
             int year = editDatePicker.getDate().getYear();
             int month = editDatePicker.getDate().getMonthValue();
             int day = editDatePicker.getDate().getDayOfMonth();
             int hour = editTimePicker.getTime().getHour();
             int minute = editTimePicker.getTime().getMinute();
-            OPERATION_MANAGER.updateCurrentOperation(numberOfAreas, year, month, day, hour, minute);
+            OPERATION_MANAGER.updateCurrentOperation(year, month, day, hour, minute);
             setVisibilityEditInfo(false);
         });
     }

@@ -12,7 +12,6 @@ import java.util.*;
  */
 public class Operation {
     private String name;
-    private int numberOfAreas;
     private Date startTime;
     private List<String> paths;
 
@@ -26,9 +25,8 @@ public class Operation {
      * @param hour   the hour the operation started.
      * @param minute the minute the operation started.
      */
-    public Operation(String name, int numberOfAreas, int day, int month, int year, int hour, int minute) {
+    public Operation(String name, int day, int month, int year, int hour, int minute) {
         this.name = name;
-        this.numberOfAreas = numberOfAreas;
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, day, hour, minute);
         calendar.setTimeZone(TimeZone.getTimeZone("CET"));
@@ -54,13 +52,6 @@ public class Operation {
                         name = nameAndValue[1].replace("_", " ");
                     } else {
                         throw new Exception("Failed to parse name from file.");
-                    }
-                } else if (line.startsWith("numberOfAreas")) {
-                    String[] numberOfAreasAndValue = line.split("=");
-                    if (numberOfAreasAndValue.length == 2) {
-                        numberOfAreas = Integer.parseInt(numberOfAreasAndValue[1]);
-                    } else {
-                        throw new Exception("Failed to parse number of areas from file.");
                     }
                 } else if (line.startsWith("starttime")) {
                     String[] startTimeAndValue = line.split("=");
@@ -91,24 +82,6 @@ public class Operation {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Get the number of areas for this operation.
-     *
-     * @return number of areas for this operation.
-     */
-    public int getNumberOfAreas() {
-        return numberOfAreas;
-    }
-
-    /**
-     * Set the number of areas for this operation.
-     *
-     * @param numberOfAreas number of areas for this operation.
-     */
-    public void setNumberOfAreas(int numberOfAreas) {
-        this.numberOfAreas = numberOfAreas;
     }
 
     /**
@@ -156,7 +129,7 @@ public class Operation {
 
     public String pathsToString() {
         StringBuilder allPaths = new StringBuilder("");
-        for(String p : paths) {
+        for (String p : paths) {
             allPaths.append(p).append("\n");
         }
         return allPaths.toString();
@@ -168,11 +141,9 @@ public class Operation {
     public String[] getFileContent() {
         List<String> lines = new ArrayList<>();
         lines.add("# Operasjon " + name);
-        lines.add("# Antall teiger: " + numberOfAreas);
         lines.add("# Starttid: " + StringTools.formatDate(startTime));
         lines.add("# Du kan ikke endre på dataen her. Det må gjøres i programmet.");
         lines.add("name=" + name.trim().replace(" ", "_"));
-        lines.add("numberOfAreas=" + numberOfAreas);
         lines.add("starttime=" + startTime.getTime());
         for (String path : paths) {
             lines.add("path=" + path);

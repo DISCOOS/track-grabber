@@ -110,16 +110,14 @@ public class OperationManager {
     /**
      * Set the date and time of the current operation and updating info in window and the file.
      *
-     * @param numberOfAreas The number of areas for this operation.
-     * @param year          the year it started.
-     * @param month         the month it started.
-     * @param day           the day it started.
-     * @param hour          the hour it started.
-     * @param minute        the minute it started.
+     * @param year   the year it started.
+     * @param month  the month it started.
+     * @param day    the day it started.
+     * @param hour   the hour it started.
+     * @param minute the minute it started.
      */
-    public void updateCurrentOperation(int numberOfAreas, int year, int month, int day, int hour, int minute) {
+    public void updateCurrentOperation(int year, int month, int day, int hour, int minute) {
         operation.setStartTime(year, month, day, hour, minute);
-        operation.setNumberOfAreas(numberOfAreas);
         window.updateOperationInfo(operation);
         fileManager.updateOperationFile(operation);
     }
@@ -238,7 +236,7 @@ public class OperationManager {
     public void prepareNextFile() {
         GpxFile gpxFile = queue.remove(0);
         window.updateCurrentFile(gpxFile.getFilename(), queue.size());
-        if(TrackTools.isOnlyOneWayPoint(gpxFile.getGpx())) {
+        if (TrackTools.isOnlyOneWayPoint(gpxFile.getGpx())) {
             //window.openWayPointPanel();
         } else {
             currentTrackCutter = new TrackCutter(this);

@@ -32,8 +32,8 @@ public class OperationManagerTest {
         fileManager = new FileManager(operationManager);
         operationManager.setFileManager(fileManager);
         fileManager.setAppFolder(tempFolder.newFolder("TrackGrabberTest"));
-        operation1 = new Operation("Test1", 10, 29, 10, 1994, 11, 45);
-        operation2 = new Operation("Test2", 10, 16, 10, 1996, 12, 54);
+        operation1 = new Operation("Test1", 29, 10, 1994, 11, 45);
+        operation2 = new Operation("Test2", 16, 10, 1996, 12, 54);
         testGPX = new File("src/test/resources/testFile.gpx");
         testGPX2 = new File("src/test/resources/testFile2.gpx");
     }

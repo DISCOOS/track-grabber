@@ -43,7 +43,7 @@ public class FileManagerTest {
         fileManager.setAppFolder(appFolder);
         fileManager.setRawFolder(rawFolder);
         fileManager.setProcessedFolder(processedFolder);
-        operation = new Operation(operationName, 10, 30, 11, 2016, 11, 56);
+        operation = new Operation(operationName, 30, 11, 2016, 11, 56);
     }
 
     @Test
