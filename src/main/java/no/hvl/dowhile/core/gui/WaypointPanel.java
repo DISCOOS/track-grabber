@@ -45,8 +45,7 @@ public class WaypointPanel extends JPanel {
 
         // Input field for new name for the waypoint file
         waypointNameInput = new JTextField();
-        waypointNameInput.setToolTipText("Nytt navn");
-        PromptSupport.setPrompt("Nytt navn", waypointNameInput);
+        PromptSupport.setPrompt(Messages.NEW_NAME.get(), waypointNameInput);
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(waypointNameInput, constraints);
