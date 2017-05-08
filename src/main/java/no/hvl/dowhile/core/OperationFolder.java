@@ -5,6 +5,9 @@ import no.hvl.dowhile.utility.FileTools;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Storing folders for a given file location to store files for the current operation.
+ */
 public class OperationFolder {
     private File operationFolder;
     private File processedFolder;
@@ -12,6 +15,13 @@ public class OperationFolder {
     private File areaFolder;
     private File wayPointFolder;
 
+    /**
+     * Constructor taking data to create the folders.
+     *
+     * @param operation  the current operation.
+     * @param root       the folder to store the new operation folder in.
+     * @param mainFolder true if this is the main folder, false if not.
+     */
     public OperationFolder(Operation operation, File root, boolean mainFolder) {
         operationFolder = FileTools.setupFolder(root, operation.getName().trim().replace(" ", "_"));
         rawFolder = FileTools.setupFolder(operationFolder, "Raw");
@@ -24,42 +34,82 @@ public class OperationFolder {
         System.err.println("Done creating folders for operation " + operation.getName());
     }
 
+    /**
+     * Get the operation folder.
+     * @return the operation folder.
+     */
     public File getOperationFolder() {
         return operationFolder;
     }
 
+    /**
+     * Set the operation folder.
+     * @param operationFolder the operation folder.
+     */
     public void setOperationFolder(File operationFolder) {
         this.operationFolder = operationFolder;
     }
 
+    /**
+     * Get the folder to store processed tracks.
+     * @return
+     */
     public File getProcessedFolder() {
         return processedFolder;
     }
 
+    /**
+     * Set the folder to store processed tracks.
+     * @param processedFolder the folder to store processed tracks.
+     */
     public void setProcessedFolder(File processedFolder) {
         this.processedFolder = processedFolder;
     }
 
+    /**
+     * Get the folder to store rawfiles.
+     * @return the folder to store rawfiles.
+     */
     public File getRawFolder() {
         return rawFolder;
     }
 
+    /**
+     * Set the folder to store all rawfiles.
+     * @param rawFolder the folder to store rawfiles..
+     */
     public void setRawFolder(File rawFolder) {
         this.rawFolder = rawFolder;
     }
 
+    /**
+     * Get the folder to store areas.
+     * @return the folder to store areas.
+     */
     public File getAreaFolder() {
         return areaFolder;
     }
 
+    /**
+     * Set the folder to store areas.
+     * @param areaFolder the folder to store areas.
+     */
     public void setAreaFolder(File areaFolder) {
         this.areaFolder = areaFolder;
     }
 
+    /**
+     * Get the folder to store waypoints.
+     * @return the folder to store waypoints.
+     */
     public File getWayPointFolder() {
         return wayPointFolder;
     }
 
+    /**
+     * Set the folder to store waypoints.
+     * @param wayPointFolder the folder to store waypoints.
+     */
     public void setWayPointFolder(File wayPointFolder) {
         this.wayPointFolder = wayPointFolder;
     }

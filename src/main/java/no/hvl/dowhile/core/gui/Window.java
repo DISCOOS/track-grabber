@@ -3,7 +3,6 @@ package no.hvl.dowhile.core.gui;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
-import org.alternativevision.gpx.beans.Waypoint;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -29,6 +28,12 @@ public class Window extends JFrame {
     private TrackPanel trackPanel;
     private WaypointPanel waypointPanel;
 
+    /**
+     * Constructor setting up the Window, logo, listener for closing and creating the different panels to display.
+     *
+     * @param OPERATION_MANAGER the current instance of the OperationManager.
+     * @see OperationManager
+     */
     public Window(final OperationManager OPERATION_MANAGER) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
 
@@ -72,6 +77,11 @@ public class Window extends JFrame {
         });
     }
 
+    /**
+     * Read in the logo to use as the window icon.
+     *
+     * @return the logo as an Image.
+     */
     private Image getLogo() {
         BufferedImage bufferedImage;
         try {
@@ -80,10 +90,6 @@ public class Window extends JFrame {
             return null;
         }
         return bufferedImage;
-    }
-
-    public OperationManager getOPERATION_MANAGER() {
-        return OPERATION_MANAGER;
     }
 
     /**
@@ -100,11 +106,17 @@ public class Window extends JFrame {
         setVisible(false);
     }
 
+    /**
+     * Open the panel allowing the administrator to change operation or edit the current operation.
+     */
     public void openOperationPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Operation");
     }
 
+    /**
+     * Open the panel allowing to user to give info about a track.
+     */
     public void openTrackPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Track");
