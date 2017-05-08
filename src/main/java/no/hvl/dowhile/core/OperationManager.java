@@ -181,10 +181,6 @@ public class OperationManager {
     public void handleGPSDrive(GPSDrive gpsDrive) {
         File gpxFolder = gpsDrive.getGpxFolder();
         Set<File> gpxFiles = FileTools.findGpxFiles(gpxFolder);
-        if (gpxFiles.isEmpty()) {
-            System.err.println("No gpx files.");
-            return;
-        }
         for (File file : gpxFiles) {
             System.err.println(file.getName());
             processFile(file);
@@ -279,9 +275,9 @@ public class OperationManager {
 
     /**
      * Assigns a name to the waypoint.
-     * @param name
+     * @param name the name for the file.
      */
-    public void assignNameToWaypoint(String name) {
+    public void saveWaypoint(String name) {
         if (currentTrackCutter == null || currentTrackCutter.getGpxFile() == null) {
             Messages.ERROR_NO_TRACK_FOR_INFO.print();
             return;
