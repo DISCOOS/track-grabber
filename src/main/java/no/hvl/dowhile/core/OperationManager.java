@@ -251,7 +251,7 @@ public class OperationManager {
         currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setGpxFile(gpxFile);
         if (TrackTools.isOnlyOneWayPoint(gpxFile.getGpx())) {
-            window.openWayPointPanel();
+            window.openWaypointPanel();
         } else {
             window.openTrackPanel();
         }
@@ -274,18 +274,29 @@ public class OperationManager {
         Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
         track.setName(newName);
         fileManager.saveProcessedGpxFileInFolders(gpxFile.getGpx(), newName);
-        if (queue.isEmpty()) {
-            window.openOperationPanel();
-        } else {
-            prepareNextFile();
-        }
+        checkForMoreFiles();
     }
 
+    /**
+     * Assigns a name to the waypoint.
+     * @param name
+     */
     public void assignNameToWaypoint(String name) {
+        if (currentTrackCutter == null || currentTrackCutter.getGpxFile() == null) {
+            Messages.ERROR_NO_TRACK_FOR_INFO.print();
+            return;
+        }
         GpxFile gpxFile = currentTrackCutter.getGpxFile();
         Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
         track.setName(name);
         fileManager.saveWaypointGpxFileInFolders(gpxFile.getGpx(), name);
+        checkForMoreFiles();
+    }
+
+    /**
+     * Opens the operation panel if the queue is empty, and if not, prepares the next file.
+     */
+    public void checkForMoreFiles() {
         if(queue.isEmpty()) {
             window.openOperationPanel();
         } else {
