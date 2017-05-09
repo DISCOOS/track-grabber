@@ -53,7 +53,7 @@ public class WaypointPanel extends JPanel {
         add(waypointNameInput, constraints);
 
         // Confirm button
-        confirmNameButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get());
+        confirmNameButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 2, 1, GridBagConstraints.WEST, 1);
         add(confirmNameButton, constraints);
 

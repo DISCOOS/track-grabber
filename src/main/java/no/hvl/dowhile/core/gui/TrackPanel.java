@@ -125,16 +125,16 @@ public class TrackPanel extends JPanel {
 
 
     private void buttonsGUI() {
-        nextButton = WINDOW.makeButton(Messages.NEXT.get());
+        nextButton = WINDOW.makeButton(Messages.NEXT.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 3, 9, GridBagConstraints.EAST, 1);
         add(nextButton, constraints);
 
-        backButton = WINDOW.makeButton(Messages.BACK.get());
+        backButton = WINDOW.makeButton(Messages.BACK.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 1);
         add(backButton, constraints);
 
         // Register button
-        registerButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get());
+        registerButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 3, 9, GridBagConstraints.WEST, 1);
         add(registerButton, constraints);
     }
@@ -199,7 +199,7 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(areaSearchedSpinner);
 
         // button for the area searched dialog
-        areaInputButton = WINDOW.makeButton(Messages.CHOOSE_AREA.get());
+        areaInputButton = WINDOW.makeButton(Messages.CHOOSE_AREA.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.WEST, 1);
         add(areaInputButton, constraints);
         allInputComponents.add(areaInputButton);

@@ -21,10 +21,12 @@ import java.util.List;
 public class Window extends JFrame {
     final int HEADER_FONT_SIZE = 32;
     final int TEXT_FONT_SIZE = 24;
+    final int BUTTON_FONT_SIZE = 20;
     final Font TEXT_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE);
     final Font TEXT_BOLD_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, TEXT_FONT_SIZE);
     final Font TEXT_ITALIC_FONT = new Font(Messages.FONT_NAME.get(), Font.ITALIC, TEXT_FONT_SIZE);
     final Font HEADER_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, HEADER_FONT_SIZE);
+    final Font BUTTON_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, BUTTON_FONT_SIZE);
     private final OperationManager OPERATION_MANAGER;
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
@@ -199,15 +201,24 @@ public class Window extends JFrame {
      * Makes a JButton with given text and a specific size and color
      *
      * @param text within the button
-     * @return a JButton with given text and a set dimension and color
+     * @param width
+     * @param height @return a JButton with given text and a set dimension and color
      */
-    public JButton makeButton(String text) {
+    public JButton makeButton(String text, int width, int height) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(150, 50));
+        button.setPreferredSize(new Dimension(width, height));
         button.setBackground(new Color(242, 94, 94));
-        button.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE));
+        button.setFont(BUTTON_FONT);
 
         return button;
+    }
+
+    public JTextField makeTextField(int width, int height) {
+        JTextField textField = new JTextField();
+        textField.setPreferredSize(new Dimension (width, height));
+        textField.setFont(TEXT_FONT);
+
+        return textField;
     }
 
     public JSpinner makeSpinner(SpinnerModel spinnerModel) {

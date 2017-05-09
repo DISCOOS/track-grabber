@@ -108,7 +108,7 @@ public class OperationPanel extends JPanel {
 
     private void universalButtonsGUI() {
         // Back button
-        backButton = new JButton(Messages.GO_BACK.get());
+        backButton = WINDOW.makeButton(Messages.GO_BACK.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 0, 7, GridBagConstraints.WEST, 1);
         add(backButton, constraints);
         backButton.setName("backButton");
@@ -119,19 +119,16 @@ public class OperationPanel extends JPanel {
      */
     private void chooseOperationGUI() {
         // New operation button
-        newOperationButton = new JButton(Messages.NEW_OPERATION_BUTTON.get());
+        newOperationButton = WINDOW.makeButton(Messages.NEW_OPERATION_BUTTON.get(), 300, 100);
         newOperationButton.setName("newOperationButton");
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.CENTER, 2);
-        newOperationButton.setPreferredSize(new Dimension(200, 50));
-        newOperationButton.setBackground(new Color(242, 94, 94));
+
         add(newOperationButton, constraints);
 
         // Existing operation button
-        existingOperationButton = new JButton(Messages.EXISTING_OPERATION_BUTTON.get());
+        existingOperationButton = WINDOW.makeButton(Messages.EXISTING_OPERATION_BUTTON.get(), 300, 100);
         existingOperationButton.setName("existingOperationButton");
         WINDOW.modifyConstraints(constraints, 2, 0, GridBagConstraints.CENTER, 2);
-        existingOperationButton.setPreferredSize(new Dimension(200, 50));
-        existingOperationButton.setBackground(new Color(242, 94, 94));
         add(existingOperationButton, constraints);
     }
 
@@ -153,7 +150,7 @@ public class OperationPanel extends JPanel {
         add(existingOperationInput, constraints);
 
         // Register existing operation
-        registerExistingButton = WINDOW.makeButton(Messages.REGISTER_EXISTING_BUTTON.get());
+        registerExistingButton = WINDOW.makeButton(Messages.REGISTER_EXISTING_BUTTON.get(), 150, 50);
         registerExistingButton.setName("registerExistingButton");
         WINDOW.modifyConstraints(constraints, 3, 1, GridBagConstraints.CENTER, 1);
         add(registerExistingButton, constraints);
@@ -170,7 +167,7 @@ public class OperationPanel extends JPanel {
         add(operationNameLabel, constraints);
 
         // New operation name input
-        operationNameInput = new JTextField();
+        operationNameInput = WINDOW.makeTextField(100, 30);
         operationNameInput.setName("operationNameInput");
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.CENTER, 4);
         constraints.fill = GridBagConstraints.BOTH;
@@ -198,9 +195,9 @@ public class OperationPanel extends JPanel {
         add(timePicker, constraints);
 
         // Register new operation
-        registerNewButton = WINDOW.makeButton(Messages.REGISTER_NEW_BUTTON.get());
+        registerNewButton = WINDOW.makeButton(Messages.REGISTER_NEW_BUTTON.get(), 200, 50);
         registerNewButton.setName("registerNewButton");
-        WINDOW.modifyConstraints(constraints, 2, 8, GridBagConstraints.CENTER, 2);
+        WINDOW.modifyConstraints(constraints, 2, 7, GridBagConstraints.CENTER, 2);
         add(registerNewButton, constraints);
 
         // List of saved paths
@@ -221,25 +218,25 @@ public class OperationPanel extends JPanel {
         awaitingGPSLabel.setVisible(false);
 
         // Import local GPX-file button
-        importFileButton = WINDOW.makeButton(Messages.IMPORT_LOCAL_FILE.get());
+        importFileButton = WINDOW.makeButton(Messages.IMPORT_LOCAL_FILE.get(), 150, 50);
         importFileButton.setName("importFileButton");
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.CENTER, 4);
         add(importFileButton, constraints);
 
         // Edit info toggle button
-        toggleEditInfoButton = WINDOW.makeButton(Messages.EDIT_INFO_SHOW_BUTTON.get());
+        toggleEditInfoButton = WINDOW.makeButton(Messages.EDIT_INFO_SHOW_BUTTON.get(), 150, 50);
         toggleEditInfoButton.setName("toggleEditInfoButton");
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
         add(toggleEditInfoButton, constraints);
 
         // Switch operation
-        switchOperationButton = WINDOW.makeButton(Messages.CHOOSE_OTHER_OPERATION.get());
+        switchOperationButton = WINDOW.makeButton(Messages.CHOOSE_OTHER_OPERATION.get(), 150, 50);
         switchOperationButton.setName("switchOperationButton");
         WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.CENTER, 2);
         add(switchOperationButton, constraints);
 
         // Button for choosing path(s) to save operation to
-        definePathButton = WINDOW.makeButton(Messages.DEFINE_OPERATION_PATH.get());
+        definePathButton = WINDOW.makeButton(Messages.DEFINE_OPERATION_PATH.get(), 150, 50);
         definePathButton.setName("definePathButton");
         WINDOW.modifyConstraints(constraints, 3, 4, GridBagConstraints.CENTER, 1);
         add(definePathButton, constraints);
@@ -270,7 +267,7 @@ public class OperationPanel extends JPanel {
         add(editTimePicker, constraints);
 
         // Save edited operation button
-        saveOperationButton = WINDOW.makeButton(Messages.EDIT_OPERATION_BUTTON.get());
+        saveOperationButton = WINDOW.makeButton(Messages.EDIT_OPERATION_BUTTON.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 0, 7, GridBagConstraints.CENTER, 4);
         add(saveOperationButton, constraints);
     }
