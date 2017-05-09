@@ -39,7 +39,7 @@ public class WaypointPanel extends JPanel {
 
     private void wayPointGUI() {
         // Label with the current waypoint file
-        currentWaypointLabel = WINDOW.makeLabel("Prosesserer: ", WINDOW.TEXT_FONT_SIZE);
+        currentWaypointLabel = WINDOW.makeLabel("Prosesserer: ", Font.BOLD);
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
         add(currentWaypointLabel, constraints);
 
@@ -56,7 +56,7 @@ public class WaypointPanel extends JPanel {
         add(confirmNameButton, constraints);
 
         // Queue with remaining waypoint files
-        queueLabel = WINDOW.makeLabel("", WINDOW.TEXT_FONT_SIZE);
+        queueLabel = WINDOW.makeLabel("", Font.BOLD);
         WINDOW.modifyConstraints(constraints, 0,2, GridBagConstraints.WEST, 1);
         add(queueLabel, constraints);
     }

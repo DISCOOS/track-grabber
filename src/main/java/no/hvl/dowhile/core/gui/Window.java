@@ -21,8 +21,10 @@ import java.util.List;
 public class Window extends JFrame {
     final int HEADER_FONT_SIZE = 32;
     final int TEXT_FONT_SIZE = 24;
-    final Font textFont = new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE);
-    final Font headerFont = new Font(Messages.FONT_NAME.get(), Font.PLAIN, HEADER_FONT_SIZE);
+    final Font TEXT_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE);
+    final Font TEXT_BOLD_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, TEXT_FONT_SIZE);
+    final Font TEXT_ITALIC_FONT = new Font(Messages.FONT_NAME.get(), Font.ITALIC, TEXT_FONT_SIZE);
+    final Font HEADER_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, HEADER_FONT_SIZE);
     private final OperationManager OPERATION_MANAGER;
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
@@ -171,17 +173,24 @@ public class Window extends JFrame {
      * Makes a JLabel with given text and font size
      *
      * @param text     text that will be inserted into the JLabel
+     * @param style     Font style (plain, bold...)
      * @return a JLabel with given text and font size
      */
-    public JLabel makeLabel(String text) {
+    public JLabel makeLabel(String text, int style) {
         JLabel label = new JLabel(text);
-        label.setFont(textFont);
+        if (style == Font.BOLD) {
+            label.setFont(TEXT_BOLD_FONT);
+        } else if (style == Font.ITALIC) {
+            label.setFont(TEXT_ITALIC_FONT);
+        } else {
+            label.setFont(TEXT_FONT);
+        }
         return label;
     }
 
     public JLabel makeHeaderLabel(String text) {
         JLabel label = new JLabel(text);
-        label.setFont(headerFont);
+        label.setFont(HEADER_FONT);
         return label;
     }
 
@@ -203,7 +212,7 @@ public class Window extends JFrame {
     public JSpinner makeSpinner(SpinnerModel spinnerModel) {
         JSpinner spinner = new JSpinner(spinnerModel);
         spinner.setPreferredSize(new Dimension(150, 50));
-        spinner.setFont(textFont);
+        spinner.setFont(TEXT_FONT);
 
         return spinner;
     }
