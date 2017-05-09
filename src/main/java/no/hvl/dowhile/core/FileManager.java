@@ -128,6 +128,12 @@ public class FileManager {
         mainOperationFolder = new OperationFolder(operation, appFolder, true);
     }
 
+    /**
+     * Setting up the extra operation folder for the given operation at the given path.
+     *
+     * @param operation the operation to create a folder for.
+     * @param path      the path to save it.
+     */
     public void setupExtraOperationFolder(Operation operation, String path) {
         File root = new File(path);
         if (!root.exists()) {
@@ -208,6 +214,11 @@ public class FileManager {
         return newTrack != null && TrackTools.trackPointsAreEqual(rawFiles, newTrack);
     }
 
+    /**
+     * Saving the given gpx files in all folders related to this operation.
+     * @param rawGpx the gpx to save.
+     * @param filename the name to save it as.
+     */
     public void saveRawGpxFileInFolders(GPX rawGpx, String filename) {
         saveRawGpxFile(mainOperationFolder.getRawFolder(), rawGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
