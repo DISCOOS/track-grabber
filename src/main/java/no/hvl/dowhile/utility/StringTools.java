@@ -46,6 +46,6 @@ public class StringTools {
     }
 
     public static boolean operationNameLengthIsValid(String operationName) {
-        return operationName.length() >= 2 || operationName.length() <= 50;
+        return operationName.length() >= 2 && operationName.length() <= 50;
     }
 }
