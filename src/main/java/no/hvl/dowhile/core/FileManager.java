@@ -1,6 +1,7 @@
 package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.utility.FileTools;
+import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
@@ -241,6 +242,82 @@ public class FileManager {
         for (OperationFolder operationFolder : extraOperationFolders) {
             saveProcessedGpxFile(operationFolder.getProcessedFolder(), processedGpx, filename);
         }
+    }
+
+    /**
+     * Takes a substring and organizes folders with this substring as its name, with
+     * all appropriate files from the processed folder, in all operation folders.
+     * @param processedFolder the folder with all the processed files
+     * @param substring the substring to create folders for
+     */
+    public void organizeFilesOnSubstring(File processedFolder, String substring) {
+        List<File> filesContainingSubstring = FileTools.filesContainingString(processedFolder, substring);
+        File substringFolder = setupFolder(mainOperationFolder.getOperationFolder(), substring);
+        for(File f : filesContainingSubstring) {
+            saveGpxFile(TrackTools.getGpxFromFile(f), f.getName(), substringFolder);
+        }
+        for (OperationFolder operationFolder : extraOperationFolders) {
+            substringFolder = setupFolder(operationFolder.getOperationFolder(), substring);
+            for(File f : filesContainingSubstring) {
+                saveGpxFile(TrackTools.getGpxFromFile(f), f.getName(), substringFolder);
+            }
+        }
+    }
+
+    /**
+     * Organizes folders for every crew type.
+     * @param processedFolder the folder with processed files in which to draw files from.
+     */
+    public void organizeAllCrewTypes(File processedFolder) {
+        List<TeamType> teamTypes = OPERATION_MANAGER.getConfig().getTeamTypes();
+        String crewTypeString;
+        for(TeamType t : teamTypes) {
+            crewTypeString = t.getName();
+            organizeFilesOnSubstring(processedFolder, crewTypeString);
+        }
+    }
+
+    /**
+     * Organizes folders for every area number.
+     * @param processedFolder the folder with processed files in which to draw files from.
+     */
+    public void organizeAllAreaNumbers(File processedFolder) {
+        List<String> totalAreaNumbers = new ArrayList<String>();
+        for(File f : processedFolder.listFiles()) {
+            List<String> areaNumbersForFile = FileTools.getAreasFromFile(f);
+            for(String aN : areaNumbersForFile) {
+                if(!totalAreaNumbers.contains(aN)) {
+                    totalAreaNumbers.add(aN);
+                }
+            }
+        }
+        for(String aN : totalAreaNumbers) {
+            organizeFilesOnSubstring(processedFolder, aN);
+        }
+    }
+
+    /**
+     * Organizes folders for every day.
+     * @param processedFolder the folder with processed files in which to draw files from.
+     */
+    public void organizeAllDays(File processedFolder) {
+        List<String> days = new ArrayList<String>();
+        for(int i = 0; i < processedFolder.listFiles().length; i++) {
+            GPX gpx = TrackTools.getGpxFromFile(processedFolder.listFiles()[i]);
+            String dateString = TrackTools.getDayStringFromTrack(gpx);
+            if(!days.contains(dateString)) {
+                days.add(dateString);
+            }
+        }
+        for(String d : days) {
+            organizeFilesOnSubstring(processedFolder, d);
+        }
+    }
+
+    public void organizeFiles(File processedFolder) {
+        organizeAllCrewTypes(processedFolder);
+        organizeAllAreaNumbers(processedFolder);
+        organizeAllDays(processedFolder);
     }
 
     /**

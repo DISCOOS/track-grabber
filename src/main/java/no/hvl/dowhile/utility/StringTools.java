@@ -28,6 +28,16 @@ public class StringTools {
     }
 
     /**
+     * Formatting a Date into a string without spaces, hours, minutes and seconds.
+     *
+     * @param date the date to format.
+     * @return the date formatted as a String without spaces, hours, minutes and seconds.
+     */
+    public static String formatDateForOrganizing(Date date) {
+        return new SimpleDateFormat("dd-MM-yy").format(date);
+    }
+
+    /**
      * Checks if a given name is a valid operation name (contains only letters and/or numbers).
      *
      * @param operationName the name to check.
@@ -45,7 +55,23 @@ public class StringTools {
         return true;
     }
 
+    /**
+     * Checks if the given operation name is between 2 and 50 characters.
+     * @param operationName The operation name to check.
+     * @return True if the name has a valid length, false if not.
+     */
     public static boolean operationNameLengthIsValid(String operationName) {
         return operationName.length() >= 2 || operationName.length() <= 50;
     }
+
+    /**
+     * Checks if a given file name contains a given string.
+     * @param string The string to search for.
+     * @param filename The filename to search through.
+     * @return True if the filename contains the given string, false if not.
+     */
+    public static boolean FilenameContainsString(String string, String filename) {
+        return filename.contains(string);
+    }
+
 }
