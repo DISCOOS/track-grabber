@@ -281,11 +281,11 @@ public class TrackPanel extends JPanel {
     }
 
     private void buttonsGUI() {
-        nextButton = new JButton(Messages.NEXT.get());
+        nextButton = WINDOW.makeButton(Messages.NEXT.get());
         WINDOW.modifyConstraints(constraints, 3, 9, GridBagConstraints.EAST, 1);
         add(nextButton, constraints);
 
-        backButton = new JButton(Messages.BACK.get());
+        backButton = WINDOW.makeButton(Messages.BACK.get());
         WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 1);
         add(backButton, constraints);
 
@@ -376,6 +376,7 @@ public class TrackPanel extends JPanel {
         backButton.setVisible(false);
         nextButton.setVisible(true);
         registerButton.setVisible(false);
+        viewCount = 0;
     }
 
     /**

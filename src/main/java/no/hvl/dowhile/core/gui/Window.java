@@ -63,7 +63,7 @@ public class Window extends JFrame {
         getContentPane().add(cardPanel, BorderLayout.CENTER);
 
         open();
-        openOperationPanel();
+        openTrackPanel();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {
@@ -176,6 +176,14 @@ public class Window extends JFrame {
         JLabel label = new JLabel(text);
         label.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, fontSize));
         return label;
+    }
+
+    public JButton makeButton(String text) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(100, 50));
+        button.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE));
+
+        return button;
     }
 
     /**
