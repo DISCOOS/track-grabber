@@ -265,7 +265,7 @@ public class OperationManager {
         if (!trackInfo.getComment().isEmpty()) {
             track.setDescription(trackInfo.getComment());
         }
-        fileManager.saveProcessedGpxFileInFolders(gpxFile.getGpx(), newName);
+        fileManager.saveProcessedGpxFileInFolders(gpxFile.getGpx(), trackInfo, newName);
         checkForMoreFiles();
     }
 

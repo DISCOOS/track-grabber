@@ -254,11 +254,11 @@ public class FileManager {
      */
     public void organizeFile(GPX processedGpx, TrackInfo trackInfo, String filename) {
         // Organize the file by crew type.
-        organizeFilesOnSubstring(processedGpx, trackInfo.getCrewType(), filename);
+        organizeFilesOnSubstring(processedGpx, filename, trackInfo.getCrewType());
         // Organize the file by area.
         List<String> areaNumbers = FileTools.getAreasFromString(trackInfo.getAreaSearched());
         for (String areaNumber : areaNumbers) {
-            organizeFilesOnSubstring(processedGpx, areaNumber, filename);
+            organizeFilesOnSubstring(processedGpx, filename, areaNumber);
         }
         // Organize the file by date.
         String dateString = TrackTools.getDayStringFromTrack(processedGpx);

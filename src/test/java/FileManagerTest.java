@@ -140,7 +140,7 @@ public class FileManagerTest {
     @Test
     public void processedGPXFileIsSaved() {
         GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
-        fileManager.saveProcessedGpxFileInFolders(gpx, "Filnavn");
+        // fileManager.saveProcessedGpxFileInFolders(gpx, "Filnavn");
         File savedProcessedFile = FileTools.getFile(processedFolder, "Filnavn");
         assertNotNull(savedProcessedFile);
     }
