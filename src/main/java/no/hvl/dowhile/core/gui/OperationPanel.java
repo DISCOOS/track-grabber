@@ -444,24 +444,26 @@ public class OperationPanel extends JPanel {
             int minute = timePicker.getTime().getMinute();
             String operationName = operationNameInput.getText();
 
-            if (StringTools.isValidOperationName(operationName)) {
-                if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
-                    errorMessageLabel.setText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
-                } else if (!StringTools.operationNameLengthIsValid(operationName)) {
-                    errorMessageLabel.setText(Messages.OPERATION_NAME_IS_TOO_LONG_OR_SHORT.get());
-                } else {
-                    Operation operation = new Operation(operationName, day, month, year, hour, minute);
-                    OPERATION_MANAGER.setupOperation(operation);
-                    OPERATION_MANAGER.reloadExistingOperations();
-                    setVisibilityNewOperation(false);
-                    setVisibilityToggleEditInfo(true);
-                    errorMessageLabel.setVisible(false);
-                    awaitingGPSLabel.setVisible(true);
-                    allSavedPathsLabel.setText(OPERATION_MANAGER.getOperation().pathsToString());
-                }
-            } else {
-                errorMessageLabel.setText(Messages.INVALID_OPERATION_NAME.get());
+            if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
+                errorMessageLabel.setText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
+                return;
             }
+            if (!StringTools.isValidOperationName(operationName)) {
+                errorMessageLabel.setText(Messages.INVALID_OPERATION_NAME.get());
+                return;
+            }
+            if (!StringTools.operationNameLengthIsValid(operationName)) {
+                errorMessageLabel.setText(Messages.OPERATION_NAME_IS_TOO_LONG_OR_SHORT.get());
+                return;
+            }
+            Operation operation = new Operation(operationName, day, month, year, hour, minute);
+            OPERATION_MANAGER.setupOperation(operation);
+            OPERATION_MANAGER.reloadExistingOperations();
+            setVisibilityNewOperation(false);
+            setVisibilityToggleEditInfo(true);
+            errorMessageLabel.setVisible(false);
+            awaitingGPSLabel.setVisible(true);
+            allSavedPathsLabel.setText(OPERATION_MANAGER.getOperation().pathsToString());
         });
     }
 

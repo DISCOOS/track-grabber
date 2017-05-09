@@ -61,7 +61,7 @@ public class StringTools {
      * @return True if the name has a valid length, false if not.
      */
     public static boolean operationNameLengthIsValid(String operationName) {
-        return operationName.length() >= 2 || operationName.length() <= 50;
+        return operationName.length() >= 2 && operationName.length() <= 50;
     }
 
     /**
