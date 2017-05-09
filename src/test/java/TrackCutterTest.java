@@ -32,7 +32,7 @@ public class TrackCutterTest {
         opManager = new OperationManager();
         GpxFile gpxFile = new GpxFile(file, gpx);
         cutter = new TrackCutter(opManager);
-        cutter.setTrackInfo(new TrackInfo("", 0, 0, "", 0));
+        cutter.setTrackInfo(new TrackInfo("", 0, 0, "", 0, ""));
         cutter.setGpxFile(gpxFile);
     }
 

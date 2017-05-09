@@ -442,10 +442,7 @@ public class TrackPanel extends JPanel {
             String areaSearched = areaSearchedStrings.toString();
             int trackNumber = Integer.parseInt(trackNumberSpinner.getModel().getValue().toString());
             String trackComment = trackCommentInput.getText();
-            if (!trackComment.isEmpty()) {
-                // TODO If comment: Add the comment to the track <desc> and add COMMENT to file name
-            }
-            TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackNumber);
+            TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackNumber, trackComment);
             OPERATION_MANAGER.initiateTrackCutter(trackInfo);
 
             // Resetting all input fields
