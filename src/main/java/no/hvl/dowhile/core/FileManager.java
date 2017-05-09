@@ -1,7 +1,6 @@
 package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.utility.FileTools;
-import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
@@ -217,7 +216,8 @@ public class FileManager {
 
     /**
      * Saving the given gpx files in all folders related to this operation.
-     * @param rawGpx the gpx to save.
+     *
+     * @param rawGpx   the gpx to save.
      * @param filename the name to save it as.
      */
     public void saveRawGpxFileInFolders(GPX rawGpx, String filename) {
@@ -237,87 +237,49 @@ public class FileManager {
         saveGpxFile(rawGpx, filename, rawFolder);
     }
 
-    public void saveProcessedGpxFileInFolders(GPX processedGpx, String filename) {
+    public void saveProcessedGpxFileInFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         saveProcessedGpxFile(mainOperationFolder.getProcessedFolder(), processedGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
             saveProcessedGpxFile(operationFolder.getProcessedFolder(), processedGpx, filename);
         }
+        organizeFile(processedGpx, trackInfo, filename);
+    }
+
+    /**
+     * Organize the file into folders by crew type, area and date.
+     *
+     * @param processedGpx the gpx to save.
+     * @param trackInfo    the info about the track.
+     * @param filename     the name to save the file as.
+     */
+    public void organizeFile(GPX processedGpx, TrackInfo trackInfo, String filename) {
+        // Organize the file by crew type.
+        organizeFilesOnSubstring(processedGpx, trackInfo.getCrewType(), filename);
+        // Organize the file by area.
+        List<String> areaNumbers = FileTools.getAreasFromString(trackInfo.getAreaSearched());
+        for (String areaNumber : areaNumbers) {
+            organizeFilesOnSubstring(processedGpx, areaNumber, filename);
+        }
+        // Organize the file by date.
+        String dateString = TrackTools.getDayStringFromTrack(processedGpx);
+        organizeFilesOnSubstring(processedGpx, filename, dateString);
     }
 
     /**
      * Takes a substring and organizes folders with this substring as its name, with
      * all appropriate files from the processed folder, in all operation folders.
-     * @param processedFolder the folder with all the processed files
+     *
+     * @param gpx       the gpx to save.
+     * @param filename  the name to save as.
      * @param substring the substring to create folders for
      */
-    public void organizeFilesOnSubstring(File processedFolder, String substring) {
-        List<File> filesContainingSubstring = FileTools.filesContainingString(processedFolder, substring);
+    public void organizeFilesOnSubstring(GPX gpx, String filename, String substring) {
         File substringFolder = setupFolder(mainOperationFolder.getOperationFolder(), substring);
-        for(File f : filesContainingSubstring) {
-            saveGpxFile(TrackTools.getGpxFromFile(f), f.getName(), substringFolder);
-        }
+        saveGpxFile(gpx, filename, substringFolder);
         for (OperationFolder operationFolder : extraOperationFolders) {
             substringFolder = setupFolder(operationFolder.getOperationFolder(), substring);
-            for(File f : filesContainingSubstring) {
-                saveGpxFile(TrackTools.getGpxFromFile(f), f.getName(), substringFolder);
-            }
+            saveGpxFile(gpx, filename, substringFolder);
         }
-    }
-
-    /**
-     * Organizes folders for every crew type.
-     * @param processedFolder the folder with processed files in which to draw files from.
-     */
-    public void organizeAllCrewTypes(File processedFolder) {
-        List<TeamType> teamTypes = OPERATION_MANAGER.getConfig().getTeamTypes();
-        String crewTypeString;
-        for(TeamType t : teamTypes) {
-            crewTypeString = t.getName();
-            organizeFilesOnSubstring(processedFolder, crewTypeString);
-        }
-    }
-
-    /**
-     * Organizes folders for every area number.
-     * @param processedFolder the folder with processed files in which to draw files from.
-     */
-    public void organizeAllAreaNumbers(File processedFolder) {
-        List<String> totalAreaNumbers = new ArrayList<String>();
-        for(File f : processedFolder.listFiles()) {
-            List<String> areaNumbersForFile = FileTools.getAreasFromFile(f);
-            for(String aN : areaNumbersForFile) {
-                if(!totalAreaNumbers.contains(aN)) {
-                    totalAreaNumbers.add(aN);
-                }
-            }
-        }
-        for(String aN : totalAreaNumbers) {
-            organizeFilesOnSubstring(processedFolder, aN);
-        }
-    }
-
-    /**
-     * Organizes folders for every day.
-     * @param processedFolder the folder with processed files in which to draw files from.
-     */
-    public void organizeAllDays(File processedFolder) {
-        List<String> days = new ArrayList<String>();
-        for(int i = 0; i < processedFolder.listFiles().length; i++) {
-            GPX gpx = TrackTools.getGpxFromFile(processedFolder.listFiles()[i]);
-            String dateString = TrackTools.getDayStringFromTrack(gpx);
-            if(!days.contains(dateString)) {
-                days.add(dateString);
-            }
-        }
-        for(String d : days) {
-            organizeFilesOnSubstring(processedFolder, d);
-        }
-    }
-
-    public void organizeFiles(File processedFolder) {
-        organizeAllCrewTypes(processedFolder);
-        organizeAllAreaNumbers(processedFolder);
-        organizeAllDays(processedFolder);
     }
 
     /**
@@ -358,7 +320,7 @@ public class FileManager {
      * Saves the waypoint file in the waypoint folder as the specified filename.
      *
      * @param waypointFile the file to save.
-     * @param filename the name to save it as.
+     * @param filename     the name to save it as.
      */
     private void saveWaypointFile(File waypointFolder, File waypointFile, String filename) {
         saveFile(waypointFile, filename, waypointFolder);
