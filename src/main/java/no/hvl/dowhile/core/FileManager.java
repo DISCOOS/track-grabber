@@ -254,31 +254,29 @@ public class FileManager {
      */
     public void organizeFile(GPX processedGpx, TrackInfo trackInfo, String filename) {
         // Organize the file by crew type.
-        organizeFilesOnSubstring(processedGpx, filename, trackInfo.getCrewType());
+        File crewFolder = setupFolder(mainOperationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
+        saveGpxFile(processedGpx, filename, crewFolder);
+        for (OperationFolder operationFolder : extraOperationFolders) {
+            crewFolder = setupFolder(operationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
+            saveGpxFile(processedGpx, filename, crewFolder);
+        }
         // Organize the file by area.
         List<String> areaNumbers = FileTools.getAreasFromString(trackInfo.getAreaSearched());
         for (String areaNumber : areaNumbers) {
-            organizeFilesOnSubstring(processedGpx, filename, areaNumber);
+            File areaFolder = setupFolder(mainOperationFolder.getAreaOrgFolder(), areaNumber);
+            saveGpxFile(processedGpx, filename, areaFolder);
+            for (OperationFolder operationFolder : extraOperationFolders) {
+                areaFolder = setupFolder(operationFolder.getAreaOrgFolder(), areaNumber);
+                saveGpxFile(processedGpx, filename, areaFolder);
+            }
         }
         // Organize the file by date.
         String dateString = TrackTools.getDayStringFromTrack(processedGpx);
-        organizeFilesOnSubstring(processedGpx, filename, dateString);
-    }
-
-    /**
-     * Takes a substring and organizes folders with this substring as its name, with
-     * all appropriate files from the processed folder, in all operation folders.
-     *
-     * @param gpx       the gpx to save.
-     * @param filename  the name to save as.
-     * @param substring the substring to create folders for
-     */
-    public void organizeFilesOnSubstring(GPX gpx, String filename, String substring) {
-        File substringFolder = setupFolder(mainOperationFolder.getOperationFolder(), substring);
-        saveGpxFile(gpx, filename, substringFolder);
+        File dateFolder = setupFolder(mainOperationFolder.getDayOrgFolder(), dateString);
+        saveGpxFile(processedGpx, filename, dateFolder);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            substringFolder = setupFolder(operationFolder.getOperationFolder(), substring);
-            saveGpxFile(gpx, filename, substringFolder);
+            dateFolder = setupFolder(operationFolder.getDayOrgFolder(), dateString);
+            saveGpxFile(processedGpx, filename, dateFolder);
         }
     }
 
@@ -292,6 +290,11 @@ public class FileManager {
         saveGpxFile(processedGpx, filename, processedFolder);
     }
 
+    /**
+     * Saves the area file in all operation folders.
+     * @param areaGpx The area file to save.
+     * @param filename The name of the file.
+     */
     public void saveAreaGpxFileInFolders(GPX areaGpx, String filename) {
         saveAreaGpxFile(mainOperationFolder.getAreaFolder(), areaGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
@@ -401,23 +404,5 @@ public class FileManager {
      */
     public void setProcessedFolder(File processedFolder) {
         mainOperationFolder.setProcessedFolder(processedFolder);
-    }
-
-    /**
-     * Sets the area folder for the current operation.
-     *
-     * @param areaFolder the folder to save area files.
-     */
-    public void setAreaFolder(File areaFolder) {
-        mainOperationFolder.setAreaFolder(areaFolder);
-    }
-
-    /**
-     * Sets the waypoint folder to save waypoint files.
-     *
-     * @param waypointFolder the folder to save waypoint files.
-     */
-    public void setWaypointFolder(File waypointFolder) {
-        mainOperationFolder.setWaypointFolder(waypointFolder);
     }
 }
