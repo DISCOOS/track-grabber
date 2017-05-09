@@ -14,7 +14,7 @@ public enum Messages {
     NO_RELEVANT_FILES_DESCRIPTION("Oppdaget GPS, men fant ingen relevante filer! \n Mulige årsaker: \n - GPSen inneholder ingen filer \n - Filene er for gamle (de ble laget før operasjonsstart) \n - Filene er allerede overført"),
 
     // Font
-    FONT_NAME("Times New Roman"),
+    FONT_NAME("Calibri"),
 
     // Window
     PROJECT_NAME("Track Grabber"),

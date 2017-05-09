@@ -21,6 +21,8 @@ import java.util.List;
 public class Window extends JFrame {
     final int HEADER_FONT_SIZE = 32;
     final int TEXT_FONT_SIZE = 24;
+    final Font textFont = new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE);
+    final Font headerFont = new Font(Messages.FONT_NAME.get(), Font.PLAIN, HEADER_FONT_SIZE);
     private final OperationManager OPERATION_MANAGER;
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
@@ -169,21 +171,41 @@ public class Window extends JFrame {
      * Makes a JLabel with given text and font size
      *
      * @param text     text that will be inserted into the JLabel
-     * @param fontSize font size that will be used on the Jlabel
      * @return a JLabel with given text and font size
      */
-    public JLabel makeLabel(String text, int fontSize) {
+    public JLabel makeLabel(String text) {
         JLabel label = new JLabel(text);
-        label.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, fontSize));
+        label.setFont(textFont);
         return label;
     }
 
+    public JLabel makeHeaderLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(headerFont);
+        return label;
+    }
+
+    /**
+     * Makes a JButton with given text and a specific size and color
+     *
+     * @param text within the button
+     * @return a JButton with given text and a set dimension and color
+     */
     public JButton makeButton(String text) {
         JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(100, 50));
+        button.setPreferredSize(new Dimension(150, 50));
+        button.setBackground(new Color(242, 94, 94));
         button.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE));
 
         return button;
+    }
+
+    public JSpinner makeSpinner(SpinnerModel spinnerModel) {
+        JSpinner spinner = new JSpinner(spinnerModel);
+        spinner.setPreferredSize(new Dimension(150, 50));
+        spinner.setFont(textFont);
+
+        return spinner;
     }
 
     /**
