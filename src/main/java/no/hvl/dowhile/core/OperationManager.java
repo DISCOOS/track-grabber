@@ -266,7 +266,9 @@ public class OperationManager {
         String newName = config.generateFilename(trackInfo);
         Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
         track.setName(newName);
-        track.setDescription(trackInfo.getComment());
+        if (!trackInfo.getComment().isEmpty()) {
+            track.setDescription(trackInfo.getComment());
+        }
         fileManager.saveProcessedGpxFileInFolders(gpxFile.getGpx(), newName);
         checkForMoreFiles();
     }
