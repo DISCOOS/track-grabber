@@ -158,6 +158,7 @@ public class Window extends JFrame {
      */
     public void updateCurrentFile(String filename, int filesLeft) {
         trackPanel.updateCurrentFile(filename, filesLeft);
+        waypointPanel.updateCurrentFile(filename, filesLeft);
     }
 
     /**
