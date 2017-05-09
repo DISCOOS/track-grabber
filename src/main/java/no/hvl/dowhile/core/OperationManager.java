@@ -19,19 +19,21 @@ import java.util.Set;
  */
 public class OperationManager {
     private boolean active;
+    private Config config;
     private Window window;
     private DriveDetector driveDetector;
     private FileManager fileManager;
-    private Config config;
-    private Operation operation;
     private List<Operation> existingOperations;
     private TrackCutter currentTrackCutter;
     private List<GpxFile> queue;
+    private Operation operation;
 
-
+    /**
+     * Constructor creating the components needed from the beginning.
+     */
     public OperationManager() {
-        this.config = new Config();
         this.active = true;
+        this.config = new Config();
         this.window = new Window(this);
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager(this);
@@ -65,15 +67,6 @@ public class OperationManager {
      */
     public boolean hasOperation() {
         return operation != null;
-    }
-
-    /**
-     * Get the current instance of the Window.
-     *
-     * @return the current instance of the Window.
-     */
-    public Window getWindow() {
-        return window;
     }
 
     /**
@@ -279,6 +272,7 @@ public class OperationManager {
 
     /**
      * Assigns a name to the waypoint.
+     *
      * @param name the name for the file.
      */
     public void saveWaypoint(String name) {
@@ -295,7 +289,7 @@ public class OperationManager {
      * Opens the operation panel if the queue is empty, and if not, prepares the next file.
      */
     public void checkForMoreFiles() {
-        if(queue.isEmpty()) {
+        if (queue.isEmpty()) {
             window.openOperationPanel();
         } else {
             prepareNextFile();
@@ -352,15 +346,6 @@ public class OperationManager {
     }
 
     /**
-     * Gets the file manager.
-     *
-     * @return the file manager
-     */
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-
-    /**
      * Sets the file manager.
      *
      * @param fileManager a file manager
@@ -376,14 +361,5 @@ public class OperationManager {
      */
     public List<GpxFile> getQueue() {
         return queue;
-    }
-
-    /**
-     * Gets the track cutter for the current track.
-     *
-     * @return the track cutter for the current track.
-     */
-    public TrackCutter getCurrentTrackCutter() {
-        return currentTrackCutter;
     }
 }
