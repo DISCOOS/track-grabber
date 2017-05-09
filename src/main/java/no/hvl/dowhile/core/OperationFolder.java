@@ -29,6 +29,7 @@ public class OperationFolder {
         areaFolder = FileTools.setupFolder(operationFolder, "Areas");
         waypointFolder = FileTools.setupFolder(operationFolder, "Waypoints");
         if (mainFolder) {
+            operation.setMainPath(root.getAbsolutePath());
             createOperationFile(operation);
         }
         System.err.println("Done creating folders for operation " + operation.getName());

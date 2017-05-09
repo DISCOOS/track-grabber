@@ -93,10 +93,8 @@ public class OperationManager {
         this.operation = operation;
         window.updateOperationInfo(operation);
         fileManager.setupMainOperationFolder(operation);
-        for (String path : operation.getPaths()) {
-            if (!fileManager.getMainOperationFolderPath().equals(path)) {
-                fileManager.setupExtraOperationFolder(operation, path);
-            }
+        for (String path : operation.getExtraPaths()) {
+            fileManager.setupExtraOperationFolder(operation, path);
         }
     }
 
@@ -105,10 +103,8 @@ public class OperationManager {
      */
     public void updateOperationFolders() {
         fileManager.setupMainOperationFolder(operation);
-        for (String path : operation.getPaths()) {
-            if (!fileManager.getMainOperationFolderPath().equals(path)) {
-                fileManager.setupExtraOperationFolder(operation, path);
-            }
+        for (String path : operation.getExtraPaths()) {
+            fileManager.setupExtraOperationFolder(operation, path);
         }
     }
 

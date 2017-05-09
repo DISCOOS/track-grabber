@@ -5,8 +5,7 @@ import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Utility methods to work with files.
@@ -189,5 +188,33 @@ public class FileTools {
             System.err.println("Failed while reading from file.");
         }
         return found;
+    }
+
+    /**
+     * Gets a list of all files containing a given string in its name.
+     * @param parentFolder The folder to search through.
+     * @param string The search string.
+     * @return All files with the given string in its name
+     */
+    public static List<File> filesContainingString(File parentFolder, String string) {
+        List<File> foundFiles = new ArrayList<File>();
+        for(File f : parentFolder.listFiles()) {
+            if(StringTools.FilenameContainsString(string, f.getName())) {
+                foundFiles.add(f);
+            }
+        }
+        return foundFiles;
+    }
+
+    /**
+     * Gets a list of all areas a file belongs to.
+     * @param file The file to search.
+     * @return All the areas that belongs to the file.
+     */
+    public static List<String> getAreasFromFile(File file) {
+        String filename = file.getName();
+        String areaSubstring = filename.substring(filename.indexOf("[") + 1, filename.indexOf("]"));
+        areaSubstring = areaSubstring.replaceAll("[^0-9]+", " ");
+        return Arrays.asList(areaSubstring.trim().split(" "));
     }
 }

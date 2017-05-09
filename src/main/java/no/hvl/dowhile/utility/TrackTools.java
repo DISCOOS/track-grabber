@@ -139,10 +139,26 @@ public class TrackTools {
         return track.getTrackPoints().get(0).getTime() == null;
     }
 
+    /**
+     * Checks if a GPX has waypoints.
+     * @param gpx the GPX file to check.
+     * @return true if the GPX has waypoints, false if not.
+     */
     public static boolean hasWaypoints(GPX gpx) {
         if (gpx.getWaypoints() == null) {
             return false;
         }
         return gpx.getWaypoints().size() > 0;
+    }
+
+    /**
+     * Gets a string with the date of the track.
+     * @param gpx The GPX file to get the date from.
+     * @return The date of the GPX
+     */
+    public static String getDayStringFromTrack(GPX gpx) {
+        Track track = getTrackFromGPXFile(gpx);
+        Date date = track.getTrackPoints().get(0).getTime();
+        return StringTools.formatDateForOrganizing(date);
     }
 }
