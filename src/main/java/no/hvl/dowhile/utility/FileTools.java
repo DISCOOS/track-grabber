@@ -207,13 +207,12 @@ public class FileTools {
     }
 
     /**
-     * Gets a list of all areas a file belongs to.
-     * @param file The file to search.
-     * @return All the areas that belongs to the file.
+     * Gets a list of all areas from the string.
+     * @param string The string to search with..
+     * @return All the areas that the string contains.
      */
-    public static List<String> getAreasFromFile(File file) {
-        String filename = file.getName();
-        String areaSubstring = filename.substring(filename.indexOf("[") + 1, filename.indexOf("]"));
+    public static List<String> getAreasFromString(String string) {
+        String areaSubstring = string.substring(string.indexOf("[") + 1, string.indexOf("]"));
         areaSubstring = areaSubstring.replaceAll("[^0-9]+", " ");
         return Arrays.asList(areaSubstring.trim().split(" "));
     }
