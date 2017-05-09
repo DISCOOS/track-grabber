@@ -3,6 +3,7 @@ package no.hvl.dowhile.core.gui;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.TrackInfo;
 import no.hvl.dowhile.utility.Messages;
+import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +45,7 @@ public class TrackPanel extends JPanel {
     private JLabel areaSearchedLabel;
     // Getting extra comments about the track.
     private JLabel trackCommentLabel;
-    private JTextField trackCommentInput;
+    private JTextArea trackCommentInput;
     // Summary labels before registering
     private JLabel crewTypeSummaryLabel;
     private JLabel crewNumberSummaryLabel;
@@ -105,180 +106,23 @@ public class TrackPanel extends JPanel {
     private void infoGUI() {
         // Current file imported from GPS
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + "Ingen fil.";
-        currentImportLabel = WINDOW.makeLabel(currentImportedFile);
+        currentImportLabel = WINDOW.makeLabel(currentImportedFile, Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 3);
         add(currentImportLabel, constraints);
 
         // Remaining files imported from GPS waiting to be processed
         String remainingFiles = Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get("" + 0);
-        remainingFilesLabel = WINDOW.makeLabel(remainingFiles);
-        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 3);
+        remainingFilesLabel = WINDOW.makeLabel(remainingFiles, Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 3);
         add(remainingFilesLabel, constraints);
 
         // Start info before importing file
-        startInfoLabel = WINDOW.makeLabel(Messages.TRACK_START_INFO.get());
+        startInfoLabel = WINDOW.makeLabel(Messages.TRACK_START_INFO.get(), Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 3);
         add(startInfoLabel, constraints);
         allInputComponents.add(startInfoLabel);
     }
 
-    private void crewTypeButtonsGUI() {
-        // adding radio buttons for type of crew
-        crewTypeLabel = WINDOW.makeLabel(Messages.CREW_TYPE_MESSAGE.get());
-        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.WEST, 2);
-        add(crewTypeLabel, constraints);
-        allInputComponents.add(crewTypeLabel);
-
-        radioButtonGroup = new ButtonGroup();
-        constraints.gridwidth = 2;
-        radioButtons = generateButtons(getCrewNames());
-        setButtonsInWindow();
-    }
-
-    private void crewNumberGUI() {
-        // Label and input for crew number
-        crewNumberLabel = WINDOW.makeLabel(Messages.CREW_NUMBER.get());
-        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.WEST, 2);
-        add(crewNumberLabel, constraints);
-        allInputComponents.add(crewNumberLabel);
-
-        // Spinner for crew number input
-        SpinnerModel crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
-        crewNumberSpinner = new JSpinner(crewNumberInput);
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        add(crewNumberSpinner, constraints);
-        allInputComponents.add(crewNumberSpinner);
-    }
-
-    private void crewCountGUI() {
-        // Label and input for crew count
-        crewCountLabel = WINDOW.makeLabel(Messages.CREW_COUNT.get());
-        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.WEST, 2);
-        add(crewCountLabel, constraints);
-        allInputComponents.add(crewCountLabel);
-
-        // Spinner for crew count input
-        SpinnerModel crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
-        crewCountSpinner = new JSpinner(crewCountInput);
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        add(crewCountSpinner, constraints);
-        allInputComponents.add(crewCountSpinner);
-    }
-
-    private void areaSearchedGUI() {
-        // Label and input for area searched
-        areaLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED.get());
-        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.WEST, 2);
-        add(areaLabel, constraints);
-        allInputComponents.add(areaLabel);
-
-        // Spinner for input of area
-        SpinnerModel areaSearchedModel = new SpinnerNumberModel(0,0,1000,1);
-        areaSearchedSpinner = new JSpinner(areaSearchedModel);
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
-        add(areaSearchedSpinner, constraints);
-        allInputComponents.add(areaSearchedSpinner);
-
-        // button for the area searched dialog
-        areaInputButton = new JButton(Messages.CHOOSE_AREA.get());
-        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.WEST, 1);
-        add(areaInputButton, constraints);
-        allInputComponents.add(areaInputButton);
-
-        // Label for showing areas chosen
-        areaSearchedLabel = new JLabel();
-        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 2);
-        add(areaSearchedLabel, constraints);
-        allInputComponents.add(areaSearchedLabel);
-    }
-
-    private void trackNumberGUI() {
-        // Label and input for track number
-        trackNumberLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER.get());
-        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.WEST, 2);
-        add(trackNumberLabel, constraints);
-        allInputComponents.add(trackNumberLabel);
-
-        // Spinner input for the track number
-        SpinnerModel trackNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
-        trackNumberSpinner = new JSpinner(trackNumberInput);
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        add(trackNumberSpinner, constraints);
-        allInputComponents.add(trackNumberSpinner);
-    }
-
-    private void trackCommentGUI() {
-        // Label for comment to the track
-        trackCommentLabel = WINDOW.makeLabel(Messages.TRACK_COMMENT.get());
-        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.WEST, 2);
-        add(trackCommentLabel, constraints);
-        allInputComponents.add(trackCommentLabel);
-
-        // TextField for adding a comment
-        trackCommentInput = new JTextField();
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
-        add(trackCommentInput, constraints);
-        allInputComponents.add(trackCommentInput);
-    }
-
-    private void summaryGUI() {
-        // Type of crew
-        crewTypeSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_TYPE.get());
-        WINDOW.modifyConstraints(constraints, 1, 7, GridBagConstraints.WEST, 1);
-        add(crewTypeSummaryLabel, constraints);
-
-        crewTypeSummaryData = WINDOW.makeLabel("");
-        WINDOW.modifyConstraints(constraints, 2, 7, GridBagConstraints.WEST, 1);
-        add(crewTypeSummaryData, constraints);;
-
-        // CrewNumber
-        crewNumberSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_NUMBER.get());
-        WINDOW.modifyConstraints(constraints, 1, 6, GridBagConstraints.WEST, 1);
-        add(crewNumberSummaryLabel, constraints);
-
-        crewNumberSummaryData = WINDOW.makeLabel("");
-        WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.WEST, 1);
-        add(crewNumberSummaryData, constraints);
-
-        // TrackNumber
-        trackNumberSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_TRACK_NUMBER.get());
-        WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.WEST, 1);
-        add(trackNumberSummaryLabel, constraints);
-
-        trackNumberSummaryData = WINDOW.makeLabel("");
-        WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.WEST, 1);
-        add(trackNumberSummaryData, constraints);
-
-        // CrewCount
-        crewCountSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_COUNT.get());
-        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 1);
-        add(crewCountSummaryLabel, constraints);
-
-        crewCountSummaryData = WINDOW.makeLabel("");
-        WINDOW.modifyConstraints(constraints, 2, 4, GridBagConstraints.WEST, 1);
-        add(crewCountSummaryData, constraints);
-
-        // AreaSearched
-        areaSearchedSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_AREA_SEARCHED.get());
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
-        add(areaSearchedSummaryLabel, constraints);
-
-        areaSearchedSummaryData = WINDOW.makeLabel("");
-        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.WEST, 1);
-        add(areaSearchedSummaryData, constraints);
-
-        // TrackComment
-        trackCommentSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_TRACK_COMMENT.get());
-        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.WEST, 1);
-        add(trackCommentSummaryLabel, constraints);
-
-        trackCommentSummaryData = WINDOW.makeLabel("");
-        WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.WEST, 1);
-        add(trackCommentSummaryData, constraints);
-    }
 
     private void buttonsGUI() {
         nextButton = WINDOW.makeButton(Messages.NEXT.get());
@@ -290,9 +134,171 @@ public class TrackPanel extends JPanel {
         add(backButton, constraints);
 
         // Register button
-        registerButton = new JButton(Messages.REGISTER_BUTTON.get());
+        registerButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get());
         WINDOW.modifyConstraints(constraints, 3, 9, GridBagConstraints.WEST, 1);
         add(registerButton, constraints);
+    }
+
+    private void crewTypeButtonsGUI() {
+        // adding radio buttons for type of crew
+        crewTypeLabel = WINDOW.makeLabel(Messages.CREW_TYPE_MESSAGE.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
+        add(crewTypeLabel, constraints);
+        allInputComponents.add(crewTypeLabel);
+
+        radioButtonGroup = new ButtonGroup();
+        constraints.gridwidth = 2;
+        radioButtons = generateButtons(getCrewNames());
+        setButtonsInWindow();
+    }
+
+    private void crewNumberGUI() {
+        // Label and input for crew number
+        crewNumberLabel = WINDOW.makeLabel(Messages.CREW_NUMBER.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
+        add(crewNumberLabel, constraints);
+        allInputComponents.add(crewNumberLabel);
+
+        // Spinner for crew number input
+        SpinnerModel crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
+        crewNumberSpinner = WINDOW.makeSpinner(crewNumberInput);
+        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(crewNumberSpinner, constraints);
+        allInputComponents.add(crewNumberSpinner);
+    }
+
+    private void crewCountGUI() {
+        // Label and input for crew count
+        crewCountLabel = WINDOW.makeLabel(Messages.CREW_COUNT.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
+        add(crewCountLabel, constraints);
+        allInputComponents.add(crewCountLabel);
+
+        // Spinner for crew count input
+        SpinnerModel crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
+        crewCountSpinner = WINDOW.makeSpinner(crewCountInput);
+        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(crewCountSpinner, constraints);
+        allInputComponents.add(crewCountSpinner);
+    }
+
+    private void areaSearchedGUI() {
+        // Label and input for area searched
+        areaLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
+        add(areaLabel, constraints);
+        allInputComponents.add(areaLabel);
+
+        // Spinner for input of area
+        SpinnerModel areaSearchedModel = new SpinnerNumberModel(0,0,1000,1);
+        areaSearchedSpinner = WINDOW.makeSpinner(areaSearchedModel);
+        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
+        add(areaSearchedSpinner, constraints);
+        allInputComponents.add(areaSearchedSpinner);
+
+        // button for the area searched dialog
+        areaInputButton = WINDOW.makeButton(Messages.CHOOSE_AREA.get());
+        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.WEST, 1);
+        add(areaInputButton, constraints);
+        allInputComponents.add(areaInputButton);
+
+        // Label for showing areas chosen
+        areaSearchedLabel = WINDOW.makeLabel("", Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 2);
+        add(areaSearchedLabel, constraints);
+        allInputComponents.add(areaSearchedLabel);
+    }
+
+    private void trackNumberGUI() {
+        // Label and input for track number
+        trackNumberLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
+        add(trackNumberLabel, constraints);
+        allInputComponents.add(trackNumberLabel);
+
+        // Spinner input for the track number
+        SpinnerModel trackNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
+        trackNumberSpinner = WINDOW.makeSpinner(trackNumberInput);
+        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(trackNumberSpinner, constraints);
+        allInputComponents.add(trackNumberSpinner);
+    }
+
+    private void trackCommentGUI() {
+        // Label for comment to the track
+        trackCommentLabel = WINDOW.makeLabel(Messages.TRACK_COMMENT.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
+        add(trackCommentLabel, constraints);
+        allInputComponents.add(trackCommentLabel);
+
+        // TextField for adding a comment
+        trackCommentInput = new JTextArea();
+        trackCommentInput.setFont(WINDOW.TEXT_FONT);
+        trackCommentInput.setPreferredSize(new Dimension(300,150));
+        trackCommentInput.setBackground(Color.LIGHT_GRAY);
+        PromptSupport.setPrompt("Valgfri...", trackCommentInput);
+        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
+        add(trackCommentInput, constraints);
+        allInputComponents.add(trackCommentInput);
+    }
+
+    private void summaryGUI() {
+        // Type of crew
+        crewTypeSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_TYPE.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 1, 7, GridBagConstraints.WEST, 1);
+        add(crewTypeSummaryLabel, constraints);
+
+        crewTypeSummaryData = WINDOW.makeLabel("", Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 2, 7, GridBagConstraints.WEST, 1);
+        add(crewTypeSummaryData, constraints);;
+
+        // CrewNumber
+        crewNumberSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_NUMBER.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 1, 6, GridBagConstraints.WEST, 1);
+        add(crewNumberSummaryLabel, constraints);
+
+        crewNumberSummaryData = WINDOW.makeLabel("", Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.WEST, 1);
+        add(crewNumberSummaryData, constraints);
+
+        // TrackNumber
+        trackNumberSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_TRACK_NUMBER.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.WEST, 1);
+        add(trackNumberSummaryLabel, constraints);
+
+        trackNumberSummaryData = WINDOW.makeLabel("", Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.WEST, 1);
+        add(trackNumberSummaryData, constraints);
+
+        // CrewCount
+        crewCountSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_COUNT.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 1);
+        add(crewCountSummaryLabel, constraints);
+
+        crewCountSummaryData = WINDOW.makeLabel("", Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 2, 4, GridBagConstraints.WEST, 1);
+        add(crewCountSummaryData, constraints);
+
+        // AreaSearched
+        areaSearchedSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_AREA_SEARCHED.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
+        add(areaSearchedSummaryLabel, constraints);
+
+        areaSearchedSummaryData = WINDOW.makeLabel("", Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.WEST, 1);
+        add(areaSearchedSummaryData, constraints);
+
+        // TrackComment
+        trackCommentSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_TRACK_COMMENT.get(), Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 1, 2, GridBagConstraints.WEST, 1);
+        add(trackCommentSummaryLabel, constraints);
+
+        trackCommentSummaryData = WINDOW.makeLabel("", Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.WEST, 1);
+        add(trackCommentSummaryData, constraints);
     }
 
     /**
@@ -375,6 +381,7 @@ public class TrackPanel extends JPanel {
         startInfoLabel.setVisible(true);
         backButton.setVisible(false);
         nextButton.setVisible(true);
+        currentImportLabel.setVisible(true);
         registerButton.setVisible(false);
         viewCount = 0;
     }
@@ -388,6 +395,7 @@ public class TrackPanel extends JPanel {
                 c.setVisible(visibility);
         }
         registerButton.setVisible(visibility);
+        currentImportLabel.setVisible(visibility);
         setSummaryVisibility(visibility);
     }
 
@@ -470,9 +478,7 @@ public class TrackPanel extends JPanel {
             viewCount++;
             switch (viewCount) {
                 case 0:
-                    setVisibilityComponents(false);
-                    startInfoLabel.setVisible(true);
-                    backButton.setVisible(false);
+                    initialVisibility();
                     break;
                 case 1:
                     setVisibilityComponents(false);
@@ -480,6 +486,7 @@ public class TrackPanel extends JPanel {
                     for(JRadioButton rb : radioButtons) {
                         rb.setVisible(true);
                     }
+                    backButton.setVisible(true);
                     break;
                 case 2:
                     setVisibilityComponents(false);
@@ -528,13 +535,15 @@ public class TrackPanel extends JPanel {
         backButton.addActionListener(actionEvent -> {
             viewCount--;
             switch (viewCount) {
+                case 0:
+                    initialVisibility();
+                    break;
                 case 1:
                     setVisibilityComponents(false);
                     crewTypeLabel.setVisible(true);
                     for(JRadioButton rb : radioButtons) {
                         rb.setVisible(true);
                     }
-                    backButton.setVisible(false);
                     break;
                 case 2:
                     setVisibilityComponents(false);

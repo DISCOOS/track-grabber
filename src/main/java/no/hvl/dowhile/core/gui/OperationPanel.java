@@ -140,7 +140,7 @@ public class OperationPanel extends JPanel {
      */
     private void existingOperationGUI() {
         // Already existing operation label
-        existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get());
+        existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), Font.BOLD);
         existingOperationLabel.setName("existingOperationLabel");
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 3);
         add(existingOperationLabel, constraints);
@@ -164,7 +164,7 @@ public class OperationPanel extends JPanel {
      */
     private void createNewOperationGUI() {
         // New operation label
-        operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get());
+        operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), Font.BOLD);
         operationNameLabel.setName("operationNameLabel");
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 2);
         add(operationNameLabel, constraints);
@@ -177,14 +177,14 @@ public class OperationPanel extends JPanel {
         add(operationNameInput, constraints);
 
         // Error message label
-        errorMessageLabel = WINDOW.makeLabel(" ");
+        errorMessageLabel = WINDOW.makeLabel(" ", Font.BOLD);
         errorMessageLabel.setName("errorMessageLabel");
         errorMessageLabel.setForeground(Color.RED);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 4);
         add(errorMessageLabel, constraints);
 
         // Date for operation and input
-        operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get());
+        operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), Font.BOLD);
         operationDateLabel.setName("operationDateLabel");
         WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 2);
         add(operationDateLabel, constraints);
@@ -204,7 +204,7 @@ public class OperationPanel extends JPanel {
         add(registerNewButton, constraints);
 
         // List of saved paths
-        allSavedPathsLabel = WINDOW.makeLabel("");
+        allSavedPathsLabel = WINDOW.makeLabel("", Font.BOLD);
         WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.CENTER, 4);
         add(allSavedPathsLabel, constraints);
     }
@@ -214,7 +214,7 @@ public class OperationPanel extends JPanel {
      */
     private void activeOperationGUI() {
         // Awaiting GPS label
-        awaitingGPSLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get());
+        awaitingGPSLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get(), Font.BOLD);
         awaitingGPSLabel.setName("awaitingGPSLabel");
         WINDOW.modifyConstraints(constraints, 1, 0, GridBagConstraints.CENTER, 2);
         add(awaitingGPSLabel, constraints);
@@ -245,7 +245,7 @@ public class OperationPanel extends JPanel {
         add(definePathButton, constraints);
 
         // Saved paths header
-        allSavedPathsHeaderLabel = WINDOW.makeLabel(Messages.ALL_SAVED_PATHS.get());
+        allSavedPathsHeaderLabel = WINDOW.makeLabel(Messages.ALL_SAVED_PATHS.get(), Font.BOLD);
         WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
         add(allSavedPathsHeaderLabel, constraints);
     }
@@ -255,7 +255,7 @@ public class OperationPanel extends JPanel {
      */
     private void editActiveOperationGUI() {
         // Edit operation date label
-        editDateLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION_TIME.get());
+        editDateLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION_TIME.get(), Font.BOLD);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 4);
         add(editDateLabel, constraints);
 
