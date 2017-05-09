@@ -374,6 +374,7 @@ public class TrackPanel extends JPanel {
         setVisibilityComponents(false);
         startInfoLabel.setVisible(true);
         backButton.setVisible(false);
+        nextButton.setVisible(true);
         registerButton.setVisible(false);
     }
 
