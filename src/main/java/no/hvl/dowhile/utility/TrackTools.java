@@ -139,8 +139,10 @@ public class TrackTools {
         return track.getTrackPoints().get(0).getTime() == null;
     }
 
-    public static boolean isOnlyOneWayPoint(GPX gpx) {
-        Track track = getTrackFromGPXFile(gpx);
-        return track.getTrackPoints().size() == 1;
+    public static boolean hasWaypoints(GPX gpx) {
+        if (gpx.getWaypoints() == null) {
+            return false;
+        }
+        return gpx.getWaypoints().size() > 0;
     }
 }

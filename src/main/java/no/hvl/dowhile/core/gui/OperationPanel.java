@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
@@ -70,6 +71,11 @@ public class OperationPanel extends JPanel {
         createNewOperationGUI();
         activeOperationGUI();
         editActiveOperationGUI();
+
+        datePicker.setLocale(new Locale("no"));
+        timePicker.setLocale(new Locale("no"));
+        editDatePicker.setLocale(new Locale("no"));
+        editTimePicker.setLocale(new Locale("no"));
 
         // Setting stuff invisible
         backButton.setVisible(false);

@@ -19,12 +19,12 @@
             <artifactId>swingx</artifactId>
             <version>1.6.1</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.github.lgooddatepicker</groupId>
             <artifactId>LGoodDatePicker</artifactId>
             <version>8.3.0</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>

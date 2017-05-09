@@ -11,6 +11,8 @@ import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,6 +128,12 @@ public class FileManager {
         mainOperationFolder = new OperationFolder(operation, appFolder, true);
     }
 
+    /**
+     * Setting up the extra operation folder for the given operation at the given path.
+     *
+     * @param operation the operation to create a folder for.
+     * @param path      the path to save it.
+     */
     public void setupExtraOperationFolder(Operation operation, String path) {
         File root = new File(path);
         if (!root.exists()) {
@@ -206,6 +214,11 @@ public class FileManager {
         return newTrack != null && TrackTools.trackPointsAreEqual(rawFiles, newTrack);
     }
 
+    /**
+     * Saving the given gpx files in all folders related to this operation.
+     * @param rawGpx the gpx to save.
+     * @param filename the name to save it as.
+     */
     public void saveRawGpxFileInFolders(GPX rawGpx, String filename) {
         saveRawGpxFile(mainOperationFolder.getRawFolder(), rawGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
@@ -257,21 +270,21 @@ public class FileManager {
         saveGpxFile(areaGPX, filename, areaFolder);
     }
 
-    public void saveWaypointGpxFileInFolders(GPX waypointGpx, String filename) {
-        saveWaypointFile(mainOperationFolder.getWaypointFolder(), waypointGpx, filename);
+    public void saveWaypointFileInFolders(File waypointFile, String filename) {
+        saveWaypointFile(mainOperationFolder.getWaypointFolder(), waypointFile, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveWaypointFile(operationFolder.getWaypointFolder(), waypointGpx, filename);
+            saveWaypointFile(operationFolder.getWaypointFolder(), waypointFile, filename);
         }
     }
 
     /**
      * Saves the waypoint file in the waypoint folder as the specified filename.
      *
-     * @param waypointGPX the GPX to save.
+     * @param waypointFile the file to save.
      * @param filename the name to save it as.
      */
-    private void saveWaypointFile(File waypointFolder, GPX waypointGPX, String filename) {
-        saveGpxFile(waypointGPX, filename, waypointFolder);
+    private void saveWaypointFile(File waypointFolder, File waypointFile, String filename) {
+        saveFile(waypointFile, filename, waypointFolder);
     }
 
     /**
@@ -300,6 +313,26 @@ public class FileManager {
             ex.printStackTrace();
         } catch (TransformerException ex) {
             System.err.println("Failed to transform raw file.");
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Saving the file in the specified folder as the specified filename.
+     *
+     * @param fileToSave the file to save.
+     * @param filename   the name for the new file.
+     * @param folder     the folder to save it in.
+     */
+    public void saveFile(File fileToSave, String filename, File folder) {
+        try {
+            File file = new File(folder, filename);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            Files.copy(fileToSave.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ex) {
+            System.err.println("Failed to save file.");
             ex.printStackTrace();
         }
     }
