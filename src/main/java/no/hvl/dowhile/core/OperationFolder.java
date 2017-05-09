@@ -14,6 +14,10 @@ public class OperationFolder {
     private File rawFolder;
     private File areaFolder;
     private File waypointFolder;
+    private File organizingFolder;
+    private File crewOrgFolder;
+    private File areaOrgFolder;
+    private File dayOrgFolder;
 
     /**
      * Constructor taking data to create the folders.
@@ -28,6 +32,10 @@ public class OperationFolder {
         processedFolder = FileTools.setupFolder(operationFolder, "Processed");
         areaFolder = FileTools.setupFolder(operationFolder, "Areas");
         waypointFolder = FileTools.setupFolder(operationFolder, "Waypoints");
+        organizingFolder = FileTools.setupFolder(operationFolder, "Organizations");
+        crewOrgFolder = FileTools.setupFolder(organizingFolder, "CrewTypes");
+        areaOrgFolder = FileTools.setupFolder(organizingFolder, "Areas");
+        dayOrgFolder = FileTools.setupFolder(organizingFolder, "Days");
         if (mainFolder) {
             operation.setMainPath(root.getAbsolutePath());
             createOperationFile(operation);
@@ -114,6 +122,59 @@ public class OperationFolder {
     public void setWaypointFolder(File waypointFolder) {
         this.waypointFolder = waypointFolder;
     }
+
+    /**
+     * Gets the folder to store organizations of files.
+     */
+    public File getOrganizingFolder() { return organizingFolder; }
+
+    /**
+     * Set the folder to store organizations of files.
+     * @param organizingFolder the folder to store organizations of files.
+     */
+    public void setOrganizingFolder(File organizingFolder) { this.organizingFolder = organizingFolder; }
+
+    /**
+     * Get the folder to store organizations of crew types.
+     * @return the folder to store organizations of crew types.
+     */
+    public File getCrewOrgFolder() {
+        return crewOrgFolder;
+    }
+
+    /**
+     * Set the folder to store organizations of crew types.
+     * @param crewOrgFolder the folder to store organizations of crew types.
+     */
+    public void setCrewOrgFolder(File crewOrgFolder) { this.crewOrgFolder = crewOrgFolder; }
+
+    /**
+     * Get the folder to store organizations of areas.
+     * @return the folder to store organizations of areas.
+     */
+    public File getAreaOrgFolder() {
+        return areaOrgFolder;
+    }
+
+    /**
+     * Set the folder to store organizations of areas.
+     * @param areaOrgFolder the folder to store organizations of areas.
+     */
+    public void setAreaOrgFolder(File areaOrgFolder) { this.areaOrgFolder = areaOrgFolder; }
+
+    /**
+     * Get the folder to store organizations of days.
+     * @return the folder to store organizations of days.
+     */
+    public File getDayOrgFolder() {
+        return dayOrgFolder;
+    }
+
+    /**
+     * Set the folder to store organizations of days.
+     * @param dayOrgFolder the folder to store organizations of days.
+     */
+    public void setDayOrgFolder(File dayOrgFolder) { this.dayOrgFolder = dayOrgFolder; }
 
     /**
      * Creates an operation file for the given Operation, into the given operation folder.
