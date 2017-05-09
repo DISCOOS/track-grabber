@@ -150,8 +150,15 @@ public class FileTools {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
             reader.close();
-            String[] parts = line.split("</name>");
-            String replacedLine = parts[0] + "</name><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + displayColor + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
+            String[] parts;
+            String replacedLine;
+            if (line.contains("</desc>")) {
+                parts = line.split("</desc>");
+                replacedLine = parts[0] + "</desc><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + displayColor + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
+            } else {
+                parts = line.split("</name>");
+                replacedLine = parts[0] + "</name><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + displayColor + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
+            }
             if (replacedLine.contains("<extensions/>")) {
                 replacedLine = replacedLine.replace("<extensions/>", ""); // Resolving weird parsing bug.
             }
