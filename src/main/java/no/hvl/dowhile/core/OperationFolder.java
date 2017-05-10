@@ -45,6 +45,7 @@ public class OperationFolder {
 
     /**
      * Get the operation folder.
+     *
      * @return the operation folder.
      */
     public File getOperationFolder() {
@@ -53,6 +54,7 @@ public class OperationFolder {
 
     /**
      * Set the operation folder.
+     *
      * @param operationFolder the operation folder.
      */
     public void setOperationFolder(File operationFolder) {
@@ -61,7 +63,8 @@ public class OperationFolder {
 
     /**
      * Get the folder to store processed tracks.
-     * @return
+     *
+     * @return the folder to store processed files.
      */
     public File getProcessedFolder() {
         return processedFolder;
@@ -69,6 +72,7 @@ public class OperationFolder {
 
     /**
      * Set the folder to store processed tracks.
+     *
      * @param processedFolder the folder to store processed tracks.
      */
     public void setProcessedFolder(File processedFolder) {
@@ -77,6 +81,7 @@ public class OperationFolder {
 
     /**
      * Get the folder to store rawfiles.
+     *
      * @return the folder to store rawfiles.
      */
     public File getRawFolder() {
@@ -85,6 +90,7 @@ public class OperationFolder {
 
     /**
      * Set the folder to store all rawfiles.
+     *
      * @param rawFolder the folder to store rawfiles..
      */
     public void setRawFolder(File rawFolder) {
@@ -93,6 +99,7 @@ public class OperationFolder {
 
     /**
      * Get the folder to store areas.
+     *
      * @return the folder to store areas.
      */
     public File getAreaFolder() {
@@ -101,6 +108,7 @@ public class OperationFolder {
 
     /**
      * Set the folder to store areas.
+     *
      * @param areaFolder the folder to store areas.
      */
     public void setAreaFolder(File areaFolder) {
@@ -109,6 +117,7 @@ public class OperationFolder {
 
     /**
      * Get the folder to store waypoints.
+     *
      * @return the folder to store waypoints.
      */
     public File getWaypointFolder() {
@@ -117,6 +126,7 @@ public class OperationFolder {
 
     /**
      * Set the folder to store waypoints.
+     *
      * @param waypointFolder the folder to store waypoints.
      */
     public void setWaypointFolder(File waypointFolder) {
@@ -125,17 +135,25 @@ public class OperationFolder {
 
     /**
      * Gets the folder to store organizations of files.
+     *
+     * @return the folder to hold organized files.
      */
-    public File getOrganizingFolder() { return organizingFolder; }
+    public File getOrganizingFolder() {
+        return organizingFolder;
+    }
 
     /**
      * Set the folder to store organizations of files.
+     *
      * @param organizingFolder the folder to store organizations of files.
      */
-    public void setOrganizingFolder(File organizingFolder) { this.organizingFolder = organizingFolder; }
+    public void setOrganizingFolder(File organizingFolder) {
+        this.organizingFolder = organizingFolder;
+    }
 
     /**
      * Get the folder to store organizations of crew types.
+     *
      * @return the folder to store organizations of crew types.
      */
     public File getCrewOrgFolder() {
@@ -144,12 +162,16 @@ public class OperationFolder {
 
     /**
      * Set the folder to store organizations of crew types.
+     *
      * @param crewOrgFolder the folder to store organizations of crew types.
      */
-    public void setCrewOrgFolder(File crewOrgFolder) { this.crewOrgFolder = crewOrgFolder; }
+    public void setCrewOrgFolder(File crewOrgFolder) {
+        this.crewOrgFolder = crewOrgFolder;
+    }
 
     /**
      * Get the folder to store organizations of areas.
+     *
      * @return the folder to store organizations of areas.
      */
     public File getAreaOrgFolder() {
@@ -158,12 +180,16 @@ public class OperationFolder {
 
     /**
      * Set the folder to store organizations of areas.
+     *
      * @param areaOrgFolder the folder to store organizations of areas.
      */
-    public void setAreaOrgFolder(File areaOrgFolder) { this.areaOrgFolder = areaOrgFolder; }
+    public void setAreaOrgFolder(File areaOrgFolder) {
+        this.areaOrgFolder = areaOrgFolder;
+    }
 
     /**
      * Get the folder to store organizations of days.
+     *
      * @return the folder to store organizations of days.
      */
     public File getDayOrgFolder() {
@@ -172,9 +198,12 @@ public class OperationFolder {
 
     /**
      * Set the folder to store organizations of days.
+     *
      * @param dayOrgFolder the folder to store organizations of days.
      */
-    public void setDayOrgFolder(File dayOrgFolder) { this.dayOrgFolder = dayOrgFolder; }
+    public void setDayOrgFolder(File dayOrgFolder) {
+        this.dayOrgFolder = dayOrgFolder;
+    }
 
     /**
      * Creates an operation file for the given Operation, into the given operation folder.

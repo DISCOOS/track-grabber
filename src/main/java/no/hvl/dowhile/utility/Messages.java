@@ -71,17 +71,7 @@ public enum Messages {
     GO_BACK("Tilbake"),
 
     // Waypoint panel
-    NEW_NAME("Nytt navn"),
-
-
-    // Crew type
-    CREW_ATV("ATV"),
-    CREW_BOAT("Båt"),
-    CREW_CAR("Bil"),
-    CREW_DOG("Hund"),
-    CREW_HELICOPTER("Helikopter"),
-    CREW_MEN("Lag")
-    ;
+    NEW_NAME("Nytt navn");
 
     private String message;
 
