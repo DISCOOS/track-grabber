@@ -78,6 +78,7 @@ public class Config {
         return teamTypes;
     }
 
+
     /**
      * Get a list with the names of the team types.
      *
@@ -155,6 +156,9 @@ public class Config {
                     filename = filename.replace(variable, StringTools.formatDateForFile(Calendar.getInstance().getTime()));
                     break;
             }
+        }
+        if (!trackInfo.getComment().isEmpty()) {
+            filename = filename.replace(".gpx", "") + "_COM" + ".gpx";
         }
         return filename;
     }
