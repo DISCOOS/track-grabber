@@ -253,14 +253,33 @@ public class FileManager {
      * @param filename     the name to save the file as.
      */
     public void organizeFile(GPX processedGpx, TrackInfo trackInfo, String filename) {
-        // Organize the file by crew type.
+        organizeCrewFolders(processedGpx, trackInfo, filename);
+        organizeAreaFolders(processedGpx, trackInfo, filename);
+        organizeDayFolders(processedGpx, trackInfo, filename);
+    }
+
+    /**
+     * Organizes the file into the appropriate crew folder.
+     * @param processedGpx The file to store.
+     * @param trackInfo The info that helps find the right folder.
+     * @param filename The name of the file.
+     */
+    public void organizeCrewFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         File crewFolder = setupFolder(mainOperationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
         saveGpxFile(processedGpx, filename, crewFolder);
         for (OperationFolder operationFolder : extraOperationFolders) {
             crewFolder = setupFolder(operationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
             saveGpxFile(processedGpx, filename, crewFolder);
         }
-        // Organize the file by area.
+    }
+
+    /**
+     * Organizes the file into the appropriate area folder(s).
+     * @param processedGpx The file to store.
+     * @param trackInfo The info that helps find the correct folder(s).
+     * @param filename The name of the file.
+     */
+    public void organizeAreaFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         List<String> areaNumbers = FileTools.getAreasFromString(trackInfo.getAreaSearched());
         for (String areaNumber : areaNumbers) {
             File areaFolder = setupFolder(mainOperationFolder.getAreaOrgFolder(), areaNumber);
@@ -270,7 +289,15 @@ public class FileManager {
                 saveGpxFile(processedGpx, filename, areaFolder);
             }
         }
-        // Organize the file by date.
+    }
+
+    /**
+     * Organizes the file into the correct day folder.
+     * @param processedGpx The file to store.
+     * @param trackInfo The info that helps find the correct folder.
+     * @param filename The name of the file.
+     */
+    public void organizeDayFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         String dateString = TrackTools.getDayStringFromTrack(processedGpx);
         File dateFolder = setupFolder(mainOperationFolder.getDayOrgFolder(), dateString);
         saveGpxFile(processedGpx, filename, dateFolder);

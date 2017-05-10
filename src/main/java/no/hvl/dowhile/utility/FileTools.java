@@ -198,22 +198,6 @@ public class FileTools {
     }
 
     /**
-     * Gets a list of all files containing a given string in its name.
-     * @param parentFolder The folder to search through.
-     * @param string The search string.
-     * @return All files with the given string in its name
-     */
-    public static List<File> filesContainingString(File parentFolder, String string) {
-        List<File> foundFiles = new ArrayList<File>();
-        for(File f : parentFolder.listFiles()) {
-            if(StringTools.FilenameContainsString(string, f.getName())) {
-                foundFiles.add(f);
-            }
-        }
-        return foundFiles;
-    }
-
-    /**
      * Gets a list of all areas from the string.
      * @param string The string to search with..
      * @return All the areas that the string contains.
