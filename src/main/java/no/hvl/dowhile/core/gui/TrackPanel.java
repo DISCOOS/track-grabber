@@ -192,7 +192,7 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(areaLabel);
 
         // Spinner for input of area
-        SpinnerModel areaSearchedModel = new SpinnerNumberModel(0,0,1000,1);
+        SpinnerModel areaSearchedModel = new SpinnerNumberModel(0, 0, 1000, 1);
         areaSearchedSpinner = WINDOW.makeSpinner(areaSearchedModel);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
         add(areaSearchedSpinner, constraints);
@@ -237,7 +237,7 @@ public class TrackPanel extends JPanel {
         // TextField for adding a comment
         trackCommentInput = new JTextArea();
         trackCommentInput.setFont(WINDOW.TEXT_FONT);
-        trackCommentInput.setPreferredSize(new Dimension(300,150));
+        trackCommentInput.setPreferredSize(new Dimension(300, 150));
         trackCommentInput.setBackground(Color.LIGHT_GRAY);
         PromptSupport.setPrompt("Valgfri...", trackCommentInput);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
@@ -253,7 +253,8 @@ public class TrackPanel extends JPanel {
 
         crewTypeSummaryData = WINDOW.makeLabel("", Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 2, 7, GridBagConstraints.WEST, 1);
-        add(crewTypeSummaryData, constraints);;
+        add(crewTypeSummaryData, constraints);
+        ;
 
         // CrewNumber
         crewNumberSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_NUMBER.get(), Font.BOLD);
@@ -388,11 +389,12 @@ public class TrackPanel extends JPanel {
 
     /**
      * Sets all JComponents in allInputComponents visible/invisible
+     *
      * @param visibility true if visible, false if not.
      */
     private void setVisibilityComponents(boolean visibility) {
         for (JComponent c : allInputComponents) {
-                c.setVisible(visibility);
+            c.setVisible(visibility);
         }
         registerButton.setVisible(visibility);
         currentImportLabel.setVisible(visibility);
@@ -401,6 +403,7 @@ public class TrackPanel extends JPanel {
 
     /**
      * Sets the summary labels visible/invisible
+     *
      * @param visibility true if visible, false if not
      */
     private void setSummaryVisibility(boolean visibility) {
@@ -483,7 +486,7 @@ public class TrackPanel extends JPanel {
                 case 1:
                     setVisibilityComponents(false);
                     crewTypeLabel.setVisible(true);
-                    for(JRadioButton rb : radioButtons) {
+                    for (JRadioButton rb : radioButtons) {
                         rb.setVisible(true);
                     }
                     backButton.setVisible(true);
@@ -541,7 +544,7 @@ public class TrackPanel extends JPanel {
                 case 1:
                     setVisibilityComponents(false);
                     crewTypeLabel.setVisible(true);
-                    for(JRadioButton rb : radioButtons) {
+                    for (JRadioButton rb : radioButtons) {
                         rb.setVisible(true);
                     }
                     break;

@@ -57,6 +57,7 @@ public class StringTools {
 
     /**
      * Checks if the given operation name is between 2 and 50 characters.
+     *
      * @param operationName The operation name to check.
      * @return True if the name has a valid length, false if not.
      */
@@ -66,7 +67,8 @@ public class StringTools {
 
     /**
      * Checks if a given file name contains a given string.
-     * @param string The string to search for.
+     *
+     * @param string   The string to search for.
      * @param filename The filename to search through.
      * @return True if the filename contains the given string, false if not.
      */

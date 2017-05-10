@@ -20,7 +20,7 @@ public class Config {
 
     public Config() {
         this.filename = "%LAGTYPE%%LAGNUMMER%_TEIG%TEIGNUMMER%_SPOR%SPORNUMMER%_%DATO%.gpx";
-        this.teamTypes = new ArrayList<>(Arrays.asList(new TeamType("Mannskap", "Lime"), new TeamType("Hund", "Green"),new TeamType("Bil", "Blue"), new TeamType("ATV", "Yellow"), new TeamType("Båt", "Orange"), new TeamType("Helikopter", "DarkRed")));
+        this.teamTypes = new ArrayList<>(Arrays.asList(new TeamType("Mannskap", "Lime"), new TeamType("Hund", "Green"), new TeamType("Bil", "Blue"), new TeamType("ATV", "Yellow"), new TeamType("Båt", "Orange"), new TeamType("Helikopter", "DarkRed")));
     }
 
     /**

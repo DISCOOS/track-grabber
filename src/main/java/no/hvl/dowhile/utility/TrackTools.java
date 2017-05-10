@@ -32,6 +32,7 @@ public class TrackTools {
 
     /**
      * Checks if the given file has a track or not.
+     *
      * @param gpx the gpx to check.
      * @return true if the file has a track, false if not.
      */
@@ -123,7 +124,7 @@ public class TrackTools {
      * @return true if the points are matching, false if not.
      */
     public static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
-        if(waypoint1.getElevation() == null || waypoint2.getElevation() == null) {
+        if (waypoint1.getElevation() == null || waypoint2.getElevation() == null) {
             return waypoint1.getLatitude().equals(waypoint2.getLatitude()) && waypoint1.getLongitude().equals(waypoint2.getLongitude());
         } else {
             return waypoint1.getLatitude().equals(waypoint2.getLatitude()) && waypoint1.getLongitude().equals(waypoint2.getLongitude()) && waypoint1.getElevation().equals(waypoint2.getElevation());
@@ -132,6 +133,7 @@ public class TrackTools {
 
     /**
      * Checks if the file only contains an area and not a track (the waypoints don't have timetags).
+     *
      * @return true if the file is an area, false if not
      */
     public static boolean trackIsAnArea(GPX gpx) {
@@ -141,6 +143,7 @@ public class TrackTools {
 
     /**
      * Checks if a GPX has waypoints.
+     *
      * @param gpx the GPX file to check.
      * @return true if the GPX has waypoints, false if not.
      */
@@ -153,6 +156,7 @@ public class TrackTools {
 
     /**
      * Gets a string with the date of the track.
+     *
      * @param gpx The GPX file to get the date from.
      * @return The date of the GPX
      */

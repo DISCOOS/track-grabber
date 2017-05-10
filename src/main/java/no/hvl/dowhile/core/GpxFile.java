@@ -15,7 +15,7 @@ public class GpxFile {
      * Constructor taking the data required to create the object.
      *
      * @param file actual file.
-     * @param gpx      the parsed GPX object.
+     * @param gpx  the parsed GPX object.
      */
     public GpxFile(File file, GPX gpx) {
         this.file = file;
@@ -24,6 +24,7 @@ public class GpxFile {
 
     /**
      * Get the file associated with this GPX object.
+     *
      * @return the file.
      */
     public File getFile() {
@@ -32,6 +33,7 @@ public class GpxFile {
 
     /**
      * Get the parsed GPX object.
+     *
      * @return the parsed GPX object.
      */
     public GPX getGpx() {

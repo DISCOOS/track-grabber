@@ -5,7 +5,10 @@ import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
 import java.io.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Utility methods to work with files.
@@ -199,6 +202,7 @@ public class FileTools {
 
     /**
      * Gets a list of all areas from the string.
+     *
      * @param string The string to search with..
      * @return All the areas that the string contains.
      */

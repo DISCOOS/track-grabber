@@ -46,7 +46,7 @@ public class WaypointPanel extends JPanel {
         // Input field for new name for the waypoint file
         waypointNameInput = new JTextField();
         waypointNameInput.setFont(WINDOW.TEXT_FONT);
-        waypointNameInput.setPreferredSize(new Dimension(100,60));
+        waypointNameInput.setPreferredSize(new Dimension(100, 60));
         PromptSupport.setPrompt(Messages.NEW_NAME.get(), waypointNameInput);
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -59,7 +59,7 @@ public class WaypointPanel extends JPanel {
 
         // Queue with remaining waypoint files
         queueLabel = WINDOW.makeLabel(Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get(), Font.BOLD);
-        WINDOW.modifyConstraints(constraints, 0,2, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 1);
         add(queueLabel, constraints);
     }
 

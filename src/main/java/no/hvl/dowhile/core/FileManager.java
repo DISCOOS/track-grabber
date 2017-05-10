@@ -260,9 +260,10 @@ public class FileManager {
 
     /**
      * Organizes the file into the appropriate crew folder.
+     *
      * @param processedGpx The file to store.
-     * @param trackInfo The info that helps find the right folder.
-     * @param filename The name of the file.
+     * @param trackInfo    The info that helps find the right folder.
+     * @param filename     The name of the file.
      */
     public void organizeGpxInCrewFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         File crewFolder = setupFolder(mainOperationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
@@ -275,9 +276,10 @@ public class FileManager {
 
     /**
      * Organizes the file into the appropriate area folder(s).
+     *
      * @param processedGpx The file to store.
-     * @param trackInfo The info that helps find the correct folder(s).
-     * @param filename The name of the file.
+     * @param trackInfo    The info that helps find the correct folder(s).
+     * @param filename     The name of the file.
      */
     public void organizeGpxInAreaFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         List<String> areaNumbers = FileTools.getAreasFromString(trackInfo.getAreaSearched());
@@ -293,8 +295,9 @@ public class FileManager {
 
     /**
      * Organizes the file into the correct day folder.
+     *
      * @param processedGpx The file to store.
-     * @param filename The name of the file.
+     * @param filename     The name of the file.
      */
     public void organizeGpxInDayFolders(GPX processedGpx, String filename) {
         String dateString = TrackTools.getDayStringFromTrack(processedGpx);
@@ -318,7 +321,8 @@ public class FileManager {
 
     /**
      * Saves the area file in all operation folders.
-     * @param areaGpx The area file to save.
+     *
+     * @param areaGpx  The area file to save.
      * @param filename The name of the file.
      */
     public void saveAreaGpxFileInFolders(GPX areaGpx, String filename) {

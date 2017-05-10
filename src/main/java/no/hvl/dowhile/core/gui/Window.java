@@ -175,8 +175,8 @@ public class Window extends JFrame {
     /**
      * Makes a JLabel with given text and font size
      *
-     * @param text     text that will be inserted into the JLabel
-     * @param style     Font style (plain, bold...)
+     * @param text  text that will be inserted into the JLabel
+     * @param style Font style (plain, bold...)
      * @return a JLabel with given text and font size
      */
     public JLabel makeLabel(String text, int style) {
@@ -200,7 +200,7 @@ public class Window extends JFrame {
     /**
      * Makes a JButton with given text and a specific size and color
      *
-     * @param text within the button
+     * @param text   within the button
      * @param width
      * @param height @return a JButton with given text and a set dimension and color
      */
@@ -215,7 +215,7 @@ public class Window extends JFrame {
 
     public JTextField makeTextField(int width, int height) {
         JTextField textField = new JTextField();
-        textField.setPreferredSize(new Dimension (width, height));
+        textField.setPreferredSize(new Dimension(width, height));
         textField.setFont(TEXT_FONT);
 
         return textField;
