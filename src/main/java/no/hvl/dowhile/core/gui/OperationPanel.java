@@ -145,6 +145,8 @@ public class OperationPanel extends JPanel {
         // Already existing operation input
         existingOperationInput = new JComboBox<>();
         existingOperationInput.setName("existingOperationInput");
+        existingOperationInput.setPreferredSize(new Dimension(100, 40));
+        existingOperationInput.setFont(WINDOW.TEXT_FONT);
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 3);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(existingOperationInput, constraints);
@@ -187,10 +189,14 @@ public class OperationPanel extends JPanel {
         add(operationDateLabel, constraints);
 
         datePicker = new DatePicker(createDateSettings());
+        datePicker.setPreferredSize(new Dimension(50, 30));
+        datePicker.setFont(WINDOW.TEXT_FONT);
         WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.CENTER, 2);
         add(datePicker, constraints);
 
         timePicker = new TimePicker(createTimeSettings());
+        timePicker.setPreferredSize(new Dimension(50, 30));
+        timePicker.setFont(WINDOW.TEXT_FONT);
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.WEST, 2);
         add(timePicker, constraints);
 
@@ -199,11 +205,6 @@ public class OperationPanel extends JPanel {
         registerNewButton.setName("registerNewButton");
         WINDOW.modifyConstraints(constraints, 2, 7, GridBagConstraints.CENTER, 2);
         add(registerNewButton, constraints);
-
-        // List of saved paths
-        allSavedPathsLabel = WINDOW.makeLabel("", Font.BOLD);
-        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.CENTER, 4);
-        add(allSavedPathsLabel, constraints);
     }
 
     /**
@@ -245,6 +246,11 @@ public class OperationPanel extends JPanel {
         allSavedPathsHeaderLabel = WINDOW.makeLabel(Messages.ALL_SAVED_PATHS.get(), Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
         add(allSavedPathsHeaderLabel, constraints);
+
+        // List of saved paths
+        allSavedPathsLabel = WINDOW.makeLabel("", Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.CENTER, 4);
+        add(allSavedPathsLabel, constraints);
     }
 
     /**
@@ -367,7 +373,6 @@ public class OperationPanel extends JPanel {
         editDateLabel.setVisible(visibility);
         editDatePicker.setVisible(visibility);
         editTimePicker.setVisible(visibility);
-        definePathButton.setVisible(visibility);
         saveOperationButton.setVisible(visibility);
         if (visibility) {
             toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
@@ -378,6 +383,9 @@ public class OperationPanel extends JPanel {
             switchOperationButton.setVisible(true);
             importFileButton.setVisible(true);
         }
+        //definePathButton.setVisible(!visibility);
+        //allSavedPathsHeaderLabel.setVisible(!visibility);
+        //allSavedPathsLabel.setVisible(!visibility);
     }
 
     /**
