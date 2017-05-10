@@ -376,7 +376,7 @@ public class FileManager {
             FileOutputStream outputStream = new FileOutputStream(file);
             new GPXParser().writeGPX(gpx, outputStream);
             outputStream.close();
-            FileTools.insertXmlData(gpx, file);
+            FileTools.cleanXmlFile(gpx, file);
             if (trackInfo != null) {
                 String color = OPERATION_MANAGER.getConfig().getColorForTeam(trackInfo.getCrewType());
                 if (color != null) {
