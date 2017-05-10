@@ -22,6 +22,7 @@ import java.util.List;
 public class FileManager {
     private final OperationManager OPERATION_MANAGER;
     private File appFolder;
+
     private OperationFolder mainOperationFolder;
     private List<OperationFolder> extraOperationFolders;
 
@@ -439,5 +440,9 @@ public class FileManager {
      */
     public void setProcessedFolder(File processedFolder) {
         mainOperationFolder.setProcessedFolder(processedFolder);
+    }
+
+    public OperationFolder getMainOperationFolder() {
+        return mainOperationFolder;
     }
 }
