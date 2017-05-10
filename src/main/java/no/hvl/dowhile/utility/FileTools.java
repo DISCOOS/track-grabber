@@ -1,6 +1,5 @@
 package no.hvl.dowhile.utility;
 
-import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
@@ -140,13 +139,9 @@ public class FileTools {
      * @param gpx  the gpx to edit.
      * @param file the file representing the gpx.
      */
-    public static void insertDisplayColor(GPX gpx, File file) {
+    public static void insertDisplayColor(GPX gpx, File file, String color) {
         Track track = TrackTools.getTrackFromGPXFile(gpx);
         if (track == null) {
-            return;
-        }
-        String displayColor = (String) track.getExtensionData(new DisplayColorExtensionParser().getId());
-        if (displayColor == null) {
             return;
         }
         try {
@@ -157,10 +152,10 @@ public class FileTools {
             String replacedLine;
             if (line.contains("</desc>")) {
                 parts = line.split("</desc>");
-                replacedLine = parts[0] + "</desc><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + displayColor + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
+                replacedLine = parts[0] + "</desc><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + color + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
             } else {
                 parts = line.split("</name>");
-                replacedLine = parts[0] + "</name><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + displayColor + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
+                replacedLine = parts[0] + "</name><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + color + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
             }
             if (replacedLine.contains("<extensions/>")) {
                 replacedLine = replacedLine.replace("<extensions/>", ""); // Resolving weird parsing bug.

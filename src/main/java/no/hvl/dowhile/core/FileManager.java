@@ -234,13 +234,13 @@ public class FileManager {
      * @param filename the name for the new file.
      */
     private void saveRawGpxFile(File rawFolder, GPX rawGpx, String filename) {
-        saveGpxFile(rawGpx, filename, rawFolder);
+        saveGpxFile(rawGpx, null, filename, rawFolder);
     }
 
     public void saveProcessedGpxFileInFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
-        saveProcessedGpxFile(mainOperationFolder.getProcessedFolder(), processedGpx, filename);
+        saveProcessedGpxFile(mainOperationFolder.getProcessedFolder(), trackInfo, processedGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveProcessedGpxFile(operationFolder.getProcessedFolder(), processedGpx, filename);
+            saveProcessedGpxFile(operationFolder.getProcessedFolder(), trackInfo, processedGpx, filename);
         }
         organizeFile(processedGpx, trackInfo, filename);
     }
@@ -255,7 +255,7 @@ public class FileManager {
     public void organizeFile(GPX processedGpx, TrackInfo trackInfo, String filename) {
         organizeGpxInCrewFolders(processedGpx, trackInfo, filename);
         organizeGpxInAreaFolders(processedGpx, trackInfo, filename);
-        organizeGpxInDayFolders(processedGpx, filename);
+        organizeGpxInDayFolders(processedGpx, trackInfo, filename);
     }
 
     /**
@@ -267,10 +267,10 @@ public class FileManager {
      */
     public void organizeGpxInCrewFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         File crewFolder = setupFolder(mainOperationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
-        saveGpxFile(processedGpx, filename, crewFolder);
+        saveGpxFile(processedGpx, trackInfo, filename, crewFolder);
         for (OperationFolder operationFolder : extraOperationFolders) {
             crewFolder = setupFolder(operationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
-            saveGpxFile(processedGpx, filename, crewFolder);
+            saveGpxFile(processedGpx, trackInfo, filename, crewFolder);
         }
     }
 
@@ -285,10 +285,10 @@ public class FileManager {
         List<String> areaNumbers = FileTools.getAreasFromString(trackInfo.getAreaSearched());
         for (String areaNumber : areaNumbers) {
             File areaFolder = setupFolder(mainOperationFolder.getAreaOrgFolder(), areaNumber);
-            saveGpxFile(processedGpx, filename, areaFolder);
+            saveGpxFile(processedGpx, trackInfo, filename, areaFolder);
             for (OperationFolder operationFolder : extraOperationFolders) {
                 areaFolder = setupFolder(operationFolder.getAreaOrgFolder(), areaNumber);
-                saveGpxFile(processedGpx, filename, areaFolder);
+                saveGpxFile(processedGpx, trackInfo, filename, areaFolder);
             }
         }
     }
@@ -299,13 +299,13 @@ public class FileManager {
      * @param processedGpx The file to store.
      * @param filename     The name of the file.
      */
-    public void organizeGpxInDayFolders(GPX processedGpx, String filename) {
+    public void organizeGpxInDayFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         String dateString = TrackTools.getDayStringFromTrack(processedGpx);
         File dateFolder = setupFolder(mainOperationFolder.getDayOrgFolder(), dateString);
-        saveGpxFile(processedGpx, filename, dateFolder);
+        saveGpxFile(processedGpx, trackInfo, filename, dateFolder);
         for (OperationFolder operationFolder : extraOperationFolders) {
             dateFolder = setupFolder(operationFolder.getDayOrgFolder(), dateString);
-            saveGpxFile(processedGpx, filename, dateFolder);
+            saveGpxFile(processedGpx, trackInfo, filename, dateFolder);
         }
     }
 
@@ -315,8 +315,8 @@ public class FileManager {
      * @param processedGpx the gpx file to save.
      * @param filename     the name for the new file.
      */
-    private void saveProcessedGpxFile(File processedFolder, GPX processedGpx, String filename) {
-        saveGpxFile(processedGpx, filename, processedFolder);
+    private void saveProcessedGpxFile(File processedFolder, TrackInfo trackInfo, GPX processedGpx, String filename) {
+        saveGpxFile(processedGpx, trackInfo, filename, processedFolder);
     }
 
     /**
@@ -339,7 +339,7 @@ public class FileManager {
      * @param filename the name for the new file.
      */
     private void saveAreaGpxFile(File areaFolder, GPX areaGPX, String filename) {
-        saveGpxFile(areaGPX, filename, areaFolder);
+        saveGpxFile(areaGPX, null, filename, areaFolder);
     }
 
     public void saveWaypointFileInFolders(File waypointFile, String filename) {
@@ -366,7 +366,7 @@ public class FileManager {
      * @param filename the name for the new file.
      * @param folder   the folder to save it in.
      */
-    public void saveGpxFile(GPX gpx, String filename, File folder) {
+    public void saveGpxFile(GPX gpx, TrackInfo trackInfo, String filename, File folder) {
         try {
             File file = new File(folder, filename);
             if (!file.exists()) {
@@ -376,7 +376,12 @@ public class FileManager {
             new GPXParser().writeGPX(gpx, outputStream);
             outputStream.close();
             FileTools.insertXmlData(gpx, file);
-            FileTools.insertDisplayColor(gpx, file);
+            if (trackInfo != null) {
+                String color = OPERATION_MANAGER.getConfig().getColorForTeam(trackInfo.getCrewType());
+                if (color != null) {
+                    FileTools.insertDisplayColor(gpx, file, color);
+                }
+            }
         } catch (IOException ex) {
             System.err.println("Failed to save raw file.");
             ex.printStackTrace();

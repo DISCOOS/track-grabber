@@ -44,9 +44,12 @@ public class Config {
                 "filename=%LAGTYPE%%LAGNUMMER%_TEIG%TEIGNUMMER%_SPOR%SPORNUMMER%_%DATO%.gpx",
                 "#",
                 "# Oppgi lagtype og fargen sporet skal få:",
+                "# Følgende farger er støttet av Garmin:",
+                "# Black, DarkRed, DarkGreen, DarkYellow, DarkBlue, DarkMagenta, DarkCyan, LightGray, DarkGray",
+                "# Red, Green, Yellow, Blue, Magenta, Cyan, White",
                 "# Format: team=[Navn på lag],color=[Farge]",
-                "team=Mannskap,color=Lime",
-                "team=Hund,color=Green",
+                "team=Mannskap,color=Green",
+                "team=Hund,color=Magenta",
                 "team=Helikopter,color=DarkRed",
         };
     }
@@ -78,6 +81,20 @@ public class Config {
         return teamTypes;
     }
 
+    /**
+     * Gives you the color used to represent the given team in track files.
+     *
+     * @param team the type of team to the get color for.
+     * @return the color for the team.
+     */
+    public String getColorForTeam(String team) {
+        for (TeamType teamType : teamTypes) {
+            if (teamType.getName().equals(team)) {
+                return teamType.getColor();
+            }
+        }
+        return null;
+    }
 
     /**
      * Get a list with the names of the team types.
