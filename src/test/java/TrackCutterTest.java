@@ -30,9 +30,9 @@ public class TrackCutterTest {
         track = TrackTools.getTrackFromGPXFile(gpx);
         trackPoints = track.getTrackPoints();
         opManager = new OperationManager();
-        GpxFile gpxFile = new GpxFile(file.getName(), gpx);
+        GpxFile gpxFile = new GpxFile(file, gpx);
         cutter = new TrackCutter(opManager);
-        cutter.setTrackInfo(new TrackInfo("", 0, 0, "", 0));
+        cutter.setTrackInfo(new TrackInfo("", 0, 0, "", 0, ""));
         cutter.setGpxFile(gpxFile);
     }
 

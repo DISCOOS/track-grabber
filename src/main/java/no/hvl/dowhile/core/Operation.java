@@ -5,17 +5,16 @@ import no.hvl.dowhile.utility.StringTools;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Represents the current operation and has information such as name and start time.
  */
 public class Operation {
     private String name;
-    private int numberOfAreas;
     private Date startTime;
+    private String mainPath;
+    private List<String> extraPaths;
 
     /**
      * Constructor taking the information needed to create the operation.
@@ -27,13 +26,14 @@ public class Operation {
      * @param hour   the hour the operation started.
      * @param minute the minute the operation started.
      */
-    public Operation(String name, int numberOfAreas, int day, int month, int year, int hour, int minute) {
+    public Operation(String name, int day, int month, int year, int hour, int minute) {
         this.name = name;
-        this.numberOfAreas = numberOfAreas;
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, day, hour, minute);
         calendar.setTimeZone(TimeZone.getTimeZone("CET"));
         this.startTime = calendar.getTime();
+        this.mainPath = "";
+        this.extraPaths = new ArrayList<>();
     }
 
     /**
@@ -43,6 +43,7 @@ public class Operation {
      * @throws Exception if the file doesn't have the required data.
      */
     public Operation(File file) throws Exception {
+        this.extraPaths = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = reader.readLine();
         while (line != null) {
@@ -54,13 +55,6 @@ public class Operation {
                     } else {
                         throw new Exception("Failed to parse name from file.");
                     }
-                } else if (line.startsWith("numberOfAreas")) {
-                    String[] numberOfAreasAndValue = line.split("=");
-                    if (numberOfAreasAndValue.length == 2) {
-                        numberOfAreas = Integer.parseInt(numberOfAreasAndValue[1]);
-                    } else {
-                        throw new Exception("Failed to parse number of areas from file.");
-                    }
                 } else if (line.startsWith("starttime")) {
                     String[] startTimeAndValue = line.split("=");
                     if (startTimeAndValue.length == 2) {
@@ -69,6 +63,20 @@ public class Operation {
                         startTime = calendar.getTime();
                     } else {
                         throw new Exception("Failed to parse time from file.");
+                    }
+                } else if (line.startsWith("main-path")) {
+                    String[] pathAndValue = line.split("=");
+                    if (pathAndValue.length == 2) {
+                        mainPath = pathAndValue[1];
+                    } else {
+                        throw new Exception("Failed to parse main path from file.");
+                    }
+                } else if (line.startsWith("extra-path")) {
+                    String[] pathAndValue = line.split("=");
+                    if (pathAndValue.length == 2) {
+                        extraPaths.add(pathAndValue[1]);
+                    } else {
+                        throw new Exception("Failed to parse extra path from file.");
                     }
                 }
             }
@@ -83,24 +91,6 @@ public class Operation {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Get the number of areas for this operation.
-     *
-     * @return number of areas for this operation.
-     */
-    public int getNumberOfAreas() {
-        return numberOfAreas;
-    }
-
-    /**
-     * Set the number of areas for this operation.
-     *
-     * @param numberOfAreas number of areas for this operation.
-     */
-    public void setNumberOfAreas(int numberOfAreas) {
-        this.numberOfAreas = numberOfAreas;
     }
 
     /**
@@ -129,17 +119,65 @@ public class Operation {
     }
 
     /**
+     * Set the main path to save files for this operation.
+     *
+     * @return the main path to save files.
+     */
+    public String getMainPath() {
+        return mainPath;
+    }
+
+    /**
+     * Set the main path to save files for this operation.
+     *
+     * @param mainPath the main path to save files.
+     */
+    public void setMainPath(String mainPath) {
+        this.mainPath = mainPath;
+    }
+
+    /**
+     * Get the paths for this operation.
+     *
+     * @return list of paths.
+     */
+    public List<String> getExtraPaths() {
+        return extraPaths;
+    }
+
+    /**
+     * Add a path to store files to this operation.
+     *
+     * @param path the path to add.
+     */
+    public void addPath(String path) {
+        extraPaths.add(path);
+    }
+
+    public String pathsToString() {
+        StringBuilder allPaths = new StringBuilder("<html>");
+        allPaths.append(mainPath).append("<br>");
+        for (String extraPath : extraPaths) {
+            allPaths.append(extraPath).append("<br>");
+        }
+        allPaths.append("</html>");
+        return allPaths.toString();
+    }
+
+    /**
      * Get the content to be saved in the file representing this operation.
      */
     public String[] getFileContent() {
-        return new String[]{
-                "# Operasjon " + name,
-                "# Antall teiger: " + numberOfAreas,
-                "# Starttid: " + StringTools.formatDate(startTime),
-                "# Du kan ikke endre på dataen her. Det må gjøres i programmet.",
-                "name=" + name.trim().replace(" ", "_"),
-                "numberOfAreas=" + numberOfAreas,
-                "starttime=" + startTime.getTime(),
-        };
+        List<String> lines = new ArrayList<>();
+        lines.add("# Operasjon " + name);
+        lines.add("# Starttid: " + StringTools.formatDate(startTime));
+        lines.add("# Du kan ikke endre på dataen her. Det må gjøres i programmet.");
+        lines.add("name=" + name.trim().replace(" ", "_"));
+        lines.add("starttime=" + startTime.getTime());
+        lines.add("main-path=" + mainPath);
+        for (String path : extraPaths) {
+            lines.add("extra-path=" + path);
+        }
+        return lines.toArray(new String[lines.size()]);
     }
 }

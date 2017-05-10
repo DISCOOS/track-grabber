@@ -32,7 +32,7 @@ public class OperationPanelTest {
             protected void executeInEDT() throws Throwable {
                 operationManager = new OperationManager();
                 window = new Window(operationManager);
-                window.getOPERATION_MANAGER().setupLocalFolders(temporaryFolder.newFolder("TEST_C_FOLDER_" + System.currentTimeMillis()));
+                operationManager.setupLocalFolders(temporaryFolder.newFolder("TEST_C_FOLDER_" + System.currentTimeMillis()));
                 windowFixture = new FrameFixture(window);
             }
         });

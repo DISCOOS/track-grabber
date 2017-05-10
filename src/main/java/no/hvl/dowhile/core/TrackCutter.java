@@ -89,6 +89,7 @@ public class TrackCutter {
 
     /**
      * Get info about the current track.
+     *
      * @return info about the current track.
      */
     public TrackInfo getTrackInfo() {
@@ -97,6 +98,7 @@ public class TrackCutter {
 
     /**
      * Set info about the current track.
+     *
      * @param trackInfo info about the current track.
      */
     public void setTrackInfo(TrackInfo trackInfo) {

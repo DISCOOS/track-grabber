@@ -19,19 +19,33 @@ import java.util.List;
  * The class has different panels for displaying information depending on certain events in the application.
  */
 public class Window extends JFrame {
-    final int HEADER_FONT_SIZE = 24;
-    final int TEXT_FONT_SIZE = 16;
+    final int HEADER_FONT_SIZE = 32;
+    final int TEXT_FONT_SIZE = 24;
+    final int BUTTON_FONT_SIZE = 20;
+    final Font TEXT_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE);
+    final Font TEXT_BOLD_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, TEXT_FONT_SIZE);
+    final Font TEXT_ITALIC_FONT = new Font(Messages.FONT_NAME.get(), Font.ITALIC, TEXT_FONT_SIZE);
+    final Font HEADER_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, HEADER_FONT_SIZE);
+    final Font BUTTON_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, BUTTON_FONT_SIZE);
     private final OperationManager OPERATION_MANAGER;
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
+    private WaypointPanel waypointPanel;
 
+    /**
+     * Constructor setting up the Window, logo, listener for closing and creating the different panels to display.
+     *
+     * @param OPERATION_MANAGER the current instance of the OperationManager.
+     * @see OperationManager
+     */
     public Window(final OperationManager OPERATION_MANAGER) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
 
         setTitle(Messages.PROJECT_NAME.get());
         setSize(800, 400);
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -43,10 +57,12 @@ public class Window extends JFrame {
         headerPanel = new HeaderPanel(this);
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
+        waypointPanel = new WaypointPanel(OPERATION_MANAGER, this);
 
         cardPanel = new JPanel(new CardLayout());
         cardPanel.add(operationPanel, "Operation");
         cardPanel.add(trackPanel, "Track");
+        cardPanel.add(waypointPanel, "Waypoint");
         add(cardPanel, BorderLayout.NORTH);
 
         getContentPane().add(headerPanel, BorderLayout.NORTH);
@@ -67,6 +83,11 @@ public class Window extends JFrame {
         });
     }
 
+    /**
+     * Read in the logo to use as the window icon.
+     *
+     * @return the logo as an Image.
+     */
     private Image getLogo() {
         BufferedImage bufferedImage;
         try {
@@ -75,10 +96,6 @@ public class Window extends JFrame {
             return null;
         }
         return bufferedImage;
-    }
-
-    public OperationManager getOPERATION_MANAGER() {
-        return OPERATION_MANAGER;
     }
 
     /**
@@ -95,14 +112,25 @@ public class Window extends JFrame {
         setVisible(false);
     }
 
+    /**
+     * Open the panel allowing the administrator to change operation or edit the current operation.
+     */
     public void openOperationPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Operation");
     }
 
+    /**
+     * Open the panel allowing to user to give info about a track.
+     */
     public void openTrackPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Track");
+    }
+
+    public void openWaypointPanel() {
+        CardLayout cl = (CardLayout) (cardPanel.getLayout());
+        cl.show(cardPanel, "Waypoint");
     }
 
     /**
@@ -132,6 +160,7 @@ public class Window extends JFrame {
      */
     public void updateCurrentFile(String filename, int filesLeft) {
         trackPanel.updateCurrentFile(filename, filesLeft);
+        waypointPanel.updateCurrentFile(filename, filesLeft);
     }
 
     /**
@@ -146,14 +175,58 @@ public class Window extends JFrame {
     /**
      * Makes a JLabel with given text and font size
      *
-     * @param text     text that will be inserted into the JLabel
-     * @param fontSize font size that will be used on the Jlabel
+     * @param text  text that will be inserted into the JLabel
+     * @param style Font style (plain, bold...)
      * @return a JLabel with given text and font size
      */
-    public JLabel makeLabel(String text, int fontSize) {
+    public JLabel makeLabel(String text, int style) {
         JLabel label = new JLabel(text);
-        label.setFont(new Font(Messages.FONT_NAME.get(), Font.PLAIN, fontSize));
+        if (style == Font.BOLD) {
+            label.setFont(TEXT_BOLD_FONT);
+        } else if (style == Font.ITALIC) {
+            label.setFont(TEXT_ITALIC_FONT);
+        } else {
+            label.setFont(TEXT_FONT);
+        }
         return label;
+    }
+
+    public JLabel makeHeaderLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(HEADER_FONT);
+        return label;
+    }
+
+    /**
+     * Makes a JButton with given text and a specific size and color
+     *
+     * @param text   within the button
+     * @param width
+     * @param height @return a JButton with given text and a set dimension and color
+     */
+    public JButton makeButton(String text, int width, int height) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(width, height));
+        button.setBackground(new Color(242, 94, 94));
+        button.setFont(BUTTON_FONT);
+
+        return button;
+    }
+
+    public JTextField makeTextField(int width, int height) {
+        JTextField textField = new JTextField();
+        textField.setPreferredSize(new Dimension(width, height));
+        textField.setFont(TEXT_FONT);
+
+        return textField;
+    }
+
+    public JSpinner makeSpinner(SpinnerModel spinnerModel) {
+        JSpinner spinner = new JSpinner(spinnerModel);
+        spinner.setPreferredSize(new Dimension(150, 50));
+        spinner.setFont(TEXT_FONT);
+
+        return spinner;
     }
 
     /**

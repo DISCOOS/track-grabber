@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
@@ -26,13 +27,13 @@ public class OperationPanel extends JPanel {
     private final Window WINDOW;
     private JLabel operationNameLabel;
     private JTextField operationNameInput;
-    private JLabel areasLabel;
-    private JSpinner areasInput;
     private JLabel operationDateLabel;
     private DatePicker datePicker;
     private TimePicker timePicker;
     private JLabel awaitingGPSLabel;
     private JLabel errorMessageLabel;
+    private JLabel allSavedPathsHeaderLabel;
+    private JLabel allSavedPathsLabel;
 
     private JLabel existingOperationLabel;
     private JComboBox<String> existingOperationInput;
@@ -50,9 +51,8 @@ public class OperationPanel extends JPanel {
     private JLabel editDateLabel;
     private DatePicker editDatePicker;
     private TimePicker editTimePicker;
-    private JLabel editAreasLabel;
-    private JSpinner editAreasInput;
     private JButton saveOperationButton;
+    private JButton definePathButton;
 
     private GridBagConstraints constraints;
 
@@ -72,9 +72,16 @@ public class OperationPanel extends JPanel {
         activeOperationGUI();
         editActiveOperationGUI();
 
+        datePicker.setLocale(new Locale("no"));
+        timePicker.setLocale(new Locale("no"));
+        editDatePicker.setLocale(new Locale("no"));
+        editTimePicker.setLocale(new Locale("no"));
+
         // Setting stuff invisible
         backButton.setVisible(false);
         errorMessageLabel.setVisible(false);
+        allSavedPathsHeaderLabel.setVisible(false);
+        allSavedPathsLabel.setVisible(false);
         setVisibilityNewOperation(false);
         setVisibilityExistingOperation(false);
         setVisibilityEditInfo(false);
@@ -90,6 +97,7 @@ public class OperationPanel extends JPanel {
         switchOperationListener();
         backButtonListener();
         importFileButtonListener();
+        definePathButtonListener();
 
         setBackground(new Color(255, 245, 252));
     }
@@ -100,7 +108,7 @@ public class OperationPanel extends JPanel {
 
     private void universalButtonsGUI() {
         // Back button
-        backButton = new JButton(Messages.GO_BACK.get());
+        backButton = WINDOW.makeButton(Messages.GO_BACK.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 0, 7, GridBagConstraints.WEST, 1);
         add(backButton, constraints);
         backButton.setName("backButton");
@@ -111,19 +119,16 @@ public class OperationPanel extends JPanel {
      */
     private void chooseOperationGUI() {
         // New operation button
-        newOperationButton = new JButton(Messages.NEW_OPERATION_BUTTON.get());
+        newOperationButton = WINDOW.makeButton(Messages.NEW_OPERATION_BUTTON.get(), 300, 100);
         newOperationButton.setName("newOperationButton");
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.CENTER, 2);
-        newOperationButton.setPreferredSize(new Dimension(200, 50));
-        newOperationButton.setBackground(new Color(242, 94, 94));
+
         add(newOperationButton, constraints);
 
         // Existing operation button
-        existingOperationButton = new JButton(Messages.EXISTING_OPERATION_BUTTON.get());
+        existingOperationButton = WINDOW.makeButton(Messages.EXISTING_OPERATION_BUTTON.get(), 300, 100);
         existingOperationButton.setName("existingOperationButton");
         WINDOW.modifyConstraints(constraints, 2, 0, GridBagConstraints.CENTER, 2);
-        existingOperationButton.setPreferredSize(new Dimension(200, 50));
-        existingOperationButton.setBackground(new Color(242, 94, 94));
         add(existingOperationButton, constraints);
     }
 
@@ -132,7 +137,7 @@ public class OperationPanel extends JPanel {
      */
     private void existingOperationGUI() {
         // Already existing operation label
-        existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), WINDOW.TEXT_FONT_SIZE);
+        existingOperationLabel = WINDOW.makeLabel(Messages.EXISTING_OPERATION.get(), Font.PLAIN);
         existingOperationLabel.setName("existingOperationLabel");
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 3);
         add(existingOperationLabel, constraints);
@@ -140,12 +145,14 @@ public class OperationPanel extends JPanel {
         // Already existing operation input
         existingOperationInput = new JComboBox<>();
         existingOperationInput.setName("existingOperationInput");
+        existingOperationInput.setPreferredSize(new Dimension(100, 40));
+        existingOperationInput.setFont(WINDOW.TEXT_FONT);
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 3);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(existingOperationInput, constraints);
 
         // Register existing operation
-        registerExistingButton = new JButton(Messages.REGISTER_EXISTING_BUTTON.get());
+        registerExistingButton = WINDOW.makeButton(Messages.REGISTER_EXISTING_BUTTON.get(), 150, 50);
         registerExistingButton.setName("registerExistingButton");
         WINDOW.modifyConstraints(constraints, 3, 1, GridBagConstraints.CENTER, 1);
         add(registerExistingButton, constraints);
@@ -156,55 +163,45 @@ public class OperationPanel extends JPanel {
      */
     private void createNewOperationGUI() {
         // New operation label
-        operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), WINDOW.TEXT_FONT_SIZE);
+        operationNameLabel = WINDOW.makeLabel(Messages.OPERATION_NAME.get(), Font.PLAIN);
         operationNameLabel.setName("operationNameLabel");
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 2);
         add(operationNameLabel, constraints);
 
         // New operation name input
-        operationNameInput = new JTextField();
+        operationNameInput = WINDOW.makeTextField(100, 30);
         operationNameInput.setName("operationNameInput");
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.CENTER, 4);
         constraints.fill = GridBagConstraints.BOTH;
         add(operationNameInput, constraints);
 
         // Error message label
-        errorMessageLabel = WINDOW.makeLabel(" ", WINDOW.TEXT_FONT_SIZE);
+        errorMessageLabel = WINDOW.makeLabel(" ", Font.BOLD);
         errorMessageLabel.setName("errorMessageLabel");
         errorMessageLabel.setForeground(Color.RED);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 4);
         add(errorMessageLabel, constraints);
 
-        // Number of areas label and input
-        areasLabel = WINDOW.makeLabel(Messages.NUMBER_OF_AREAS.get(), WINDOW.TEXT_FONT_SIZE);
-        areasLabel.setName("areasLabel");
-        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 2);
-        add(areasLabel, constraints);
-
-        // Spinner for crew count input
-        SpinnerModel numberOfAreasSpinner = new SpinnerNumberModel(0, 0, 999, 1);
-        areasInput = new JSpinner(numberOfAreasSpinner);
-        areasInput.setName("areasInput");
-        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        add(areasInput, constraints);
-
         // Date for operation and input
-        operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), WINDOW.TEXT_FONT_SIZE);
+        operationDateLabel = WINDOW.makeLabel(Messages.OPERATION_START_DATE.get(), Font.PLAIN);
         operationDateLabel.setName("operationDateLabel");
         WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 2);
         add(operationDateLabel, constraints);
 
         datePicker = new DatePicker(createDateSettings());
+        datePicker.setPreferredSize(new Dimension(50, 30));
+        datePicker.setFont(WINDOW.TEXT_FONT);
         WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.CENTER, 2);
         add(datePicker, constraints);
 
         timePicker = new TimePicker(createTimeSettings());
+        timePicker.setPreferredSize(new Dimension(50, 30));
+        timePicker.setFont(WINDOW.TEXT_FONT);
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.WEST, 2);
         add(timePicker, constraints);
 
         // Register new operation
-        registerNewButton = new JButton(Messages.REGISTER_NEW_BUTTON.get());
+        registerNewButton = WINDOW.makeButton(Messages.REGISTER_NEW_BUTTON.get(), 200, 50);
         registerNewButton.setName("registerNewButton");
         WINDOW.modifyConstraints(constraints, 2, 7, GridBagConstraints.CENTER, 2);
         add(registerNewButton, constraints);
@@ -215,29 +212,45 @@ public class OperationPanel extends JPanel {
      */
     private void activeOperationGUI() {
         // Awaiting GPS label
-        awaitingGPSLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get(), WINDOW.TEXT_FONT_SIZE);
+        awaitingGPSLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get(), Font.PLAIN);
         awaitingGPSLabel.setName("awaitingGPSLabel");
         WINDOW.modifyConstraints(constraints, 1, 0, GridBagConstraints.CENTER, 2);
         add(awaitingGPSLabel, constraints);
         awaitingGPSLabel.setVisible(false);
 
         // Import local GPX-file button
-        importFileButton = new JButton(Messages.IMPORT_LOCAL_FILE.get());
+        importFileButton = WINDOW.makeButton(Messages.IMPORT_LOCAL_FILE.get(), 150, 50);
         importFileButton.setName("importFileButton");
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.CENTER, 4);
         add(importFileButton, constraints);
 
         // Edit info toggle button
-        toggleEditInfoButton = new JButton(Messages.EDIT_INFO_SHOW_BUTTON.get());
+        toggleEditInfoButton = WINDOW.makeButton(Messages.EDIT_INFO_SHOW_BUTTON.get(), 150, 50);
         toggleEditInfoButton.setName("toggleEditInfoButton");
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
         add(toggleEditInfoButton, constraints);
 
         // Switch operation
-        switchOperationButton = new JButton(Messages.CHOOSE_OTHER_OPERATION.get());
+        switchOperationButton = WINDOW.makeButton(Messages.CHOOSE_OTHER_OPERATION.get(), 150, 50);
         switchOperationButton.setName("switchOperationButton");
         WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.CENTER, 2);
         add(switchOperationButton, constraints);
+
+        // Button for choosing path(s) to save operation to
+        definePathButton = WINDOW.makeButton(Messages.DEFINE_OPERATION_PATH.get(), 150, 50);
+        definePathButton.setName("definePathButton");
+        WINDOW.modifyConstraints(constraints, 3, 4, GridBagConstraints.CENTER, 1);
+        add(definePathButton, constraints);
+
+        // Saved paths header
+        allSavedPathsHeaderLabel = WINDOW.makeLabel(Messages.ALL_SAVED_PATHS.get(), Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
+        add(allSavedPathsHeaderLabel, constraints);
+
+        // List of saved paths
+        allSavedPathsLabel = WINDOW.makeLabel("", Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.CENTER, 4);
+        add(allSavedPathsLabel, constraints);
     }
 
     /**
@@ -245,7 +258,7 @@ public class OperationPanel extends JPanel {
      */
     private void editActiveOperationGUI() {
         // Edit operation date label
-        editDateLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION_TIME.get(), WINDOW.TEXT_FONT_SIZE);
+        editDateLabel = WINDOW.makeLabel(Messages.EDIT_OPERATION_TIME.get(), Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 4);
         add(editDateLabel, constraints);
 
@@ -259,23 +272,8 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 4);
         add(editTimePicker, constraints);
 
-
-        // Number of areas label and input
-        editAreasLabel = WINDOW.makeLabel(Messages.NUMBER_OF_AREAS.get(), WINDOW.TEXT_FONT_SIZE);
-        editAreasLabel.setName("editAreasLabel");
-        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 2);
-        add(editAreasLabel, constraints);
-
-        // Spinner for crew count input
-        SpinnerModel editAreasSpinner = new SpinnerNumberModel(0, 0, 999, 1);
-        editAreasInput = new JSpinner(editAreasSpinner);
-        editAreasInput.setName("editAreasInput");
-        WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.CENTER, 2);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        add(editAreasInput, constraints);
-
         // Save edited operation button
-        saveOperationButton = new JButton(Messages.EDIT_OPERATION_BUTTON.get());
+        saveOperationButton = WINDOW.makeButton(Messages.EDIT_OPERATION_BUTTON.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 0, 7, GridBagConstraints.CENTER, 4);
         add(saveOperationButton, constraints);
     }
@@ -311,7 +309,6 @@ public class OperationPanel extends JPanel {
     public void updateOperationInfo(Operation operation) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(operation.getStartTime());
-        editAreasInput.setValue(operation.getNumberOfAreas());
         editDatePicker.setDate(LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH)));
         editTimePicker.setTime(LocalTime.of(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
     }
@@ -322,6 +319,7 @@ public class OperationPanel extends JPanel {
      * @param operations the operations to add.
      */
     public void showExistingOperations(List<Operation> operations) {
+        existingOperationInput.removeAll(); // Avoid duplicates.
         for (Operation operation : operations) {
             existingOperationInput.addItem(operation.getName());
         }
@@ -336,8 +334,6 @@ public class OperationPanel extends JPanel {
         operationNameInput.setVisible(visibility);
         operationDateLabel.setVisible(visibility);
         operationNameLabel.setVisible(visibility);
-        areasLabel.setVisible(visibility);
-        areasInput.setVisible(visibility);
         datePicker.setVisible(visibility);
         timePicker.setVisible(visibility);
         registerNewButton.setVisible(visibility);
@@ -377,8 +373,6 @@ public class OperationPanel extends JPanel {
         editDateLabel.setVisible(visibility);
         editDatePicker.setVisible(visibility);
         editTimePicker.setVisible(visibility);
-        editAreasLabel.setVisible(visibility);
-        editAreasInput.setVisible(visibility);
         saveOperationButton.setVisible(visibility);
         if (visibility) {
             toggleEditInfoButton.setText(Messages.EDIT_INFO_HIDE_BUTTON.get());
@@ -389,6 +383,9 @@ public class OperationPanel extends JPanel {
             switchOperationButton.setVisible(true);
             importFileButton.setVisible(true);
         }
+        //definePathButton.setVisible(!visibility);
+        //allSavedPathsHeaderLabel.setVisible(!visibility);
+        //allSavedPathsLabel.setVisible(!visibility);
     }
 
     /**
@@ -400,6 +397,9 @@ public class OperationPanel extends JPanel {
         importFileButton.setVisible(visibility);
         toggleEditInfoButton.setVisible(visibility);
         switchOperationButton.setVisible(visibility);
+        definePathButton.setVisible(visibility);
+        allSavedPathsHeaderLabel.setVisible(visibility);
+        allSavedPathsLabel.setVisible(visibility);
     }
 
     /**
@@ -442,7 +442,6 @@ public class OperationPanel extends JPanel {
      */
     private void registerNewOperationButtonListener() {
         registerNewButton.addActionListener(actionEvent -> {
-            int numberOfAreas = Integer.parseInt(areasInput.getModel().getValue().toString());
             int day = datePicker.getDate().getDayOfMonth();
             int month = datePicker.getDate().getMonthValue();
             int year = datePicker.getDate().getYear();
@@ -450,21 +449,26 @@ public class OperationPanel extends JPanel {
             int minute = timePicker.getTime().getMinute();
             String operationName = operationNameInput.getText();
 
-            if (StringTools.isValidOperationName(operationName)) {
-                if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
-                    errorMessageLabel.setText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
-                } else {
-                    Operation operation = new Operation(operationName, numberOfAreas, day, month, year, hour, minute);
-                    OPERATION_MANAGER.setupOperation(operation);
-                    OPERATION_MANAGER.reloadExistingOperations();
-                    setVisibilityNewOperation(false);
-                    setVisibilityToggleEditInfo(true);
-                    errorMessageLabel.setVisible(false);
-                    awaitingGPSLabel.setVisible(true);
-                }
-            } else {
-                errorMessageLabel.setText(Messages.INVALID_OPERATION_NAME.get());
+            if (OPERATION_MANAGER.operationNameAlreadyExists(operationName)) {
+                errorMessageLabel.setText(Messages.OPERATION_NAME_ALREADY_EXISTS.get());
+                return;
             }
+            if (!StringTools.isValidOperationName(operationName)) {
+                errorMessageLabel.setText(Messages.INVALID_OPERATION_NAME.get());
+                return;
+            }
+            if (!StringTools.operationNameLengthIsValid(operationName)) {
+                errorMessageLabel.setText(Messages.OPERATION_NAME_IS_TOO_LONG_OR_SHORT.get());
+                return;
+            }
+            Operation operation = new Operation(operationName, day, month, year, hour, minute);
+            OPERATION_MANAGER.setupOperation(operation);
+            OPERATION_MANAGER.reloadExistingOperations();
+            setVisibilityNewOperation(false);
+            setVisibilityToggleEditInfo(true);
+            errorMessageLabel.setVisible(false);
+            awaitingGPSLabel.setVisible(true);
+            allSavedPathsLabel.setText(OPERATION_MANAGER.getOperation().pathsToString());
         });
     }
 
@@ -482,6 +486,21 @@ public class OperationPanel extends JPanel {
             }
             setVisibilityExistingOperation(false);
             setVisibilityToggleEditInfo(true);
+            allSavedPathsLabel.setText(OPERATION_MANAGER.getOperation().pathsToString());
+        });
+    }
+
+    private void definePathButtonListener() {
+        definePathButton.addActionListener(actionEvent -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int option = fileChooser.showSaveDialog(JOptionPane.getRootFrame());
+            if (option == JFileChooser.APPROVE_OPTION) {
+                OPERATION_MANAGER.getOperation().addPath(fileChooser.getSelectedFile().getAbsolutePath());
+                OPERATION_MANAGER.updateOperationFile();
+                OPERATION_MANAGER.updateOperationFolders();
+                allSavedPathsLabel.setText(OPERATION_MANAGER.getOperation().pathsToString());
+            }
         });
     }
 
@@ -490,13 +509,12 @@ public class OperationPanel extends JPanel {
      */
     private void saveOperationButtonListener() {
         saveOperationButton.addActionListener(actionEvent -> {
-            int numberOfAreas = Integer.parseInt(editAreasInput.getModel().getValue().toString());
             int year = editDatePicker.getDate().getYear();
             int month = editDatePicker.getDate().getMonthValue();
             int day = editDatePicker.getDate().getDayOfMonth();
             int hour = editTimePicker.getTime().getHour();
             int minute = editTimePicker.getTime().getMinute();
-            OPERATION_MANAGER.updateCurrentOperation(numberOfAreas, year, month, day, hour, minute);
+            OPERATION_MANAGER.updateCurrentOperation(year, month, day, hour, minute);
             setVisibilityEditInfo(false);
         });
     }

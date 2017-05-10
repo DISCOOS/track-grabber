@@ -14,7 +14,7 @@ public enum Messages {
     NO_RELEVANT_FILES_DESCRIPTION("Oppdaget GPS, men fant ingen relevante filer! \n Mulige årsaker: \n - GPSen inneholder ingen filer \n - Filene er for gamle (de ble laget før operasjonsstart) \n - Filene er allerede overført"),
 
     // Font
-    FONT_NAME("Times New Roman"),
+    FONT_NAME("Calibri"),
 
     // Window
     PROJECT_NAME("Track Grabber"),
@@ -22,6 +22,10 @@ public enum Messages {
     SPACER("                                                  "),
 
     // Track panel
+    BACK("Tilbake"),
+    NEXT("Neste"),
+    TRACK_START_INFO("Her er noe info om hva du skal gjøre for prosessering av GPS-data"),
+    CREW_TYPE_MESSAGE("Velg type mannskap"),
     CREW_NUMBER("Gruppenummer: "),
     CREW_COUNT("Antall mann: "),
     AREA_SEARCHED("Teiger: "),
@@ -33,11 +37,21 @@ public enum Messages {
     TRACK_NUMBER("Spornummer: "),
     IMPORTED_FROM_GPS("Oppgi data for fil: "),
     IMPORTED_FILES_LEFT_TO_PROCESS("Det er nå %1 filer i kø for prosessering."),
+    TRACK_COMMENT("Kommentar til sporfilen: "),
+    CHOOSE_AREA("Legg til"),
+    SUMMARY_CREW_TYPE("Mannskap: "),
+    SUMMARY_CREW_NUMBER("Gruppenummer: "),
+    SUMMARY_TRACK_NUMBER("Spornummer: "),
+    SUMMARY_CREW_COUNT("Antall mann: "),
+    SUMMARY_AREA_SEARCHED("Teiger: "),
+    SUMMARY_TRACK_COMMENT("Sporkommentar: "),
+
 
     // Operation panel
     OPERATION_NAME("Navn på operasjon: "),
     OPERATION_START_DATE("Startdato: "),
     NUMBER_OF_AREAS("Totalt antall teiger:"),
+    DEFINE_OPERATION_PATH("Legg til ekstra lagringssted"),
     EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
     NEW_OPERATION_BUTTON("Ny operasjon"),
     IMPORT_LOCAL_FILE("Importer GPS-fil fra maskin"),
@@ -48,22 +62,16 @@ public enum Messages {
     EDIT_INFO_HIDE_BUTTON("Skjul redigeringsinfo"),
     EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
     REGISTER_NEW_BUTTON("Opprett operasjon"),
-    REGISTER_EXISTING_BUTTON("Last inn operasjon"),
+    REGISTER_EXISTING_BUTTON("Last inn"),
     AWAITING_GPS("Venter på at en GPS-enhet kobles til..."),
     INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
     OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
+    OPERATION_NAME_IS_TOO_LONG_OR_SHORT("Navnet må være mellom 2 og 50 tegn."),
+    ALL_SAVED_PATHS("Mapper filene lagres til:"),
     GO_BACK("Tilbake"),
-    CHOOSE_AREA("Velg"),
-    CHOOSE_AREA_DIALOG("Velg teig"),
 
-    // Crew type
-    CREW_ATV("ATV"),
-    CREW_BOAT("Båt"),
-    CREW_CAR("Bil"),
-    CREW_DOG("Hund"),
-    CREW_HELICOPTER("Helikopter"),
-    CREW_MEN("Lag")
-    ;
+    // Waypoint panel
+    NEW_NAME("Nytt navn");
 
     private String message;
 

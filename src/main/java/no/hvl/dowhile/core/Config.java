@@ -2,7 +2,12 @@ package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.utility.StringTools;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -10,7 +15,13 @@ import java.util.List;
  * Reading and writing to the configuration file.
  */
 public class Config {
-    private String pattern;
+    private String filename;
+    private List<TeamType> teamTypes;
+
+    public Config() {
+        this.filename = "%LAGTYPE%%LAGNUMMER%_TEIG%TEIGNUMMER%_SPOR%SPORNUMMER%_%DATO%.gpx";
+        this.teamTypes = new ArrayList<>(Arrays.asList(new TeamType("Mannskap", "Lime"), new TeamType("Hund", "Green"), new TeamType("Bil", "Blue"), new TeamType("ATV", "Yellow"), new TeamType("Båt", "Orange"), new TeamType("Helikopter", "DarkRed")));
+    }
 
     /**
      * Get the configuration template.
@@ -19,7 +30,7 @@ public class Config {
      */
     public String[] getConfigTemplate() {
         return new String[]{
-                "# TrackGrabber Config - Egendefinert navngivning av filer.",
+                "# TrackGrabber Config - Konfigurasjon av filnavn og lagtype.",
                 "# Du kan inkludere følgende variabler i navnet. De vil erstattes med faktisk data under kjøring.",
                 "# %LAGTYPE% - Type lag som lagde sporet (helikopter, bil, atv, hund osv).",
                 "# %LAGNUMMER% - Nummeret på laget som hadde GPS.",
@@ -29,8 +40,17 @@ public class Config {
                 "#",
                 "# Endre filnavnet under slik du vil ha det. Deler du ikke vil ha med kan enkelt fjernes/utelates.",
                 "# Mellomrom er ikke tillatt. Bruk understrek.",
-                "",
-                "filename=%LAGTYPE%%LAGNUMMER%_TEIG%TEIGNUMMER%_SPOR%SPORNUMMER%_%DATO%.gpx"
+                "#",
+                "filename=%LAGTYPE%%LAGNUMMER%_TEIG%TEIGNUMMER%_SPOR%SPORNUMMER%_%DATO%.gpx",
+                "#",
+                "# Oppgi lagtype og fargen sporet skal få:",
+                "# Følgende farger er støttet av Garmin:",
+                "# Black, DarkRed, DarkGreen, DarkYellow, DarkBlue, DarkMagenta, DarkCyan, LightGray, DarkGray",
+                "# Red, Green, Yellow, Blue, Magenta, Cyan, White",
+                "# Format: team=[Navn på lag],color=[Farge]",
+                "team=Mannskap,color=Green",
+                "team=Hund,color=Magenta",
+                "team=Helikopter,color=DarkRed",
         };
     }
 
@@ -39,17 +59,91 @@ public class Config {
      *
      * @return the pattern for the filenames.
      */
-    public String getPattern() {
-        return pattern;
+    public String getFilename() {
+        return filename;
     }
 
     /**
      * Set the pattern to use for the filenames.
      *
-     * @param pattern the pattern for the filenames.
+     * @param filename the pattern for the filenames.
      */
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    /**
+     * Get a list of the current team types for this operation and the corresponding color.
+     *
+     * @return list of the current team types.
+     */
+    public List<TeamType> getTeamTypes() {
+        return teamTypes;
+    }
+
+    /**
+     * Gives you the color used to represent the given team in track files.
+     *
+     * @param team the type of team to the get color for.
+     * @return the color for the team.
+     */
+    public String getColorForTeam(String team) {
+        for (TeamType teamType : teamTypes) {
+            if (teamType.getName().equals(team)) {
+                return teamType.getColor();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get a list with the names of the team types.
+     *
+     * @return list with names of the team types.
+     */
+    public List<String> getTeamNames() {
+        List<String> teamNames = new ArrayList<>();
+        for (TeamType teamType : teamTypes) {
+            teamNames.add(teamType.getName());
+        }
+        return teamNames;
+    }
+
+    public void parseConfigFile(File file) {
+        if (file == null || !file.getName().equals("config.txt")) {
+            return;
+        }
+        teamTypes.clear();// Removing values to avoid duplicates.
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = reader.readLine();
+            while (line != null) {
+                if (!line.startsWith("#") && !line.equals("")) {
+                    if (line.startsWith("filename")) {
+                        if (line.contains("=")) {
+                            String[] parts = line.split("=");
+                            if (parts.length == 2) {
+                                filename = parts[1];
+                                System.err.println("[Config] Parsed filename " + filename);
+                            }
+                        }
+                    } else if (line.startsWith("team")) {
+                        if (line.contains(",")) {
+                            String[] parts = line.split(",");
+                            if (parts.length == 2 && parts[0].contains("=") && parts[1].contains("=")) {
+                                String teamType = parts[0].split("=")[1];
+                                String teamColor = parts[1].split("=")[1];
+                                teamTypes.add(new TeamType(teamType, teamColor));
+                                System.err.println("[Config] Parsed team type " + teamType + " with color " + teamColor);
+                            }
+                        }
+                    }
+                }
+                line = reader.readLine();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -59,7 +153,7 @@ public class Config {
      * @return the filename.
      */
     public String generateFilename(TrackInfo trackInfo) {
-        String filename = getPattern();
+        String filename = getFilename();
         List<String> variables = findVariables(filename);
         for (String variable : variables) {
             switch (variable) {
@@ -79,6 +173,9 @@ public class Config {
                     filename = filename.replace(variable, StringTools.formatDateForFile(Calendar.getInstance().getTime()));
                     break;
             }
+        }
+        if (!trackInfo.getComment().isEmpty()) {
+            filename = filename.replace(".gpx", "") + "_COM" + ".gpx";
         }
         return filename;
     }

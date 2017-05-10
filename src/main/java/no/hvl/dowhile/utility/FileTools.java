@@ -1,11 +1,12 @@
 package no.hvl.dowhile.utility;
 
-import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -93,12 +94,28 @@ public class FileTools {
     }
 
     /**
+     * Sets up a folder if it doesn't already exist.
+     *
+     * @param parentFolder the folder where you want to create the new folder.
+     * @param name         the name of the new folder.
+     * @return the folder which was created.
+     */
+    public static File setupFolder(File parentFolder, String name) {
+        File folder = new File(parentFolder, name);
+        boolean folderCreated = folder.mkdir();
+        if (folderCreated) {
+            System.err.println(name + " folder didn't exist. Created!");
+        }
+        return folder;
+    }
+
+    /**
      * This method will insert some data to the XML file to ensure Basecamp is able to handle it.
      *
      * @param gpx  the gpx to edit.
      * @param file the file representing the gpx.
      */
-    public static void insertXmlData(GPX gpx, File file) {
+    public static void cleanXmlFile(GPX gpx, File file) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
@@ -107,6 +124,9 @@ public class FileTools {
             String version = gpx.getVersion();
             String dataToReplace = "creator=\"" + creator + "\" " + "version=\"" + version + "\"";
             String replacedLine = line.replace(dataToReplace, "xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:gpxx=\"http://www.garmin.com/xmlschemas/GpxExtensions/v3\" xmlns:gpxtrkx=\"http://www.garmin.com/xmlschemas/TrackStatsExtension/v1\" xmlns:wptx1=\"http://www.garmin.com/xmlschemas/WaypointExtension/v1\" xmlns:gpxtpx=\"http://www.garmin.com/xmlschemas/TrackPointExtension/v1\" creator=\"" + creator + "\" version=\"" + version + "\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackStatsExtension/v1 http://www8.garmin.com/xmlschemas/TrackStatsExtension.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd\"");
+            if (replacedLine.contains("<extensions/>")) {
+                replacedLine = replacedLine.replace("<extensions/>", ""); // Resolving weird parsing bug.
+            }
             FileWriter writer = new FileWriter(file);
             writer.write(replacedLine);
             writer.flush();
@@ -122,23 +142,23 @@ public class FileTools {
      * @param gpx  the gpx to edit.
      * @param file the file representing the gpx.
      */
-    public static void insertDisplayColor(GPX gpx, File file) {
+    public static void insertDisplayColor(GPX gpx, File file, String color) {
         Track track = TrackTools.getTrackFromGPXFile(gpx);
         if (track == null) {
-            return;
-        }
-        String displayColor = (String) track.getExtensionData(new DisplayColorExtensionParser().getId());
-        if (displayColor == null) {
             return;
         }
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
             reader.close();
-            String[] parts = line.split("</name>");
-            String replacedLine = parts[0] + "</name><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + displayColor + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
-            if (replacedLine.contains("<extensions/>")) {
-                replacedLine = replacedLine.replace("<extensions/>", ""); // Resolving weird parsing bug.
+            String[] parts;
+            String replacedLine;
+            if (line.contains("</desc>")) {
+                parts = line.split("</desc>");
+                replacedLine = parts[0] + "</desc><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + color + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
+            } else {
+                parts = line.split("</name>");
+                replacedLine = parts[0] + "</name><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + color + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
             }
             FileWriter writer = new FileWriter(file);
             writer.write(replacedLine);
@@ -173,5 +193,17 @@ public class FileTools {
             System.err.println("Failed while reading from file.");
         }
         return found;
+    }
+
+    /**
+     * Gets a list of all areas from the string.
+     *
+     * @param string The string to search with..
+     * @return All the areas that the string contains.
+     */
+    public static List<String> getAreasFromString(String string) {
+        String areaSubstring = string.substring(string.indexOf("[") + 1, string.indexOf("]"));
+        areaSubstring = areaSubstring.replaceAll("[^0-9]+", " ");
+        return Arrays.asList(areaSubstring.trim().split(" "));
     }
 }

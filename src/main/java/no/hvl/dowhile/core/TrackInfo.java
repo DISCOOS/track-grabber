@@ -9,16 +9,18 @@ public class TrackInfo {
     private int crewNumber;
     private String areaSearched;
     private int trackNumber;
+    private String comment;
 
     /**
      * Default constructor instantiating variables.
      */
     public TrackInfo() {
-        crewType = "";
-        crewNumber = 0;
-        crewCount = 0;
-        areaSearched = "";
-        trackNumber = 0;
+        this.crewType = "";
+        this.crewNumber = 0;
+        this.crewCount = 0;
+        this.areaSearched = "";
+        this.trackNumber = 0;
+        this.comment = "";
     }
 
     /**
@@ -29,13 +31,15 @@ public class TrackInfo {
      * @param crewNumber   the number of this crew.
      * @param areaSearched the area they were searching in.
      * @param trackNumber  the number of track (if multiple tracks for a team etc).
+     * @param comment      Optional comment about a track.
      */
-    public TrackInfo(String crewType, int crewCount, int crewNumber, String areaSearched, int trackNumber) {
+    public TrackInfo(String crewType, int crewCount, int crewNumber, String areaSearched, int trackNumber, String comment) {
         this.crewType = crewType;
         this.crewCount = crewCount;
         this.crewNumber = crewNumber;
         this.areaSearched = areaSearched;
         this.trackNumber = trackNumber;
+        this.comment = comment;
     }
 
     /**
@@ -126,5 +130,14 @@ public class TrackInfo {
      */
     public void setTrackNumber(int trackNumber) {
         this.trackNumber = trackNumber;
+    }
+
+    /**
+     * Get the optional comment about this track.
+     *
+     * @return the comment about this track.
+     */
+    public String getComment() {
+        return comment;
     }
 }
