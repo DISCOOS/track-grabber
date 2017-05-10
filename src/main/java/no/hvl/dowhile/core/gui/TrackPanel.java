@@ -460,6 +460,7 @@ public class TrackPanel extends JPanel {
             // Resetting all input fields
             crewCountSpinner.setValue(0);
             crewNumberSpinner.setValue(0);
+            areaSearchedLabel.setText("");
             areaSearchedStrings.clear();
             areaSearchedSpinner.setValue(0);
             trackNumberSpinner.setValue(0);
