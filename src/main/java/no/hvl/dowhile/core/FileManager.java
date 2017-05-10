@@ -294,10 +294,9 @@ public class FileManager {
     /**
      * Organizes the file into the correct day folder.
      * @param processedGpx The file to store.
-     * @param trackInfo The info that helps find the correct folder.
      * @param filename The name of the file.
      */
-    public void organizeDayFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
+    public void organizeDayFolders(GPX processedGpx, String filename) {
         String dateString = TrackTools.getDayStringFromTrack(processedGpx);
         File dateFolder = setupFolder(mainOperationFolder.getDayOrgFolder(), dateString);
         saveGpxFile(processedGpx, filename, dateFolder);
