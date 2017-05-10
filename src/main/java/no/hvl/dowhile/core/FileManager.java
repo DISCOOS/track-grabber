@@ -255,7 +255,7 @@ public class FileManager {
     public void organizeFile(GPX processedGpx, TrackInfo trackInfo, String filename) {
         organizeCrewFolders(processedGpx, trackInfo, filename);
         organizeAreaFolders(processedGpx, trackInfo, filename);
-        organizeDayFolders(processedGpx, trackInfo, filename);
+        organizeDayFolders(processedGpx, filename);
     }
 
     /**
