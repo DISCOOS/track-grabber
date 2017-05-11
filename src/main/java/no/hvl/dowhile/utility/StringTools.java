@@ -44,7 +44,7 @@ public class StringTools {
      * @param date the date to format.
      * @return the date formatted as a String without year.
      */
-    public static String formatDateForFileProcessing(Date date) { return new SimpleDateFormat("dd-MM HH:mm z").format(date); }
+    public static String formatDateForFileProcessing(Date date) { return new SimpleDateFormat("dd-MM HH:mm").format(date); }
 
     /**
      * Checks if a given name is a valid operation name (contains only letters and/or numbers).
