@@ -19,6 +19,7 @@ public class TrackPanel extends JPanel {
     private GridBagConstraints constraints;
 
     // Info about the current file and progress, if multiple files.
+    private JLabel trackHeaderLabel;
     private JLabel currentImportLabel;
     private JLabel remainingFilesLabel;
     // Info for user at start of prosessing file
@@ -104,10 +105,15 @@ public class TrackPanel extends JPanel {
      */
 
     private void infoGUI() {
+        // Header label for track processing
+        trackHeaderLabel = WINDOW.makeHeaderLabel("Prosesser sporfil");
+        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
+        add(trackHeaderLabel, constraints);
+
         // Current file imported from GPS
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + "Ingen fil.";
         currentImportLabel = WINDOW.makeLabel(currentImportedFile, Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 3);
+        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 3);
         add(currentImportLabel, constraints);
 
         // Remaining files imported from GPS waiting to be processed
