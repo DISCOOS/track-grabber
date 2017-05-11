@@ -1,5 +1,7 @@
 package no.hvl.dowhile.utility;
 
+import org.alternativevision.gpx.beans.GPX;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -38,6 +40,13 @@ public class StringTools {
     }
 
     /**
+     * Formatting a Date into a String without year.
+     * @param date the date to format.
+     * @return the date formatted as a String without year.
+     */
+    public static String formatDateForFileProcessing(Date date) { return new SimpleDateFormat("dd-MM HH:mm z").format(date); }
+
+    /**
      * Checks if a given name is a valid operation name (contains only letters and/or numbers).
      *
      * @param operationName the name to check.
@@ -74,6 +83,15 @@ public class StringTools {
      */
     public static boolean FilenameContainsString(String string, String filename) {
         return filename.contains(string);
+    }
+
+    /**
+     * Gets the track's start time and end time as one single String.
+     * @param gpx The file to get the times from.
+     * @return The start time and end time.
+     */
+    public static String startTimeAndEndTimeToString(GPX gpx) {
+        return Messages.TRACK_START.get() + TrackTools.getStartTimeFromTrack(gpx) + ", " + Messages.TRACK_END.get() + TrackTools.getEndTimeFromTrack(gpx);
     }
 
 }

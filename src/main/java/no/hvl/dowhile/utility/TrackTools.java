@@ -4,6 +4,7 @@ import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
+import org.alternativevision.gpx.beans.TrackPoint;
 import org.alternativevision.gpx.beans.Waypoint;
 
 import java.io.File;
@@ -132,6 +133,18 @@ public class TrackTools {
     }
 
     /**
+     * Checks if the first waypoint in two GPX files are equal.
+     * @param gpx1 The first GPX file.
+     * @param gpx2 The second GPX file.
+     * @return True if the waypoints are equal, false if not.
+     */
+    public static boolean firstWaypointsMatch(GPX gpx1, GPX gpx2) {
+        Track track1 = getTrackFromGPXFile(gpx1);
+        Track track2 = getTrackFromGPXFile(gpx2);
+        return matchingTrackPoints(track1.getTrackPoints().get(0), track2.getTrackPoints().get(0));
+    }
+
+    /**
      * Checks if the file only contains an area and not a track (the waypoints don't have timetags).
      *
      * @return true if the file is an area, false if not
@@ -164,5 +177,28 @@ public class TrackTools {
         Track track = getTrackFromGPXFile(gpx);
         Date date = track.getTrackPoints().get(0).getTime();
         return StringTools.formatDateForOrganizing(date);
+    }
+
+    /**
+     * Gets a string with the start time of the track.
+     * @param gpx The GPX file to get the start time from.
+     * @return The track's start time.
+     */
+    public static String getStartTimeFromTrack(GPX gpx) {
+        Track track = getTrackFromGPXFile(gpx);
+        Date startDate = track.getTrackPoints().get(0).getTime();
+        return StringTools.formatDateForFileProcessing(startDate);
+    }
+
+    /**
+     * Gets a string with the end time of the track.
+     * @param gpx The GPX file to get the end time from.
+     * @return The track's end time.
+     */
+    public static String getEndTimeFromTrack(GPX gpx) {
+        Track track = getTrackFromGPXFile(gpx);
+        List<Waypoint> trackPoints = track.getTrackPoints();
+        Date endDate = trackPoints.get(trackPoints.size()-1).getTime();
+        return StringTools.formatDateForFileProcessing(endDate);
     }
 }
