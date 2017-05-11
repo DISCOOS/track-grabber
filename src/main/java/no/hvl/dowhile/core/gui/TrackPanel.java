@@ -106,7 +106,7 @@ public class TrackPanel extends JPanel {
 
     private void infoGUI() {
         // Header label for track processing
-        trackHeaderLabel = WINDOW.makeHeaderLabel("Prosesser sporfil");
+        trackHeaderLabel = WINDOW.makeHeaderLabel(Messages.TRACK_HEADER.get());
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
         add(trackHeaderLabel, constraints);
 
@@ -244,8 +244,8 @@ public class TrackPanel extends JPanel {
         trackCommentInput = new JTextArea();
         trackCommentInput.setFont(WINDOW.TEXT_FONT);
         trackCommentInput.setPreferredSize(new Dimension(300, 150));
-        trackCommentInput.setBackground(Color.LIGHT_GRAY);
-        PromptSupport.setPrompt("Valgfri...", trackCommentInput);
+        trackCommentInput.setBackground(new Color(220, 222, 226));
+        PromptSupport.setPrompt(Messages.TRACK_COMMENT_PLACEHOLDER.get(), trackCommentInput);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
         add(trackCommentInput, constraints);
         allInputComponents.add(trackCommentInput);
@@ -312,11 +312,12 @@ public class TrackPanel extends JPanel {
      * Updating info about the file currently being processed.
      *
      * @param filename  the new filename.
-     * @param filesLeft amount of files left after the current file.
+     * @param queueSize Total files in queue
+     * @param queuePosition current postion in queue
      */
-    public void updateCurrentFile(String filename, int filesLeft) {
+    public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
         String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + filename;
-        String remainingFiles = Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get("" + filesLeft);
+        String remainingFiles = "Processing file " + queuePosition + " of " + queueSize;
         currentImportLabel.setText(currentImportedFile);
         remainingFilesLabel.setText(remainingFiles);
     }

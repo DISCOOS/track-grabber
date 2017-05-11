@@ -26,7 +26,10 @@ public class OperationManager {
     private List<Operation> existingOperations;
     private TrackCutter currentTrackCutter;
     private List<GpxFile> queue;
+    private int queueSize;
+    private int queuePosition;
     private Operation operation;
+
 
     /**
      * Constructor creating the components needed from the beginning.
@@ -39,6 +42,8 @@ public class OperationManager {
         this.fileManager = new FileManager(this);
         this.existingOperations = new ArrayList<>();
         this.queue = new ArrayList<>();
+        this.queueSize = 0;
+        this.queuePosition = 0;
     }
 
     /**
@@ -208,6 +213,7 @@ public class OperationManager {
         }
         if (TrackTools.hasWaypoints(gpx)) {
             queue.add(new GpxFile(file, gpx));
+            queueSize++;
             return;
         }
         if (!TrackTools.fileHasTrack(gpx)) {
@@ -224,6 +230,7 @@ public class OperationManager {
         } else {
             if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
                 queue.add(new GpxFile(file, gpx));
+                queueSize++;
             } else {
                 System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
             }
@@ -235,8 +242,9 @@ public class OperationManager {
      * This method is used when a gps is connected and one or more gpx-files are located.
      */
     public void prepareNextFile() {
+        queuePosition++;
         GpxFile gpxFile = queue.remove(0);
-        window.updateCurrentFile(gpxFile.getFile().getName(), queue.size());
+        window.updateCurrentFile(gpxFile.getFile().getName(), queueSize, queuePosition);
         currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setGpxFile(gpxFile);
         if (TrackTools.hasWaypoints(gpxFile.getGpx())) {
@@ -290,6 +298,8 @@ public class OperationManager {
     public void checkForMoreFiles() {
         if (queue.isEmpty()) {
             window.openOperationPanel();
+            queueSize = 0;
+            queuePosition = 0;
         } else {
             prepareNextFile();
         }
