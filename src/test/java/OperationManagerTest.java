@@ -73,16 +73,16 @@ public class OperationManagerTest {
     @Test
     public void usefulFileIsAddedToProcessingQueue() {
         operationManager.setupOperation(operation1);
-        operationManager.processFile(testGPX);
-        operationManager.processFile(testGPX2);
+        operationManager.checkFile(testGPX);
+        operationManager.checkFile(testGPX2);
         assertTrue(operationManager.getQueue().size() == 2);
     }
 
     @Test
     public void notUsefulFileIsNotAddedToProcessingQueue() {
         operationManager.setupOperation(operation1);
-        operationManager.processFile(testGPX);
-        operationManager.processFile(testGPX);
+        operationManager.checkFile(testGPX);
+        operationManager.checkFile(testGPX);
         assertTrue(operationManager.getQueue().size() == 1);
     }
 
