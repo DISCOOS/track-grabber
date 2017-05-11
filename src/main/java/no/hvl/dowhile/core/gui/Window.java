@@ -162,11 +162,12 @@ public class Window extends JFrame {
      * Telling the track panel to update the info about which file is currently processed.
      *
      * @param filename  the name of the file.
-     * @param filesLeft the amount of files left after the one currently processing.
+     * @param queueSize Total files in queue
+     * @param queuePosition current postion in queue
      */
-    public void updateCurrentFile(String filename, int filesLeft) {
-        trackPanel.updateCurrentFile(filename, filesLeft);
-        waypointPanel.updateCurrentFile(filename, filesLeft);
+    public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
+        trackPanel.updateCurrentFile(filename, queueSize, queuePosition);
+        waypointPanel.updateCurrentFile(filename, queueSize, queuePosition);
     }
 
     /**
