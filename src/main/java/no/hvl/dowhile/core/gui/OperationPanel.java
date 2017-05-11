@@ -188,15 +188,11 @@ public class OperationPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 2);
         add(operationDateLabel, constraints);
 
-        datePicker = new DatePicker(createDateSettings());
-        datePicker.setPreferredSize(new Dimension(50, 30));
-        datePicker.setFont(WINDOW.TEXT_FONT);
+        datePicker = WINDOW.makeDatePicker(50, 30);
         WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.CENTER, 2);
         add(datePicker, constraints);
 
-        timePicker = new TimePicker(createTimeSettings());
-        timePicker.setPreferredSize(new Dimension(50, 30));
-        timePicker.setFont(WINDOW.TEXT_FONT);
+        timePicker = WINDOW.makeTimePicker(50,30);
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.WEST, 2);
         add(timePicker, constraints);
 
@@ -225,7 +221,7 @@ public class OperationPanel extends JPanel {
         add(importFileButton, constraints);
 
         // Edit info toggle button
-        toggleEditInfoButton = WINDOW.makeButton(Messages.EDIT_INFO_SHOW_BUTTON.get(), 150, 50);
+        toggleEditInfoButton = WINDOW.makeButton(Messages.EDIT_INFO_SHOW_BUTTON.get(), 250, 50);
         toggleEditInfoButton.setName("toggleEditInfoButton");
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 2);
         add(toggleEditInfoButton, constraints);
@@ -237,14 +233,14 @@ public class OperationPanel extends JPanel {
         add(switchOperationButton, constraints);
 
         // Button for choosing path(s) to save operation to
-        definePathButton = WINDOW.makeButton(Messages.DEFINE_OPERATION_PATH.get(), 150, 50);
+        definePathButton = WINDOW.makeButton(Messages.DEFINE_OPERATION_PATH.get(), 300, 50);
         definePathButton.setName("definePathButton");
         WINDOW.modifyConstraints(constraints, 3, 4, GridBagConstraints.CENTER, 1);
         add(definePathButton, constraints);
 
         // Saved paths header
         allSavedPathsHeaderLabel = WINDOW.makeLabel(Messages.ALL_SAVED_PATHS.get(), Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 2);
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.SOUTHWEST, 2);
         add(allSavedPathsHeaderLabel, constraints);
 
         // List of saved paths
@@ -263,12 +259,12 @@ public class OperationPanel extends JPanel {
         add(editDateLabel, constraints);
 
         // Edit date of operation
-        editDatePicker = new DatePicker(createDateSettings());
+        editDatePicker = WINDOW.makeDatePicker(100, 50);
         WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 4);
         add(editDatePicker, constraints);
 
         // Edit time of operation
-        editTimePicker = new TimePicker(createTimeSettings());
+        editTimePicker = WINDOW.makeTimePicker(100, 50);
         WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 4);
         add(editTimePicker, constraints);
 
@@ -278,28 +274,6 @@ public class OperationPanel extends JPanel {
         add(saveOperationButton, constraints);
     }
 
-    /**
-     * Creating a settings object to use when creating a date picker.
-     *
-     * @return settings for a date picker.
-     */
-    private DatePickerSettings createDateSettings() {
-        DatePickerSettings dateSettings = new DatePickerSettings();
-        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-        dateSettings.setAllowEmptyDates(false);
-        return dateSettings;
-    }
-
-    /**
-     * Creating a settings object to use when creating a time picker.
-     *
-     * @return settings for a time picker.
-     */
-    private TimePickerSettings createTimeSettings() {
-        TimePickerSettings timeSettings = new TimePickerSettings();
-        timeSettings.initialTime = LocalTime.now();
-        return timeSettings;
-    }
 
     /**
      * Updating the label with info about the operation.
@@ -383,9 +357,9 @@ public class OperationPanel extends JPanel {
             switchOperationButton.setVisible(true);
             importFileButton.setVisible(true);
         }
-        //definePathButton.setVisible(!visibility);
-        //allSavedPathsHeaderLabel.setVisible(!visibility);
-        //allSavedPathsLabel.setVisible(!visibility);
+        definePathButton.setVisible(!visibility);
+        allSavedPathsHeaderLabel.setVisible(!visibility);
+        allSavedPathsLabel.setVisible(!visibility);
     }
 
     /**

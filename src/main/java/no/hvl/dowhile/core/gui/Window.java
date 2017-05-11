@@ -1,5 +1,9 @@
 package no.hvl.dowhile.core.gui;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.TimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
@@ -12,6 +16,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -227,6 +233,29 @@ public class Window extends JFrame {
         spinner.setFont(TEXT_FONT);
 
         return spinner;
+    }
+
+    public DatePicker makeDatePicker(int width, int height) {
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        dateSettings.setAllowEmptyDates(false);
+
+        DatePicker datePicker = new DatePicker(dateSettings);
+        datePicker.setPreferredSize(new Dimension(width, height));
+        datePicker.setFont(TEXT_FONT);
+
+        return datePicker;
+    }
+
+    public TimePicker makeTimePicker(int width, int height) {
+        TimePickerSettings timeSettings = new TimePickerSettings();
+        timeSettings.initialTime = LocalTime.now();
+
+        TimePicker timePicker = new TimePicker(timeSettings);
+        timePicker.setPreferredSize(new Dimension(width, height));
+        timePicker.setFont(TEXT_FONT);
+
+        return timePicker;
     }
 
     /**
