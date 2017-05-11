@@ -245,12 +245,13 @@ public class OperationManager {
     public void prepareNextFile() {
         queuePosition++;
         GpxFile gpxFile = queue.remove(0);
-        window.updateCurrentFile(StringTools.startTimeAndEndTimeToString(gpxFile.getGpx()), queueSize, queuePosition);
         currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setGpxFile(gpxFile);
         if (TrackTools.hasWaypoints(gpxFile.getGpx())) {
+            window.updateCurrentFile(" ", queueSize, queuePosition);
             window.openWaypointPanel();
         } else {
+            window.updateCurrentFile(StringTools.startTimeAndEndTimeToString(gpxFile.getGpx()), queueSize, queuePosition);
             window.openTrackPanel();
         }
     }
