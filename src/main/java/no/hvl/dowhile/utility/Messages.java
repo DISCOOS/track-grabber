@@ -38,7 +38,7 @@ public enum Messages {
     OPERATION_INFO_NAME("Navn: %1"),
     OPERATION_INFO_START("Start: %1"),
     TRACK_NUMBER("Spornummer: "),
-    IMPORTED_FROM_GPS("Oppgi data for fil: "),
+    IMPORTED_FROM_GPS("Fil startet: "),
     IMPORTED_FILES_LEFT_TO_PROCESS("Det er nå %1 filer i kø for prosessering."),
     TRACK_COMMENT("Kommentar til sporfilen: "),
     TRACK_COMMENT_PLACEHOLDER("Valgfri"),
@@ -54,7 +54,6 @@ public enum Messages {
     // Operation panel
     OPERATION_NAME("Navn på operasjon: "),
     OPERATION_START_DATE("Startdato: "),
-    NUMBER_OF_AREAS("Totalt antall teiger:"),
     DEFINE_OPERATION_PATH("Legg til ekstra lagringssted"),
     EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
     NEW_OPERATION_BUTTON("Ny operasjon"),

@@ -5,6 +5,7 @@ import no.hvl.dowhile.core.drive.GPSDrive;
 import no.hvl.dowhile.core.gui.Window;
 import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.Messages;
+import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
@@ -244,7 +245,7 @@ public class OperationManager {
     public void prepareNextFile() {
         queuePosition++;
         GpxFile gpxFile = queue.remove(0);
-        window.updateCurrentFile(gpxFile.getFile().getName(), queueSize, queuePosition);
+        window.updateCurrentFile(StringTools.startTimeAndEndTimeToString(gpxFile.getGpx()), queueSize, queuePosition);
         currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setGpxFile(gpxFile);
         if (TrackTools.hasWaypoints(gpxFile.getGpx())) {
