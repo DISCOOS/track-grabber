@@ -22,6 +22,7 @@ public enum Messages {
     SPACER("                                                  "),
 
     // Track panel
+    TRACK_HEADER("Prosesserer sporfil"),
     BACK("Tilbake"),
     NEXT("Neste"),
     TRACK_START_INFO("Her er noe info om hva du skal gjøre for prosessering av GPS-data"),
@@ -38,6 +39,7 @@ public enum Messages {
     IMPORTED_FROM_GPS("Oppgi data for fil: "),
     IMPORTED_FILES_LEFT_TO_PROCESS("Det er nå %1 filer i kø for prosessering."),
     TRACK_COMMENT("Kommentar til sporfilen: "),
+    TRACK_COMMENT_PLACEHOLDER("Valgfri"),
     CHOOSE_AREA("Legg til"),
     SUMMARY_CREW_TYPE("Mannskap: "),
     SUMMARY_CREW_NUMBER("Gruppenummer: "),
@@ -71,6 +73,7 @@ public enum Messages {
     GO_BACK("Tilbake"),
 
     // Waypoint panel
+    WAYPOINT_HEADER("Prosesserer waypoint"),
     NEW_NAME("Nytt navn");
 
     private String message;

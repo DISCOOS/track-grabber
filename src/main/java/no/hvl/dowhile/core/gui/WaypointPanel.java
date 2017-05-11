@@ -40,7 +40,7 @@ public class WaypointPanel extends JPanel {
 
     private void wayPointGUI() {
         // Header label for waypoint processing
-        waypointHeaderLabel = WINDOW.makeHeaderLabel("Prosesserer waypoint");
+        waypointHeaderLabel = WINDOW.makeHeaderLabel(Messages.WAYPOINT_HEADER.get());
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
         add(waypointHeaderLabel, constraints);
 

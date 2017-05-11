@@ -106,7 +106,7 @@ public class TrackPanel extends JPanel {
 
     private void infoGUI() {
         // Header label for track processing
-        trackHeaderLabel = WINDOW.makeHeaderLabel("Prosesser sporfil");
+        trackHeaderLabel = WINDOW.makeHeaderLabel(Messages.TRACK_HEADER.get());
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
         add(trackHeaderLabel, constraints);
 
@@ -244,8 +244,8 @@ public class TrackPanel extends JPanel {
         trackCommentInput = new JTextArea();
         trackCommentInput.setFont(WINDOW.TEXT_FONT);
         trackCommentInput.setPreferredSize(new Dimension(300, 150));
-        trackCommentInput.setBackground(Color.LIGHT_GRAY);
-        PromptSupport.setPrompt("Valgfri...", trackCommentInput);
+        trackCommentInput.setBackground(new Color(220, 222, 226));
+        PromptSupport.setPrompt(Messages.TRACK_COMMENT_PLACEHOLDER.get(), trackCommentInput);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
         add(trackCommentInput, constraints);
         allInputComponents.add(trackCommentInput);
