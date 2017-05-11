@@ -23,9 +23,6 @@ public class FileManagerTest {
     private OperationManager opManager;
     private FileManager fileManager;
     private File appFolder;
-    private File rawFolder;
-    private File processedFolder;
-    //private OperationFolder mainOperationFolder;
     private Operation operation;
     private String operationName;
     private TrackInfo trackInfo;
@@ -42,11 +39,6 @@ public class FileManagerTest {
         fileManager.setAppFolder(appFolder);
 
         fileManager.setupMainOperationFolder(operation);
-
-        rawFolder = fileManager.setupFolder(fileManager.getMainOperationFolder().getOperationFolder(), "Raw");
-        processedFolder = fileManager.setupFolder(fileManager.getMainOperationFolder().getOperationFolder(), "Processed");
-        fileManager.setRawFolder(rawFolder);
-        fileManager.setProcessedFolder(processedFolder);
     }
 
     @Test
@@ -61,12 +53,12 @@ public class FileManagerTest {
 
     @Test
     public void rawFolderIsSetUp() {
-        assertTrue(rawFolder.exists());
+        assertTrue(fileManager.getMainOperationFolder().getRawFolder().exists());
     }
 
     @Test
     public void processedFolderIsSetUp() {
-        assertTrue(processedFolder.exists());
+        assertTrue(fileManager.getMainOperationFolder().getProcessedFolder().exists());
     }
 
     @Test
@@ -94,6 +86,7 @@ public class FileManagerTest {
     public void existingOperationsAreNotLoadedFromEmptyFolder() {
         fileManager.getMainOperationFolder().getOperationFolder().delete();
         List<Operation> operations = fileManager.loadExistingOperations();
+        System.out.println(operations.size());
         assertTrue(operations.isEmpty());
     }
 
@@ -111,8 +104,8 @@ public class FileManagerTest {
     public void trackPointsOfTwoSimilarFilesAreEqual() {
         GPX gpx1 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         GPX gpx2 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
-        fileManager.saveGpxFile(gpx1, trackInfo, "Filnavn", rawFolder);
-        File[] rawFiles = rawFolder.listFiles();
+        fileManager.saveGpxFile(gpx1, trackInfo, "Filnavn", fileManager.getMainOperationFolder().getRawFolder());
+        File[] rawFiles = fileManager.getMainOperationFolder().getRawFolder().listFiles();
         assertTrue(TrackTools.trackPointsAreEqual(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
     }
 
@@ -120,8 +113,8 @@ public class FileManagerTest {
     public void trackPointsOfTwoDifferentFilesAreDifferent() {
         GPX gpx1 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         GPX gpx2 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile2.gpx"));
-        fileManager.saveGpxFile(gpx1, trackInfo, "Filnavn", rawFolder);
-        File[] rawFiles = rawFolder.listFiles();
+        fileManager.saveGpxFile(gpx1, trackInfo, "Filnavn", fileManager.getMainOperationFolder().getRawFolder());
+        File[] rawFiles = fileManager.getMainOperationFolder().getRawFolder().listFiles();
         assertFalse(TrackTools.trackPointsAreEqual(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
     }
 
@@ -136,7 +129,7 @@ public class FileManagerTest {
     public void rawGPXFileIsSaved() {
         GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         fileManager.saveRawGpxFileInFolders(gpx, "Filnavn");
-        File savedRawFile = FileTools.getFile(rawFolder, "Filnavn");
+        File savedRawFile = FileTools.getFile(fileManager.getMainOperationFolder().getRawFolder(), "Filnavn");
         assertNotNull(savedRawFile);
     }
 
@@ -144,7 +137,7 @@ public class FileManagerTest {
     public void processedGPXFileIsSaved() {
         GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         fileManager.saveProcessedGpxFileInFolders(gpx, trackInfo, "Filnavn");
-        File savedProcessedFile = FileTools.getFile(processedFolder, "Filnavn");
+        File savedProcessedFile = FileTools.getFile(fileManager.getMainOperationFolder().getProcessedFolder(), "Filnavn");
         assertNotNull(savedProcessedFile);
     }
 }

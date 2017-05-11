@@ -35,6 +35,10 @@ public class FileManager {
         return mainOperationFolder.getOperationFolder().getAbsolutePath();
     }
 
+    public File getAppFolder() {
+        return appFolder;
+    }
+
     public void deleteRawFileInFolders(String filename) {
         deleteRawFile(mainOperationFolder.getRawFolder(), filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
