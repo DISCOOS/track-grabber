@@ -172,7 +172,7 @@ public class OperationManager {
         Set<File> gpxFiles = FileTools.findGpxFiles(gpxFolder);
         for (File file : gpxFiles) {
             System.err.println(file.getName());
-            processFile(file);
+            checkFile(file);
         }
         if (!queue.isEmpty()) {
             prepareNextFile();
@@ -187,7 +187,7 @@ public class OperationManager {
      * @param file the file selected.
      */
     public void handleImportedFile(File file) {
-        processFile(file);
+        checkFile(file);
         if (!queue.isEmpty()) {
             prepareNextFile();
         } else {
@@ -200,7 +200,7 @@ public class OperationManager {
      *
      * @param file the file to process.
      */
-    public void processFile(File file) {
+    public void checkFile(File file) {
         GPX gpx = TrackTools.getGpxFromFile(file);
         if (gpx == null) {
             System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
@@ -251,7 +251,7 @@ public class OperationManager {
      *
      * @param trackInfo info about the currently imported track.
      */
-    public void initiateTrackCutter(TrackInfo trackInfo) {
+    public void processFile(TrackInfo trackInfo) {
         if (currentTrackCutter == null || currentTrackCutter.getGpxFile() == null) {
             Messages.ERROR_NO_TRACK_FOR_INFO.print();
             return;
