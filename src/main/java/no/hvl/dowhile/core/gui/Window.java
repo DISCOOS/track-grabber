@@ -31,7 +31,7 @@ public class Window extends JFrame {
     final Font TEXT_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE);
     final Font TEXT_BOLD_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, TEXT_FONT_SIZE);
     final Font TEXT_ITALIC_FONT = new Font(Messages.FONT_NAME.get(), Font.ITALIC, TEXT_FONT_SIZE);
-    final Font HEADER_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, HEADER_FONT_SIZE);
+    final Font HEADER_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, HEADER_FONT_SIZE);
     final Font BUTTON_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, BUTTON_FONT_SIZE);
     private final OperationManager OPERATION_MANAGER;
     private JPanel cardPanel;
@@ -75,7 +75,7 @@ public class Window extends JFrame {
         getContentPane().add(cardPanel, BorderLayout.CENTER);
 
         open();
-        openOperationPanel();
+        openTrackPanel();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {

@@ -15,6 +15,7 @@ public class WaypointPanel extends JPanel {
     private final Window WINDOW;
     private GridBagConstraints constraints;
 
+    private JLabel waypointHeaderLabel;
     private JLabel currentWaypointLabel;
     private JTextField waypointNameInput;
     private JButton confirmNameButton;
@@ -38,26 +39,31 @@ public class WaypointPanel extends JPanel {
     }
 
     private void wayPointGUI() {
+        // Header label for waypoint processing
+        waypointHeaderLabel = WINDOW.makeHeaderLabel("Prosesserer waypoint");
+        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
+        add(waypointHeaderLabel, constraints);
+
         // Label with the current waypoint file
         currentWaypointLabel = WINDOW.makeLabel(Messages.IMPORTED_FROM_GPS.get() + "Ingen fil.", Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 1);
         add(currentWaypointLabel, constraints);
 
         // Input field for new name for the waypoint file
         waypointNameInput = WINDOW.makeTextField(100, 60);
         PromptSupport.setPrompt(Messages.NEW_NAME.get(), waypointNameInput);
-        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 2);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(waypointNameInput, constraints);
 
         // Confirm button
         confirmNameButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get(), 150, 50);
-        WINDOW.modifyConstraints(constraints, 2, 1, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.WEST, 1);
         add(confirmNameButton, constraints);
 
         // Queue with remaining waypoint files
         queueLabel = WINDOW.makeLabel(Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get(), Font.BOLD);
-        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 1);
         add(queueLabel, constraints);
     }
 
