@@ -128,7 +128,7 @@ public class OperationManager {
         operation.setStartTime(year, month, day, hour, minute);
         window.updateOperationInfo(operation);
         fileManager.updateOperationFile(operation);
-        importMassTestingFiles(); //TODO: DON'T COMMIT THIS
+        // importMassTestingFiles(); // FOR TESTING.
     }
 
     /**
@@ -215,7 +215,8 @@ public class OperationManager {
             return;
         }
         if (TrackTools.hasWaypoints(gpx)) {
-            queue.add(new GpxFile(file, gpx));
+            String rawWaypointFileHash = fileManager.saveAndHashRawWaypoint(file);
+            queue.add(new GpxFile(file, rawWaypointFileHash, gpx));
             queueSize++;
             return;
         }
@@ -227,13 +228,13 @@ public class OperationManager {
             System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
             return;
         }
-        String hash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
-        System.err.println("Hash value of file " + file.getName() + ": " + hash);
+        String rawfileHash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
+        System.err.println("Hash value of file " + file.getName() + ": " + rawfileHash);
         if (TrackTools.trackIsAnArea(gpx)) {
             fileManager.saveAreaGpxFileInFolders(gpx, file.getName());
         } else {
             if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-                queue.add(new GpxFile(file, gpx));
+                queue.add(new GpxFile(file, rawfileHash, gpx));
                 queueSize++;
             } else {
                 System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
@@ -278,6 +279,7 @@ public class OperationManager {
         if (!trackInfo.getComment().isEmpty()) {
             track.setDescription(trackInfo.getComment());
         }
+        System.err.println("HASH FOR TRACKFILE " + gpxFile.getFile().getName() + ": " + gpxFile.getRawfileHash());
         fileManager.saveProcessedGpxFileInFolders(gpxFile.getGpx(), trackInfo, newName);
         checkForMoreFiles();
     }
@@ -349,6 +351,7 @@ public class OperationManager {
             return;
         }
         GpxFile gpxFile = currentTrackCutter.getGpxFile();
+        System.err.println("HASH FOR WAYPOINTFILE " + gpxFile.getFile().getName() + ": " + gpxFile.getRawfileHash());
         fileManager.saveWaypointFileInFolders(gpxFile.getFile(), name + ".gpx");
         checkForMoreFiles();
     }

@@ -9,16 +9,19 @@ import java.io.File;
  */
 public class GpxFile {
     private File file;
+    private String rawfileHash;
     private GPX gpx;
 
     /**
      * Constructor taking the data required to create the object.
      *
-     * @param file actual file.
-     * @param gpx  the parsed GPX object.
+     * @param file        actual file.
+     * @param rawFileHash Hash value of the saved raw file.
+     * @param gpx         the parsed GPX object.
      */
-    public GpxFile(File file, GPX gpx) {
+    public GpxFile(File file, String rawFileHash, GPX gpx) {
         this.file = file;
+        this.rawfileHash = rawFileHash;
         this.gpx = gpx;
     }
 
@@ -29,6 +32,15 @@ public class GpxFile {
      */
     public File getFile() {
         return file;
+    }
+
+    /**
+     * Get the hash value of the raw file.
+     *
+     * @return the hash value of the raw file.
+     */
+    public String getRawfileHash() {
+        return rawfileHash;
     }
 
     /**

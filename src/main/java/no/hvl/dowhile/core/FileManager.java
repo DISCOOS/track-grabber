@@ -450,6 +450,20 @@ public class FileManager {
     }
 
     /**
+     * Save and hash a raw waypoint file.
+     *
+     * @param file the file to save.
+     * @return the hash value of the file.
+     */
+    public String saveAndHashRawWaypoint(File file) {
+        String hash = saveAndHashFile(file, file.getName(), mainOperationFolder.getRawFolder());
+        for (OperationFolder extraOperationFolder : extraOperationFolders) {
+            saveFile(file, file.getName(), extraOperationFolder.getRawFolder());
+        }
+        return hash;
+    }
+
+    /**
      * Saving the file in the specified folder as the specified filename.
      *
      * @param fileToSave the file to save.
@@ -467,6 +481,30 @@ public class FileManager {
             System.err.println("Failed to save file.");
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * Saving the file in the specified folder as the specified filename.
+     *
+     * @param fileToSave the file to save.
+     * @param filename   the name for the new file.
+     * @param folder     the folder to save it in.
+     * @return the hash value of the saved file.
+     */
+    public String saveAndHashFile(File fileToSave, String filename, File folder) {
+        String hash = "";
+        try {
+            File file = new File(folder, filename);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            Files.copy(fileToSave.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            hash = FileTools.hashFile(file);
+        } catch (IOException ex) {
+            System.err.println("Failed to save file.");
+            ex.printStackTrace();
+        }
+        return hash;
     }
 
     /**
