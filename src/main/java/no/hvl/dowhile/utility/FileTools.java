@@ -4,10 +4,10 @@ import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 /**
  * Utility methods to work with files.
@@ -91,6 +91,20 @@ public class FileTools {
             System.err.println("Error occured while writing to file " + file.getName());
             ex.printStackTrace();
         }
+    }
+
+    public static String hashFile(File file) {
+        try {
+            MessageDigest sha = MessageDigest.getInstance("SHA-256");
+            byte[] originalFileBytes = Files.readAllBytes(file.toPath());
+            byte[] hashed = sha.digest(originalFileBytes);
+            return Base64.getEncoder().encodeToString(hashed);
+        } catch (IOException ex) {
+            System.err.println("Failed while hashing file " + file.getName());
+        } catch (NoSuchAlgorithmException ex) {
+            System.err.println("Algorithm not found while hashing file " + file.getName());
+        }
+        return "";
     }
 
     /**

@@ -39,6 +39,15 @@ public class FileManager {
         return appFolder;
     }
 
+    /**
+     * Sets the folder for the application.
+     *
+     * @param appFolder an app folder
+     */
+    public void setAppFolder(File appFolder) {
+        this.appFolder = appFolder;
+    }
+
     public void deleteRawFileInFolders(String filename) {
         deleteRawFile(mainOperationFolder.getRawFolder(), filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
@@ -225,11 +234,12 @@ public class FileManager {
      * @param rawGpx   the gpx to save.
      * @param filename the name to save it as.
      */
-    public void saveRawGpxFileInFolders(GPX rawGpx, String filename) {
-        saveRawGpxFile(mainOperationFolder.getRawFolder(), rawGpx, filename);
+    public String saveRawGpxFileInFolders(GPX rawGpx, String filename) {
+        String hash = saveRawGpxFile(mainOperationFolder.getRawFolder(), rawGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
             saveRawGpxFile(operationFolder.getRawFolder(), rawGpx, filename);
         }
+        return hash;
     }
 
     /**
@@ -237,9 +247,10 @@ public class FileManager {
      *
      * @param rawGpx   the gpx file to save.
      * @param filename the name for the new file.
+     * @return hash of the saved file.
      */
-    private void saveRawGpxFile(File rawFolder, GPX rawGpx, String filename) {
-        saveGpxFile(rawGpx, null, filename, rawFolder);
+    private String saveRawGpxFile(File rawFolder, GPX rawGpx, String filename) {
+        return saveAndHashGpxFile(rawGpx, null, filename, rawFolder);
     }
 
     public void saveProcessedGpxFileInFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
@@ -402,6 +413,45 @@ public class FileManager {
     /**
      * Saving the file in the specified folder as the specified filename.
      *
+     * @param gpx      the gpx to save.
+     * @param filename the name for the new file.
+     * @param folder   the folder to save it in.
+     * @return hash value of the saved file.
+     */
+    public String saveAndHashGpxFile(GPX gpx, TrackInfo trackInfo, String filename, File folder) {
+        String hash = "";
+        try {
+            File file = new File(folder, filename);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream outputStream = new FileOutputStream(file);
+            new GPXParser().writeGPX(gpx, outputStream);
+            outputStream.close();
+            FileTools.cleanXmlFile(gpx, file);
+            if (trackInfo != null) {
+                String color = OPERATION_MANAGER.getConfig().getColorForTeam(trackInfo.getCrewType());
+                if (color != null) {
+                    FileTools.insertDisplayColor(gpx, file, color);
+                }
+            }
+            hash = FileTools.hashFile(file);
+        } catch (IOException ex) {
+            System.err.println("Failed to save raw file.");
+            ex.printStackTrace();
+        } catch (ParserConfigurationException ex) {
+            System.err.println("Parser is not configured correctly.");
+            ex.printStackTrace();
+        } catch (TransformerException ex) {
+            System.err.println("Failed to transform raw file.");
+            ex.printStackTrace();
+        }
+        return hash;
+    }
+
+    /**
+     * Saving the file in the specified folder as the specified filename.
+     *
      * @param fileToSave the file to save.
      * @param filename   the name for the new file.
      * @param folder     the folder to save it in.
@@ -417,15 +467,6 @@ public class FileManager {
             System.err.println("Failed to save file.");
             ex.printStackTrace();
         }
-    }
-
-    /**
-     * Sets the folder for the application.
-     *
-     * @param appFolder an app folder
-     */
-    public void setAppFolder(File appFolder) {
-        this.appFolder = appFolder;
     }
 
     /**

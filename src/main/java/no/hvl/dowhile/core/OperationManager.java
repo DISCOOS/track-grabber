@@ -227,7 +227,8 @@ public class OperationManager {
             System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
             return;
         }
-        fileManager.saveRawGpxFileInFolders(gpx, file.getName());
+        String hash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
+        System.err.println("Hash value of file " + file.getName() + ": " + hash);
         if (TrackTools.trackIsAnArea(gpx)) {
             fileManager.saveAreaGpxFileInFolders(gpx, file.getName());
         } else {
