@@ -39,6 +39,7 @@ public class Window extends JFrame {
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
     private WaypointPanel waypointPanel;
+    private StandByPanel standByPanel;
 
     /**
      * Constructor setting up the Window, logo, listener for closing and creating the different panels to display.
@@ -64,11 +65,13 @@ public class Window extends JFrame {
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
         waypointPanel = new WaypointPanel(OPERATION_MANAGER, this);
+        standByPanel = new StandByPanel(OPERATION_MANAGER, this);
 
         cardPanel = new JPanel(new CardLayout());
         cardPanel.add(operationPanel, "Operation");
         cardPanel.add(trackPanel, "Track");
         cardPanel.add(waypointPanel, "Waypoint");
+        cardPanel.add(standByPanel, "StandBy");
         add(cardPanel, BorderLayout.NORTH);
 
         getContentPane().add(headerPanel, BorderLayout.NORTH);
@@ -137,6 +140,11 @@ public class Window extends JFrame {
     public void openWaypointPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Waypoint");
+    }
+
+    public void openStandByPanel() {
+        CardLayout cl = (CardLayout) (cardPanel.getLayout());
+        cl.show(cardPanel, "StandBy");
     }
 
     /**
