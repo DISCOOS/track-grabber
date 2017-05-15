@@ -4,7 +4,6 @@ import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.TrackPoint;
 import org.alternativevision.gpx.beans.Waypoint;
 
 import java.io.File;
@@ -40,7 +39,7 @@ public class TrackTools {
      */
     public static boolean fileHasTrack(GPX gpx) {
         Track track = getTrackFromGPXFile(gpx);
-        return track != null && !track.getTrackPoints().isEmpty();
+        return track != null && track.getTrackPoints() != null && !track.getTrackPoints().isEmpty();
     }
 
     /**
