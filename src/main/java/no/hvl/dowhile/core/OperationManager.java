@@ -9,6 +9,7 @@ import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
+import org.alternativevision.gpx.beans.Waypoint;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -220,18 +221,18 @@ public class OperationManager {
             queueSize++;
             return;
         }
-        if (!TrackTools.fileHasTrack(gpx)) {
+        Track track = TrackTools.getTrackFromGPXFile(gpx);
+        if (track == null) {
             System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
         }
-        GPX duplicateGpx = fileManager.alreadyImportedGpx(gpx);
-        if (duplicateGpx != null) {
-            System.err.println("Duplicate detected!!!");
-            GPX newPoints = findNewPoints(gpx, duplicateGpx);
-            if (TrackTools.fileHasTrack(newPoints)) {
-                gpx = newPoints;
+        int allPoints = track.getTrackPoints().size();
+        List<Waypoint> duplicatePoints = fileManager.alreadyImportedGpx(gpx);
+        while (!duplicatePoints.isEmpty()) {
+            if (!(duplicatePoints.size() == allPoints)) {
+                TrackTools.removePoints(gpx, duplicatePoints);
+                duplicatePoints = fileManager.alreadyImportedGpx(gpx);
             } else {
-                System.err.println("File " + file.getName() + " didn't have track after duplicate check.");
                 return;
             }
         }
@@ -245,17 +246,6 @@ public class OperationManager {
             } else {
                 System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
             }
-        }
-    }
-
-    public GPX findNewPoints(GPX gpx, GPX duplicateGpx) {
-        GPX newPoints = TrackTools.getUpdatedGpx(gpx, duplicateGpx);
-        if (TrackTools.getTrackFromGPXFile(newPoints).getTrackPoints().size() == TrackTools.getTrackFromGPXFile(duplicateGpx).getTrackPoints().size()) {
-            System.err.println("Duplicate detected. Ignoring.");
-            return gpx;
-        } else {
-            System.err.println("Cutting...");
-            return findNewPoints(newPoints, duplicateGpx);
         }
     }
 

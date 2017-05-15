@@ -5,7 +5,7 @@ import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.TrackPoint;
+import org.alternativevision.gpx.beans.Waypoint;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -220,17 +220,16 @@ public class FileManager {
      * @param newGpx The gpx file to check.
      * @return true if the file is matching a file, false if not.
      */
-    public GPX alreadyImportedGpx(GPX newGpx) {
+    public List<Waypoint> alreadyImportedGpx(GPX newGpx) {
         File[] rawFiles = mainOperationFolder.getRawFolder().listFiles();
         if (rawFiles == null || rawFiles.length == 0) {
-            return null;
+            return new ArrayList<>();
         }
         Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);
         if(newTrack != null) {
-            GPX duplicateGPX = TrackTools.duplicateGpx(rawFiles, newTrack);
-            return duplicateGPX;
+            return TrackTools.duplicateGpx(rawFiles, newTrack);
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
