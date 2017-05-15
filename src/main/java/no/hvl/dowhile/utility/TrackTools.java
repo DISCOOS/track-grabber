@@ -51,15 +51,15 @@ public class TrackTools {
      */
     public static boolean trackCreatedBeforeStartTime(GPX gpx, Date operationStartTime) {
         Track track = getTrackFromGPXFile(gpx);
-        if (track == null) {
-            return false;
+        if(fileHasTrack(gpx)) {
+            Waypoint lastPoint = track.getTrackPoints().get(track.getTrackPoints().size() - 1);
+            if (lastPoint == null) {
+                return false;
+            }
+            Date pointDate = lastPoint.getTime();
+            return (pointDate.getTime() < operationStartTime.getTime());
         }
-        Waypoint lastPoint = track.getTrackPoints().get(track.getTrackPoints().size() - 1);
-        if (lastPoint == null) {
-            return false;
-        }
-        Date pointDate = lastPoint.getTime();
-        return (pointDate.getTime() < operationStartTime.getTime());
+        return false;
     }
 
     /**
@@ -157,13 +157,7 @@ public class TrackTools {
      */
     public static boolean trackIsAnArea(GPX gpx) {
         Track track = getTrackFromGPXFile(gpx);
-        if(track == null) {
-            return false;
-        }
-        if(track.getTrackPoints() == null) {
-            return false;
-        }
-        if(track.getTrackPoints().size() == 0) {
+        if(!fileHasTrack(gpx)) {
             return false;
         }
         return track.getTrackPoints().get(0).getTime() == null;
@@ -216,9 +210,13 @@ public class TrackTools {
      * @return The date of the GPX
      */
     public static String getDayStringFromTrack(GPX gpx) {
-        Track track = getTrackFromGPXFile(gpx);
-        Date date = track.getTrackPoints().get(0).getTime();
-        return StringTools.formatDateForOrganizing(date);
+        if(fileHasTrack(gpx)) {
+            Track track = getTrackFromGPXFile(gpx);
+            Date date = track.getTrackPoints().get(0).getTime();
+            return StringTools.formatDateForOrganizing(date);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -228,9 +226,13 @@ public class TrackTools {
      * @return The track's start time.
      */
     public static String getStartTimeFromTrack(GPX gpx) {
-        Track track = getTrackFromGPXFile(gpx);
-        Date startDate = track.getTrackPoints().get(0).getTime();
-        return StringTools.formatDateForFileProcessing(startDate);
+        if(fileHasTrack(gpx)) {
+            Track track = getTrackFromGPXFile(gpx);
+            Date startDate = track.getTrackPoints().get(0).getTime();
+            return StringTools.formatDateForFileProcessing(startDate);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -240,9 +242,13 @@ public class TrackTools {
      * @return The track's end time.
      */
     public static String getEndTimeFromTrack(GPX gpx) {
-        Track track = getTrackFromGPXFile(gpx);
-        List<Waypoint> trackPoints = track.getTrackPoints();
-        Date endDate = trackPoints.get(trackPoints.size() - 1).getTime();
-        return StringTools.formatDateForFileProcessing(endDate);
+        if(fileHasTrack(gpx)) {
+            Track track = getTrackFromGPXFile(gpx);
+            List<Waypoint> trackPoints = track.getTrackPoints();
+            Date endDate = trackPoints.get(trackPoints.size() - 1).getTime();
+            return StringTools.formatDateForFileProcessing(endDate);
+        } else {
+            return null;
+        }
     }
 }
