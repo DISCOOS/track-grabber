@@ -229,7 +229,6 @@ public class OperationManager {
             return;
         }
         String rawfileHash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
-        System.err.println("Hash value of file " + file.getName() + ": " + rawfileHash);
         if (TrackTools.trackIsAnArea(gpx)) {
             fileManager.saveAreaGpxFileInFolders(gpx, file.getName());
         } else {
@@ -279,8 +278,8 @@ public class OperationManager {
         if (!trackInfo.getComment().isEmpty()) {
             track.setDescription(trackInfo.getComment());
         }
-        System.err.println("HASH FOR TRACKFILE " + gpxFile.getFile().getName() + ": " + gpxFile.getRawfileHash());
         fileManager.saveProcessedGpxFileInFolders(gpxFile.getGpx(), trackInfo, newName);
+        fileManager.saveTrackFileInfo(trackInfo, System.currentTimeMillis() + "", gpxFile.getFile().getName(), newName, gpxFile.getRawfileHash());
         checkForMoreFiles();
     }
 
@@ -351,8 +350,8 @@ public class OperationManager {
             return;
         }
         GpxFile gpxFile = currentTrackCutter.getGpxFile();
-        System.err.println("HASH FOR WAYPOINTFILE " + gpxFile.getFile().getName() + ": " + gpxFile.getRawfileHash());
         fileManager.saveWaypointFileInFolders(gpxFile.getFile(), name + ".gpx");
+        fileManager.saveWaypointFileInfo(gpxFile.getFile().getName(), name + ".gpx", gpxFile.getRawfileHash());
         checkForMoreFiles();
     }
 

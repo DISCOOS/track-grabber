@@ -9,6 +9,8 @@ import java.io.IOException;
  * Storing folders for a given file location to store files for the current operation.
  */
 public class OperationFolder {
+    private File trackFileInfo;
+    private File waypointFileInfo;
     private File operationFolder;
     private File processedFolder;
     private File rawFolder;
@@ -38,7 +40,7 @@ public class OperationFolder {
         dayOrgFolder = FileTools.setupFolder(organizingFolder, "Days");
         if (mainFolder) {
             operation.setMainPath(root.getAbsolutePath());
-            createOperationFile(operation);
+            createOperationFiles(operation);
         }
         System.err.println("Done creating folders for operation " + operation.getName());
     }
@@ -210,8 +212,10 @@ public class OperationFolder {
      *
      * @param operation the operation to create the file for.
      */
-    private void createOperationFile(Operation operation) {
+    private void createOperationFiles(Operation operation) {
         File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
+        trackFileInfo = new File(operationFolder, "TrackFileInfo.csv");
+        waypointFileInfo = new File(operationFolder, "WaypointFileInfo.csv");
         if (!operationFile.exists()) {
             try {
                 operationFile.createNewFile();
@@ -220,6 +224,34 @@ public class OperationFolder {
             }
         }
         FileTools.writeToFile(operation.getFileContent(), operationFile);
+        if (!trackFileInfo.exists()) {
+            try {
+                trackFileInfo.createNewFile();
+                FileTools.writeToCsvFile(trackFileInfo, "Lagtype", "Lagnummer", "Antall mann", "Teiger", "Spornummer", "Kommentar", "Tid", "Original fil", "Prosessert fil", "Original hash");
+            } catch (IOException ex) {
+                System.err.println("Failed to create operation file.");
+            }
+        }
+        if (!waypointFileInfo.exists()) {
+            try {
+                waypointFileInfo.createNewFile();
+                FileTools.writeToCsvFile(waypointFileInfo, "Original fil", "Prosessert fil", "Original hash");
+            } catch (IOException ex) {
+                System.err.println("Failed to create operation file.");
+            }
+        }
+    }
+
+    public void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalFileHash) {
+        FileTools.writeToCsvFile(trackFileInfo,
+                info.getCrewType(), info.getCrewNumber() + "", info.getCrewCount() + "", info.getAreaSearched(),
+                info.getTrackNumber() + "", info.getComment().isEmpty() ? "Ingen kommentar" : info.getComment(),
+                time, originalFile, processedFile, originalFileHash
+        );
+    }
+
+    public void saveWaypointFileInfo(String originalFile, String processedFile, String originalHash) {
+        FileTools.writeToCsvFile(waypointFileInfo, originalFile, processedFile, originalHash);
     }
 
     /**

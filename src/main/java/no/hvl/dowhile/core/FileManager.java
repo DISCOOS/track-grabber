@@ -228,6 +228,14 @@ public class FileManager {
         return newTrack != null && TrackTools.trackPointsAreEqual(rawFiles, newTrack);
     }
 
+    public void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalHash) {
+        mainOperationFolder.saveTrackFileInfo(info, time, originalFile, processedFile, originalHash);
+    }
+
+    public void saveWaypointFileInfo(String originalFile, String processedFile, String originalHash) {
+        mainOperationFolder.saveWaypointFileInfo(originalFile, processedFile, originalHash);
+    }
+
     /**
      * Saving the given gpx files in all folders related to this operation.
      *

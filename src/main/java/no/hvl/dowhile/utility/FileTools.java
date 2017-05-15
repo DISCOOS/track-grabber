@@ -93,6 +93,31 @@ public class FileTools {
         }
     }
 
+    /**
+     * Write the lines to the given file.
+     *
+     * @param file   the file to write to.
+     * @param values the values to add.
+     */
+    public static void writeToCsvFile(File file, String... values) {
+        try {
+            FileWriter writer = new FileWriter(file, true);
+            StringBuilder builder = new StringBuilder("");
+            for (String value : values) {
+                if (value.contains(",")) {
+                    value = "\"" + value + "\"";
+                }
+                builder.append(value).append(",");
+            }
+            writer.write(builder.toString().substring(0, builder.toString().length() - 1) + System.lineSeparator());
+            writer.flush();
+            writer.close();
+        } catch (IOException ex) {
+            System.err.println("Error occured while writing to file " + file.getName());
+            ex.printStackTrace();
+        }
+    }
+
     public static String hashFile(File file) {
         try {
             MessageDigest sha = MessageDigest.getInstance("SHA-256");
