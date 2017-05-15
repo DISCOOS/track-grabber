@@ -228,7 +228,9 @@ public class OperationManager {
         if (duplicateGpx != null) {
             System.err.println("Duplicate detected!!!");
             GPX newPoints = findNewPoints(gpx, duplicateGpx);
-            if (!TrackTools.fileHasTrack(newPoints)) {
+            if (TrackTools.fileHasTrack(newPoints)) {
+                gpx = newPoints;
+            } else {
                 System.err.println("File " + file.getName() + " didn't have track after duplicate check.");
                 return;
             }
@@ -248,11 +250,12 @@ public class OperationManager {
 
     public GPX findNewPoints(GPX gpx, GPX duplicateGpx) {
         GPX newPoints = TrackTools.getUpdatedGpx(gpx, duplicateGpx);
-        if (TrackTools.getTrackFromGPXFile(newPoints).getTrackPoints().size() > 0) {
-            return findNewPoints(newPoints, duplicateGpx);
-        } else {
+        if (TrackTools.getTrackFromGPXFile(newPoints).getTrackPoints().size() == TrackTools.getTrackFromGPXFile(duplicateGpx).getTrackPoints().size()) {
             System.err.println("Duplicate detected. Ignoring.");
             return gpx;
+        } else {
+            System.err.println("Cutting...");
+            return findNewPoints(newPoints, duplicateGpx);
         }
     }
 
