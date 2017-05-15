@@ -5,6 +5,7 @@ import no.hvl.dowhile.utility.TrackTools;
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
+import org.alternativevision.gpx.beans.TrackPoint;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -219,13 +220,18 @@ public class FileManager {
      * @param newGpx The gpx file to check.
      * @return true if the file is matching a file, false if not.
      */
-    public boolean fileAlreadyImported(GPX newGpx) {
+    public GPX alreadyImportedGpx(GPX newGpx) {
         File[] rawFiles = mainOperationFolder.getRawFolder().listFiles();
         if (rawFiles == null || rawFiles.length == 0) {
-            return false;
+            return null;
         }
         Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);
-        return newTrack != null && TrackTools.trackPointsAreEqual(rawFiles, newTrack);
+        if(newTrack != null) {
+            GPX duplicateGPX = TrackTools.duplicateGpx(rawFiles, newTrack);
+            return duplicateGPX;
+        } else {
+            return null;
+        }
     }
 
     public void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalHash) {

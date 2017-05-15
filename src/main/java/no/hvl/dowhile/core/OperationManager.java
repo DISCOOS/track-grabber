@@ -224,9 +224,13 @@ public class OperationManager {
             System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
         }
-        if (fileManager.fileAlreadyImported(gpx)) {
-            System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
-            return;
+        GPX duplicateGpx = fileManager.alreadyImportedGpx(gpx);
+        if (duplicateGpx != null) {
+            System.err.println("Duplicate detected!!!");
+            GPX newPoints = findNewPoints(gpx, duplicateGpx);
+            if(TrackTools.getTrackFromGPXFile(newPoints).getTrackPoints().size() != TrackTools.getTrackFromGPXFile(gpx).getTrackPoints().size()) {
+                gpx = newPoints;
+            }
         }
         String rawfileHash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
         if (TrackTools.trackIsAnArea(gpx)) {
@@ -238,6 +242,16 @@ public class OperationManager {
             } else {
                 System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
             }
+        }
+    }
+
+    public GPX findNewPoints(GPX gpx, GPX duplicateGpx) {
+        GPX newPoints = TrackTools.getUpdatedGpx(gpx, duplicateGpx);
+        if(TrackTools.getTrackFromGPXFile(newPoints).getTrackPoints().size() > 0) {
+            return findNewPoints(newPoints, duplicateGpx);
+        } else {
+            System.err.println("Duplicate detected. Ignoring.");
+            return gpx;
         }
     }
 
@@ -307,7 +321,7 @@ public class OperationManager {
                     System.err.println("File is a waypoint file. Ignoring.");
                 } else if (!TrackTools.fileHasTrack(gpx)) {
                     System.err.println("File doesn't have track.");
-                } else if (fileManager.fileAlreadyImported(gpx)) {
+                } else if (fileManager.alreadyImportedGpx(gpx) != null) {
                     System.err.println("Already imported.");
                 } else {
                     fileManager.saveRawGpxFileInFolders(gpx, trackFile.getName());

@@ -30,27 +30,6 @@ public class TrackCutter {
     }
 
     /**
-     * Determines a maximum latitude and longitude, and uses to create a radius
-     */
-    public void setRadius() {
-
-    }
-
-    /**
-     * Sets a time span for the track
-     */
-    private void setTimeSpan() {
-
-    }
-
-    /**
-     * Removes all track points that are outside of the given radius
-     */
-    private void filterOnRadius() {
-
-    }
-
-    /**
      * Removes all track points that were created before a given time
      */
     public void filterOnTimeStarted(Date startTime) {
