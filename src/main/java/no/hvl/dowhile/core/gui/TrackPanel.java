@@ -117,8 +117,7 @@ public class TrackPanel extends JPanel {
         add(currentImportLabel, constraints);
 
         // Remaining files imported from GPS waiting to be processed
-        String remainingFiles = Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get("" + 0);
-        remainingFilesLabel = WINDOW.makeLabel(remainingFiles, Font.BOLD);
+        remainingFilesLabel = WINDOW.makeLabel("Wrong", Font.BOLD);
         WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 3);
         add(remainingFilesLabel, constraints);
 
@@ -244,7 +243,7 @@ public class TrackPanel extends JPanel {
         trackCommentInput = new JTextArea();
         trackCommentInput.setFont(WINDOW.TEXT_FONT);
         trackCommentInput.setPreferredSize(new Dimension(300, 150));
-        trackCommentInput.setBackground(new Color(220, 222, 226));
+        trackCommentInput.setBackground(new Color(228, 228, 230));
         PromptSupport.setPrompt(Messages.TRACK_COMMENT_PLACEHOLDER.get(), trackCommentInput);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
         add(trackCommentInput, constraints);
@@ -330,6 +329,7 @@ public class TrackPanel extends JPanel {
         int x = 1;
         for (JRadioButton radioButton : radioButtons) {
             WINDOW.modifyConstraints(constraints, x, y, GridBagConstraints.WEST, 1);
+            radioButton.setPreferredSize(new Dimension(200,50));
             add(radioButton, constraints);
             allInputComponents.add(radioButton);
             y++;
