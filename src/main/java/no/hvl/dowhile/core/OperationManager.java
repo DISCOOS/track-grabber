@@ -360,6 +360,7 @@ public class OperationManager {
      */
     public void checkForMoreFiles() {
         if (queue.isEmpty()) {
+            currentTrackCutter = null;
             window.openOperationPanel();
             queueSize = 0;
             queuePosition = 0;
