@@ -375,7 +375,7 @@ public class OperationManager {
     public void checkForMoreFiles() {
         if (queue.isEmpty()) {
             currentTrackCutter = null;
-            window.openOperationPanel();
+            window.openStandByPanel();
             queueSize = 0;
             queuePosition = 0;
         } else {

@@ -36,6 +36,7 @@ public class Window extends JFrame {
     private final OperationManager OPERATION_MANAGER;
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
+    private StartPanel startPanel;
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
     private WaypointPanel waypointPanel;
@@ -62,12 +63,14 @@ public class Window extends JFrame {
         }
 
         headerPanel = new HeaderPanel(this);
+        startPanel = new StartPanel(OPERATION_MANAGER, this);
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
         waypointPanel = new WaypointPanel(OPERATION_MANAGER, this);
         standByPanel = new StandByPanel(OPERATION_MANAGER, this);
 
         cardPanel = new JPanel(new CardLayout());
+        cardPanel.add(startPanel, "Start");
         cardPanel.add(operationPanel, "Operation");
         cardPanel.add(trackPanel, "Track");
         cardPanel.add(waypointPanel, "Waypoint");
@@ -78,7 +81,7 @@ public class Window extends JFrame {
         getContentPane().add(cardPanel, BorderLayout.CENTER);
 
         open();
-        openOperationPanel();
+        openStartPanel();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {
@@ -100,7 +103,7 @@ public class Window extends JFrame {
     private Image getLogo() {
         BufferedImage bufferedImage;
         try {
-            bufferedImage = ImageIO.read(new File("src/main/resources/red_cross_icon.jpg"));
+            bufferedImage = ImageIO.read(new File("src/main/resources/images/red_cross_icon.jpg"));
         } catch (IOException ex) {
             return null;
         }
@@ -122,9 +125,18 @@ public class Window extends JFrame {
     }
 
     /**
-     * Open the panel allowing the administrator to change operation or edit the current operation.
+     * Open the panel allowing the administrator to change operation.
      */
-    public void openOperationPanel() {
+    public void openStartPanel() {
+        CardLayout cl = (CardLayout) (cardPanel.getLayout());
+        cl.show(cardPanel, "Start");
+    }
+
+    /**
+     * Open the panel allowing the administrator to edit the current operation.
+     */
+    public void openOperationPanel(String paths) {
+        operationPanel.setAllSavedPathsLabel(paths);
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Operation");
     }
@@ -184,7 +196,7 @@ public class Window extends JFrame {
      * @param operations the operations to add.
      */
     public void showExistingOperations(List<Operation> operations) {
-        operationPanel.showExistingOperations(operations);
+        startPanel.showExistingOperations(operations);
     }
 
     /**
