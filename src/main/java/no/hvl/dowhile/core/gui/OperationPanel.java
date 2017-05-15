@@ -77,7 +77,7 @@ public class OperationPanel extends JPanel {
     private void universalButtonsGUI() {
         // Back button
         backButton = WINDOW.makeButton(Messages.GO_BACK.get(), 150, 50);
-        WINDOW.modifyConstraints(constraints, 3, 10, GridBagConstraints.EAST, 1);
+        WINDOW.modifyConstraints(constraints, 3, 6, GridBagConstraints.SOUTHEAST, 1);
         add(backButton, constraints);
         backButton.setName("backButton");
     }

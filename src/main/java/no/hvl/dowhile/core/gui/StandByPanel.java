@@ -30,8 +30,7 @@ public class StandByPanel extends JPanel {
         constraints = new GridBagConstraints();
         WINDOW.setConstraintsInsets(constraints, 5);
 
-        infoLabel = WINDOW.makeLabel("Her er litt info om hva du skal gjøre på GPS-stasjonen",
-                Font.PLAIN);
+        infoLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get(), Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 0,0,GridBagConstraints.WEST, 3);
         add(infoLabel,constraints);
 

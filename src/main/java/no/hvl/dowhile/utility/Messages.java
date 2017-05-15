@@ -66,7 +66,7 @@ public enum Messages {
     EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
     REGISTER_NEW_BUTTON("Opprett operasjon"),
     REGISTER_EXISTING_BUTTON("Last inn"),
-    AWAITING_GPS("Venter på at en GPS-enhet kobles til..."),
+    AWAITING_GPS("Koble til GPS-enhet og vent på prosessering..."),
     INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
     OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
     OPERATION_NAME_IS_TOO_LONG_OR_SHORT("Navnet må være mellom 2 og 50 tegn."),
