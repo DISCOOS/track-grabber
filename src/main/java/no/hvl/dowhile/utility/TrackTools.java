@@ -88,31 +88,29 @@ public class TrackTools {
      *
      * @param rawFiles the files in the raw folder.
      * @param newTrack the new track to import.
-     * @return true if the file matches an existing file, false if not.
+     * @return duplicate file if the new file matches an existing file, null if it doesn't match a file.
      */
     public static GPX duplicateGpx(File[] rawFiles, Track newTrack) {
         for (File rawFile : rawFiles) {
             GPX rawGpx = TrackTools.getGpxFromFile(rawFile);
             if (rawGpx != null) {
-                Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
-                if (rawTrack != null) {
-                    if (rawTrack.getTrackPoints().size() > 0) {
-                        if (firstWaypointsMatch(rawGpx, newTrack)) {
-                            System.err.println("First wps match");
-                            List<Waypoint> newPoints = newTrack.getTrackPoints();
-                            List<Waypoint> rawPoints = rawTrack.getTrackPoints();
-                            if (newPoints != null && rawPoints != null) {
-                                if (newPoints.size() == rawPoints.size()) {
-                                    boolean trackPointsMatching = true;
-                                    for (int i = 0; trackPointsMatching && i < newPoints.size() && i < rawPoints.size(); i++) {
-                                        if (!matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
-                                            trackPointsMatching = false;
-                                        }
+                if (fileHasTrack(rawGpx)) {
+                    Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
+                    if (firstWaypointsMatch(rawGpx, newTrack)) {
+                        System.err.println("First wps match");
+                        List<Waypoint> newPoints = newTrack.getTrackPoints();
+                        List<Waypoint> rawPoints = rawTrack.getTrackPoints();
+                        if (newPoints != null && rawPoints != null) {
+                            if (newPoints.size() == rawPoints.size()) {
+                                boolean trackPointsMatching = true;
+                                for (int i = 0; trackPointsMatching && i < newPoints.size() && i < rawPoints.size(); i++) {
+                                    if (!matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
+                                        trackPointsMatching = false;
                                     }
-                                    if (trackPointsMatching) {
-                                        System.err.println("All points match");
-                                        return rawGpx;
-                                    }
+                                }
+                                if (trackPointsMatching) {
+                                    System.err.println("All points match");
+                                    return rawGpx;
                                 }
                             }
                         }
@@ -186,20 +184,18 @@ public class TrackTools {
     public static GPX getUpdatedGpx(GPX newGPX, GPX oldGPX) {
         Track newTrack = getTrackFromGPXFile(newGPX);
         Track oldTrack = getTrackFromGPXFile(oldGPX);
-        ArrayList<Waypoint> updatedWaypoints = newTrack.getTrackPoints();
-        ArrayList<Waypoint> oldWaypoints = oldTrack.getTrackPoints();
-        ArrayList<Waypoint> newWaypoints = new ArrayList<>();
+        ArrayList<Waypoint> allPoints = newTrack.getTrackPoints();
+        ArrayList<Waypoint> oldPoints = oldTrack.getTrackPoints();
+        ArrayList<Waypoint> newPoints = new ArrayList<>();
 
-        for (Waypoint wp : updatedWaypoints) {
-            if (oldWaypoints.contains(wp)) {
-                newWaypoints.remove(wp);
-            }
+        for (int i = oldPoints.size(); i < allPoints.size(); i++) {
+            newPoints.add(allPoints.get(i));
         }
 
-        newTrack.setTrackPoints(newWaypoints);
-        HashSet<Track> updatedTrackSet = new HashSet<>();
-        updatedTrackSet.add(newTrack);
-        newGPX.setTracks(updatedTrackSet);
+        newTrack.setTrackPoints(newPoints);
+        HashSet<Track> newTracks = new HashSet<>();
+        newTracks.add(newTrack);
+        newGPX.setTracks(newTracks);
         return newGPX;
     }
 

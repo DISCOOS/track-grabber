@@ -228,8 +228,9 @@ public class OperationManager {
         if (duplicateGpx != null) {
             System.err.println("Duplicate detected!!!");
             GPX newPoints = findNewPoints(gpx, duplicateGpx);
-            if(TrackTools.getTrackFromGPXFile(newPoints).getTrackPoints().size() != TrackTools.getTrackFromGPXFile(gpx).getTrackPoints().size()) {
-                gpx = newPoints;
+            if (!TrackTools.fileHasTrack(newPoints)) {
+                System.err.println("File " + file.getName() + " didn't have track after duplicate check.");
+                return;
             }
         }
         String rawfileHash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
@@ -247,7 +248,7 @@ public class OperationManager {
 
     public GPX findNewPoints(GPX gpx, GPX duplicateGpx) {
         GPX newPoints = TrackTools.getUpdatedGpx(gpx, duplicateGpx);
-        if(TrackTools.getTrackFromGPXFile(newPoints).getTrackPoints().size() > 0) {
+        if (TrackTools.getTrackFromGPXFile(newPoints).getTrackPoints().size() > 0) {
             return findNewPoints(newPoints, duplicateGpx);
         } else {
             System.err.println("Duplicate detected. Ignoring.");
