@@ -1,5 +1,9 @@
 package no.hvl.dowhile.core;
 
+import com.hs.gpxparser.modal.GPX;
+import com.hs.gpxparser.modal.Track;
+import com.hs.gpxparser.modal.TrackSegment;
+import com.hs.gpxparser.modal.Waypoint;
 import no.hvl.dowhile.core.drive.DriveDetector;
 import no.hvl.dowhile.core.drive.GPSDrive;
 import no.hvl.dowhile.core.gui.Window;
@@ -7,9 +11,6 @@ import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.Messages;
 import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
-import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -222,11 +223,11 @@ public class OperationManager {
             return;
         }
         if (TrackTools.hasWaypoints(gpx)) {
-            String rawWaypointFileHash = fileManager.saveAndHashRawWaypoint(file);
             List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(gpx);
-            for(GPX wpGpx : waypointsInGpx) {
-
-                queue.add(new GpxFile(file, rawWaypointFileHash, gpx));
+            for (int i = 0; i < waypointsInGpx.size(); i++) {
+                String rawFileName = file.getName() + "_" + (i + 1);
+                String hash = fileManager.saveRawGpxFileInFolders(waypointsInGpx.get(i), rawFileName);
+                queue.add(new GpxFile(file, rawFileName, hash, waypointsInGpx.get(i)));
                 queueSize++;
             }
             return;
@@ -236,12 +237,16 @@ public class OperationManager {
             System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
         }
-        int allPoints = track.getTrackPoints().size();
+        List<Waypoint> allPoints = new ArrayList<>();
+        for (TrackSegment allPointsSegment : track.getTrackSegments()) {
+            allPoints.addAll(allPointsSegment.getWaypoints());
+        }
+        int allPointsCount = allPoints.size();
         List<Waypoint> duplicatePoints = fileManager.alreadyImportedGpx(gpx);
         while (!duplicatePoints.isEmpty()) {
-            if (!(duplicatePoints.size() == allPoints)) {
+            if (!(duplicatePoints.size() == allPointsCount)) {
                 TrackTools.removePoints(gpx, duplicatePoints);
-                allPoints = track.getTrackPoints().size();
+                allPointsCount = allPoints.size();
                 duplicatePoints = fileManager.alreadyImportedGpx(gpx);
             } else {
                 return;
@@ -252,7 +257,7 @@ public class OperationManager {
             fileManager.saveAreaGpxFileInFolders(gpx, file.getName());
         } else {
             if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-                queue.add(new GpxFile(file, rawfileHash, gpx));
+                queue.add(new GpxFile(file, file.getName(), rawfileHash, gpx));
                 queueSize++;
             } else {
                 System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
@@ -370,8 +375,8 @@ public class OperationManager {
             return;
         }
         GpxFile gpxFile = currentTrackCutter.getGpxFile();
-        fileManager.saveWaypointFileInFolders(gpxFile.getFile(), name + ".gpx");
-        fileManager.saveWaypointFileInfo(gpxFile.getFile().getName(), name + ".gpx", gpxFile.getRawfileHash());
+        fileManager.saveWaypointFileInFolders(gpxFile.getGpx(), name.trim().replace(" ", "_") + ".gpx");
+        fileManager.saveWaypointFileInfo(gpxFile.getRawFileName() + ".gpx", name.trim().replace(" ", "_") + ".gpx", gpxFile.getRawfileHash());
         checkForMoreFiles();
     }
 

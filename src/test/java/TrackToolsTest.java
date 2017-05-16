@@ -1,7 +1,7 @@
+import com.hs.gpxparser.modal.GPX;
+import com.hs.gpxparser.modal.Track;
+import com.hs.gpxparser.modal.Waypoint;
 import no.hvl.dowhile.utility.TrackTools;
-import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,7 +39,7 @@ public class TrackToolsTest {
         trackPoint0 = trackPoints.get(0);
         trackPoint1 = trackPoints.get(1);
 
-        trackPoint1Copy = new Waypoint();
+        trackPoint1Copy = new Waypoint(14, 35);
         trackPoint1Copy.setLatitude(trackPoint1.getLatitude());
         trackPoint1Copy.setLongitude(trackPoint1.getLongitude());
         trackPoint1Copy.setElevation(trackPoint1.getElevation());

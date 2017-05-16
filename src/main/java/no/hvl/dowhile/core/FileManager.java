@@ -1,11 +1,11 @@
 package no.hvl.dowhile.core;
 
+import com.hs.gpxparser.GPXWriter;
+import com.hs.gpxparser.modal.GPX;
+import com.hs.gpxparser.modal.Track;
+import com.hs.gpxparser.modal.Waypoint;
 import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.TrackTools;
-import org.alternativevision.gpx.GPXParser;
-import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -226,7 +226,7 @@ public class FileManager {
             return new ArrayList<>();
         }
         Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);
-        if(newTrack != null) {
+        if (newTrack != null) {
             return TrackTools.duplicateGpx(rawFiles, newTrack);
         } else {
             return new ArrayList<>();
@@ -371,10 +371,10 @@ public class FileManager {
         saveGpxFile(areaGPX, null, filename, areaFolder);
     }
 
-    public void saveWaypointFileInFolders(File waypointFile, String filename) {
-        saveWaypointFile(mainOperationFolder.getWaypointFolder(), waypointFile, filename);
+    public void saveWaypointFileInFolders(GPX waypointGpx, String filename) {
+        saveGpxFile(waypointGpx, null, filename, mainOperationFolder.getWaypointFolder());
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveWaypointFile(operationFolder.getWaypointFolder(), waypointFile, filename);
+            saveGpxFile(waypointGpx, null, filename, operationFolder.getWaypointFolder());
         }
     }
 
@@ -401,16 +401,17 @@ public class FileManager {
             if (!file.exists()) {
                 file.createNewFile();
             }
+            GPXWriter gpxWriter = new GPXWriter();
             FileOutputStream outputStream = new FileOutputStream(file);
-            new GPXParser().writeGPX(gpx, outputStream);
+            gpxWriter.writeGPX(gpx, outputStream);
             outputStream.close();
             FileTools.cleanXmlFile(gpx, file);
-            if (trackInfo != null) {
+            /*if (trackInfo != null) {
                 String color = OPERATION_MANAGER.getConfig().getColorForTeam(trackInfo.getCrewType());
                 if (color != null) {
                     FileTools.insertDisplayColor(gpx, file, color);
                 }
-            }
+            }*/
         } catch (IOException ex) {
             System.err.println("Failed to save raw file.");
             ex.printStackTrace();
@@ -438,16 +439,17 @@ public class FileManager {
             if (!file.exists()) {
                 file.createNewFile();
             }
+            GPXWriter gpxWriter = new GPXWriter();
             FileOutputStream outputStream = new FileOutputStream(file);
-            new GPXParser().writeGPX(gpx, outputStream);
+            gpxWriter.writeGPX(gpx, outputStream);
             outputStream.close();
             FileTools.cleanXmlFile(gpx, file);
-            if (trackInfo != null) {
+            /*if (trackInfo != null) {
                 String color = OPERATION_MANAGER.getConfig().getColorForTeam(trackInfo.getCrewType());
                 if (color != null) {
                     FileTools.insertDisplayColor(gpx, file, color);
                 }
-            }
+            }*/
             hash = FileTools.hashFile(file);
         } catch (IOException ex) {
             System.err.println("Failed to save raw file.");

@@ -1,8 +1,9 @@
 package no.hvl.dowhile.core;
 
+import com.hs.gpxparser.modal.Track;
+import com.hs.gpxparser.modal.TrackSegment;
+import com.hs.gpxparser.modal.Waypoint;
 import no.hvl.dowhile.utility.TrackTools;
-import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +35,10 @@ public class TrackCutter {
      */
     public void filterOnTimeStarted(Date startTime) {
         Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
-        ArrayList<Waypoint> trackPoints = track.getTrackPoints();
+        ArrayList<Waypoint> trackPoints = new ArrayList<>();
+        for (TrackSegment allPointsSegment : track.getTrackSegments()) {
+            trackPoints.addAll(allPointsSegment.getWaypoints());
+        }
         ArrayList<Waypoint> pointsToRemove = new ArrayList<>();
         long startTimeMillis = startTime.getTime();
 
@@ -45,7 +49,11 @@ public class TrackCutter {
             }
         }
         trackPoints.removeAll(pointsToRemove);
-        track.setTrackPoints(trackPoints);
+        TrackSegment trackSegment = new TrackSegment();
+        trackSegment.setWaypoints(trackPoints);
+        ArrayList<TrackSegment> trackSegments = new ArrayList<>();
+        trackSegments.add(trackSegment);
+        track.setTrackSegments(trackSegments);
     }
 
     /**

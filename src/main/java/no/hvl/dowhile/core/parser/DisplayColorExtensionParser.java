@@ -1,3 +1,4 @@
+/*
 package no.hvl.dowhile.core.parser;
 
 import org.alternativevision.gpx.beans.GPX;
@@ -69,3 +70,4 @@ public class DisplayColorExtensionParser implements IExtensionParser {
 
     }
 }
+*/

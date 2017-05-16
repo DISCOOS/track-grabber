@@ -1,14 +1,17 @@
 package no.hvl.dowhile.utility;
 
-import no.hvl.dowhile.core.parser.DisplayColorExtensionParser;
-import org.alternativevision.gpx.GPXParser;
-import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
+import com.hs.gpxparser.GPXParser;
+import com.hs.gpxparser.modal.GPX;
+import com.hs.gpxparser.modal.Track;
+import com.hs.gpxparser.modal.TrackSegment;
+import com.hs.gpxparser.modal.Waypoint;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Utility methods to work with GPX files and tracks.
@@ -38,7 +41,7 @@ public class TrackTools {
      */
     public static boolean fileHasTrack(GPX gpx) {
         Track track = getTrackFromGPXFile(gpx);
-        return track != null && track.getTrackPoints() != null && !track.getTrackPoints().isEmpty();
+        return track != null && track.getTrackSegments() != null && !track.getTrackSegments().isEmpty();
     }
 
     /**
@@ -51,7 +54,8 @@ public class TrackTools {
     public static boolean trackCreatedBeforeStartTime(GPX gpx, Date operationStartTime) {
         Track track = getTrackFromGPXFile(gpx);
         if (fileHasTrack(gpx)) {
-            Waypoint lastPoint = track.getTrackPoints().get(track.getTrackPoints().size() - 1);
+            List<Waypoint> waypoints = track.getTrackSegments().get(track.getTrackSegments().size() - 1).getWaypoints();
+            Waypoint lastPoint = waypoints.get(waypoints.size() - 1);
             if (lastPoint == null) {
                 return false;
             }
@@ -70,14 +74,21 @@ public class TrackTools {
     public static GPX getGpxFromFile(File file) {
         GPX gpx = null;
         GPXParser gpxParser = new GPXParser();
-        DisplayColorExtensionParser colorParser = new DisplayColorExtensionParser();
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            gpx = gpxParser.parseGPX(inputStream);
+            inputStream.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        /*DisplayColorExtensionParser colorParser = new DisplayColorExtensionParser();
         gpxParser.addExtensionParser(colorParser);
         try {
             gpx = gpxParser.parseGPX(new FileInputStream(file));
         } catch (Exception ex) {
             System.err.println("File not found or something.");
             ex.printStackTrace();
-        }
+        }*/
         return gpx;
     }
 
@@ -96,8 +107,16 @@ public class TrackTools {
             if (rawGpx != null && fileHasTrack(rawGpx)) {
                 Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
                 if (firstWaypointsMatch(rawGpx, newTrack)) {
-                    List<Waypoint> newPoints = newTrack.getTrackPoints();
-                    List<Waypoint> rawPoints = rawTrack.getTrackPoints();
+                    /*List<Waypoint> newPoints = newTrack.getTrackPoints();
+                    List<Waypoint> rawPoints = rawTrack.getTrackPoints();*/
+                    List<Waypoint> newPoints = new ArrayList<>();
+                    List<Waypoint> rawPoints = new ArrayList<>();
+                    for (TrackSegment newPointsSegment : newTrack.getTrackSegments()) {
+                        newPoints.addAll(newPointsSegment.getWaypoints());
+                    }
+                    for (TrackSegment rawPointsSegment : rawTrack.getTrackSegments()) {
+                        rawPoints.addAll(rawPointsSegment.getWaypoints());
+                    }
                     if (newPoints != null && rawPoints != null) {
                         for (int i = 0; i < newPoints.size() && i < rawPoints.size(); i++) {
                             if (matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
@@ -122,10 +141,10 @@ public class TrackTools {
      * @return true if the points are matching, false if not.
      */
     public static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
-        if (waypoint1.getElevation() == null || waypoint2.getElevation() == null) {
-            return waypoint1.getLatitude().equals(waypoint2.getLatitude()) && waypoint1.getLongitude().equals(waypoint2.getLongitude());
+        if (waypoint1.getElevation() == -1 || waypoint2.getElevation() == -1) {
+            return waypoint1.getLatitude() == waypoint2.getLatitude() && waypoint1.getLongitude() == (waypoint2.getLongitude());
         } else {
-            return waypoint1.getLatitude().equals(waypoint2.getLatitude()) && waypoint1.getLongitude().equals(waypoint2.getLongitude()) && waypoint1.getElevation().equals(waypoint2.getElevation());
+            return waypoint1.getLatitude() == waypoint2.getLatitude() && waypoint1.getLongitude() == waypoint2.getLongitude() && waypoint1.getElevation() == waypoint2.getElevation();
         }
     }
 
@@ -138,7 +157,7 @@ public class TrackTools {
      */
     public static boolean firstWaypointsMatch(GPX oldGpx, Track newTrack) {
         Track track1 = getTrackFromGPXFile(oldGpx);
-        return matchingTrackPoints(track1.getTrackPoints().get(0), newTrack.getTrackPoints().get(0));
+        return matchingTrackPoints(track1.getTrackSegments().get(0).getWaypoints().get(0), newTrack.getTrackSegments().get(0).getWaypoints().get(0));
     }
 
     /**
@@ -151,7 +170,7 @@ public class TrackTools {
         if (!fileHasTrack(gpx)) {
             return false;
         }
-        return track.getTrackPoints().get(0).getTime() == null;
+        return track.getTrackSegments().get(0).getWaypoints().get(0).getTime() == null;
     }
 
     /**
@@ -178,7 +197,10 @@ public class TrackTools {
         if (track == null) {
             return;
         }
-        List<Waypoint> allPoints = track.getTrackPoints();
+        List<Waypoint> allPoints = new ArrayList<>();
+        for (TrackSegment allPointsSegment : track.getTrackSegments()) {
+            allPoints.addAll(allPointsSegment.getWaypoints());
+        }
         if (allPoints == null || allPoints.isEmpty()) {
             return;
         }
@@ -203,7 +225,7 @@ public class TrackTools {
     public static String getDayStringFromTrack(GPX gpx) {
         if (fileHasTrack(gpx)) {
             Track track = getTrackFromGPXFile(gpx);
-            Date date = track.getTrackPoints().get(0).getTime();
+            Date date = track.getTrackSegments().get(0).getWaypoints().get(0).getTime();
             return StringTools.formatDateForOrganizing(date);
         } else {
             return null;
@@ -219,7 +241,7 @@ public class TrackTools {
     public static String getStartTimeFromTrack(GPX gpx) {
         if (fileHasTrack(gpx)) {
             Track track = getTrackFromGPXFile(gpx);
-            Date startDate = track.getTrackPoints().get(0).getTime();
+            Date startDate = track.getTrackSegments().get(0).getWaypoints().get(0).getTime();
             return StringTools.formatDateForFileProcessing(startDate);
         } else {
             return null;
@@ -235,7 +257,7 @@ public class TrackTools {
     public static String getEndTimeFromTrack(GPX gpx) {
         if (fileHasTrack(gpx)) {
             Track track = getTrackFromGPXFile(gpx);
-            List<Waypoint> trackPoints = track.getTrackPoints();
+            List<Waypoint> trackPoints = track.getTrackSegments().get(track.getTrackSegments().size() - 1).getWaypoints();
             Date endDate = trackPoints.get(trackPoints.size() - 1).getTime();
             return StringTools.formatDateForFileProcessing(endDate);
         } else {
@@ -252,7 +274,7 @@ public class TrackTools {
     public static List<GPX> splitWaypointGpx(GPX gpx) {
         List<GPX> waypointGpxs = new ArrayList<>();
         List<Waypoint> waypointsInFile = getWaypointsFromFile(gpx);
-        for(int i = 0; i < waypointsInFile.size(); i++) {
+        for (int i = 0; i < waypointsInFile.size(); i++) {
             GPX gpxCopy = gpx;
             HashSet<Waypoint> waypointSet = new HashSet<>();
             waypointSet.add(waypointsInFile.get(i));

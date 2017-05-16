@@ -1,6 +1,6 @@
 package no.hvl.dowhile.core;
 
-import org.alternativevision.gpx.beans.GPX;
+import com.hs.gpxparser.modal.GPX;
 
 import java.io.File;
 
@@ -9,6 +9,7 @@ import java.io.File;
  */
 public class GpxFile {
     private File file;
+    private String rawFileName;
     private String rawfileHash;
     private GPX gpx;
 
@@ -19,8 +20,9 @@ public class GpxFile {
      * @param rawFileHash Hash value of the saved raw file.
      * @param gpx         the parsed GPX object.
      */
-    public GpxFile(File file, String rawFileHash, GPX gpx) {
+    public GpxFile(File file, String rawFileName, String rawFileHash, GPX gpx) {
         this.file = file;
+        this.rawFileName = rawFileName;
         this.rawfileHash = rawFileHash;
         this.gpx = gpx;
     }
@@ -32,6 +34,10 @@ public class GpxFile {
      */
     public File getFile() {
         return file;
+    }
+
+    public String getRawFileName() {
+        return rawFileName;
     }
 
     /**

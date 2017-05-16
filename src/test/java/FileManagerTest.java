@@ -1,7 +1,10 @@
-import no.hvl.dowhile.core.*;
+import com.hs.gpxparser.modal.GPX;
+import no.hvl.dowhile.core.FileManager;
+import no.hvl.dowhile.core.Operation;
+import no.hvl.dowhile.core.OperationManager;
+import no.hvl.dowhile.core.TrackInfo;
 import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.TrackTools;
-import org.alternativevision.gpx.beans.GPX;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,7 +16,6 @@ import java.io.IOException;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class FileManagerTest {

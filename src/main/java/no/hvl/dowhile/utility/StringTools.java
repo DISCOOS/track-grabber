@@ -1,6 +1,6 @@
 package no.hvl.dowhile.utility;
 
-import org.alternativevision.gpx.beans.GPX;
+import com.hs.gpxparser.modal.GPX;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

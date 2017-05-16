@@ -1,19 +1,17 @@
+import com.hs.gpxparser.modal.GPX;
+import com.hs.gpxparser.modal.Track;
+import com.hs.gpxparser.modal.Waypoint;
 import no.hvl.dowhile.core.GpxFile;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.core.TrackCutter;
 import no.hvl.dowhile.core.TrackInfo;
 import no.hvl.dowhile.utility.TrackTools;
-import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-
-import static junit.framework.TestCase.assertFalse;
 
 public class TrackCutterTest {
 
