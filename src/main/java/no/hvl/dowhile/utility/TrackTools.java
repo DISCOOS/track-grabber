@@ -261,15 +261,4 @@ public class TrackTools {
         }
         return waypointGpxs;
     }
-
-    /**
-     * Gets the total distance covered in the track the track.
-     *
-     * @param gpx The GPX file to get the points from.
-     * @return The distance covered.
-     */
-    public static double getDistanceFromTrack(GPX gpx) {
-        // TODO make this method
-        return 0.0;
-    }
 }
