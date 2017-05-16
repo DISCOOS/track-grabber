@@ -115,7 +115,7 @@ public class TrackPanel extends JPanel {
         add(trackHeaderLabel, constraints);
 
         // Current file imported from GPS
-        String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + "Ingen fil.";
+        String currentImportedFile = "Ingen fil.";
         currentImportLabel = WINDOW.makeLabel(currentImportedFile, Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 3);
         add(currentImportLabel, constraints);
@@ -326,7 +326,7 @@ public class TrackPanel extends JPanel {
      * @param queuePosition current postion in queue
      */
     public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
-        String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + filename;
+        String currentImportedFile = filename;
         String remainingFiles = "Prosesserer fil " + queuePosition + " av " + queueSize;
         currentImportLabel.setText(currentImportedFile);
         remainingFilesLabel.setText(remainingFiles);

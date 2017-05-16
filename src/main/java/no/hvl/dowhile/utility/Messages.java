@@ -40,7 +40,6 @@ public enum Messages {
     OPERATION_INFO_NAME("Navn: %1"),
     OPERATION_INFO_START("Start: %1"),
     TRACK_NUMBER("Spornummer: "),
-    IMPORTED_FROM_GPS("Fil startet: "),
     IMPORTED_FILES_LEFT_TO_PROCESS("Det er nå %1 filer i kø for prosessering."),
     TRACK_COMMENT("Kommentar til sporfilen: "),
     TRACK_COMMENT_PLACEHOLDER("Valgfri"),
@@ -77,8 +76,10 @@ public enum Messages {
     GO_BACK("Tilbake"),
 
     // Waypoint panel
+    IMPORTED_FROM_WAYPOINT_GPS("Waypoint-fil: "),
     WAYPOINT_HEADER("Prosesserer veipunkt"),
-    NEW_NAME("Nytt navn");
+    NEW_NAME("Nytt navn for waypoint"),
+    NEW_DESCRIPTION("Beskrivelse av waypoint");
 
     private String message;
 

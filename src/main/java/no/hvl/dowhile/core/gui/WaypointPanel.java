@@ -18,6 +18,7 @@ public class WaypointPanel extends JPanel {
     private JLabel waypointHeaderLabel;
     private JLabel currentWaypointLabel;
     private JTextField waypointNameInput;
+    private JTextField waypointDescriptionInput;
     private JButton confirmNameButton;
 
     private JLabel queueLabel;
@@ -45,7 +46,7 @@ public class WaypointPanel extends JPanel {
         add(waypointHeaderLabel, constraints);
 
         // Label with the current waypoint file
-        currentWaypointLabel = WINDOW.makeLabel(Messages.IMPORTED_FROM_GPS.get() + "Ingen fil.", Font.PLAIN);
+        currentWaypointLabel = WINDOW.makeLabel(Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + "Ingen fil.", Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 1);
         add(currentWaypointLabel, constraints);
 
@@ -56,14 +57,21 @@ public class WaypointPanel extends JPanel {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(waypointNameInput, constraints);
 
+        // Input for description for waypoint file
+        waypointDescriptionInput = WINDOW.makeTextField(100, 60);
+        PromptSupport.setPrompt(Messages.NEW_DESCRIPTION.get(), waypointDescriptionInput);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 2);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(waypointDescriptionInput, constraints);
+
         // Confirm button
         confirmNameButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get(), 150, 50);
-        WINDOW.modifyConstraints(constraints, 2, 2, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.WEST, 1);
         add(confirmNameButton, constraints);
 
         // Queue with remaining waypoint files
         queueLabel = WINDOW.makeLabel(Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get(), Font.BOLD);
-        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.WEST, 1);
         add(queueLabel, constraints);
     }
 
@@ -87,7 +95,7 @@ public class WaypointPanel extends JPanel {
      * @param queuePosition current postion in queue
      */
     public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
-        String currentImportedFile = Messages.IMPORTED_FROM_GPS.get() + filename;
+        String currentImportedFile = Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + filename;
         String remainingFiles = "Prosesserer fil " + queuePosition + " av " + queueSize;
         currentWaypointLabel.setText(currentImportedFile);
         queueLabel.setText(remainingFiles);
