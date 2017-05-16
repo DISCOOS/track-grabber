@@ -135,7 +135,6 @@ public class OperationManager {
         operation.setStartTime(year, month, day, hour, minute);
         window.updateOperationInfo(operation);
         fileManager.updateOperationFile(operation);
-        // importMassTestingFiles(); // FOR TESTING.
     }
 
     /**
@@ -303,6 +302,11 @@ public class OperationManager {
         checkForMoreFiles();
     }
 
+    /**
+     * This method is used for testing import of loads of files.
+     * No user interaction is required to import the files.
+     * The files you want to import need to be in a folder named "MassTesting" in the C://TrackGrabber folder.
+     */
     public void importMassTestingFiles() {
         long startTime = System.currentTimeMillis();
         int filesImported = 0;

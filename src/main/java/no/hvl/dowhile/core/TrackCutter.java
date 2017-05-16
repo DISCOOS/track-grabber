@@ -7,7 +7,6 @@ import no.hvl.dowhile.utility.TrackTools;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Processing a GPX file. Removing unnecessary data.

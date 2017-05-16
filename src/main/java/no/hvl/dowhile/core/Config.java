@@ -17,6 +17,9 @@ public class Config {
     private String filename;
     private List<TeamType> teamTypes;
 
+    /**
+     * Constructor setting a default filename.
+     */
     public Config() {
         this.filename = "%LAGTYPE%%LAGNUMMER%_TEIG%TEIGNUMMER%_SPOR%SPORNUMMER%_%DATO%.gpx";
         this.teamTypes = new ArrayList<>();
@@ -108,6 +111,11 @@ public class Config {
         return teamNames;
     }
 
+    /**
+     * Parse the config file and extract the needed information.
+     *
+     * @param file the config file.
+     */
     public void parseConfigFile(File file) {
         if (file == null || !file.getName().equals("config.txt")) {
             return;

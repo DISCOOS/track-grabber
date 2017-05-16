@@ -41,10 +41,13 @@ public class StringTools {
 
     /**
      * Formatting a Date into a String without year.
+     *
      * @param date the date to format.
      * @return the date formatted as a String without year.
      */
-    public static String formatDateForFileProcessing(Date date) { return new SimpleDateFormat("dd-MM HH:mm").format(date); }
+    public static String formatDateForFileProcessing(Date date) {
+        return new SimpleDateFormat("dd-MM HH:mm").format(date);
+    }
 
     /**
      * Checks if a given name is a valid operation name (contains only letters and/or numbers).
@@ -87,6 +90,7 @@ public class StringTools {
 
     /**
      * Gets the track's start time and end time as one single String.
+     *
      * @param gpx The file to get the times from.
      * @return The start time and end time.
      */

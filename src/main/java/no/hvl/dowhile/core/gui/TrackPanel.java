@@ -321,8 +321,8 @@ public class TrackPanel extends JPanel {
     /**
      * Updating info about the file currently being processed.
      *
-     * @param filename  the new filename.
-     * @param queueSize Total files in queue
+     * @param filename      the new filename.
+     * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
     public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
@@ -342,7 +342,7 @@ public class TrackPanel extends JPanel {
         this.trackDistance = trackDistance;
 
         if (trackDistance > 1000.0) {
-            double trackDistanceInKm = trackDistance/1000;
+            double trackDistanceInKm = trackDistance / 1000;
             trackLengthLabel.setText(Messages.TRACK_LENGTH.get() + df.format(trackDistanceInKm) + " km");
         } else {
             trackLengthLabel.setText(Messages.TRACK_LENGTH.get() + df.format(trackDistance) + " m");
@@ -358,7 +358,7 @@ public class TrackPanel extends JPanel {
         int x = 1;
         for (JRadioButton radioButton : radioButtons) {
             WINDOW.modifyConstraints(constraints, x, y, GridBagConstraints.WEST, 1);
-            radioButton.setPreferredSize(new Dimension(200,50));
+            radioButton.setPreferredSize(new Dimension(200, 50));
             add(radioButton, constraints);
             allInputComponents.add(radioButton);
             y++;

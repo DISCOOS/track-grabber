@@ -154,6 +154,11 @@ public class Operation {
         extraPaths.add(path);
     }
 
+    /**
+     * Get the paths as a string for display in the GUI.
+     *
+     * @return the paths as a string.
+     */
     public String pathsToString() {
         StringBuilder allPaths = new StringBuilder("<html>");
         allPaths.append(mainPath).append("<br>");

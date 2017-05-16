@@ -242,6 +242,15 @@ public class OperationFolder {
         }
     }
 
+    /**
+     * Save information about a track to the CSV file for the current operation.
+     *
+     * @param info             the trackinfo object with info about the track.
+     * @param time             time of import.
+     * @param originalFile     the name of the original/raw file.
+     * @param processedFile    the name of the processed file.
+     * @param originalFileHash the hash of the original/raw file.
+     */
     public void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalFileHash) {
         FileTools.writeToCsvFile(trackFileInfo,
                 info.getCrewType(), info.getCrewNumber() + "", info.getCrewCount() + "", info.getAreaSearched(),
@@ -250,6 +259,14 @@ public class OperationFolder {
         );
     }
 
+    /**
+     * Save information about a waypoint to the CSV file for the current operation.
+     *
+     * @param comment       comment about the waypoint.
+     * @param originalFile  the name of the original/raw file.
+     * @param processedFile the name of the processed file.
+     * @param originalHash  the hash of the original/raw file.
+     */
     public void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
         FileTools.writeToCsvFile(waypointFileInfo, comment, originalFile, processedFile, originalHash);
     }

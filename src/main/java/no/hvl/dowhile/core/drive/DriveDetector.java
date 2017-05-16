@@ -141,6 +141,11 @@ public class DriveDetector implements Runnable {
         return gpsDrive;
     }
 
+    /**
+     * Get the drives detected by the application.
+     *
+     * @return the map of detected drives.
+     */
     public Map<String, Drive> getDetectedDrives() {
         return detectedDrives;
     }

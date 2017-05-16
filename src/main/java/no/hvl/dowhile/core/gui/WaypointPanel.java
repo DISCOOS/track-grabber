@@ -91,8 +91,8 @@ public class WaypointPanel extends JPanel {
     /**
      * Updating info about the file currently being processed.
      *
-     * @param filename  the new filename.
-     * @param queueSize Total files in queue
+     * @param filename      the new filename.
+     * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
     public void updateCurrentFile(String filename, int queueSize, int queuePosition) {

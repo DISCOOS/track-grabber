@@ -36,6 +36,11 @@ public class GpxFile {
         return file;
     }
 
+    /**
+     * Get the name of the raw file for this gpx file.
+     *
+     * @return the name of the raw file.
+     */
     public String getRawFileName() {
         return rawFileName;
     }
@@ -58,6 +63,11 @@ public class GpxFile {
         return gpx;
     }
 
+    /**
+     * Set the gpx object of for this object.
+     *
+     * @param gpx the gpx to set.
+     */
     public void setGpx(GPX gpx) {
         this.gpx = gpx;
     }

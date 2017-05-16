@@ -118,18 +118,18 @@ public class TrackInfo {
     }
 
     /**
-     * Get the distance covered in track
+     * Get the distance covered in track.
      *
-     * @return distance covered
+     * @return distance covered.
      */
     public double getDistance() {
         return distance;
     }
 
     /**
-     * Set the distance covered in the track
+     * Set the distance covered in the track.
      *
-     * @param distance the distance to be set
+     * @param distance the distance to be set.
      */
     public void setDistance(double distance) {
         this.distance = distance;

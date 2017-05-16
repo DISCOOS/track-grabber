@@ -33,7 +33,13 @@ public class TrackTools {
         return null;
     }
 
-    public static ArrayList<Waypoint> getAllTrackPoints (Track track) {
+    /**
+     * Get all track points from all track segments of a track.
+     *
+     * @param track the track to search for points.
+     * @return all points in the track.
+     */
+    public static ArrayList<Waypoint> getAllTrackPoints(Track track) {
         List<TrackSegment> trackSegments = track.getTrackSegments();
         ArrayList<Waypoint> trackPoints = new ArrayList<>();
         for (TrackSegment trackSegment : trackSegments) {
@@ -90,14 +96,6 @@ public class TrackTools {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        /*DisplayColorExtensionParser colorParser = new DisplayColorExtensionParser();
-        gpxParser.addExtensionParser(colorParser);
-        try {
-            gpx = gpxParser.parseGPX(new FileInputStream(file));
-        } catch (Exception ex) {
-            System.err.println("File not found or something.");
-            ex.printStackTrace();
-        }*/
         return gpx;
     }
 
@@ -263,12 +261,24 @@ public class TrackTools {
         }
     }
 
+    /**
+     * Get the waypoints from a gpx object.
+     *
+     * @param gpx the gpx to search in.
+     * @return list of waypoints in the file.
+     */
     public static List<Waypoint> getWaypointsFromFile(GPX gpx) {
         HashSet<Waypoint> waypointsSet = gpx.getWaypoints();
         List<Waypoint> waypoints = new ArrayList<>(waypointsSet);
         return waypoints;
     }
 
+    /**
+     * Split the waypoints into different gpx objects.
+     *
+     * @param file the file to check.
+     * @return list of gpx objects with one waypoint per object.
+     */
     public static List<GPX> splitWaypointGpx(File file) {
         GPX gpx = getGpxFromFile(file);
         List<GPX> waypointGpxs = new ArrayList<>();
@@ -284,31 +294,41 @@ public class TrackTools {
         return waypointGpxs;
     }
 
+    /**
+     * Get the distance between all points in a track.
+     *
+     * @param gpx the gpx to check.
+     * @return the distance between all points.
+     */
     public static double getDistanceFromTrack(GPX gpx) {
         Track track = TrackTools.getTrackFromGPXFile(gpx);
         List<Waypoint> trackPoints = getAllTrackPoints(track);
-
         double totalLength = 0.0;
-
-        for(int i = 1; i < trackPoints.size(); i++) {
-            double lat1 = trackPoints.get(i-1).getLatitude();
+        for (int i = 1; i < trackPoints.size(); i++) {
+            double lat1 = trackPoints.get(i - 1).getLatitude();
             double lat2 = trackPoints.get(i).getLatitude();
-            double lon1 = trackPoints.get(i-1).getLongitude();
+            double lon1 = trackPoints.get(i - 1).getLongitude();
             double lon2 = trackPoints.get(i).getLongitude();
-            double el1 = trackPoints.get(i-1).getElevation();
+            double el1 = trackPoints.get(i - 1).getElevation();
             double el2 = trackPoints.get(i).getElevation();
-
-            totalLength+= distance(lat1, lat2, lon1, lon2, el1, el2);
+            totalLength += distance(lat1, lat2, lon1, lon2, el1, el2);
         }
-
         return totalLength;
     }
 
-    private static double distance(double lat1, double lat2, double lon1,
-                                  double lon2, double el1, double el2) {
-
+    /**
+     * Utility method for calculating the distance between to points.
+     *
+     * @param lat1 latitude of point one.
+     * @param lat2 latitude of point two.
+     * @param lon1 longitude of point one.
+     * @param lon2 longitude of point two.
+     * @param el1  elevation of point one.
+     * @param el2  elevation of point two.
+     * @return the distance between the points.
+     */
+    private static double distance(double lat1, double lat2, double lon1, double lon2, double el1, double el2) {
         final int R = 6371; // Radius of the earth
-
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
@@ -316,11 +336,8 @@ public class TrackTools {
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = R * c * 1000; // convert to meters
-
         double height = el1 - el2;
-
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
-
         return Math.sqrt(distance);
     }
 }

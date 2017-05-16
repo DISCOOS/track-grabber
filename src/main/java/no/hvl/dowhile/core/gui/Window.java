@@ -181,8 +181,8 @@ public class Window extends JFrame {
     /**
      * Telling the track panel to update the info about which file is currently processed.
      *
-     * @param filename  the name of the file.
-     * @param queueSize Total files in queue
+     * @param filename      the name of the file.
+     * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
     public void updateCurrentTrackFile(String filename, int queueSize, int queuePosition, double trackDistance) {

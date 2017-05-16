@@ -118,6 +118,12 @@ public class FileTools {
         }
     }
 
+    /**
+     * Get the SHA-256 hash value of a file.
+     *
+     * @param file the file to hash.
+     * @return the hash of the file.
+     */
     public static String hashFile(File file) {
         try {
             MessageDigest sha = MessageDigest.getInstance("SHA-256");

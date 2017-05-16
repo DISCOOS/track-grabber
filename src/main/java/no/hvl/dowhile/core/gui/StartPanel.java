@@ -9,7 +9,7 @@ import no.hvl.dowhile.utility.StringTools;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.Locale;
 
 /**
  * Created by JonKjetil on 15.05.2017.
@@ -138,7 +138,7 @@ public class StartPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.CENTER, 2);
         add(datePicker, constraints);
 
-        timePicker = WINDOW.makeTimePicker(50,30);
+        timePicker = WINDOW.makeTimePicker(50, 30);
         WINDOW.modifyConstraints(constraints, 2, 6, GridBagConstraints.WEST, 2);
         add(timePicker, constraints);
 
@@ -151,7 +151,6 @@ public class StartPanel extends JPanel {
 
     /**
      * set the initial visibility for StartPanel
-     *
      */
     private void setInitialVisibility() {
         setVisibilityOperationButtons(true);

@@ -7,7 +7,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 /**
  * Created by JonKjetil on 12.05.2017.
@@ -31,8 +30,8 @@ public class StandByPanel extends JPanel {
         WINDOW.setConstraintsInsets(constraints, 5);
 
         infoLabel = WINDOW.makeLabel(Messages.AWAITING_GPS.get(), Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 0,0,GridBagConstraints.WEST, 3);
-        add(infoLabel,constraints);
+        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 3);
+        add(infoLabel, constraints);
 
         // Import local GPX-file button
         importFileButton = WINDOW.makeButton(Messages.IMPORT_LOCAL_FILE.get(), 400, 60);
@@ -54,7 +53,7 @@ public class StandByPanel extends JPanel {
         operationPanelButton = WINDOW.makeButton("", NEW_WIDTH, NEW_HEIGHT);
         try {
             Image img = ImageIO.read(getClass().getResource("/images/settings-icon.png"));
-            Image newimg = img.getScaledInstance( (NEW_WIDTH - 10), (NEW_HEIGHT - 10),  java.awt.Image.SCALE_SMOOTH ) ;
+            Image newimg = img.getScaledInstance((NEW_WIDTH - 10), (NEW_HEIGHT - 10), java.awt.Image.SCALE_SMOOTH);
             operationPanelButton.setIcon(new ImageIcon(newimg));
         } catch (Exception ex) {
             System.out.println(ex);

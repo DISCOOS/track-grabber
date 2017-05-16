@@ -36,6 +36,11 @@ public class FileManager {
         return mainOperationFolder.getOperationFolder().getAbsolutePath();
     }
 
+    /**
+     * Get the appfolder which is the place for the config and all the configuration file.
+     *
+     * @return the folder for the app.
+     */
     public File getAppFolder() {
         return appFolder;
     }
@@ -49,6 +54,12 @@ public class FileManager {
         this.appFolder = appFolder;
     }
 
+    /**
+     * Delete a file from the current operation.
+     * Should be used if an import is quit before the file is processed.
+     *
+     * @param filename the name of the file to delete.
+     */
     public void deleteRawFileInFolders(String filename) {
         deleteRawFile(mainOperationFolder.getRawFolder(), filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
@@ -233,10 +244,27 @@ public class FileManager {
         }
     }
 
+    /**
+     * Save information about a track to the CSV file for the current operation.
+     *
+     * @param info          the trackinfo object with info about the track.
+     * @param time          time of import.
+     * @param originalFile  the name of the original/raw file.
+     * @param processedFile the name of the processed file.
+     * @param originalHash  the hash of the original/raw file.
+     */
     public void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalHash) {
         mainOperationFolder.saveTrackFileInfo(info, time, originalFile, processedFile, originalHash);
     }
 
+    /**
+     * Save information about a waypoint to the CSV file for the current operation.
+     *
+     * @param comment       comment about the waypoint.
+     * @param originalFile  the name of the original/raw file.
+     * @param processedFile the name of the processed file.
+     * @param originalHash  the hash of the original/raw file.
+     */
     public void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
         mainOperationFolder.saveWaypointFileInfo(comment, originalFile, processedFile, originalHash);
     }
@@ -266,6 +294,13 @@ public class FileManager {
         return saveAndHashGpxFile(rawGpx, null, filename, rawFolder);
     }
 
+    /**
+     * Saving the gpx in the processed folder and the various orginazation folders.
+     *
+     * @param processedGpx the gpx to save.
+     * @param trackInfo    info about the track.
+     * @param filename     the name to save as.
+     */
     public void saveProcessedGpxFileInFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         saveProcessedGpxFile(mainOperationFolder.getProcessedFolder(), trackInfo, processedGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
@@ -465,20 +500,6 @@ public class FileManager {
     }
 
     /**
-     * Save and hash a raw waypoint file.
-     *
-     * @param file the file to save.
-     * @return the hash value of the file.
-     */
-    public String saveAndHashRawWaypoint(File file) {
-        String hash = saveAndHashFile(file, file.getName(), mainOperationFolder.getRawFolder());
-        for (OperationFolder extraOperationFolder : extraOperationFolders) {
-            saveFile(file, file.getName(), extraOperationFolder.getRawFolder());
-        }
-        return hash;
-    }
-
-    /**
      * Saving the file in the specified folder as the specified filename.
      *
      * @param fileToSave the file to save.
@@ -499,30 +520,6 @@ public class FileManager {
     }
 
     /**
-     * Saving the file in the specified folder as the specified filename.
-     *
-     * @param fileToSave the file to save.
-     * @param filename   the name for the new file.
-     * @param folder     the folder to save it in.
-     * @return the hash value of the saved file.
-     */
-    public String saveAndHashFile(File fileToSave, String filename, File folder) {
-        String hash = "";
-        try {
-            File file = new File(folder, filename);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            Files.copy(fileToSave.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            hash = FileTools.hashFile(file);
-        } catch (IOException ex) {
-            System.err.println("Failed to save file.");
-            ex.printStackTrace();
-        }
-        return hash;
-    }
-
-    /**
      * Sets the raw folder for the current operation.
      *
      * @param rawFolder the folder to save raw files.
@@ -540,6 +537,11 @@ public class FileManager {
         mainOperationFolder.setProcessedFolder(processedFolder);
     }
 
+    /**
+     * Get the main operation folder for the current operation.
+     *
+     * @return the main operation folder.
+     */
     public OperationFolder getMainOperationFolder() {
         return mainOperationFolder;
     }
