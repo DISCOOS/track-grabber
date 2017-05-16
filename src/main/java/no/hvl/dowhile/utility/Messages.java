@@ -51,6 +51,7 @@ public enum Messages {
     SUMMARY_CREW_COUNT("Antall mann: "),
     SUMMARY_AREA_SEARCHED("Teiger: "),
     SUMMARY_TRACK_COMMENT("Sporkommentar: "),
+    TRACK_LENGTH("Lengde på sporet: "),
 
 
     // Operation panel

@@ -7,6 +7,7 @@ import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class TrackPanel extends JPanel {
     private JLabel currentImportLabel;
     private JLabel remainingFilesLabel;
     private JLabel trackLengthLabel;
+    private double trackDistance;
     // Info for user at start of prosessing file
     private JLabel startInfoLabel;
     // Check boxes for selecting type of team and a label.
@@ -74,6 +76,7 @@ public class TrackPanel extends JPanel {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
         viewCount = 0;
+        trackDistance = 0.0;
         areaSearchedStrings = new ArrayList<>();
         allInputComponents = new ArrayList<>();
 
@@ -129,7 +132,7 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(startInfoLabel);
 
         trackLengthLabel = WINDOW.makeLabel("", Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 3);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 3);
         add(trackLengthLabel, constraints);
         allInputComponents.add(trackLengthLabel);
     }
@@ -329,8 +332,22 @@ public class TrackPanel extends JPanel {
         remainingFilesLabel.setText(remainingFiles);
     }
 
+    /**
+     * Updating the distance covered in the current track
+     *
+     * @param trackDistance the distance covered in the track
+     */
     public void updateCurrentFileDistance(double trackDistance) {
-        trackLengthLabel.setText(String.valueOf(trackDistance) + " km");
+        DecimalFormat df = new DecimalFormat("#.##");
+        this.trackDistance = trackDistance;
+
+        if (trackDistance > 1000.0) {
+            double trackDistanceInKm = trackDistance/1000;
+            trackLengthLabel.setText(Messages.TRACK_LENGTH.get() + df.format(trackDistanceInKm) + " km");
+        } else {
+            trackLengthLabel.setText(Messages.TRACK_LENGTH.get() + df.format(trackDistance) + " m");
+        }
+
     }
 
     /**
@@ -474,7 +491,7 @@ public class TrackPanel extends JPanel {
             String areaSearched = areaSearchedStrings.toString();
             int trackNumber = Integer.parseInt(trackNumberSpinner.getModel().getValue().toString());
             String trackComment = trackCommentInput.getText();
-            TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackNumber, trackComment);
+            TrackInfo trackInfo = new TrackInfo(crew, crewCount, crewNumber, areaSearched, trackDistance, trackNumber, trackComment);
             OPERATION_MANAGER.processFile(trackInfo);
 
             // Resetting all input fields

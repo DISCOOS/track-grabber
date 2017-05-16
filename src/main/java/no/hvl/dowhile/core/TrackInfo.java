@@ -8,6 +8,7 @@ public class TrackInfo {
     private int crewCount;
     private int crewNumber;
     private String areaSearched;
+    private double distance;
     private int trackNumber;
     private String comment;
 
@@ -19,6 +20,7 @@ public class TrackInfo {
         this.crewNumber = 0;
         this.crewCount = 0;
         this.areaSearched = "";
+        this.distance = 0.0;
         this.trackNumber = 0;
         this.comment = "";
     }
@@ -33,11 +35,12 @@ public class TrackInfo {
      * @param trackNumber  the number of track (if multiple tracks for a team etc).
      * @param comment      Optional comment about a track.
      */
-    public TrackInfo(String crewType, int crewCount, int crewNumber, String areaSearched, int trackNumber, String comment) {
+    public TrackInfo(String crewType, int crewCount, int crewNumber, String areaSearched, double distance, int trackNumber, String comment) {
         this.crewType = crewType;
         this.crewCount = crewCount;
         this.crewNumber = crewNumber;
         this.areaSearched = areaSearched;
+        this.distance = distance;
         this.trackNumber = trackNumber;
         this.comment = comment;
     }
@@ -112,6 +115,24 @@ public class TrackInfo {
      */
     public void setAreaSearched(String areaSearched) {
         this.areaSearched = areaSearched;
+    }
+
+    /**
+     * Get the distance covered in track
+     *
+     * @return distance covered
+     */
+    public double getDistance() {
+        return distance;
+    }
+
+    /**
+     * Set the distance covered in the track
+     *
+     * @param distance the distance to be set
+     */
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     /**
