@@ -153,7 +153,7 @@ public class TrackPanel extends JPanel {
 
         radioButtonGroup = new ButtonGroup();
         constraints.gridwidth = 2;
-        radioButtons = generateButtons(getCrewNames());
+        radioButtons = generateButtons(OPERATION_MANAGER.getConfig().getTeamNames());
         setButtonsInWindow();
     }
 

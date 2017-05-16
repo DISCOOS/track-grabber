@@ -46,6 +46,7 @@ public class DriveDetector implements Runnable {
                     if (!detectedDrives.containsKey(driveLetter)) {
                         if (driveLetter.equals("C")) {
                             OPERATION_MANAGER.setupLocalFolders(listRoot);
+                            OPERATION_MANAGER.showWindow();
                             List<Operation> operations = OPERATION_MANAGER.getExistingOperations();
                             OPERATION_MANAGER.showExistingOperations(operations);
                             registerConnectedDrive(driveLetter, listRoot);
