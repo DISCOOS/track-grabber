@@ -2,7 +2,6 @@ package no.hvl.dowhile.core;
 
 import com.hs.gpxparser.modal.GPX;
 import com.hs.gpxparser.modal.Track;
-import com.hs.gpxparser.modal.TrackSegment;
 import com.hs.gpxparser.modal.Waypoint;
 import no.hvl.dowhile.core.drive.DriveDetector;
 import no.hvl.dowhile.core.drive.GPSDrive;
@@ -237,16 +236,12 @@ public class OperationManager {
             System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
         }
-        List<Waypoint> allPoints = new ArrayList<>();
-        for (TrackSegment allPointsSegment : track.getTrackSegments()) {
-            allPoints.addAll(allPointsSegment.getWaypoints());
-        }
-        int allPointsCount = allPoints.size();
+        int allPointsCount = TrackTools.getAllTrackPoints(track).size();
         List<Waypoint> duplicatePoints = fileManager.alreadyImportedGpx(gpx);
         while (!duplicatePoints.isEmpty()) {
             if (!(duplicatePoints.size() == allPointsCount)) {
                 TrackTools.removePoints(gpx, duplicatePoints);
-                allPointsCount = allPoints.size();
+                allPointsCount = TrackTools.getAllTrackPoints(track).size();
                 duplicatePoints = fileManager.alreadyImportedGpx(gpx);
             } else {
                 return;
