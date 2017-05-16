@@ -231,6 +231,7 @@ public class OperationManager {
         while (!duplicatePoints.isEmpty()) {
             if (!(duplicatePoints.size() == allPoints)) {
                 TrackTools.removePoints(gpx, duplicatePoints);
+                allPoints = track.getTrackPoints().size();
                 duplicatePoints = fileManager.alreadyImportedGpx(gpx);
             } else {
                 return;

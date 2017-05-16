@@ -17,6 +17,8 @@ import java.util.List;
  * Utility methods to work with GPX files and tracks.
  */
 public class TrackTools {
+    private Track rawTrack;
+
     /**
      * Takes a GPX file and returns its track.
      *
@@ -94,21 +96,18 @@ public class TrackTools {
         List<Waypoint> duplicatePoints = new ArrayList<>();
         for (File rawFile : rawFiles) {
             GPX rawGpx = TrackTools.getGpxFromFile(rawFile);
-            if (rawGpx != null) {
-                if (fileHasTrack(rawGpx)) {
-                    Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
-                    if (firstWaypointsMatch(rawGpx, newTrack)) {
-                        System.err.println("First wps match");
-                        List<Waypoint> newPoints = newTrack.getTrackPoints();
-                        List<Waypoint> rawPoints = rawTrack.getTrackPoints();
-                        if (newPoints != null && rawPoints != null) {
-                            for (int i = 0; i < newPoints.size() && i < rawPoints.size(); i++) {
-                                if (matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
-                                    duplicatePoints.add(newPoints.get(i));
-                                } else {
-                                    duplicatePoints.clear();
-                                    return duplicatePoints;
-                                }
+            if (rawGpx != null && fileHasTrack(rawGpx)) {
+                Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
+                if (firstWaypointsMatch(rawGpx, newTrack)) {
+                    List<Waypoint> newPoints = newTrack.getTrackPoints();
+                    List<Waypoint> rawPoints = rawTrack.getTrackPoints();
+                    if (newPoints != null && rawPoints != null) {
+                        for (int i = 0; i < newPoints.size() && i < rawPoints.size(); i++) {
+                            if (matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
+                                duplicatePoints.add(newPoints.get(i));
+                            } else {
+                                duplicatePoints.clear();
+                                return duplicatePoints;
                             }
                         }
                     }
