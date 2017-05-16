@@ -343,7 +343,13 @@ public class OperationManager {
                     } else {
                         if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
                             String crewType = config.getTeamTypes().get(random.nextInt(config.getTeamNames().size())).getName();
-                            TrackInfo trackInfo = new TrackInfo(crewType, random.nextInt(40), random.nextInt(40), "[" + random.nextInt(40) + "]", random.nextInt(40), "MassTesting");
+                            TrackInfo trackInfo = new TrackInfo(
+                                    crewType, random.nextInt(40),
+                                    random.nextInt(40),
+                                    "[" + random.nextInt(40) + "]",
+                                    TrackTools.getDistanceFromTrack(gpx), random.nextInt(40),
+                                    "MassTesting"
+                            );
                             String filename = config.generateFilename(trackInfo);
                             Track track = TrackTools.getTrackFromGPXFile(gpx);
                             track.setName(filename);
