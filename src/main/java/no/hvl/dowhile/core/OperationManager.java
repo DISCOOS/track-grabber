@@ -217,8 +217,12 @@ public class OperationManager {
         }
         if (TrackTools.hasWaypoints(gpx)) {
             String rawWaypointFileHash = fileManager.saveAndHashRawWaypoint(file);
-            queue.add(new GpxFile(file, rawWaypointFileHash, gpx));
-            queueSize++;
+            List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(gpx);
+            for(GPX wpGpx : waypointsInGpx) {
+
+                queue.add(new GpxFile(file, rawWaypointFileHash, gpx));
+                queueSize++;
+            }
             return;
         }
         Track track = TrackTools.getTrackFromGPXFile(gpx);

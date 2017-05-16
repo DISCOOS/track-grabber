@@ -8,10 +8,7 @@ import org.alternativevision.gpx.beans.Waypoint;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Utility methods to work with GPX files and tracks.
@@ -244,5 +241,24 @@ public class TrackTools {
         } else {
             return null;
         }
+    }
+
+    public static List<Waypoint> getWaypointsFromFile(GPX gpx) {
+        HashSet<Waypoint> waypointsSet = gpx.getWaypoints();
+        List<Waypoint> waypoints = new ArrayList<>(waypointsSet);
+        return waypoints;
+    }
+
+    public static List<GPX> splitWaypointGpx(GPX gpx) {
+        List<GPX> waypointGpxs = new ArrayList<>();
+        List<Waypoint> waypointsInFile = getWaypointsFromFile(gpx);
+        for(int i = 0; i < waypointsInFile.size(); i++) {
+            GPX gpxCopy = gpx;
+            HashSet<Waypoint> waypointSet = new HashSet<>();
+            waypointSet.add(waypointsInFile.get(i));
+            gpxCopy.setWaypoints(waypointSet);
+            waypointGpxs.add(gpx);
+        }
+        return waypointGpxs;
     }
 }
