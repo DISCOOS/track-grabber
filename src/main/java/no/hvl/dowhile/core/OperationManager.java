@@ -273,8 +273,8 @@ public class OperationManager {
             window.updateCurrentWaypointFile(" ", queueSize, queuePosition);
             window.openWaypointPanel();
         } else {
-            //double trackDistance = TrackTools.getDistanceFromTrack(gpxFile.getGpx());
-            //window.updateCurrentTrackFile(StringTools.startTimeAndEndTimeToString(gpxFile.getGpx()), queueSize, queuePosition, trackDistance);
+            double trackDistance = TrackTools.getDistanceFromTrack(gpxFile.getGpx());
+            window.updateCurrentTrackFile(StringTools.startTimeAndEndTimeToString(gpxFile.getGpx()), queueSize, queuePosition, trackDistance);
             window.openTrackPanel();
         }
     }
