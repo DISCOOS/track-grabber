@@ -116,16 +116,8 @@ public class TrackTools {
             if (rawGpx != null && fileHasTrack(rawGpx)) {
                 Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
                 if (firstWaypointsMatch(rawGpx, newTrack)) {
-                    /*List<Waypoint> newPoints = newTrack.getTrackPoints();
-                    List<Waypoint> rawPoints = rawTrack.getTrackPoints();*/
-                    List<Waypoint> newPoints = new ArrayList<>();
-                    List<Waypoint> rawPoints = new ArrayList<>();
-                    for (TrackSegment newPointsSegment : newTrack.getTrackSegments()) {
-                        newPoints.addAll(newPointsSegment.getWaypoints());
-                    }
-                    for (TrackSegment rawPointsSegment : rawTrack.getTrackSegments()) {
-                        rawPoints.addAll(rawPointsSegment.getWaypoints());
-                    }
+                    List<Waypoint> newPoints = TrackTools.getAllTrackPoints(newTrack);
+                    List<Waypoint> rawPoints = TrackTools.getAllTrackPoints(rawTrack);
                     if (newPoints != null && rawPoints != null) {
                         for (int i = 0; i < newPoints.size() && i < rawPoints.size(); i++) {
                             if (matchingTrackPoints(newPoints.get(i), rawPoints.get(i))) {
@@ -206,10 +198,7 @@ public class TrackTools {
         if (track == null) {
             return;
         }
-        List<Waypoint> allPoints = new ArrayList<>();
-        for (TrackSegment allPointsSegment : track.getTrackSegments()) {
-            allPoints.addAll(allPointsSegment.getWaypoints());
-        }
+        List<Waypoint> allPoints = TrackTools.getAllTrackPoints(track);
         if (allPoints == null || allPoints.isEmpty()) {
             return;
         }
