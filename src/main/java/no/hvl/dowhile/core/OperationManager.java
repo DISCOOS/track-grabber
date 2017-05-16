@@ -192,7 +192,7 @@ public class OperationManager {
         if (!queue.isEmpty()) {
             prepareNextFile();
         } else {
-            window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_DESCRIPTION.get());
+            window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_GPS_DESCRIPTION.get());
         }
     }
 
@@ -206,7 +206,7 @@ public class OperationManager {
         if (!queue.isEmpty()) {
             prepareNextFile();
         } else {
-            window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_DESCRIPTION.get());
+            window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_IMPORT_DESCRIPTION.get());
         }
     }
 

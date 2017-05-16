@@ -11,7 +11,9 @@ public enum Messages {
     ERROR_THREAD("En tråd ga en error mens den ventet på neste kjøring."),
     ERROR_NO_TRACK_FOR_INFO("Systemet prøvde å starte prosessering av fil som ikke finnes."),
     NO_RELEVANT_FILES_TITLE("Ingen relevante filer på GPS"),
-    NO_RELEVANT_FILES_DESCRIPTION("Oppdaget GPS, men fant ingen relevante filer! \n Mulige årsaker: \n - GPSen inneholder ingen filer \n - Filene er for gamle (de ble laget før operasjonsstart) \n - Filene er allerede overført"),
+    NO_RELEVANT_FILES_GPS_DESCRIPTION("Oppdaget GPS, men fant ingen relevante filer! \n Mulige årsaker: \n - GPSen inneholder ingen filer \n - Filene er for gamle (de ble laget før operasjonsstart) \n - Filene er allerede overført"),
+    NO_RELEVANT_FILES_IMPORT_DESCRIPTION("Fil funnet, men den ble ikke overført! \n Mulige årsaker: \n - Filen er for gammel (den ble laget før operasjonsstart) \n - Filen er allerede overført"),
+
 
     // Font
     FONT_NAME("Calibri"),
@@ -74,7 +76,7 @@ public enum Messages {
     GO_BACK("Tilbake"),
 
     // Waypoint panel
-    WAYPOINT_HEADER("Prosesserer waypoint"),
+    WAYPOINT_HEADER("Prosesserer veipunkt"),
     NEW_NAME("Nytt navn");
 
     private String message;
