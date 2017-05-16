@@ -270,10 +270,11 @@ public class OperationManager {
         currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setGpxFile(gpxFile);
         if (TrackTools.hasWaypoints(gpxFile.getGpx())) {
-            window.updateCurrentFile(" ", queueSize, queuePosition);
+            window.updateCurrentWaypointFile(" ", queueSize, queuePosition);
             window.openWaypointPanel();
         } else {
-            window.updateCurrentFile(StringTools.startTimeAndEndTimeToString(gpxFile.getGpx()), queueSize, queuePosition);
+            double trackDistance = TrackTools.getDistanceFromTrack(gpxFile.getGpx());
+            window.updateCurrentTrackFile(StringTools.startTimeAndEndTimeToString(gpxFile.getGpx()), queueSize, queuePosition, trackDistance);
             window.openTrackPanel();
         }
     }
