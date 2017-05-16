@@ -222,7 +222,7 @@ public class OperationManager {
             return;
         }
         if (TrackTools.hasWaypoints(gpx)) {
-            List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(gpx);
+            List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(file);
             for (int i = 0; i < waypointsInGpx.size(); i++) {
                 String rawFileName = file.getName() + "_" + (i + 1);
                 String hash = fileManager.saveRawGpxFileInFolders(waypointsInGpx.get(i), rawFileName);
