@@ -78,8 +78,9 @@ public class WaypointPanel extends JPanel {
     private void confirmButtonListener() {
         confirmNameButton.addActionListener(actionEvent -> {
             String name = waypointNameInput.getText();
+            String description = waypointDescriptionInput.getText();
 
-            OPERATION_MANAGER.saveWaypoint(name);
+            OPERATION_MANAGER.saveWaypoint(name, description);
             waypointNameInput.setText("");
 
             String dialogText = Messages.SAVE_FILE.get();

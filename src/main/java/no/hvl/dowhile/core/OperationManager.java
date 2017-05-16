@@ -368,15 +368,20 @@ public class OperationManager {
     /**
      * Assigns a name to the waypoint.
      *
-     * @param name the name for the file.
+     * @param name        the name for the file.
+     * @param description the description provided by the user.
      */
-    public void saveWaypoint(String name) {
+    public void saveWaypoint(String name, String description) {
         if (currentTrackCutter == null || currentTrackCutter.getGpxFile() == null) {
             Messages.ERROR_NO_TRACK_FOR_INFO.print();
             return;
         }
         GpxFile gpxFile = currentTrackCutter.getGpxFile();
-        fileManager.saveWaypointFileInFolders(gpxFile.getGpx(), name.trim().replace(" ", "_") + ".gpx");
+        GPX gpx = gpxFile.getGpx();
+        if (!description.isEmpty()) {
+            gpx.getWaypoints().iterator().next().setDescription(description);
+        }
+        fileManager.saveWaypointFileInFolders(gpx, name.trim().replace(" ", "_") + ".gpx");
         fileManager.saveWaypointFileInfo(gpxFile.getRawFileName() + ".gpx", name.trim().replace(" ", "_") + ".gpx", gpxFile.getRawfileHash());
         checkForMoreFiles();
     }
