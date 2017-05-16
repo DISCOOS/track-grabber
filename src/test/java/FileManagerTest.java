@@ -33,6 +33,7 @@ public class FileManagerTest {
         fileManager = new FileManager(opManager);
         operationName = "TestOp";
         trackInfo = new TrackInfo();
+        trackInfo.setAreaSearched("[2]");
         operation = new Operation(operationName, 30, 11, 2016, 11, 56);
 
         appFolder = tempFolder.newFolder("TrackGrabberTest");
@@ -106,7 +107,7 @@ public class FileManagerTest {
         GPX gpx2 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         fileManager.saveGpxFile(gpx1, trackInfo, "Filnavn", fileManager.getMainOperationFolder().getRawFolder());
         File[] rawFiles = fileManager.getMainOperationFolder().getRawFolder().listFiles();
-        //assertTrue(TrackTools.trackPointsAreEqual(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
+        assertNotNull(TrackTools.duplicateGpx(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
     }
 
     @Test
@@ -115,7 +116,7 @@ public class FileManagerTest {
         GPX gpx2 = TrackTools.getGpxFromFile(new File("src/test/resources/testFile2.gpx"));
         fileManager.saveGpxFile(gpx1, trackInfo, "Filnavn", fileManager.getMainOperationFolder().getRawFolder());
         File[] rawFiles = fileManager.getMainOperationFolder().getRawFolder().listFiles();
-        //assertFalse(TrackTools.trackPointsAreEqual(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
+        assertNotNull(TrackTools.duplicateGpx(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
     }
 
     @Test
