@@ -382,7 +382,7 @@ public class OperationManager {
             gpx.getWaypoints().iterator().next().setDescription(description);
         }
         fileManager.saveWaypointFileInFolders(gpx, name.trim().replace(" ", "_") + ".gpx");
-        fileManager.saveWaypointFileInfo(gpxFile.getRawFileName() + ".gpx", name.trim().replace(" ", "_") + ".gpx", gpxFile.getRawfileHash());
+        fileManager.saveWaypointFileInfo(description, gpxFile.getRawFileName() + ".gpx", name.trim().replace(" ", "_") + ".gpx", gpxFile.getRawfileHash());
         checkForMoreFiles();
     }
 

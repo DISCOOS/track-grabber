@@ -237,8 +237,8 @@ public class FileManager {
         mainOperationFolder.saveTrackFileInfo(info, time, originalFile, processedFile, originalHash);
     }
 
-    public void saveWaypointFileInfo(String originalFile, String processedFile, String originalHash) {
-        mainOperationFolder.saveWaypointFileInfo(originalFile, processedFile, originalHash);
+    public void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
+        mainOperationFolder.saveWaypointFileInfo(comment, originalFile, processedFile, originalHash);
     }
 
     /**

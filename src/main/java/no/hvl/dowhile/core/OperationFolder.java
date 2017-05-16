@@ -227,7 +227,7 @@ public class OperationFolder {
         if (!trackFileInfo.exists()) {
             try {
                 trackFileInfo.createNewFile();
-                FileTools.writeToCsvFile(trackFileInfo, "Lagtype", "Lagnummer", "Antall mann", "Teiger", "Spornummer", "Kommentar", "Tid", "Original fil", "Prosessert fil", "Original hash");
+                FileTools.writeToCsvFile(trackFileInfo, "Lagtype", "Lagnummer", "Antall mann", "Teiger", "Lengde", "Spornummer", "Kommentar", "Tid", "Original fil", "Prosessert fil", "Original hash");
             } catch (IOException ex) {
                 System.err.println("Failed to create operation file.");
             }
@@ -235,7 +235,7 @@ public class OperationFolder {
         if (!waypointFileInfo.exists()) {
             try {
                 waypointFileInfo.createNewFile();
-                FileTools.writeToCsvFile(waypointFileInfo, "Original fil", "Prosessert fil", "Original hash");
+                FileTools.writeToCsvFile(waypointFileInfo, "Kommentar", "Original fil", "Prosessert fil", "Original hash");
             } catch (IOException ex) {
                 System.err.println("Failed to create operation file.");
             }
@@ -245,13 +245,13 @@ public class OperationFolder {
     public void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalFileHash) {
         FileTools.writeToCsvFile(trackFileInfo,
                 info.getCrewType(), info.getCrewNumber() + "", info.getCrewCount() + "", info.getAreaSearched(),
-                info.getTrackNumber() + "", info.getComment().isEmpty() ? "Ingen kommentar" : info.getComment(),
+                info.getDistance() + "", info.getTrackNumber() + "", info.getComment().isEmpty() ? "Ingen kommentar" : info.getComment(),
                 time, originalFile, processedFile, originalFileHash
         );
     }
 
-    public void saveWaypointFileInfo(String originalFile, String processedFile, String originalHash) {
-        FileTools.writeToCsvFile(waypointFileInfo, originalFile, processedFile, originalHash);
+    public void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
+        FileTools.writeToCsvFile(waypointFileInfo, comment, originalFile, processedFile, originalHash);
     }
 
     /**
