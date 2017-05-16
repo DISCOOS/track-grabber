@@ -81,7 +81,7 @@ public class FileTools {
      */
     public static void writeToFile(String[] lines, File file) {
         try {
-            FileWriter writer = new FileWriter(file);
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8");
             for (String line : lines) {
                 writer.write(line + System.lineSeparator());
             }
@@ -101,7 +101,7 @@ public class FileTools {
      */
     public static void writeToCsvFile(File file, String... values) {
         try {
-            FileWriter writer = new FileWriter(file, true);
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8");
             StringBuilder builder = new StringBuilder("");
             for (String value : values) {
                 if (value.contains(",")) {
