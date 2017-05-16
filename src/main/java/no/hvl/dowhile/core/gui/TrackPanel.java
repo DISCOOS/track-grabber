@@ -153,7 +153,7 @@ public class TrackPanel extends JPanel {
 
         radioButtonGroup = new ButtonGroup();
         constraints.gridwidth = 2;
-        radioButtons = generateButtons(getCrewNames());
+        radioButtons = generateButtons(OPERATION_MANAGER.getConfig().getTeamNames());
         setButtonsInWindow();
     }
 
@@ -244,6 +244,8 @@ public class TrackPanel extends JPanel {
         trackCommentInput.setFont(WINDOW.TEXT_FONT);
         trackCommentInput.setPreferredSize(new Dimension(300, 150));
         trackCommentInput.setBackground(new Color(228, 228, 230));
+        trackCommentInput.setLineWrap(true);
+        trackCommentInput.setWrapStyleWord(true);
         PromptSupport.setPrompt(Messages.TRACK_COMMENT_PLACEHOLDER.get(), trackCommentInput);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
         add(trackCommentInput, constraints);

@@ -40,7 +40,6 @@ public class OperationManager {
     public OperationManager() {
         this.active = true;
         this.config = new Config();
-        this.window = new Window(this);
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager(this);
         this.existingOperations = new ArrayList<>();
@@ -82,6 +81,13 @@ public class OperationManager {
      */
     public void start() {
         new Thread(driveDetector).start();
+    }
+
+    /**
+     * Generate and show the window.
+     */
+    public void showWindow() {
+        this.window = new Window(this);
     }
 
     /**
