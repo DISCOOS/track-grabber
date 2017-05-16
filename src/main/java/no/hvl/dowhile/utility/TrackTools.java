@@ -269,14 +269,16 @@ public class TrackTools {
         return waypoints;
     }
 
-    public static List<GPX> splitWaypointGpx(GPX gpx) {
+    public static List<GPX> splitWaypointGpx(File file) {
+        GPX gpx = getGpxFromFile(file);
         List<GPX> waypointGpxs = new ArrayList<>();
         List<Waypoint> waypointsInFile = getWaypointsFromFile(gpx);
         for (int i = 0; i < waypointsInFile.size(); i++) {
-            GPX gpxCopy = gpx;
+            gpx = getGpxFromFile(file);
             HashSet<Waypoint> waypointSet = new HashSet<>();
+            gpx.setWaypoints(waypointSet);
             waypointSet.add(waypointsInFile.get(i));
-            gpxCopy.setWaypoints(waypointSet);
+            gpx.setWaypoints(waypointSet);
             waypointGpxs.add(gpx);
         }
         return waypointGpxs;
