@@ -33,9 +33,9 @@ public class TrackTools {
         return null;
     }
 
-    public static List<Waypoint> getAllTrackPoints (Track track) {
+    public static ArrayList<Waypoint> getAllTrackPoints (Track track) {
         List<TrackSegment> trackSegments = track.getTrackSegments();
-        List<Waypoint> trackPoints = new ArrayList<>();
+        ArrayList<Waypoint> trackPoints = new ArrayList<>();
         for (TrackSegment trackSegment : trackSegments) {
             trackPoints.addAll(trackSegment.getWaypoints());
         }

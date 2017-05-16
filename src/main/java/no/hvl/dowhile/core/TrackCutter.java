@@ -7,6 +7,7 @@ import no.hvl.dowhile.utility.TrackTools;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Processing a GPX file. Removing unnecessary data.
@@ -35,10 +36,7 @@ public class TrackCutter {
      */
     public void filterOnTimeStarted(Date startTime) {
         Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
-        ArrayList<Waypoint> trackPoints = new ArrayList<>();
-        for (TrackSegment allPointsSegment : track.getTrackSegments()) {
-            trackPoints.addAll(allPointsSegment.getWaypoints());
-        }
+        ArrayList<Waypoint> trackPoints = TrackTools.getAllTrackPoints(track);
         ArrayList<Waypoint> pointsToRemove = new ArrayList<>();
         long startTimeMillis = startTime.getTime();
 

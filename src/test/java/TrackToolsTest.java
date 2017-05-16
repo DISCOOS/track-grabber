@@ -9,6 +9,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -30,7 +31,7 @@ public class TrackToolsTest {
     public void before() {
         gpxFile = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         track = TrackTools.getTrackFromGPXFile(gpxFile);
-        trackPoints = track.getTrackPoints();
+        trackPoints = TrackTools.getAllTrackPoints(track);
 
         format = new SimpleDateFormat("dd/mm/yyyy");
         veryLateStartTime = new Date("24/12/2038");

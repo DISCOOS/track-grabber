@@ -12,6 +12,9 @@ import org.junit.Test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.assertFalse;
 
 public class TrackCutterTest {
 
@@ -19,18 +22,18 @@ public class TrackCutterTest {
     TrackCutter cutter;
     GPX gpx;
     Track track;
-    ArrayList<Waypoint> trackPoints;
+    List<Waypoint> trackPoints;
 
     @Before
     public void before() {
         File file = new File("src/test/resources/testFile.gpx");
         gpx = TrackTools.getGpxFromFile(file);
         track = TrackTools.getTrackFromGPXFile(gpx);
-        trackPoints = track.getTrackPoints();
+        trackPoints = TrackTools.getAllTrackPoints(track);
         opManager = new OperationManager();
-        GpxFile gpxFile = new GpxFile(file, "", gpx);
+        GpxFile gpxFile = new GpxFile(file, "", "", gpx);
         cutter = new TrackCutter(opManager);
-        cutter.setTrackInfo(new TrackInfo("", 0, 0, "", 0, ""));
+        cutter.setTrackInfo(new TrackInfo("", 0, 0, "", 0.0, 0, ""));
         cutter.setGpxFile(gpxFile);
     }
 
@@ -46,6 +49,7 @@ public class TrackCutterTest {
 
         cutter.filterOnTimeStarted(new Date(middleTime));
 
-        assertFalse(track.getTrackPoints().contains(firstTrackpoint));
+        trackPoints = TrackTools.getAllTrackPoints(track);
+        assertFalse(trackPoints.contains(firstTrackpoint));
     }
 }
