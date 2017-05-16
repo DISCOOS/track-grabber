@@ -22,6 +22,7 @@ public class TrackPanel extends JPanel {
     private JLabel trackHeaderLabel;
     private JLabel currentImportLabel;
     private JLabel remainingFilesLabel;
+    private JLabel trackLengthLabel;
     // Info for user at start of prosessing file
     private JLabel startInfoLabel;
     // Check boxes for selecting type of team and a label.
@@ -126,6 +127,11 @@ public class TrackPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 3);
         add(startInfoLabel, constraints);
         allInputComponents.add(startInfoLabel);
+
+        trackLengthLabel = WINDOW.makeLabel("", Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.CENTER, 3);
+        add(trackLengthLabel, constraints);
+        allInputComponents.add(trackLengthLabel);
     }
 
 
@@ -323,6 +329,10 @@ public class TrackPanel extends JPanel {
         remainingFilesLabel.setText(remainingFiles);
     }
 
+    public void updateCurrentFileDistance(double trackDistance) {
+        trackLengthLabel.setText(String.valueOf(trackDistance) + " km");
+    }
+
     /**
      * Places the radio buttons in the given coordinates in the panel
      */
@@ -392,6 +402,7 @@ public class TrackPanel extends JPanel {
         backButton.setVisible(false);
         nextButton.setVisible(true);
         currentImportLabel.setVisible(true);
+        trackLengthLabel.setVisible(true);
         registerButton.setVisible(false);
         viewCount = 0;
     }

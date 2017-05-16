@@ -185,8 +185,13 @@ public class Window extends JFrame {
      * @param queueSize Total files in queue
      * @param queuePosition current postion in queue
      */
-    public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
+    public void updateCurrentTrackFile(String filename, int queueSize, int queuePosition, double trackDistance) {
         trackPanel.updateCurrentFile(filename, queueSize, queuePosition);
+        trackPanel.updateCurrentFileDistance(trackDistance);
+
+    }
+
+    public void updateCurrentWaypointFile(String filename, int queueSize, int queuePosition) {
         waypointPanel.updateCurrentFile(filename, queueSize, queuePosition);
     }
 
