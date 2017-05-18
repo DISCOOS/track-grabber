@@ -191,8 +191,15 @@ public class Window extends JFrame {
 
     }
 
-    public void updateCurrentWaypointFile(String filename, int queueSize, int queuePosition) {
-        waypointPanel.updateCurrentFile(filename, queueSize, queuePosition);
+    /**
+     * Telling the track panel to update the info about which file is currently processed.
+     *
+     * @param filename      the name of the file.
+     * @param queueSize     Total files in queue
+     * @param queuePosition current postion in queue
+     */
+    public void updateCurrentWaypointFile(String waypointDate, String waypointName, int queueSize, int queuePosition) {
+        waypointPanel.updateCurrentFile(waypointDate, waypointName, queueSize, queuePosition);
     }
 
     /**

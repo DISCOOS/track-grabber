@@ -80,7 +80,7 @@ public enum Messages {
     NEW_NAME("Nytt navn for waypoint"),
     NEW_DESCRIPTION("Beskrivelse av waypoint"),
 
-    PROCESSING_FILES("Prosesserer fil 1% av 2%");
+    PROCESSING_FILES("Prosesserer fil %1 av %2");
 
     private String message;
 

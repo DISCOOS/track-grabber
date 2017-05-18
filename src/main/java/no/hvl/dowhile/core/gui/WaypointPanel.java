@@ -88,13 +88,15 @@ public class WaypointPanel extends JPanel {
     /**
      * Updating info about the file currently being processed.
      *
-     * @param filename      the new filename.
+     * @param waypointDate the date of the waypoint
+     * @param waypointName      the new filename.
      * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
-    public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
-        String currentImportedFile = Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + filename;
+    public void updateCurrentFile(String waypointDate, String waypointName, int queueSize, int queuePosition) {
+        String currentImportedFile = Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + waypointDate;
         String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition+"", queueSize+"");
+        waypointNameInput.setText(waypointName);
         currentWaypointLabel.setText(currentImportedFile);
         queueLabel.setText(remainingFiles);
     }
