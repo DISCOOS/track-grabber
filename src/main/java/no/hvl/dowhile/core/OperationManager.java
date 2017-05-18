@@ -12,10 +12,7 @@ import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Handling communication between the components in the application.
@@ -269,7 +266,11 @@ public class OperationManager {
         currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setGpxFile(gpxFile);
         if (TrackTools.hasWaypoints(gpxFile.getGpx())) {
-            window.updateCurrentWaypointFile(" ", queueSize, queuePosition);
+            Waypoint wp = gpxFile.getGpx().getWaypoints().iterator().next();
+            Date wpDate = wp.getTime();
+            String wpDateFormatted = StringTools.formatDateForFileProcessing(wpDate);
+            String wpName = wp.getName();
+            window.updateCurrentWaypointFile(wpDateFormatted, wpName, queueSize, queuePosition);
             window.openWaypointPanel();
         } else {
             double trackDistance = TrackTools.getDistanceFromTrack(gpxFile.getGpx());
