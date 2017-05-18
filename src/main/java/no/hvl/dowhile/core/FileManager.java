@@ -441,12 +441,12 @@ public class FileManager {
             gpxWriter.writeGPX(gpx, outputStream);
             outputStream.close();
             FileTools.cleanXmlFile(gpx, file);
-            /*if (trackInfo != null) {
+            if (trackInfo != null) {
                 String color = OPERATION_MANAGER.getConfig().getColorForTeam(trackInfo.getCrewType());
                 if (color != null) {
                     FileTools.insertDisplayColor(gpx, file, color);
                 }
-            }*/
+            }
         } catch (IOException ex) {
             System.err.println("Failed to save raw file.");
             ex.printStackTrace();
@@ -479,12 +479,12 @@ public class FileManager {
             gpxWriter.writeGPX(gpx, outputStream);
             outputStream.close();
             FileTools.cleanXmlFile(gpx, file);
-            /*if (trackInfo != null) {
+            if (trackInfo != null) {
                 String color = OPERATION_MANAGER.getConfig().getColorForTeam(trackInfo.getCrewType());
                 if (color != null) {
                     FileTools.insertDisplayColor(gpx, file, color);
                 }
-            }*/
+            }
             hash = FileTools.hashFile(file);
         } catch (IOException ex) {
             System.err.println("Failed to save raw file.");
