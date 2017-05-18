@@ -94,7 +94,7 @@ public class WaypointPanel extends JPanel {
      */
     public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
         String currentImportedFile = Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + filename;
-        String remainingFiles = "Prosesserer fil " + queuePosition + " av " + queueSize;
+        String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition+"", queueSize+"");
         currentWaypointLabel.setText(currentImportedFile);
         queueLabel.setText(remainingFiles);
     }

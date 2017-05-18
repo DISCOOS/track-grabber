@@ -327,7 +327,7 @@ public class TrackPanel extends JPanel {
      */
     public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
         String currentImportedFile = filename;
-        String remainingFiles = "Prosesserer fil " + queuePosition + " av " + queueSize;
+        String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition+"", queueSize+"");
         currentImportLabel.setText(currentImportedFile);
         remainingFilesLabel.setText(remainingFiles);
     }

@@ -23,6 +23,28 @@ public enum Messages {
     CONFIRM_EXIT("Vil du virkelig avslutte Track Grabber? Alle endringer vil bli lagret."),
     SPACER("                                                  "),
 
+    // Operation panel
+    OPERATION_NAME("Navn på operasjon: "),
+    OPERATION_START_DATE("Startdato: "),
+    DEFINE_OPERATION_PATH("Legg til ekstra lagringssted"),
+    EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
+    NEW_OPERATION_BUTTON("Ny operasjon"),
+    IMPORT_LOCAL_FILE("Importer GPS-fil fra maskin"),
+    CHOOSE_OTHER_OPERATION("Velg en annen operasjon"),
+    EDIT_OPERATION_TIME("Endre starttid: "),
+    EDIT_OPERATION_BUTTON("Lagre operasjonsinfo"),
+    EDIT_INFO_SHOW_BUTTON("Rediger operasjon"),
+    EDIT_INFO_HIDE_BUTTON("Skjul redigeringsinfo"),
+    EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
+    REGISTER_NEW_BUTTON("Opprett operasjon"),
+    REGISTER_EXISTING_BUTTON("Last inn"),
+    AWAITING_GPS("Koble til GPS-enhet og vent på prosessering..."),
+    INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
+    OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
+    OPERATION_NAME_IS_TOO_LONG_OR_SHORT("Navnet må være mellom 2 og 50 tegn."),
+    ALL_SAVED_PATHS("Mapper filene lagres til:"),
+    GO_BACK("Tilbake"),
+
     // Track panel
     TRACK_HEADER("Prosesserer sporfil"),
     BACK("Tilbake"),
@@ -52,34 +74,13 @@ public enum Messages {
     SUMMARY_TRACK_COMMENT("Sporkommentar: "),
     TRACK_LENGTH("Lengde på sporet: "),
 
-
-    // Operation panel
-    OPERATION_NAME("Navn på operasjon: "),
-    OPERATION_START_DATE("Startdato: "),
-    DEFINE_OPERATION_PATH("Legg til ekstra lagringssted"),
-    EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
-    NEW_OPERATION_BUTTON("Ny operasjon"),
-    IMPORT_LOCAL_FILE("Importer GPS-fil fra maskin"),
-    CHOOSE_OTHER_OPERATION("Velg en annen operasjon"),
-    EDIT_OPERATION_TIME("Endre starttid: "),
-    EDIT_OPERATION_BUTTON("Lagre operasjonsinfo"),
-    EDIT_INFO_SHOW_BUTTON("Rediger operasjon"),
-    EDIT_INFO_HIDE_BUTTON("Skjul redigeringsinfo"),
-    EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
-    REGISTER_NEW_BUTTON("Opprett operasjon"),
-    REGISTER_EXISTING_BUTTON("Last inn"),
-    AWAITING_GPS("Koble til GPS-enhet og vent på prosessering..."),
-    INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
-    OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
-    OPERATION_NAME_IS_TOO_LONG_OR_SHORT("Navnet må være mellom 2 og 50 tegn."),
-    ALL_SAVED_PATHS("Mapper filene lagres til:"),
-    GO_BACK("Tilbake"),
-
     // Waypoint panel
-    IMPORTED_FROM_WAYPOINT_GPS("Waypoint-fil: "),
+    IMPORTED_FROM_WAYPOINT_GPS("Waypoint opprettet:  "),
     WAYPOINT_HEADER("Prosesserer veipunkt"),
     NEW_NAME("Nytt navn for waypoint"),
-    NEW_DESCRIPTION("Beskrivelse av waypoint");
+    NEW_DESCRIPTION("Beskrivelse av waypoint"),
+
+    PROCESSING_FILES("Prosesserer fil 1% av 2%");
 
     private String message;
 
@@ -111,6 +112,18 @@ public enum Messages {
      */
     public String get(String replacement1) {
         return message.replace("%1", replacement1);
+    }
+
+    /**
+     * Gives you the current message and inserts replacements into the string.
+     *
+     * @param replacement1 text 1 to insert into message.
+     * @param replacement2 text 2 to insert into message.
+     * @return the current message.
+     * @see #getMessage()
+     */
+    public String get(String replacement1, String replacement2) {
+        return message.replace("%1", replacement1).replace("%2", replacement2);
     }
 
     /**
