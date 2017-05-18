@@ -179,7 +179,7 @@ public class Window extends JFrame {
     }
 
     /**
-     * Telling the track panel to update the info about which file is currently processed.
+     * Telling the TrackPanel to update the info about which file is currently processed.
      *
      * @param filename      the name of the file.
      * @param queueSize     Total files in queue
@@ -192,9 +192,10 @@ public class Window extends JFrame {
     }
 
     /**
-     * Telling the track panel to update the info about which file is currently processed.
+     * Telling the WaypointPanel to update the info about which file is currently processed.
      *
-     * @param filename      the name of the file.
+     * @param waypointDate the date of the waypoint
+     * @param waypointName     the name of the file.
      * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
@@ -230,6 +231,13 @@ public class Window extends JFrame {
         return label;
     }
 
+    /**
+     * Makes a JLabel suitable for headers with a give text.
+     * The Font style and size is preset.
+     *
+     * @param text
+     * @return
+     */
     public JLabel makeHeaderLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(HEADER_FONT);
