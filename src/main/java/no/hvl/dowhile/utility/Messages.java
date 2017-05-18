@@ -14,7 +14,6 @@ public enum Messages {
     NO_RELEVANT_FILES_GPS_DESCRIPTION("Oppdaget GPS, men fant ingen relevante filer! \n Mulige årsaker: \n - GPSen inneholder ingen filer \n - Filene er for gamle (de ble laget før operasjonsstart) \n - Filene er allerede overført"),
     NO_RELEVANT_FILES_IMPORT_DESCRIPTION("Fil funnet, men den ble ikke overført! \n Mulige årsaker: \n - Filen er for gammel (den ble laget før operasjonsstart) \n - Filen er allerede overført"),
 
-
     // Font
     FONT_NAME("Calibri"),
 
@@ -23,25 +22,29 @@ public enum Messages {
     CONFIRM_EXIT("Vil du virkelig avslutte Track Grabber? Alle endringer vil bli lagret."),
     SPACER("                                                  "),
 
-    // Operation panel
+    // Start panel
     OPERATION_NAME("Navn på operasjon: "),
     OPERATION_START_DATE("Startdato: "),
     DEFINE_OPERATION_PATH("Legg til ekstra lagringssted"),
     EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
     NEW_OPERATION_BUTTON("Ny operasjon"),
+    EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
+    REGISTER_NEW_BUTTON("Opprett operasjon"),
+    REGISTER_EXISTING_BUTTON("Last inn"),
+    INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
+    OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
+    OPERATION_NAME_IS_TOO_LONG_OR_SHORT("Navnet må være mellom 2 og 50 tegn."),
+
+    // Stand by panel
     IMPORT_LOCAL_FILE("Importer GPS-fil fra maskin"),
+    AWAITING_GPS("Koble til GPS-enhet og vent på prosessering..."),
+
+    // Operation panel
     CHOOSE_OTHER_OPERATION("Velg en annen operasjon"),
     EDIT_OPERATION_TIME("Endre starttid: "),
     EDIT_OPERATION_BUTTON("Lagre operasjonsinfo"),
     EDIT_INFO_SHOW_BUTTON("Rediger operasjon"),
     EDIT_INFO_HIDE_BUTTON("Skjul redigeringsinfo"),
-    EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
-    REGISTER_NEW_BUTTON("Opprett operasjon"),
-    REGISTER_EXISTING_BUTTON("Last inn"),
-    AWAITING_GPS("Koble til GPS-enhet og vent på prosessering..."),
-    INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
-    OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
-    OPERATION_NAME_IS_TOO_LONG_OR_SHORT("Navnet må være mellom 2 og 50 tegn."),
     ALL_SAVED_PATHS("Mapper filene lagres til:"),
     GO_BACK("Tilbake"),
 
@@ -80,6 +83,7 @@ public enum Messages {
     NEW_NAME("Nytt navn for waypoint"),
     NEW_DESCRIPTION("Beskrivelse av waypoint"),
 
+    // Track panel and Waypoint panel
     PROCESSING_FILES("Prosesserer fil %1 av %2");
 
     private String message;

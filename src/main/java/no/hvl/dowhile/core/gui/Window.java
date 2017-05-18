@@ -25,15 +25,22 @@ import java.util.List;
  * The class has different panels for displaying information depending on certain events in the application.
  */
 public class Window extends JFrame {
+
+    private final OperationManager OPERATION_MANAGER;
+
+    // Font sizes
     final int HEADER_FONT_SIZE = 32;
     final int TEXT_FONT_SIZE = 24;
     final int BUTTON_FONT_SIZE = 20;
+
+    // Different fonts for different uses
     final Font TEXT_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE);
     final Font TEXT_BOLD_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, TEXT_FONT_SIZE);
     final Font TEXT_ITALIC_FONT = new Font(Messages.FONT_NAME.get(), Font.ITALIC, TEXT_FONT_SIZE);
     final Font HEADER_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, HEADER_FONT_SIZE);
     final Font BUTTON_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, BUTTON_FONT_SIZE);
-    private final OperationManager OPERATION_MANAGER;
+
+    // The panels (different views of the application)
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
     private StartPanel startPanel;
@@ -75,7 +82,7 @@ public class Window extends JFrame {
         cardPanel.add(trackPanel, "Track");
         cardPanel.add(waypointPanel, "Waypoint");
         cardPanel.add(standByPanel, "StandBy");
-        add(cardPanel, BorderLayout.NORTH);
+        add(cardPanel, BorderLayout.WEST);
 
         getContentPane().add(headerPanel, BorderLayout.NORTH);
         getContentPane().add(cardPanel, BorderLayout.CENTER);
@@ -125,7 +132,7 @@ public class Window extends JFrame {
     }
 
     /**
-     * Open the panel allowing the administrator to change operation.
+     * Open the panel allowing creating a new Operation or choose an existing Operation.
      */
     public void openStartPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
@@ -149,11 +156,17 @@ public class Window extends JFrame {
         cl.show(cardPanel, "Track");
     }
 
+    /**
+     * Open the panel allowing to user to give info about a Waypoint.
+     */
     public void openWaypointPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Waypoint");
     }
 
+    /**
+     * Open the panel allowing to user wait for GPS, import GPX-file from PC or access OperationPanel.
+     */
     public void openStandByPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "StandBy");
@@ -235,8 +248,8 @@ public class Window extends JFrame {
      * Makes a JLabel suitable for headers with a give text.
      * The Font style and size is preset.
      *
-     * @param text
-     * @return
+     * @param text the text that the JLabel should have
+     * @return A JLabel with the given text and a preset font
      */
     public JLabel makeHeaderLabel(String text) {
         JLabel label = new JLabel(text);
@@ -260,6 +273,13 @@ public class Window extends JFrame {
         return button;
     }
 
+    /**
+     * Makes a JTextField with a given size and a preset font
+     *
+     * @param width the width of the JTextField
+     * @param height the height of the JTextField
+     * @return A JTextField with given dimensions(width and height) and a preset font
+     */
     public JTextField makeTextField(int width, int height) {
         JTextField textField = new JTextField();
         textField.setPreferredSize(new Dimension(width, height));
@@ -268,6 +288,12 @@ public class Window extends JFrame {
         return textField;
     }
 
+    /**
+     * Makes a JSpinner with a given SpinnerModel
+     *
+     * @param spinnerModel that contains parameters like stepSize, start and stop number
+     * @return a JSpinner with a preset dimension and font
+     */
     public JSpinner makeSpinner(SpinnerModel spinnerModel) {
         JSpinner spinner = new JSpinner(spinnerModel);
         spinner.setPreferredSize(new Dimension(150, 50));
@@ -275,6 +301,13 @@ public class Window extends JFrame {
 
         return spinner;
     }
+
+    /**
+     * Makes a DatePicker (from library LGoodDatePicker) with a given width and height
+     * @param width width of the DatePicker
+     * @param height height of the Datepicker
+     * @return a DatePicker with given width and height
+     */
 
     public DatePicker makeDatePicker(int width, int height) {
         DatePickerSettings dateSettings = new DatePickerSettings();
@@ -287,6 +320,13 @@ public class Window extends JFrame {
 
         return datePicker;
     }
+
+    /**
+     * Makes a TimePicker (from library LGoodDatePicker) with a given width and height
+     * @param width width of the TimePicker
+     * @param height height of the Timepicker
+     * @return a TimePicker with given width and height
+     */
 
     public TimePicker makeTimePicker(int width, int height) {
         TimePickerSettings timeSettings = new TimePickerSettings();
