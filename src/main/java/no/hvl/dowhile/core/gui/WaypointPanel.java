@@ -7,6 +7,9 @@ import org.jdesktop.swingx.prompt.PromptSupport;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class has an interface for configuring details related to one waypoints.
+ */
 public class WaypointPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
