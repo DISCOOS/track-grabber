@@ -95,7 +95,6 @@ public class WaypointPanel extends JPanel {
             String description = waypointDescriptionInput.getText();
 
             OPERATION_MANAGER.saveWaypoint(name, description);
-            waypointNameInput.setText("");
             waypointDescriptionInput.setText("");
 
             String dialogText = Messages.SAVE_FILE.get();
