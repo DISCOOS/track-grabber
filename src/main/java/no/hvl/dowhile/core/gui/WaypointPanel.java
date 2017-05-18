@@ -7,9 +7,6 @@ import org.jdesktop.swingx.prompt.PromptSupport;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by JonKjetil on 08.05.2017.
- */
 public class WaypointPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
