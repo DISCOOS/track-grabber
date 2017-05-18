@@ -222,8 +222,8 @@ public class OperationFolder {
             } catch (IOException ex) {
                 System.err.println("Failed to create operation file.");
             }
+            FileTools.writeToFile(operation.getFileContent(), operationFile);
         }
-        FileTools.writeToFile(operation.getFileContent(), operationFile);
         if (!trackFileInfo.exists()) {
             try {
                 trackFileInfo.createNewFile();
