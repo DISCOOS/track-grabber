@@ -27,8 +27,12 @@ public class TrackTools {
      */
     public static Track getTrackFromGPXFile(GPX gpx) {
         HashSet<Track> tracks = gpx.getTracks();
-        if (tracks != null) {
-            return tracks.iterator().next();
+        if (tracks != null && tracks.size() > 0) {
+            if (tracks.toArray()[0] instanceof Track) {
+                return (Track) tracks.toArray()[0];
+            } else {
+                return null;
+            }
         }
         return null;
     }
