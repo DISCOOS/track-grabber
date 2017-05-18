@@ -25,31 +25,40 @@ public class TrackPanel extends JPanel {
     private JLabel remainingFilesLabel;
     private JLabel trackLengthLabel;
     private double trackDistance;
-    // Info for user at start of prosessing file
+
+    // Info for user at start of processing file
     private JLabel startInfoLabel;
+
     // Check boxes for selecting type of team and a label.
     private JLabel crewTypeLabel;
     private JSpinner areaSearchedSpinner;
     private List<JRadioButton> radioButtons;
     private ButtonGroup radioButtonGroup;
+
     // Starts the processing of the file.
     private JButton registerButton;
+
     // Getting the number of the team.
     private JLabel crewNumberLabel;
     private JSpinner crewNumberSpinner;
+
     // Getting the amount of people on the team.
     private JLabel crewCountLabel;
     private JSpinner crewCountSpinner;
+
     // Getting the number of the track, if multiple tracks on a team etc.
     private JLabel trackNumberLabel;
     private JSpinner trackNumberSpinner;
+
     // Getting info about the area searched.
     private JLabel areaLabel;
     private JButton areaInputButton;
     private JLabel areaSearchedLabel;
+
     // Getting extra comments about the track.
     private JLabel trackCommentLabel;
     private JTextArea trackCommentInput;
+
     // Summary labels before registering
     private JLabel crewTypeSummaryLabel;
     private JLabel crewNumberSummaryLabel;
@@ -57,6 +66,7 @@ public class TrackPanel extends JPanel {
     private JLabel trackNumberSummaryLabel;
     private JLabel areaSearchedSummaryLabel;
     private JLabel trackCommentSummaryLabel;
+
     // Data for summary befor registering
     private JLabel crewTypeSummaryData;
     private JLabel crewNumberSummaryData;
@@ -64,13 +74,14 @@ public class TrackPanel extends JPanel {
     private JLabel trackNumberSummaryData;
     private JLabel areaSearchedSummaryData;
     private JLabel trackCommentSummaryData;
+
     // Controlling navigation flow.
     private JButton nextButton;
     private JButton backButton;
     private int viewCount;
 
-    private List<JComponent> allInputComponents;
-    private List<String> areaSearchedStrings;
+    private List<JComponent> allInputComponents; // All JComponents connected to input from user is added to this List
+    private List<String> areaSearchedStrings; // List with all areas searched
 
     public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
@@ -105,9 +116,8 @@ public class TrackPanel extends JPanel {
     }
 
     /**
-     * Adds the buttons and input fields and sets them in the gridbaglayout
+     * Adds basic info about the track file and sets them in the GridBagLayout
      */
-
     private void infoGUI() {
         // Header label for track processing
         trackHeaderLabel = WINDOW.makeHeaderLabel(Messages.TRACK_HEADER.get());
@@ -137,7 +147,9 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(trackLengthLabel);
     }
 
-
+    /**
+     * Adds navigation buttons and sets them in the GridBagLayout
+     */
     private void buttonsGUI() {
         nextButton = WINDOW.makeButton(Messages.NEXT.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 3, 9, GridBagConstraints.EAST, 1);
@@ -153,6 +165,9 @@ public class TrackPanel extends JPanel {
         add(registerButton, constraints);
     }
 
+    /**
+     * Adds input for crew type and sets them in the GridBagLayout
+     */
     private void crewTypeButtonsGUI() {
         // adding radio buttons for type of crew
         crewTypeLabel = WINDOW.makeLabel(Messages.CREW_TYPE_MESSAGE.get(), Font.BOLD);
@@ -166,6 +181,9 @@ public class TrackPanel extends JPanel {
         setButtonsInWindow();
     }
 
+    /**
+     * Adds input for crew number and sets them in the GridBagLayout
+     */
     private void crewNumberGUI() {
         // Label and input for crew number
         crewNumberLabel = WINDOW.makeLabel(Messages.CREW_NUMBER.get(), Font.BOLD);
@@ -182,6 +200,9 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(crewNumberSpinner);
     }
 
+    /**
+     * Adds input for how many there are in the crew and sets them in the GridBagLayout
+     */
     private void crewCountGUI() {
         // Label and input for crew count
         crewCountLabel = WINDOW.makeLabel(Messages.CREW_COUNT.get(), Font.BOLD);
@@ -198,6 +219,9 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(crewCountSpinner);
     }
 
+    /**
+     * Adds input for which areas is searched and sets them in the GridBagLayout
+     */
     private void areaSearchedGUI() {
         // Label and input for area searched
         areaLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED.get(), Font.BOLD);
@@ -225,6 +249,9 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(areaSearchedLabel);
     }
 
+    /**
+     * Adds input for the track number and sets them in the GridBagLayout
+     */
     private void trackNumberGUI() {
         // Label and input for track number
         trackNumberLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER.get(), Font.BOLD);
@@ -241,6 +268,9 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(trackNumberSpinner);
     }
 
+    /**
+     * Adds input for a comment to the track and sets them in the GridBagLayout
+     */
     private void trackCommentGUI() {
         // Label for comment to the track
         trackCommentLabel = WINDOW.makeLabel(Messages.TRACK_COMMENT.get(), Font.BOLD);
@@ -261,6 +291,9 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(trackCommentInput);
     }
 
+    /**
+     * Adds JLabels for a summary of all the inputs and sets them in the GridBagLayout
+     */
     private void summaryGUI() {
         // Type of crew
         crewTypeSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_TYPE.get(), Font.BOLD);
@@ -270,7 +303,6 @@ public class TrackPanel extends JPanel {
         crewTypeSummaryData = WINDOW.makeLabel("", Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 2, 7, GridBagConstraints.WEST, 1);
         add(crewTypeSummaryData, constraints);
-        ;
 
         // CrewNumber
         crewNumberSummaryLabel = WINDOW.makeLabel(Messages.SUMMARY_CREW_NUMBER.get(), Font.BOLD);
@@ -326,9 +358,8 @@ public class TrackPanel extends JPanel {
      * @param queuePosition current postion in queue
      */
     public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
-        String currentImportedFile = filename;
-        String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition+"", queueSize+"");
-        currentImportLabel.setText(currentImportedFile);
+        String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + "");
+        currentImportLabel.setText(filename);
         remainingFilesLabel.setText(remainingFiles);
     }
 
@@ -387,15 +418,6 @@ public class TrackPanel extends JPanel {
     }
 
     /**
-     * Method for creating names that will be put in the radio buttons
-     *
-     * @return a List with the names
-     */
-    private List<String> getCrewNames() {
-        return OPERATION_MANAGER.getConfig().getTeamNames();
-    }
-
-    /**
      * Finds the selected radio button and returns it
      *
      * @return a String with the selected radio button
@@ -414,7 +436,7 @@ public class TrackPanel extends JPanel {
      * Initial setup for visibility for components
      */
     private void initialVisibility() {
-        setVisibilityComponents(false);
+        hideAllComponents();
         startInfoLabel.setVisible(true);
         backButton.setVisible(false);
         nextButton.setVisible(true);
@@ -426,16 +448,14 @@ public class TrackPanel extends JPanel {
 
     /**
      * Sets all JComponents in allInputComponents visible/invisible
-     *
-     * @param visibility true if visible, false if not.
      */
-    private void setVisibilityComponents(boolean visibility) {
+    private void hideAllComponents() {
         for (JComponent c : allInputComponents) {
-            c.setVisible(visibility);
+            c.setVisible(false);
         }
-        registerButton.setVisible(visibility);
-        currentImportLabel.setVisible(visibility);
-        setSummaryVisibility(visibility);
+        registerButton.setVisible(false);
+        currentImportLabel.setVisible(false);
+        setSummaryVisibility(false);
     }
 
     /**
@@ -512,7 +532,7 @@ public class TrackPanel extends JPanel {
     }
 
     /**
-     * Button for displaying the next "page".
+     * Button listener for displaying the next "page".
      */
     private void nextButtonListener() {
         nextButton.addActionListener(actionEvent -> {
@@ -522,7 +542,7 @@ public class TrackPanel extends JPanel {
                     initialVisibility();
                     break;
                 case 1:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     crewTypeLabel.setVisible(true);
                     for (JRadioButton rb : radioButtons) {
                         rb.setVisible(true);
@@ -530,35 +550,35 @@ public class TrackPanel extends JPanel {
                     backButton.setVisible(true);
                     break;
                 case 2:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     trackNumberLabel.setVisible(true);
                     trackNumberSpinner.setVisible(true);
                     backButton.setVisible(true);
                     break;
                 case 3:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     crewNumberLabel.setVisible(true);
                     crewNumberSpinner.setVisible(true);
                     break;
                 case 4:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     crewCountLabel.setVisible(true);
                     crewCountSpinner.setVisible(true);
                     break;
                 case 5:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     areaLabel.setVisible(true);
                     areaSearchedSpinner.setVisible(true);
                     areaInputButton.setVisible(true);
                     areaSearchedLabel.setVisible(true);
                     break;
                 case 6:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     trackCommentLabel.setVisible(true);
                     trackCommentInput.setVisible(true);
                     break;
                 case 7:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     nextButton.setVisible(false);
                     registerButton.setVisible(true);
                     setSummaryVisibility(true);
@@ -570,7 +590,7 @@ public class TrackPanel extends JPanel {
     }
 
     /**
-     * Button for displaying the previous "page".
+     * Button listener for displaying the previous "page".
      */
     private void backButtonListener() {
         backButton.addActionListener(actionEvent -> {
@@ -580,29 +600,29 @@ public class TrackPanel extends JPanel {
                     initialVisibility();
                     break;
                 case 1:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     crewTypeLabel.setVisible(true);
                     for (JRadioButton rb : radioButtons) {
                         rb.setVisible(true);
                     }
                     break;
                 case 2:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     trackNumberLabel.setVisible(true);
                     trackNumberSpinner.setVisible(true);
                     break;
                 case 3:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     crewNumberLabel.setVisible(true);
                     crewNumberSpinner.setVisible(true);
                     break;
                 case 4:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     crewCountLabel.setVisible(true);
                     crewCountSpinner.setVisible(true);
                     break;
                 case 5:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     areaLabel.setVisible(true);
                     areaSearchedSpinner.setVisible(true);
                     areaInputButton.setVisible(true);
@@ -610,7 +630,7 @@ public class TrackPanel extends JPanel {
                     nextButton.setVisible(true);
                     break;
                 case 6:
-                    setVisibilityComponents(false);
+                    hideAllComponents();
                     trackCommentLabel.setVisible(true);
                     trackCommentInput.setVisible(true);
                     nextButton.setVisible(true);

@@ -12,14 +12,22 @@ public class WaypointPanel extends JPanel {
     private final Window WINDOW;
     private GridBagConstraints constraints;
 
+    // JComponents
     private JLabel waypointHeaderLabel;
     private JLabel currentWaypointLabel;
     private JTextField waypointNameInput;
     private JTextField waypointDescriptionInput;
     private JButton confirmNameButton;
-
     private JLabel queueLabel;
 
+
+    /**
+     * Constructor setting the OPERATION_MANAGER and WINDOW.
+     * Also sets the layout and the constraints and the background color
+     *
+     * @param OPERATION_MANAGER the current instance of the OperationManager
+     * @param WINDOW            the current instance of the Window
+     */
     public WaypointPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
 
         this.OPERATION_MANAGER = OPERATION_MANAGER;
@@ -29,14 +37,17 @@ public class WaypointPanel extends JPanel {
         constraints = new GridBagConstraints();
         WINDOW.setConstraintsInsets(constraints, 5);
 
-        wayPointGUI();
+        waypointGUI();
 
         confirmButtonListener();
 
         setBackground(new Color(255, 245, 252));
     }
 
-    private void wayPointGUI() {
+    /**
+     * Creates all the JComponents and adds them to the JPanel
+     */
+    private void waypointGUI() {
         // Header label for waypoint processing
         waypointHeaderLabel = WINDOW.makeHeaderLabel(Messages.WAYPOINT_HEADER.get());
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
@@ -72,6 +83,9 @@ public class WaypointPanel extends JPanel {
         add(queueLabel, constraints);
     }
 
+    /**
+     * A method for the confirmButton's listener
+     */
     private void confirmButtonListener() {
         confirmNameButton.addActionListener(actionEvent -> {
             String name = waypointNameInput.getText();
@@ -89,14 +103,14 @@ public class WaypointPanel extends JPanel {
     /**
      * Updating info about the file currently being processed.
      *
-     * @param waypointDate the date of the waypoint
-     * @param waypointName      the new filename.
+     * @param waypointDate  the date of the waypoint
+     * @param waypointName  the new filename.
      * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
     public void updateCurrentFile(String waypointDate, String waypointName, int queueSize, int queuePosition) {
         String currentImportedFile = Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + waypointDate;
-        String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition+"", queueSize+"");
+        String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + "");
         waypointNameInput.setText(waypointName);
         currentWaypointLabel.setText(currentImportedFile);
         queueLabel.setText(remainingFiles);

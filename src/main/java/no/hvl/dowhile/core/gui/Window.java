@@ -26,8 +26,6 @@ import java.util.List;
  */
 public class Window extends JFrame {
 
-    private final OperationManager OPERATION_MANAGER;
-
     // Font sizes
     final int HEADER_FONT_SIZE = 32;
     final int TEXT_FONT_SIZE = 24;
@@ -56,7 +54,6 @@ public class Window extends JFrame {
      * @see OperationManager
      */
     public Window(final OperationManager OPERATION_MANAGER) {
-        this.OPERATION_MANAGER = OPERATION_MANAGER;
 
         setTitle(Messages.PROJECT_NAME.get());
         setSize(800, 400);
@@ -207,8 +204,8 @@ public class Window extends JFrame {
     /**
      * Telling the WaypointPanel to update the info about which file is currently processed.
      *
-     * @param waypointDate the date of the waypoint
-     * @param waypointName     the name of the file.
+     * @param waypointDate  the date of the waypoint
+     * @param waypointName  the name of the file.
      * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
@@ -261,8 +258,9 @@ public class Window extends JFrame {
      * Makes a JButton with given text and a specific size and color
      *
      * @param text   within the button
-     * @param width
-     * @param height @return a JButton with given text and a set dimension and color
+     * @param width  Width of the button
+     * @param height Height of the button
+     * @return a JButton with given text and a set dimension and color
      */
     public JButton makeButton(String text, int width, int height) {
         JButton button = new JButton(text);
@@ -276,7 +274,7 @@ public class Window extends JFrame {
     /**
      * Makes a JTextField with a given size and a preset font
      *
-     * @param width the width of the JTextField
+     * @param width  the width of the JTextField
      * @param height the height of the JTextField
      * @return A JTextField with given dimensions(width and height) and a preset font
      */
@@ -304,7 +302,8 @@ public class Window extends JFrame {
 
     /**
      * Makes a DatePicker (from library LGoodDatePicker) with a given width and height
-     * @param width width of the DatePicker
+     *
+     * @param width  width of the DatePicker
      * @param height height of the Datepicker
      * @return a DatePicker with given width and height
      */
@@ -323,7 +322,8 @@ public class Window extends JFrame {
 
     /**
      * Makes a TimePicker (from library LGoodDatePicker) with a given width and height
-     * @param width width of the TimePicker
+     *
+     * @param width  width of the TimePicker
      * @param height height of the Timepicker
      * @return a TimePicker with given width and height
      */
