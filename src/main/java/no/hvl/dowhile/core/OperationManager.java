@@ -92,6 +92,7 @@ public class OperationManager {
      */
     public void stop() {
         removeUnprocessedFiles();
+        window.close();
     }
 
     /**
