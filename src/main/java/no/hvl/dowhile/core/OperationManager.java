@@ -218,14 +218,7 @@ public class OperationManager {
             return;
         }
         if (TrackTools.hasWaypoints(gpx)) {
-            List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(file);
-            for (int i = 0; i < waypointsInGpx.size(); i++) {
-                String newRawFileName = StringTools.renameRawWaypointName(file.getName(), i);
-                String hash = fileManager.saveRawGpxFileInFolders(waypointsInGpx.get(i), newRawFileName);
-                queue.add(new GpxFile(file, newRawFileName, hash, waypointsInGpx.get(i)));
-                queueSize++;
-                window.updateQueueInfo(queueSize, queuePosition);
-            }
+            addWaypointsToQueue(file);
             return;
         }
         Track track = TrackTools.getTrackFromGPXFile(gpx);
@@ -385,6 +378,9 @@ public class OperationManager {
         }
         GpxFile gpxFile = currentTrackCutter.getGpxFile();
         GPX gpx = gpxFile.getGpx();
+        if (!name.isEmpty()) {
+            gpx.getWaypoints().iterator().next().setName(name);
+        }
         if (!description.isEmpty()) {
             gpx.getWaypoints().iterator().next().setDescription(description);
         }
@@ -416,6 +412,21 @@ public class OperationManager {
         }
         if (currentTrackCutter != null && currentTrackCutter.getGpxFile() != null) {
             fileManager.deleteRawFileInFolders(currentTrackCutter.getGpxFile().getFile().getName());
+        }
+    }
+
+    /**
+     * Takes a file containing waypoints and adds all of them to the queue.
+     * @param file The file containing the waypoints.
+     */
+    private void addWaypointsToQueue(File file) {
+        List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(file);
+        for (int i = 0; i < waypointsInGpx.size(); i++) {
+            String newRawFileName = StringTools.renameRawWaypointName(file.getName(), i);
+            String hash = fileManager.saveRawGpxFileInFolders(waypointsInGpx.get(i), newRawFileName);
+            queue.add(new GpxFile(file, newRawFileName, hash, waypointsInGpx.get(i)));
+            queueSize++;
+            window.updateQueueInfo(queueSize, queuePosition);
         }
     }
 
