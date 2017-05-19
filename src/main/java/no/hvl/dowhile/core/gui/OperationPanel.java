@@ -14,7 +14,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 /**
- * This class has an interface for creating a new operation or choosing an existing operation.
+ * This class has an interface for editing the current operation or choose another operation.
  */
 public class OperationPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;

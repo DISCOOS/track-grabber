@@ -12,16 +12,18 @@ import java.awt.*;
 import java.util.Locale;
 
 /**
- * Created by JonKjetil on 15.05.2017.
+ * This class has an interface for creating a new operation or choosing an existing operation.
  */
 public class StartPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
 
+    // Choose operation buttons
     private JButton newOperationButton;
     private JButton existingOperationButton;
 
+    // Create new operation gui
     private JLabel operationNameLabel;
     private JTextField operationNameInput;
     private JLabel operationDateLabel;
@@ -29,11 +31,23 @@ public class StartPanel extends JPanel {
     private TimePicker timePicker;
     private JLabel errorMessageLabel;
 
+    // Choose existing operation gui
     private JLabel existingOperationLabel;
     private JComboBox<String> existingOperationInput;
     private JButton registerNewButton;
     private JButton registerExistingButton;
 
+    // Back button
+    private JButton backButton;
+
+    /**
+     * Constructor for the StartPanel.
+     * sets the layout and constraints, runs the GUI methods, sets the locale for the datepicker and timepicker,
+     * sets initial visibility and sets the button listeners active
+     *
+     * @param OPERATION_MANAGER
+     * @param WINDOW
+     */
     public StartPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
@@ -55,6 +69,7 @@ public class StartPanel extends JPanel {
         registerNewOperationButtonListener();
         newOperationButtonListener();
         existingOperationButtonListener();
+        backButtonListener();
 
         setBackground(new Color(255, 245, 252));
     }
@@ -76,6 +91,12 @@ public class StartPanel extends JPanel {
         existingOperationButton.setName("existingOperationButton");
         WINDOW.modifyConstraints(constraints, 2, 0, GridBagConstraints.CENTER, 2);
         add(existingOperationButton, constraints);
+
+        // back button
+        backButton = WINDOW.makeButton(Messages.BACK.get(), 100, 50);
+        backButton.setName("backButton");
+        WINDOW.modifyConstraints(constraints, 0, 7, GridBagConstraints.WEST, 1);
+        add(backButton, constraints);
     }
 
     /**
@@ -156,6 +177,7 @@ public class StartPanel extends JPanel {
         setVisibilityOperationButtons(true);
         setVisibilityExistingOperation(false);
         setVisibilityNewOperation(false);
+        operationNameInput.setText("");
     }
 
     /**
@@ -194,6 +216,7 @@ public class StartPanel extends JPanel {
         registerNewButton.setVisible(visibility);
         errorMessageLabel.setText(" ");
         errorMessageLabel.setVisible(visibility);
+        backButton.setVisible(visibility);
     }
 
     /**
@@ -205,6 +228,7 @@ public class StartPanel extends JPanel {
         existingOperationLabel.setVisible(visibility);
         existingOperationInput.setVisible(visibility);
         registerExistingButton.setVisible(visibility);
+        backButton.setVisible(visibility);
     }
 
     /**
@@ -224,6 +248,15 @@ public class StartPanel extends JPanel {
         existingOperationButton.addActionListener(actionEvent -> {
             setVisibilityOperationButtons(false);
             setVisibilityExistingOperation(true);
+        });
+    }
+
+    /**
+     * Setup the listener for the back button.
+     */
+    private void backButtonListener() {
+        backButton.addActionListener(actionEvent -> {
+            setInitialVisibility();
         });
     }
 
