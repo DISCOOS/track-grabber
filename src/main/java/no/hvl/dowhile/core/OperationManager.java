@@ -220,9 +220,9 @@ public class OperationManager {
         if (TrackTools.hasWaypoints(gpx)) {
             List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(file);
             for (int i = 0; i < waypointsInGpx.size(); i++) {
-                String rawFileName = file.getName() + "_" + (i + 1);
-                String hash = fileManager.saveRawGpxFileInFolders(waypointsInGpx.get(i), rawFileName);
-                queue.add(new GpxFile(file, rawFileName, hash, waypointsInGpx.get(i)));
+                String newRawFileName = StringTools.renameRawWaypointName(file.getName(), i);
+                String hash = fileManager.saveRawGpxFileInFolders(waypointsInGpx.get(i), newRawFileName);
+                queue.add(new GpxFile(file, newRawFileName, hash, waypointsInGpx.get(i)));
                 queueSize++;
                 window.updateQueueInfo(queueSize, queuePosition);
             }

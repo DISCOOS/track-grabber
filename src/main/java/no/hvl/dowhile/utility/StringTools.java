@@ -98,4 +98,14 @@ public class StringTools {
         return Messages.TRACK_START.get() + TrackTools.getStartTimeFromTrack(gpx) + ", " + Messages.TRACK_END.get() + TrackTools.getEndTimeFromTrack(gpx);
     }
 
+    /**
+     * Takes the name of a raw waypoint file and injects the file's index into it.
+     * @param name The name to replace.
+     * @param index The index to inject into the name
+     * @return The new name.
+     */
+    public static String renameRawWaypointName(String name, int index) {
+        return new StringBuilder(name).insert(name.length()-4, "_" + index).toString();
+    }
+
 }
