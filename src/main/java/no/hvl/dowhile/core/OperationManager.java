@@ -183,12 +183,11 @@ public class OperationManager {
         File gpxFolder = gpsDrive.getGpxFolder();
         Set<File> gpxFiles = FileTools.findGpxFiles(gpxFolder);
         for (File file : gpxFiles) {
-            System.err.println(file.getName());
             checkFile(file);
         }
-        if (!queue.isEmpty()) {
+        if (!queue.isEmpty() && window.isReadyToProcessFile()) {
             prepareNextFile();
-        } else {
+        } else if (queue.isEmpty() && window.isReadyToProcessFile()) {
             window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_GPS_DESCRIPTION.get());
         }
     }
@@ -200,9 +199,9 @@ public class OperationManager {
      */
     public void handleImportedFile(File file) {
         checkFile(file);
-        if (!queue.isEmpty()) {
+        if (!queue.isEmpty() && window.isReadyToProcessFile()) {
             prepareNextFile();
-        } else {
+        } else if (queue.isEmpty() && window.isReadyToProcessFile()) {
             window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_IMPORT_DESCRIPTION.get());
         }
     }
@@ -225,6 +224,7 @@ public class OperationManager {
                 String hash = fileManager.saveRawGpxFileInFolders(waypointsInGpx.get(i), rawFileName);
                 queue.add(new GpxFile(file, rawFileName, hash, waypointsInGpx.get(i)));
                 queueSize++;
+                window.updateQueueInfo(queueSize, queuePosition);
             }
             return;
         }
@@ -251,6 +251,7 @@ public class OperationManager {
             if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
                 queue.add(new GpxFile(file, file.getName(), rawfileHash, gpx));
                 queueSize++;
+                window.updateQueueInfo(queueSize, queuePosition);
             } else {
                 System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
             }

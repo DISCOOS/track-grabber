@@ -194,15 +194,8 @@ public class FileTools {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
             reader.close();
-            String[] parts;
-            String replacedLine;
-            if (line.contains("</desc>")) {
-                parts = line.split("</desc>");
-                replacedLine = parts[0] + "</desc><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + color + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
-            } else {
-                parts = line.split("</name>");
-                replacedLine = parts[0] + "</name><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + color + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
-            }
+            String[] parts = line.split("<trkseg>", 2);
+            String replacedLine = parts[0] + "<extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + color + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + "<trkseg>" + parts[1];
             FileWriter writer = new FileWriter(file);
             writer.write(replacedLine);
             writer.flush();

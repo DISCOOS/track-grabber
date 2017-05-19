@@ -47,6 +47,8 @@ public class Window extends JFrame {
     private WaypointPanel waypointPanel;
     private StandByPanel standByPanel;
 
+    private String activePanelName;
+
     /**
      * Constructor setting up the Window, logo, listener for closing and creating the different panels to display.
      *
@@ -134,6 +136,7 @@ public class Window extends JFrame {
     public void openStartPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Start");
+        activePanelName = "Start";
     }
 
     /**
@@ -143,6 +146,7 @@ public class Window extends JFrame {
         operationPanel.setAllSavedPathsLabel(paths);
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Operation");
+        activePanelName = "Operation";
     }
 
     /**
@@ -151,6 +155,7 @@ public class Window extends JFrame {
     public void openTrackPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Track");
+        activePanelName = "Track";
     }
 
     /**
@@ -159,6 +164,7 @@ public class Window extends JFrame {
     public void openWaypointPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Waypoint");
+        activePanelName = "Waypoint";
     }
 
     /**
@@ -167,6 +173,7 @@ public class Window extends JFrame {
     public void openStandByPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "StandBy");
+        activePanelName = "StandBy";
     }
 
     /**
@@ -176,6 +183,10 @@ public class Window extends JFrame {
      */
     public void showDialog(String title, String text) {
         JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), text, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public boolean isReadyToProcessFile() {
+        return activePanelName.equals("Operation") || activePanelName.equals("StandBy") || activePanelName.equals("Start");
     }
 
     /**
@@ -211,6 +222,17 @@ public class Window extends JFrame {
      */
     public void updateCurrentWaypointFile(String waypointDate, String waypointName, int queueSize, int queuePosition) {
         waypointPanel.updateCurrentFile(waypointDate, waypointName, queueSize, queuePosition);
+    }
+
+    /**
+     * Updating the info about the position and amount of files in the queue.
+     *
+     * @param queueSize     the size of the queue.
+     * @param queuePosition the current position in the queue.
+     */
+    public void updateQueueInfo(int queueSize, int queuePosition) {
+        trackPanel.updateQueueInfo(queueSize, queuePosition);
+        waypointPanel.updateQueueInfo(queueSize, queuePosition);
     }
 
     /**

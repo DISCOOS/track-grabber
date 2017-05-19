@@ -364,6 +364,16 @@ public class TrackPanel extends JPanel {
     }
 
     /**
+     * Updating the info about the position and amount of files in the queue.
+     *
+     * @param queueSize     the size of the queue.
+     * @param queuePosition the current position in the queue.
+     */
+    public void updateQueueInfo(int queueSize, int queuePosition) {
+        remainingFilesLabel.setText(Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + ""));
+    }
+
+    /**
      * Updating the distance covered in the current track
      *
      * @param trackDistance the distance covered in the track

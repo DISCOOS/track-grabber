@@ -117,4 +117,14 @@ public class WaypointPanel extends JPanel {
         currentWaypointLabel.setText(currentImportedFile);
         queueLabel.setText(remainingFiles);
     }
+
+    /**
+     * Updating the info about the position and amount of files in the queue.
+     *
+     * @param queueSize     the size of the queue.
+     * @param queuePosition the current position in the queue.
+     */
+    public void updateQueueInfo(int queueSize, int queuePosition) {
+        queueLabel.setText(Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + ""));
+    }
 }
