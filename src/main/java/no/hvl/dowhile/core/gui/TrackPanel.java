@@ -83,6 +83,13 @@ public class TrackPanel extends JPanel {
     private List<JComponent> allInputComponents; // All JComponents connected to input from user is added to this List
     private List<String> areaSearchedStrings; // List with all areas searched
 
+    /**
+     * Constructor setting the OPERATION_MANAGER and WINDOW.
+     * Also sets the layout and the constraints and the background color
+     *
+     * @param OPERATION_MANAGER the current instance of the OperationManager
+     * @param WINDOW            the current instance of the Window
+     */
     public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
