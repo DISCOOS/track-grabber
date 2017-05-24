@@ -6,6 +6,7 @@ import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,18 +63,18 @@ public class WaypointPanel extends JPanel {
     private void waypointGUI() {
         // Header label for waypoint processing
         waypointHeaderLabel = WINDOW.makeHeaderLabel(Messages.WAYPOINT_HEADER.get());
-        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 3);
+        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 4);
         add(waypointHeaderLabel, constraints);
 
         // Label with the current waypoint file
         currentWaypointLabel = WINDOW.makeLabel(Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + "Ingen fil.", Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 3);
+        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 4);
         add(currentWaypointLabel, constraints);
 
         // Input field for new name for the waypoint file
         waypointNameInput = WINDOW.makeTextField(100, 60);
         PromptSupport.setPrompt(Messages.NEW_NAME.get(), waypointNameInput);
-        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 3);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 4);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(waypointNameInput, constraints);
 
@@ -84,44 +85,69 @@ public class WaypointPanel extends JPanel {
         waypointDescriptionInput.setLineWrap(true);
         waypointDescriptionInput.setWrapStyleWord(true);
         PromptSupport.setPrompt(Messages.NEW_DESCRIPTION.get(), waypointDescriptionInput);
-        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 3);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 4);
         add(waypointDescriptionInput, constraints);
+
+        // Flag label
+        JLabel flagLabel = WINDOW.makeLabel("Velg farge på Waypoint-flagg:", Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.WEST, 4);
+        add(flagLabel, constraints);
 
         // Confirm button
         confirmNameButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get(), 150, 50);
-        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.WEST, 3);
+        WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.WEST, 4);
         add(confirmNameButton, constraints);
 
         // Queue with remaining waypoint files
         queueLabel = WINDOW.makeLabel(Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get(), Font.BOLD);
-        WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 3);
+        WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 4);
         add(queueLabel, constraints);
     }
 
     private void colorRadioButtons() {
-        JRadioButton red = new JRadioButton();
-        red.setBackground(Color.RED);
-        red.setPreferredSize(new Dimension(200, 50));
-        colorGroup.add(red);
-        coloredButtons.add(red);
-        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 1);
-        add(red, constraints);
+        JRadioButton redButton = new JRadioButton();
+        ImageIcon red = new ImageIcon(RedAndWhite.getColoredImage(Color.RED, 50));
+        redButton.setIcon(red);
+        //redButton.setBorder(new LineBorder(Color.BLACK, 21 ,true));
+        redButton.setBorderPainted(true);
+        colorGroup.add(redButton);
+        coloredButtons.add(redButton);
+        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 1);
+        constraints.insets = new Insets(5, 21, 5, 21);
+        add(redButton, constraints);
 
-        JRadioButton blue = new JRadioButton();
-        blue.setBackground(Color.BLUE);
-        blue.setPreferredSize(new Dimension(200, 50));
-        colorGroup.add(blue);
-        coloredButtons.add(blue);
-        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.CENTER, 1);
-        add(blue, constraints);
+        JRadioButton blueButton = new JRadioButton();
+        ImageIcon blue = new ImageIcon(RedAndWhite.getColoredImage(Color.BLUE, 50));
+        blueButton.setIcon(blue);
+        // blueButton.setBorder(new LineBorder(Color.BLACK, 21 ,true));
+        blueButton.setBorderPainted(true);
+        colorGroup.add(blueButton);
+        coloredButtons.add(blueButton);
+        WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.CENTER, 1);
+        constraints.insets = new Insets(5, 21, 5, 21);
+        add(blueButton, constraints);
 
-        JRadioButton yellow = new JRadioButton();
-        yellow.setBackground(Color.GREEN);
-        yellow.setPreferredSize(new Dimension(200, 50));
-        colorGroup.add(yellow);
-        coloredButtons.add(yellow);
-        WINDOW.modifyConstraints(constraints, 2, 4, GridBagConstraints.CENTER, 1);
-        add(yellow, constraints);
+        JRadioButton yellowButton = new JRadioButton();
+        ImageIcon yellow = new ImageIcon(RedAndWhite.getColoredImage(Color.YELLOW, 50));
+        yellowButton.setIcon(yellow);
+        //yellowButton.setBorder(new LineBorder(Color.BLACK, 21 ,true));
+        yellowButton.setBorderPainted(true);
+        colorGroup.add(yellowButton);
+        coloredButtons.add(yellowButton);
+        WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.CENTER, 1);
+        constraints.insets = new Insets(5, 21, 5, 21);
+        add(yellowButton, constraints);
+
+        JRadioButton greenButton = new JRadioButton();
+        ImageIcon green = new ImageIcon(RedAndWhite.getColoredImage(Color.green, 50));
+        greenButton.setIcon(green);
+        //greenButton.setBorder(new LineBorder(Color.BLACK, 21 ,true));
+        greenButton.setBorderPainted(true);
+        colorGroup.add(greenButton);
+        coloredButtons.add(greenButton);
+        WINDOW.modifyConstraints(constraints, 3, 5, GridBagConstraints.CENTER, 1);
+        constraints.insets = new Insets(5, 21, 5, 21);
+        add(greenButton, constraints);
     }
 
     /**
@@ -167,25 +193,18 @@ public class WaypointPanel extends JPanel {
     }
 }
 
-class RoundlIcon implements Icon {
-    Color color;
+class RedAndWhite {
 
-    public RoundlIcon(Color c) {
-        color = c;
-    }
-
-    public void paintIcon(Component c, Graphics g,
-                          int x, int y) {
+    public static Image getColoredImage(Color color, int size) {
+        BufferedImage bi = new BufferedImage(
+                size,
+                size,
+                BufferedImage.TYPE_INT_RGB);
+        Graphics g = bi.getGraphics();
         g.setColor(color);
-        g.fillOval(
-                x, y, getIconWidth(), getIconHeight());
-    }
+        g.fillRect(0, 0, size, size);
 
-    public int getIconWidth() {
-        return 10;
-    }
-
-    public int getIconHeight() {
-        return 10;
+        g.dispose();
+        return bi;
     }
 }
