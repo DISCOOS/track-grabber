@@ -6,6 +6,7 @@ import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * This class has an interface for configuring details related to one waypoints.
@@ -22,6 +23,9 @@ public class WaypointPanel extends JPanel {
     private JTextArea waypointDescriptionInput;
     private JButton confirmNameButton;
     private JLabel queueLabel;
+    private List<JRadioButton> coloredButtons;
+    private ButtonGroup colorGroup;
+
 
 
     /**
@@ -87,6 +91,14 @@ public class WaypointPanel extends JPanel {
         queueLabel = WINDOW.makeLabel(Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get(), Font.BOLD);
         WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.WEST, 1);
         add(queueLabel, constraints);
+    }
+
+    private void colorRadioButtons() {
+        JRadioButton red = new JRadioButton();
+
+        JRadioButton blue;
+
+        JRadioButton yellow;
     }
 
     /**

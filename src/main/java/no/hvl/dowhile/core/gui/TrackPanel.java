@@ -31,7 +31,6 @@ public class TrackPanel extends JPanel {
 
     // Check boxes for selecting type of team and a label.
     private JLabel crewTypeLabel;
-    private JSpinner areaSearchedSpinner;
     private List<JRadioButton> radioButtons;
     private ButtonGroup radioButtonGroup;
 
@@ -53,6 +52,7 @@ public class TrackPanel extends JPanel {
     // Getting info about the area searched.
     private JLabel areaLabel;
     private JButton areaInputButton;
+    private JSpinner areaSearchedSpinner;
     private JLabel areaSearchedLabel;
 
     // Getting extra comments about the track.
