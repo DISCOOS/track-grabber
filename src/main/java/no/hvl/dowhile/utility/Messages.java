@@ -52,7 +52,7 @@ public enum Messages {
     TRACK_HEADER("Prosesserer sporfil"),
     BACK("Tilbake"),
     NEXT("Neste"),
-    TRACK_START_INFO("Her er noe info om hva du skal gjøre for prosessering av GPS-data"),
+    TRACK_START_INFO("Du importerer nå en sporfil. Klikk på neste og følg instruksene."),
     TRACK_START("Startet: "),
     TRACK_END("Sluttet: "),
     CREW_TYPE_MESSAGE("Velg type mannskap"),

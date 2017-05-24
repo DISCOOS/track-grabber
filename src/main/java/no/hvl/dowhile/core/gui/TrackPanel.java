@@ -131,27 +131,27 @@ public class TrackPanel extends JPanel {
         WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
         add(trackHeaderLabel, constraints);
 
+        // Start info before importing file
+        startInfoLabel = WINDOW.makeLabel(Messages.TRACK_START_INFO.get(), Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.CENTER, 3);
+        add(startInfoLabel, constraints);
+        allInputComponents.add(startInfoLabel);
+
         // Current file imported from GPS
         String currentImportedFile = "Ingen fil.";
         currentImportLabel = WINDOW.makeLabel(currentImportedFile, Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 3);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 3);
         add(currentImportLabel, constraints);
-
-        // Remaining files imported from GPS waiting to be processed
-        remainingFilesLabel = WINDOW.makeLabel("Wrong", Font.BOLD);
-        WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 3);
-        add(remainingFilesLabel, constraints);
-
-        // Start info before importing file
-        startInfoLabel = WINDOW.makeLabel(Messages.TRACK_START_INFO.get(), Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.CENTER, 3);
-        add(startInfoLabel, constraints);
-        allInputComponents.add(startInfoLabel);
 
         trackLengthLabel = WINDOW.makeLabel("", Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 3);
         add(trackLengthLabel, constraints);
         allInputComponents.add(trackLengthLabel);
+
+        // Remaining files imported from GPS waiting to be processed
+        remainingFilesLabel = WINDOW.makeLabel("Wrong", Font.BOLD);
+        WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 3);
+        add(remainingFilesLabel, constraints);
     }
 
     /**
