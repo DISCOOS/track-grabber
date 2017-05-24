@@ -19,7 +19,7 @@ public class WaypointPanel extends JPanel {
     private JLabel waypointHeaderLabel;
     private JLabel currentWaypointLabel;
     private JTextField waypointNameInput;
-    private JTextField waypointDescriptionInput;
+    private JTextArea waypointDescriptionInput;
     private JButton confirmNameButton;
     private JLabel queueLabel;
 
@@ -69,10 +69,13 @@ public class WaypointPanel extends JPanel {
         add(waypointNameInput, constraints);
 
         // Input for description for waypoint file
-        waypointDescriptionInput = WINDOW.makeTextField(100, 60);
+        waypointDescriptionInput = new JTextArea();
+        waypointDescriptionInput.setFont(WINDOW.TEXT_FONT);
+        waypointDescriptionInput.setPreferredSize(new Dimension(100, 150));
+        waypointDescriptionInput.setLineWrap(true);
+        waypointDescriptionInput.setWrapStyleWord(true);
         PromptSupport.setPrompt(Messages.NEW_DESCRIPTION.get(), waypointDescriptionInput);
         WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 2);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
         add(waypointDescriptionInput, constraints);
 
         // Confirm button
@@ -126,5 +129,28 @@ public class WaypointPanel extends JPanel {
      */
     public void updateQueueInfo(int queueSize, int queuePosition) {
         queueLabel.setText(Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + ""));
+    }
+}
+
+class RoundlIcon implements Icon {
+    Color color;
+
+    public RoundlIcon(Color c) {
+        color = c;
+    }
+
+    public void paintIcon(Component c, Graphics g,
+                          int x, int y) {
+        g.setColor(color);
+        g.fillOval(
+                x, y, getIconWidth(), getIconHeight());
+    }
+
+    public int getIconWidth() {
+        return 10;
+    }
+
+    public int getIconHeight() {
+        return 10;
     }
 }
