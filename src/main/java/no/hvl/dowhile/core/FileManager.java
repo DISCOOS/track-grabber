@@ -257,12 +257,12 @@ public class FileManager {
         }
         boolean matchingWaypoint = false;
         for (int i = 0; i < waypointFiles.length && !matchingWaypoint; i++) {
-            GPX oldWaypointGpx = TrackTools.splitWaypointGpx(waypointFiles[i]).get(0);
-            if (waypointFiles[i] != null && TrackTools.hasWaypoints(oldWaypointGpx)) {
+            GPX oldWaypointGpx = TrackTools.getGpxFromFile(waypointFiles[i]);
+            if (oldWaypointGpx != null && TrackTools.hasWaypoints(oldWaypointGpx)) {
                 matchingWaypoint = TrackTools.matchingWaypoints(oldWaypointGpx.getWaypoints().iterator().next(), waypointGpx.getWaypoints().iterator().next());
             }
         }
-        return false;
+        return matchingWaypoint;
     }
 
     /**
