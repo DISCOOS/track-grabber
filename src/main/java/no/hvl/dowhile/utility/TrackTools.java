@@ -167,17 +167,10 @@ public class TrackTools {
     }
 
     public static boolean matchingWaypoints(Waypoint waypoint1, Waypoint waypoint2) {
-        System.out.println("Comparing " + waypoint1.getName() + " and " + waypoint2.getName());
-        System.out.println(waypoint1.getLatitude() + "\n" + waypoint2.getLatitude() + "\n" +
-                waypoint1.getLongitude() + "\n" + waypoint2.getLongitude() + "\n" +
-                waypoint1.getElevation() + "\n" + waypoint2.getElevation() + "\n" +
-                waypoint1.getTime().getTime() + "\n" + waypoint2.getTime().getTime());
-        boolean result = waypoint1.getLatitude() == waypoint2.getLatitude() &&
+        return waypoint1.getLatitude() == waypoint2.getLatitude() &&
                 waypoint1.getLongitude() == waypoint2.getLongitude() &&
                 waypoint1.getElevation() == waypoint2.getElevation() &&
                 waypoint1.getTime().getTime() == waypoint2.getTime().getTime();
-        System.out.println("Returns " + result);
-        return result;
     }
 
     /**
