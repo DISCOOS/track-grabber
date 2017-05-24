@@ -6,6 +6,7 @@ import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,11 @@ public class WaypointPanel extends JPanel {
         constraints = new GridBagConstraints();
         WINDOW.setConstraintsInsets(constraints, 5);
 
+        coloredButtons = new ArrayList<>();
+        colorGroup = new ButtonGroup();
+
         waypointGUI();
+        colorRadioButtons();
 
         confirmButtonListener();
 
@@ -57,18 +62,18 @@ public class WaypointPanel extends JPanel {
     private void waypointGUI() {
         // Header label for waypoint processing
         waypointHeaderLabel = WINDOW.makeHeaderLabel(Messages.WAYPOINT_HEADER.get());
-        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 0, 0, GridBagConstraints.WEST, 3);
         add(waypointHeaderLabel, constraints);
 
         // Label with the current waypoint file
         currentWaypointLabel = WINDOW.makeLabel(Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + "Ingen fil.", Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 0, 1, GridBagConstraints.WEST, 3);
         add(currentWaypointLabel, constraints);
 
         // Input field for new name for the waypoint file
         waypointNameInput = WINDOW.makeTextField(100, 60);
         PromptSupport.setPrompt(Messages.NEW_NAME.get(), waypointNameInput);
-        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
+        WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 3);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(waypointNameInput, constraints);
 
@@ -79,26 +84,44 @@ public class WaypointPanel extends JPanel {
         waypointDescriptionInput.setLineWrap(true);
         waypointDescriptionInput.setWrapStyleWord(true);
         PromptSupport.setPrompt(Messages.NEW_DESCRIPTION.get(), waypointDescriptionInput);
-        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 2);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 3);
         add(waypointDescriptionInput, constraints);
 
         // Confirm button
         confirmNameButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get(), 150, 50);
-        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.WEST, 3);
         add(confirmNameButton, constraints);
 
         // Queue with remaining waypoint files
         queueLabel = WINDOW.makeLabel(Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get(), Font.BOLD);
-        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 3);
         add(queueLabel, constraints);
     }
 
     private void colorRadioButtons() {
         JRadioButton red = new JRadioButton();
+        red.setBackground(Color.RED);
+        red.setPreferredSize(new Dimension(200, 50));
+        colorGroup.add(red);
+        coloredButtons.add(red);
+        WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.CENTER, 1);
+        add(red, constraints);
 
-        JRadioButton blue;
+        JRadioButton blue = new JRadioButton();
+        blue.setBackground(Color.BLUE);
+        blue.setPreferredSize(new Dimension(200, 50));
+        colorGroup.add(blue);
+        coloredButtons.add(blue);
+        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.CENTER, 1);
+        add(blue, constraints);
 
-        JRadioButton yellow;
+        JRadioButton yellow = new JRadioButton();
+        yellow.setBackground(Color.GREEN);
+        yellow.setPreferredSize(new Dimension(200, 50));
+        colorGroup.add(yellow);
+        coloredButtons.add(yellow);
+        WINDOW.modifyConstraints(constraints, 2, 4, GridBagConstraints.CENTER, 1);
+        add(yellow, constraints);
     }
 
     /**
