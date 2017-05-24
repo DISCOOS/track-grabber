@@ -28,7 +28,7 @@ public class GpxFile {
     }
 
     /**
-     * Get the file associated with this GPX object.
+     * Gets the file associated with this GPX object.
      *
      * @return the file.
      */
@@ -37,7 +37,7 @@ public class GpxFile {
     }
 
     /**
-     * Get the name of the raw file for this gpx file.
+     * Gets the name of the raw file for this gpx file.
      *
      * @return the name of the raw file.
      */
@@ -46,7 +46,7 @@ public class GpxFile {
     }
 
     /**
-     * Get the hash value of the raw file.
+     * Gets the hash value of the raw file.
      *
      * @return the hash value of the raw file.
      */
@@ -55,7 +55,7 @@ public class GpxFile {
     }
 
     /**
-     * Get the parsed GPX object.
+     * Gets the parsed GPX object.
      *
      * @return the parsed GPX object.
      */
@@ -64,7 +64,7 @@ public class GpxFile {
     }
 
     /**
-     * Set the gpx object of for this object.
+     * Sets the gpx object of for this object.
      *
      * @param gpx the gpx to set.
      */

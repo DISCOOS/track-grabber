@@ -5,7 +5,7 @@ package no.hvl.dowhile.utility;
  */
 public class ThreadTools {
     /**
-     * Make the thread sleep for the specified amount of seconds.
+     * Makes the thread sleep for the specified amount of seconds.
      *
      * @param seconds amount of seconds to sleep.
      */

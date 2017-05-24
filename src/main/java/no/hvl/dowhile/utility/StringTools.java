@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class StringTools {
     /**
-     * Formatting a Date into a string.
+     * Formats a Date into a string.
      *
      * @param date the date to format.
      * @return the date formatted as a String.
@@ -20,7 +20,7 @@ public class StringTools {
     }
 
     /**
-     * Formatting a Date into a string without spaces.
+     * Formats a Date into a string without spaces.
      *
      * @param date the date to format.
      * @return the date formatted as a String without spaces.
@@ -30,7 +30,7 @@ public class StringTools {
     }
 
     /**
-     * Formatting a Date into a string without spaces, hours, minutes and seconds.
+     * Formats a Date into a string without spaces, hours, minutes and seconds.
      *
      * @param date the date to format.
      * @return the date formatted as a String without spaces, hours, minutes and seconds.
@@ -40,7 +40,7 @@ public class StringTools {
     }
 
     /**
-     * Formatting a Date into a String without year.
+     * Formats a Date into a String without year.
      *
      * @param date the date to format.
      * @return the date formatted as a String without year.

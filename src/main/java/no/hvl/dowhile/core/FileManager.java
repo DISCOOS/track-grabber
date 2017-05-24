@@ -55,7 +55,7 @@ public class FileManager {
     }
 
     /**
-     * Delete a file from the current operation.
+     * Deletes a file from the current operation.
      * Should be used if an import is quit before the file is processed.
      *
      * @param filename the name of the file to delete.
@@ -86,7 +86,7 @@ public class FileManager {
     }
 
     /**
-     * Setting up folder for storing processed and raw files.
+     * Sets up folder for storing processed and raw files.
      *
      * @param listRoot the drive to store the files.
      */
@@ -96,7 +96,7 @@ public class FileManager {
     }
 
     /**
-     * Setting up the config file.
+     * Sets up the config file.
      */
     public void setupConfig(File folder) {
         File config = FileTools.getFile(folder, "config.txt");
@@ -115,7 +115,7 @@ public class FileManager {
     }
 
     /**
-     * Finding the operation folders and parsing the operation files.
+     * Finds the operation folders and parses the operation files.
      *
      * @return list of the operations existing in the file system.
      */
@@ -146,7 +146,7 @@ public class FileManager {
     }
 
     /**
-     * Setting up the folder for the operation with a raw folder, processed folder and operation info file.
+     * Sets up the folder for the operation with a raw folder, processed folder and operation info file.
      *
      * @param operation the operation to setup.
      */
@@ -155,7 +155,7 @@ public class FileManager {
     }
 
     /**
-     * Setting up the extra operation folder for the given operation at the given path.
+     * Sets up the extra operation folder for the given operation at the given path.
      *
      * @param operation the operation to create a folder for.
      * @param path      the path to save it.
@@ -187,7 +187,7 @@ public class FileManager {
     }
 
     /**
-     * Replacing the content of the operation file with the new operation info.
+     * Replaces the content of the operation file with the new operation info.
      *
      * @param operation the current operation.
      */
@@ -226,7 +226,7 @@ public class FileManager {
     }
 
     /**
-     * Checking if a file has been saved in the rawfolder already.
+     * Checks if a file has already been saved in the rawfolder.
      *
      * @param newGpx The gpx file to check.
      * @return true if the file is matching a file, false if not.
@@ -245,7 +245,7 @@ public class FileManager {
     }
 
     /**
-     * Checking if a waypoint has been saved in the waypoint folder already.
+     * Checks if a waypoint has been saved in the waypoint folder already.
      *
      * @param waypointGpx the gpx with the waypoint to check.
      * @return true if the waypoint has been imported, false if not.
@@ -266,7 +266,7 @@ public class FileManager {
     }
 
     /**
-     * Save information about a track to the CSV file for the current operation.
+     * Saves information about a track to the CSV file for the current operation.
      *
      * @param info          the trackinfo object with info about the track.
      * @param time          time of import.
@@ -279,7 +279,7 @@ public class FileManager {
     }
 
     /**
-     * Save information about a waypoint to the CSV file for the current operation.
+     * Saves information about a waypoint to the CSV file for the current operation.
      *
      * @param comment       comment about the waypoint.
      * @param originalFile  the name of the original/raw file.
@@ -291,7 +291,7 @@ public class FileManager {
     }
 
     /**
-     * Saving the given gpx files in all folders related to this operation.
+     * Saves the given gpx files in all folders related to this operation.
      *
      * @param rawGpx   the gpx to save.
      * @param filename the name to save it as.
@@ -305,7 +305,7 @@ public class FileManager {
     }
 
     /**
-     * Saving the specified file in the raw folder as the specified filename.
+     * Saves the specified file in the raw folder as the specified filename.
      *
      * @param rawGpx   the gpx file to save.
      * @param filename the name for the new file.
@@ -316,7 +316,7 @@ public class FileManager {
     }
 
     /**
-     * Saving the gpx in the processed folder and the various orginazation folders.
+     * Saves the gpx in the processed folder and the various orginazation folders.
      *
      * @param processedGpx the gpx to save.
      * @param trackInfo    info about the track.
@@ -331,7 +331,7 @@ public class FileManager {
     }
 
     /**
-     * Organize the file into folders by crew type, area and date.
+     * Organizes the file into folders by crew type, area and date.
      *
      * @param processedGpx the gpx to save.
      * @param trackInfo    the info about the track.
@@ -395,7 +395,7 @@ public class FileManager {
     }
 
     /**
-     * Saving the specified file in the processed folder as the specified filename.
+     * Saves the specified file in the processed folder as the specified filename.
      *
      * @param processedGpx the gpx file to save.
      * @param filename     the name for the new file.
@@ -427,6 +427,11 @@ public class FileManager {
         saveGpxFile(areaGPX, null, filename, areaFolder);
     }
 
+    /**
+     * Saves a waypoint to all necessary folders.
+     * @param waypointGpx The waypoint GPX file to save.
+     * @param filename The name of the waypoint GPX file.
+     */
     public void saveWaypointFileInFolders(GPX waypointGpx, String filename) {
         saveGpxFile(waypointGpx, null, filename, mainOperationFolder.getWaypointFolder());
         for (OperationFolder operationFolder : extraOperationFolders) {
@@ -481,7 +486,7 @@ public class FileManager {
     }
 
     /**
-     * Saving the file in the specified folder as the specified filename.
+     * Saves the file in the specified folder as the specified filename.
      *
      * @param gpx      the gpx to save.
      * @param filename the name for the new file.
@@ -521,7 +526,7 @@ public class FileManager {
     }
 
     /**
-     * Saving the file in the specified folder as the specified filename.
+     * Saves the file in the specified folder as the specified filename.
      *
      * @param fileToSave the file to save.
      * @param filename   the name for the new file.
@@ -559,7 +564,7 @@ public class FileManager {
     }
 
     /**
-     * Get the main operation folder for the current operation.
+     * Gets the main operation folder for the current operation.
      *
      * @return the main operation folder.
      */

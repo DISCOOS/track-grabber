@@ -37,7 +37,7 @@ public class Operation {
     }
 
     /**
-     * Creating an operation by parsing the data from the given file.
+     * Creates an operation by parsing the data from the given file.
      *
      * @param file the file to parse.
      * @throws Exception if the file doesn't have the required data.
@@ -85,7 +85,7 @@ public class Operation {
     }
 
     /**
-     * Get the name of the operation.
+     * Gets the name of the operation.
      *
      * @return the name of the operation.
      */
@@ -94,7 +94,7 @@ public class Operation {
     }
 
     /**
-     * Get the start time of the operation.
+     * Gets the start time of the operation.
      *
      * @return the start time of the operation.
      */
@@ -103,7 +103,7 @@ public class Operation {
     }
 
     /**
-     * Updating the start time of the operation.
+     * Updates the start time of the operation.
      *
      * @param year   the year it started.
      * @param month  the month it started.
@@ -119,7 +119,7 @@ public class Operation {
     }
 
     /**
-     * Set the main path to save files for this operation.
+     * Sets the main path to save files for this operation.
      *
      * @return the main path to save files.
      */
@@ -128,7 +128,7 @@ public class Operation {
     }
 
     /**
-     * Set the main path to save files for this operation.
+     * Sets the main path to save files for this operation.
      *
      * @param mainPath the main path to save files.
      */
@@ -137,7 +137,7 @@ public class Operation {
     }
 
     /**
-     * Get the paths for this operation.
+     * Gets the paths for this operation.
      *
      * @return list of paths.
      */
@@ -146,7 +146,7 @@ public class Operation {
     }
 
     /**
-     * Add a path to store files to this operation.
+     * Adds a path to store files to this operation.
      *
      * @param path the path to add.
      */
@@ -155,7 +155,7 @@ public class Operation {
     }
 
     /**
-     * Get the paths as a string for display in the GUI.
+     * Gets the paths as a string for display in the GUI.
      *
      * @return the paths as a string.
      */
@@ -170,7 +170,7 @@ public class Operation {
     }
 
     /**
-     * Get the content to be saved in the file representing this operation.
+     * Gets the content to be saved in the file representing this operation.
      */
     public String[] getFileContent() {
         List<String> lines = new ArrayList<>();

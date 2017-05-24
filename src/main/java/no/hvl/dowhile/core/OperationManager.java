@@ -207,9 +207,9 @@ public class OperationManager {
     }
 
     /**
-     * Processes a single GPX file.
+     * Identifies a GPX file and does the appropriate processing based on its attributes.
      *
-     * @param file the file to process.
+     * @param file the file to check.
      */
     public void checkFile(File file) {
         GPX gpx = TrackTools.getGpxFromFile(file);
@@ -469,6 +469,14 @@ public class OperationManager {
      */
     public Config getConfig() {
         return config;
+    }
+
+    /**
+     * Sets the window.
+     * @param window a window.
+     */
+    public void setWindow(Window window) {
+        this.window = window;
     }
 
     /**

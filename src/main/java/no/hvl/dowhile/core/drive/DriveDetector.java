@@ -29,7 +29,7 @@ public class DriveDetector implements Runnable {
     }
 
     /**
-     * Checking the amount of drives connected and updates the Map of detected drives.
+     * Checks the amount of drives connected and updates the Map of detected drives.
      */
     @Override
     public void run() {
@@ -142,7 +142,7 @@ public class DriveDetector implements Runnable {
     }
 
     /**
-     * Get the drives detected by the application.
+     * Gets the drives detected by the application.
      *
      * @return the map of detected drives.
      */
