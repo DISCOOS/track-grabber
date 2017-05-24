@@ -260,7 +260,7 @@ public class OperationManager {
         List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(file);
         for (int i = 0; i < waypointsInGpx.size(); i++) {
             GPX waypointGpx = waypointsInGpx.get(i);
-            if (!fileManager.alreadyImportedWaypoint(waypointGpx)) {
+            if (!TrackTools.waypointCreatedBeforeStartTime(waypointGpx, operation.getStartTime()) && !fileManager.alreadyImportedWaypoint(waypointGpx)) {
                 String newRawFileName = StringTools.renameRawWaypointName(file.getName(), i);
                 String hash = fileManager.saveRawGpxFileInFolders(waypointGpx, newRawFileName);
                 queue.add(new GpxFile(file, newRawFileName, hash, waypointGpx));

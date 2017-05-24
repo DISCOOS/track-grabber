@@ -64,7 +64,7 @@ public class TrackTools {
     }
 
     /**
-     * Checks if the track is older the operation, and therefore is irrelevant.
+     * Checks if the track is older than the operation, and therefore is irrelevant.
      *
      * @param gpx                the gpx to import.
      * @param operationStartTime the start time of the current operation.
@@ -82,6 +82,18 @@ public class TrackTools {
             return (pointDate.getTime() < operationStartTime.getTime());
         }
         return false;
+    }
+
+    /**
+     * Checks if the waypoint is older than the operation, and therefore is irrelevant.
+     * @param gpx The GPX containing a waypoint
+     * @param operationStartTime The operation start time to compare with
+     * @return True if the waypoint is too old, false if not.
+     */
+    public static boolean waypointCreatedBeforeStartTime(GPX gpx, Date operationStartTime) {
+        Waypoint wp = gpx.getWaypoints().iterator().next();
+        Date wpDate = wp.getTime();
+        return (wpDate.getTime() < operationStartTime.getTime());
     }
 
     /**
