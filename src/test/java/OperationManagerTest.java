@@ -1,6 +1,8 @@
 import no.hvl.dowhile.core.FileManager;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
+import no.hvl.dowhile.core.gui.Window;
+import no.hvl.dowhile.utility.TrackTools;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertFalse;
 
@@ -20,6 +23,7 @@ public class OperationManagerTest {
     public TemporaryFolder tempFolder = new TemporaryFolder();
 
     private OperationManager operationManager;
+    private Window window;
     private FileManager fileManager;
     private Operation operation1;
     private Operation operation2;
@@ -29,11 +33,17 @@ public class OperationManagerTest {
     @Before
     public void before() throws IOException {
         operationManager = new OperationManager();
+
+        window = new Window(operationManager);
+        operationManager.setWindow(window);
+
         fileManager = new FileManager(operationManager);
         operationManager.setFileManager(fileManager);
         fileManager.setAppFolder(tempFolder.newFolder("TrackGrabberTest"));
+
         operation1 = new Operation("Test1", 29, 10, 1994, 11, 45);
         operation2 = new Operation("Test2", 16, 10, 1996, 12, 54);
+
         testGPX = new File("src/test/resources/testFile.gpx");
         testGPX2 = new File("src/test/resources/testFile2.gpx");
     }
@@ -93,7 +103,7 @@ public class OperationManagerTest {
         operationManager.processFile(testGPX);
         operationManager.processFile(testGPX2);
         operationManager.prepareNextFile();
-        assertEquals(TrackTools.getGpxFromFile(testGPX).equals(operationManager.getCurrentTrackCutter().getTrackFile()));
+        assertTrue(TrackTools.getGpxFromFile(testGPX).equals(operationManager.getCurrentTrackCutter().getGpxFile()));
         operationManager.prepareNextFile();
     }
     */

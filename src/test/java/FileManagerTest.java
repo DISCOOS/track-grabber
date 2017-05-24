@@ -99,7 +99,7 @@ public class FileManagerTest {
         operation.setStartTime(2014, 10, 21, 10, 34);
         fileManager.updateOperationFile(operation);
         File updatedOpFile = FileTools.getFile(fileManager.getMainOperationFolder().getOperationFolder(), operationName + ".txt");
-        String updatedDateString = "# Starttid: 21-10/2014 10:34 CET";
+        String updatedDateString = "21-10/2014 10:34";
         assertTrue(FileTools.txtFileContainsString(updatedOpFile, updatedDateString));
     }
 

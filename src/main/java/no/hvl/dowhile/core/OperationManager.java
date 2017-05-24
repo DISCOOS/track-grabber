@@ -472,6 +472,14 @@ public class OperationManager {
     }
 
     /**
+     * Sets the window.
+     * @param window a window.
+     */
+    public void setWindow(Window window) {
+        this.window = window;
+    }
+
+    /**
      * Sets the file manager.
      *
      * @param fileManager a file manager
