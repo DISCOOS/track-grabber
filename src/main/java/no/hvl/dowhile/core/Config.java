@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Reading and writing to the configuration file.
+ * Reads and writes to the configuration file.
  */
 public class Config {
     private String filename;
@@ -26,7 +26,7 @@ public class Config {
     }
 
     /**
-     * Get the configuration template.
+     * Gets the configuration template.
      *
      * @return the lines for the configuration file.
      */
@@ -57,7 +57,7 @@ public class Config {
     }
 
     /**
-     * Get the current pattern to use for the filenames.
+     * Gets the current pattern to use for the filenames.
      *
      * @return the pattern for the filenames.
      */
@@ -66,7 +66,7 @@ public class Config {
     }
 
     /**
-     * Set the pattern to use for the filenames.
+     * Sets the pattern to use for the filenames.
      *
      * @param filename the pattern for the filenames.
      */
@@ -75,7 +75,7 @@ public class Config {
     }
 
     /**
-     * Get a list of the current team types for this operation and the corresponding color.
+     * Gets a list of the current team types for this operation and the corresponding color.
      *
      * @return list of the current team types.
      */
@@ -99,7 +99,7 @@ public class Config {
     }
 
     /**
-     * Get a list with the names of the team types.
+     * Gets a list with the names of the team types.
      *
      * @return list with names of the team types.
      */
@@ -112,7 +112,7 @@ public class Config {
     }
 
     /**
-     * Parse the config file and extract the needed information.
+     * Parses the config file and extracts the needed information.
      *
      * @param file the config file.
      */
@@ -154,7 +154,7 @@ public class Config {
     }
 
     /**
-     * Insert track info data into the pattern to generate the filename.
+     * Inserts track info data into the pattern to generate the filename.
      *
      * @param trackInfo the info to insert.
      * @return the filename.
@@ -188,7 +188,7 @@ public class Config {
     }
 
     /**
-     * Checking the filename to find the variables in the String.
+     * Checks the filename to find the variables in the String.
      *
      * @param filename the filename to check.
      * @return list of variables in the given filename.

@@ -20,7 +20,7 @@ public class TeamType {
     }
 
     /**
-     * Get the name of this team type.
+     * Gets the name of this team type.
      *
      * @return the name of this team type.
      */
@@ -29,7 +29,7 @@ public class TeamType {
     }
 
     /**
-     * Get the color for this team type.
+     * Gets the color for this team type.
      *
      * @return the color for this team type.
      */

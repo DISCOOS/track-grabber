@@ -16,7 +16,7 @@ public class GPSDrive extends Drive {
     }
 
     /**
-     * Checking if folders exists and if they have the correct name.
+     * Checks if folders exist and if they have the correct name.
      *
      * @return true if the folders are matching a GPS, false if not.
      */
@@ -25,7 +25,7 @@ public class GPSDrive extends Drive {
     }
 
     /**
-     * Checking if the Garmin folder has been set.
+     * Checks if the Garmin folder has been set.
      *
      * @return true if the folder has been set, false if not.
      */
@@ -34,7 +34,7 @@ public class GPSDrive extends Drive {
     }
 
     /**
-     * Checking if the GPX folder has been set.
+     * Checks if the GPX folder has been set.
      *
      * @return true if the folder has been set, false if not.
      */
@@ -54,7 +54,7 @@ public class GPSDrive extends Drive {
     }
 
     /**
-     * Assign a file as the Garmin folder.
+     * Assigns a file as the Garmin folder.
      *
      * @param garminFolder the file to set as Garmin folder.
      */
@@ -74,7 +74,7 @@ public class GPSDrive extends Drive {
     }
 
     /**
-     * Assign a file as the GPX folder.
+     * Assigns a file as the GPX folder.
      *
      * @param gpxFolder the file to set as GPX folder.
      */

@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * Utility methods to work with GPX files and tracks.
+ * Utility methods to work with GPX files, tracks and waypoints.
  */
 public class TrackTools {
     private Track rawTrack;
@@ -166,6 +166,12 @@ public class TrackTools {
         }
     }
 
+    /**
+     * Checks if two waypoints match.
+     * @param waypoint1 The first waypoint.
+     * @param waypoint2 The second waypoint.
+     * @return True if they match, false if not.
+     */
     public static boolean matchingWaypoints(Waypoint waypoint1, Waypoint waypoint2) {
         return waypoint1.getLatitude() == waypoint2.getLatitude() &&
                 waypoint1.getLongitude() == waypoint2.getLongitude() &&

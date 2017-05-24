@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class FileTools {
     /**
-     * Clear the specified file.
+     * Clears the specified file.
      *
      * @param file the file to clear.
      */
@@ -29,7 +29,7 @@ public class FileTools {
     }
 
     /**
-     * Utility method to find all .gpx files in the folders.
+     * Utility method for finding all .gpx files in the folders.
      *
      * @param folders The folders to scan.
      * @return set with .gpx files.
@@ -74,7 +74,7 @@ public class FileTools {
     }
 
     /**
-     * Write the lines to the given file.
+     * Writes the lines to the given file.
      *
      * @param lines the array of lines to write.
      * @param file  the file to write to.
@@ -94,7 +94,7 @@ public class FileTools {
     }
 
     /**
-     * Write the lines to the given file.
+     * Writes the lines to the given file.
      *
      * @param file   the file to write to.
      * @param values the values to add.
@@ -119,7 +119,7 @@ public class FileTools {
     }
 
     /**
-     * Get the SHA-256 hash value of a file.
+     * Gets the SHA-256 hash value of a file.
      *
      * @param file the file to hash.
      * @return the hash of the file.
@@ -206,7 +206,7 @@ public class FileTools {
     }
 
     /**
-     * Search for a given substring in the given text file
+     * Searches for a given substring in the given text file
      *
      * @param file      the file to check.
      * @param substring the substring to look for.

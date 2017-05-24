@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Processing a GPX file. Removing unnecessary data.
+ * Processes a GPX file by removing unnecessary data.
  */
 public class TrackCutter {
     private final OperationManager OPERATION_MANAGER;
@@ -24,7 +24,7 @@ public class TrackCutter {
     }
 
     /**
-     * Processing the file to remove unnecessary data.
+     * Processes the file by removing unnecessary data.
      */
     public void process() {
         filterOnTimeStarted(OPERATION_MANAGER.getOperation().getStartTime());
@@ -54,7 +54,7 @@ public class TrackCutter {
     }
 
     /**
-     * Get the current GpxFile.
+     * Gets the current GpxFile.
      *
      * @return the current GpxFile.
      */
@@ -63,7 +63,7 @@ public class TrackCutter {
     }
 
     /**
-     * Set the current GpxFile.
+     * Sets the current GpxFile.
      *
      * @param gpxFile the current GpxFile to be set.
      */
@@ -72,7 +72,7 @@ public class TrackCutter {
     }
 
     /**
-     * Get info about the current track.
+     * Gets info about the current track.
      *
      * @return info about the current track.
      */
@@ -81,7 +81,7 @@ public class TrackCutter {
     }
 
     /**
-     * Set info about the current track.
+     * Sets info about the current track.
      *
      * @param trackInfo info about the current track.
      */
