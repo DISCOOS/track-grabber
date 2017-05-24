@@ -245,6 +245,27 @@ public class FileManager {
     }
 
     /**
+     * Checking if a waypoint has been saved in the waypoint folder already.
+     *
+     * @param waypointGpx the gpx with the waypoint to check.
+     * @return true if the waypoint has been imported, false if not.
+     */
+    public boolean alreadyImportedWaypoint(GPX waypointGpx) {
+        File[] waypointFiles = mainOperationFolder.getWaypointFolder().listFiles();
+        if (waypointFiles == null || waypointFiles.length == 0) {
+            return false;
+        }
+        boolean matchingWaypoint = false;
+        for (int i = 0; i < waypointFiles.length && !matchingWaypoint; i++) {
+            GPX oldWaypointGpx = TrackTools.splitWaypointGpx(waypointFiles[i]).get(0);
+            if (waypointFiles[i] != null && TrackTools.hasWaypoints(oldWaypointGpx)) {
+                matchingWaypoint = TrackTools.matchingWaypoints(oldWaypointGpx.getWaypoints().iterator().next(), waypointGpx.getWaypoints().iterator().next());
+            }
+        }
+        return false;
+    }
+
+    /**
      * Save information about a track to the CSV file for the current operation.
      *
      * @param info          the trackinfo object with info about the track.

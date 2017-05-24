@@ -218,7 +218,7 @@ public class OperationManager {
             return;
         }
         if (TrackTools.hasWaypoints(gpx)) {
-            addWaypointsToQueue(file);
+            checkWaypoints(file);
             return;
         }
         Track track = TrackTools.getTrackFromGPXFile(gpx);
@@ -247,6 +247,25 @@ public class OperationManager {
                 window.updateQueueInfo(queueSize, queuePosition);
             } else {
                 System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
+            }
+        }
+    }
+
+    /**
+     * Takes a file containing waypoints and adds all of them to the queue.
+     *
+     * @param file The file containing the waypoints.
+     */
+    private void checkWaypoints(File file) {
+        List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(file);
+        for (int i = 0; i < waypointsInGpx.size(); i++) {
+            GPX waypointGpx = waypointsInGpx.get(i);
+            if (!fileManager.alreadyImportedWaypoint(waypointGpx)) {
+                String newRawFileName = StringTools.renameRawWaypointName(file.getName(), i);
+                String hash = fileManager.saveRawGpxFileInFolders(waypointGpx, newRawFileName);
+                queue.add(new GpxFile(file, newRawFileName, hash, waypointGpx));
+                queueSize++;
+                window.updateQueueInfo(queueSize, queuePosition);
             }
         }
     }
@@ -412,21 +431,6 @@ public class OperationManager {
         }
         if (currentTrackCutter != null && currentTrackCutter.getGpxFile() != null) {
             fileManager.deleteRawFileInFolders(currentTrackCutter.getGpxFile().getFile().getName());
-        }
-    }
-
-    /**
-     * Takes a file containing waypoints and adds all of them to the queue.
-     * @param file The file containing the waypoints.
-     */
-    private void addWaypointsToQueue(File file) {
-        List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(file);
-        for (int i = 0; i < waypointsInGpx.size(); i++) {
-            String newRawFileName = StringTools.renameRawWaypointName(file.getName(), i);
-            String hash = fileManager.saveRawGpxFileInFolders(waypointsInGpx.get(i), newRawFileName);
-            queue.add(new GpxFile(file, newRawFileName, hash, waypointsInGpx.get(i)));
-            queueSize++;
-            window.updateQueueInfo(queueSize, queuePosition);
         }
     }
 

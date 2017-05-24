@@ -145,10 +145,20 @@ public class TrackTools {
      */
     public static boolean matchingTrackPoints(Waypoint waypoint1, Waypoint waypoint2) {
         if (waypoint1.getElevation() == -1 || waypoint2.getElevation() == -1) {
-            return waypoint1.getLatitude() == waypoint2.getLatitude() && waypoint1.getLongitude() == (waypoint2.getLongitude());
+            return waypoint1.getLatitude() == waypoint2.getLatitude() &&
+                    waypoint1.getLongitude() == (waypoint2.getLongitude());
         } else {
-            return waypoint1.getLatitude() == waypoint2.getLatitude() && waypoint1.getLongitude() == waypoint2.getLongitude() && waypoint1.getElevation() == waypoint2.getElevation();
+            return waypoint1.getLatitude() == waypoint2.getLatitude() &&
+                    waypoint1.getLongitude() == waypoint2.getLongitude() &&
+                    waypoint1.getElevation() == waypoint2.getElevation();
         }
+    }
+
+    public static boolean matchingWaypoints(Waypoint waypoint1, Waypoint waypoint2) {
+        return waypoint1.getLatitude() == waypoint2.getLatitude() &&
+                waypoint1.getLongitude() == waypoint2.getLongitude() &&
+                waypoint1.getElevation() == waypoint2.getElevation() &&
+                waypoint1.getTime().getTime() == waypoint2.getTime().getTime();
     }
 
     /**
