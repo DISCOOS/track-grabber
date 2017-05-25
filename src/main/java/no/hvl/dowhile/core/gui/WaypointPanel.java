@@ -20,7 +20,6 @@ public class WaypointPanel extends JPanel {
     // Radio buttons
     JRadioButton redButton;
     JRadioButton blueButton;
-    JRadioButton yellowButton;
     JRadioButton greenButton;
     private GridBagConstraints constraints;
     // JComponents
@@ -119,7 +118,7 @@ public class WaypointPanel extends JPanel {
         colorGroup.add(redButton);
         coloredButtons.add(redButton);
         WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 1);
-        constraints.insets = new Insets(5, 21, 5, 21);
+        constraints.insets = new Insets(5, 25, 5, 25);
         add(redButton, constraints);
 
         blueButton = new JRadioButton();
@@ -130,19 +129,8 @@ public class WaypointPanel extends JPanel {
         colorGroup.add(blueButton);
         coloredButtons.add(blueButton);
         WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.CENTER, 1);
-        constraints.insets = new Insets(5, 21, 5, 21);
+        constraints.insets = new Insets(5, 25, 5, 25);
         add(blueButton, constraints);
-
-        yellowButton = new JRadioButton();
-        yellowButton.setName("Yellow");
-        ImageIcon yellow = new ImageIcon(getColoredImage(Color.YELLOW, 50));
-        yellowButton.setIcon(yellow);
-        yellowButton.setBorder(new LineBorder(Color.BLACK, 4));
-        colorGroup.add(yellowButton);
-        coloredButtons.add(yellowButton);
-        WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.CENTER, 1);
-        constraints.insets = new Insets(5, 21, 5, 21);
-        add(yellowButton, constraints);
 
         greenButton = new JRadioButton();
         greenButton.setName("Green");
@@ -151,8 +139,8 @@ public class WaypointPanel extends JPanel {
         greenButton.setBorder(new LineBorder(Color.BLACK, 4));
         colorGroup.add(greenButton);
         coloredButtons.add(greenButton);
-        WINDOW.modifyConstraints(constraints, 3, 5, GridBagConstraints.CENTER, 1);
-        constraints.insets = new Insets(5, 21, 5, 21);
+        WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.CENTER, 1);
+        constraints.insets = new Insets(5, 25, 5, 25);
         add(greenButton, constraints);
     }
 
@@ -168,13 +156,6 @@ public class WaypointPanel extends JPanel {
             if (blueButton.isSelected()) {
                 blueButton.setBorderPainted(true);
                 setRadioButtonsBorder(blueButton);
-            }
-        });
-
-        yellowButton.addActionListener(actionEvent -> {
-            if (yellowButton.isSelected()) {
-                yellowButton.setBorderPainted(true);
-                setRadioButtonsBorder(yellowButton);
             }
         });
 
