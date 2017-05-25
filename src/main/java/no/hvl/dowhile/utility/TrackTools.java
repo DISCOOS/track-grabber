@@ -53,6 +53,20 @@ public class TrackTools {
     }
 
     /**
+     * Get all track points from all track segments of a track.
+     *
+     * @param track the track to search for points.
+     * @return all points in the track.
+     */
+    public static void setTrackPoints(Track track, List<Waypoint> points) {
+        List<TrackSegment> trackSegments = new ArrayList<>();
+        TrackSegment trackSegment = new TrackSegment();
+        trackSegment.setWaypoints(new ArrayList<>(points));
+        trackSegments.add(trackSegment);
+        track.setTrackSegments(new ArrayList<>(trackSegments));
+    }
+
+    /**
      * Checks if the given file has a track or not.
      *
      * @param gpx the gpx to check.
@@ -220,11 +234,10 @@ public class TrackTools {
     /**
      * Gets the part of the track that was produced since last transfer
      *
-     * @param gpx    the gpx to remove from.
+     * @param track    the track to remove from.
      * @param points the points to remove.
      */
-    public static void removePoints(GPX gpx, List<Waypoint> points) {
-        Track track = getTrackFromGPXFile(gpx);
+    public static void removePoints(Track track, List<Waypoint> points) {
         if (track == null) {
             return;
         }
@@ -242,6 +255,7 @@ public class TrackTools {
             }
         }
         allPoints.removeAll(pointsToRemove);
+        setTrackPoints(track, allPoints);
     }
 
     /**

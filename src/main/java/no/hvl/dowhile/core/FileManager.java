@@ -232,8 +232,10 @@ public class FileManager {
      * @return true if the file is matching a file, false if not.
      */
     public List<Waypoint> alreadyImportedTrack(GPX newGpx) {
+        System.err.println("alreadyImportedTrack()");
         File[] rawFiles = mainOperationFolder.getRawFolder().listFiles();
         if (rawFiles == null || rawFiles.length == 0) {
+            System.err.println("rawFiles is null or empty. Returning no points.");
             return new ArrayList<>();
         }
         Track newTrack = TrackTools.getTrackFromGPXFile(newGpx);

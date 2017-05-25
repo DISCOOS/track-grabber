@@ -230,7 +230,7 @@ public class OperationManager {
         List<Waypoint> duplicatePoints = fileManager.alreadyImportedTrack(gpx);
         while (!duplicatePoints.isEmpty()) {
             if (!(duplicatePoints.size() == allPointsCount)) {
-                TrackTools.removePoints(gpx, duplicatePoints);
+                TrackTools.removePoints(track, duplicatePoints);
                 allPointsCount = TrackTools.getAllTrackPoints(track).size();
                 duplicatePoints = fileManager.alreadyImportedTrack(gpx);
             } else {
