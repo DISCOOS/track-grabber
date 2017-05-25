@@ -89,7 +89,7 @@ public class WaypointPanel extends JPanel {
         add(waypointDescriptionInput, constraints);
 
         // Flag label
-        JLabel flagLabel = WINDOW.makeLabel("Velg farge på Waypoint-flagg:", Font.PLAIN);
+        JLabel flagLabel = WINDOW.makeLabel(Messages.FLAG_COLOR.get(), Font.PLAIN);
         WINDOW.modifyConstraints(constraints, 0, 4, GridBagConstraints.WEST, 4);
         add(flagLabel, constraints);
 
@@ -99,7 +99,7 @@ public class WaypointPanel extends JPanel {
         add(confirmNameButton, constraints);
 
         // Queue with remaining waypoint files
-        queueLabel = WINDOW.makeLabel(Messages.IMPORTED_FILES_LEFT_TO_PROCESS.get(), Font.BOLD);
+        queueLabel = WINDOW.makeLabel(Messages.PROCESSING_FILES.get(), Font.BOLD);
         WINDOW.modifyConstraints(constraints, 0, 10, GridBagConstraints.WEST, 4);
         add(queueLabel, constraints);
     }

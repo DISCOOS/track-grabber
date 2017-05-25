@@ -82,6 +82,7 @@ public enum Messages {
     WAYPOINT_HEADER("Prosesserer veipunkt"),
     NEW_NAME("Nytt navn for waypoint"),
     NEW_DESCRIPTION("Beskrivelse av waypoint"),
+    FLAG_COLOR("Velg farge på Waypoint-flagg:"),
 
     // Track panel and Waypoint panel
     PROCESSING_FILES("Prosesserer fil %1 av %2");
