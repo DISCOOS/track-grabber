@@ -5,6 +5,7 @@ import no.hvl.dowhile.utility.Messages;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -16,8 +17,12 @@ import java.util.List;
 public class WaypointPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
+    // Radio buttons
+    JRadioButton redButton;
+    JRadioButton blueButton;
+    JRadioButton yellowButton;
+    JRadioButton greenButton;
     private GridBagConstraints constraints;
-
     // JComponents
     private JLabel waypointHeaderLabel;
     private JLabel currentWaypointLabel;
@@ -53,6 +58,7 @@ public class WaypointPanel extends JPanel {
         colorRadioButtons();
 
         confirmButtonListener();
+        radioButtonListeners();
 
         setBackground(new Color(255, 245, 252));
     }
@@ -105,49 +111,79 @@ public class WaypointPanel extends JPanel {
     }
 
     private void colorRadioButtons() {
-        JRadioButton redButton = new JRadioButton();
-        ImageIcon red = new ImageIcon(RedAndWhite.getColoredImage(Color.RED, 50));
+        redButton = new JRadioButton();
+        redButton.setName("Red");
+        ImageIcon red = new ImageIcon(getColoredImage(Color.RED, 50));
         redButton.setIcon(red);
-        //redButton.setBorder(new LineBorder(Color.BLACK, 21 ,true));
-        redButton.setBorderPainted(true);
+        redButton.setBorder(new LineBorder(Color.BLACK, 4));
         colorGroup.add(redButton);
         coloredButtons.add(redButton);
         WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 1);
         constraints.insets = new Insets(5, 21, 5, 21);
         add(redButton, constraints);
 
-        JRadioButton blueButton = new JRadioButton();
-        ImageIcon blue = new ImageIcon(RedAndWhite.getColoredImage(Color.BLUE, 50));
+        blueButton = new JRadioButton();
+        blueButton.setName("Blue");
+        ImageIcon blue = new ImageIcon(getColoredImage(Color.BLUE, 50));
         blueButton.setIcon(blue);
-        // blueButton.setBorder(new LineBorder(Color.BLACK, 21 ,true));
-        blueButton.setBorderPainted(true);
+        blueButton.setBorder(new LineBorder(Color.BLACK, 4));
         colorGroup.add(blueButton);
         coloredButtons.add(blueButton);
         WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.CENTER, 1);
         constraints.insets = new Insets(5, 21, 5, 21);
         add(blueButton, constraints);
 
-        JRadioButton yellowButton = new JRadioButton();
-        ImageIcon yellow = new ImageIcon(RedAndWhite.getColoredImage(Color.YELLOW, 50));
+        yellowButton = new JRadioButton();
+        yellowButton.setName("Yellow");
+        ImageIcon yellow = new ImageIcon(getColoredImage(Color.YELLOW, 50));
         yellowButton.setIcon(yellow);
-        //yellowButton.setBorder(new LineBorder(Color.BLACK, 21 ,true));
-        yellowButton.setBorderPainted(true);
+        yellowButton.setBorder(new LineBorder(Color.BLACK, 4));
         colorGroup.add(yellowButton);
         coloredButtons.add(yellowButton);
         WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.CENTER, 1);
         constraints.insets = new Insets(5, 21, 5, 21);
         add(yellowButton, constraints);
 
-        JRadioButton greenButton = new JRadioButton();
-        ImageIcon green = new ImageIcon(RedAndWhite.getColoredImage(Color.green, 50));
+        greenButton = new JRadioButton();
+        greenButton.setName("Green");
+        ImageIcon green = new ImageIcon(getColoredImage(Color.green, 50));
         greenButton.setIcon(green);
-        //greenButton.setBorder(new LineBorder(Color.BLACK, 21 ,true));
-        greenButton.setBorderPainted(true);
+        greenButton.setBorder(new LineBorder(Color.BLACK, 4));
         colorGroup.add(greenButton);
         coloredButtons.add(greenButton);
         WINDOW.modifyConstraints(constraints, 3, 5, GridBagConstraints.CENTER, 1);
         constraints.insets = new Insets(5, 21, 5, 21);
         add(greenButton, constraints);
+    }
+
+    private void radioButtonListeners() {
+        redButton.addActionListener(actionEvent -> {
+            if (redButton.isSelected()) {
+                redButton.setBorderPainted(true);
+                setRadioButtonsBorder(redButton);
+            }
+        });
+
+        blueButton.addActionListener(actionEvent -> {
+            if (blueButton.isSelected()) {
+                blueButton.setBorderPainted(true);
+                setRadioButtonsBorder(blueButton);
+            }
+        });
+
+        yellowButton.addActionListener(actionEvent -> {
+            if (yellowButton.isSelected()) {
+                yellowButton.setBorderPainted(true);
+                setRadioButtonsBorder(yellowButton);
+            }
+        });
+
+        greenButton.addActionListener(actionEvent -> {
+            if (greenButton.isSelected()) {
+                greenButton.setBorderPainted(true);
+                setRadioButtonsBorder(greenButton);
+            }
+        });
     }
 
     /**
@@ -157,8 +193,9 @@ public class WaypointPanel extends JPanel {
         confirmNameButton.addActionListener(actionEvent -> {
             String name = waypointNameInput.getText();
             String description = waypointDescriptionInput.getText();
+            String flagColor = getSelectedRadioButton(); // Variable for flag color selection
 
-            OPERATION_MANAGER.saveWaypoint(name, description);
+            OPERATION_MANAGER.saveWaypoint(name, description); // TODO send flag color in saveWaypoint()
             waypointDescriptionInput.setText("");
 
             String dialogText = Messages.SAVE_FILE.get();
@@ -191,11 +228,18 @@ public class WaypointPanel extends JPanel {
     public void updateQueueInfo(int queueSize, int queuePosition) {
         queueLabel.setText(Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + ""));
     }
-}
 
-class RedAndWhite {
+    private String getSelectedRadioButton() {
+        String color = "";
+        for (JRadioButton rb : coloredButtons) {
+            if (rb.isSelected()) {
+                color = rb.getName();
+            }
+        }
+        return color;
+    }
 
-    public static Image getColoredImage(Color color, int size) {
+    private Image getColoredImage(Color color, int size) {
         BufferedImage bi = new BufferedImage(
                 size,
                 size,
@@ -207,4 +251,13 @@ class RedAndWhite {
         g.dispose();
         return bi;
     }
+
+    private void setRadioButtonsBorder(JRadioButton selected) {
+        for (JRadioButton rb : coloredButtons) {
+            if (!rb.equals(selected)) {
+                rb.setBorderPainted(false);
+            }
+        }
+    }
 }
+
