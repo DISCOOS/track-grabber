@@ -195,7 +195,7 @@ public class WaypointPanel extends JPanel {
             String description = waypointDescriptionInput.getText();
             String flagColor = getSelectedRadioButton(); // Variable for flag color selection
 
-            OPERATION_MANAGER.saveWaypoint(name, description); // TODO send flag color in saveWaypoint()
+            OPERATION_MANAGER.saveWaypoint(name, description, flagColor); // TODO send flag color in saveWaypoint()
             waypointDescriptionInput.setText("");
 
             String dialogText = Messages.SAVE_FILE.get();
