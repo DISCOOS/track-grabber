@@ -231,7 +231,7 @@ public class FileManager {
      * @param newGpx The gpx file to check.
      * @return true if the file is matching a file, false if not.
      */
-    public List<Waypoint> alreadyImportedGpx(GPX newGpx) {
+    public List<Waypoint> alreadyImportedTrack(GPX newGpx) {
         File[] rawFiles = mainOperationFolder.getRawFolder().listFiles();
         if (rawFiles == null || rawFiles.length == 0) {
             return new ArrayList<>();
@@ -250,7 +250,7 @@ public class FileManager {
      * @param waypointGpx the gpx with the waypoint to check.
      * @return true if the waypoint has been imported, false if not.
      */
-    public boolean alreadyImportedWaypoint(GPX waypointGpx) {
+    public boolean waypointIsAlreadyImported(GPX waypointGpx) {
         File[] waypointFiles = mainOperationFolder.getWaypointFolder().listFiles();
         if (waypointFiles == null || waypointFiles.length == 0) {
             return false;

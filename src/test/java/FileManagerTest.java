@@ -121,11 +121,20 @@ public class FileManagerTest {
         assertNotNull(TrackTools.duplicateGpx(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
     }
 
+    /*
     @Test
-    public void alreadyImportedFileIsAlreadyImported() {
+    public void alreadyImportedTrackIsAlreadyImported() {
         GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         fileManager.saveRawGpxFileInFolders(gpx, "Filnavn");
-        //assertTrue(fileManager.fileAlreadyImported(gpx));
+        assertTrue(fileManager.alreadyImportedTrack(gpx));
+    }
+    */
+
+    @Test
+    public void alreadyImportedWaypointIsAlreadyImported() {
+        GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testWpFile.gpx"));
+        fileManager.saveWaypointFileInFolders(gpx, "Veipunktnavn");
+        assertTrue(fileManager.waypointIsAlreadyImported(gpx));
     }
 
     @Test
@@ -142,5 +151,18 @@ public class FileManagerTest {
         fileManager.saveProcessedGpxFileInFolders(gpx, trackInfo, "Filnavn");
         File savedProcessedFile = FileTools.getFile(fileManager.getMainOperationFolder().getProcessedFolder(), "Filnavn");
         assertNotNull(savedProcessedFile);
+    }
+
+    @Test
+    public void areaGPXFileIsSaved() {
+        GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testAreaFile.gpx"));
+        fileManager.saveAreaGpxFileInFolders(gpx, "Teignavn");
+        File savedAreaFile = FileTools.getFile(fileManager.getMainOperationFolder().getAreaFolder(), "Teignavn");
+        assertNotNull(savedAreaFile);
+    }
+
+    @Test
+    public void extraOperationFolderIsSetUp() {
+
     }
 }

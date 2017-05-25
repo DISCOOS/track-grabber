@@ -227,12 +227,12 @@ public class OperationManager {
             return;
         }
         int allPointsCount = TrackTools.getAllTrackPoints(track).size();
-        List<Waypoint> duplicatePoints = fileManager.alreadyImportedGpx(gpx);
+        List<Waypoint> duplicatePoints = fileManager.alreadyImportedTrack(gpx);
         while (!duplicatePoints.isEmpty()) {
             if (!(duplicatePoints.size() == allPointsCount)) {
                 TrackTools.removePoints(gpx, duplicatePoints);
                 allPointsCount = TrackTools.getAllTrackPoints(track).size();
-                duplicatePoints = fileManager.alreadyImportedGpx(gpx);
+                duplicatePoints = fileManager.alreadyImportedTrack(gpx);
             } else {
                 return;
             }
@@ -260,7 +260,7 @@ public class OperationManager {
         List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(file);
         for (int i = 0; i < waypointsInGpx.size(); i++) {
             GPX waypointGpx = waypointsInGpx.get(i);
-            if (!TrackTools.waypointCreatedBeforeStartTime(waypointGpx, operation.getStartTime()) && !fileManager.alreadyImportedWaypoint(waypointGpx)) {
+            if (!TrackTools.waypointCreatedBeforeStartTime(waypointGpx, operation.getStartTime()) && !fileManager.waypointIsAlreadyImported(waypointGpx)) {
                 String newRawFileName = StringTools.renameRawWaypointName(file.getName(), i);
                 String hash = fileManager.saveRawGpxFileInFolders(waypointGpx, newRawFileName);
                 queue.add(new GpxFile(file, newRawFileName, hash, waypointGpx));
@@ -346,7 +346,7 @@ public class OperationManager {
                     System.err.println("File is a waypoint file. Ignoring.");
                 } else if (!TrackTools.fileHasTrack(gpx)) {
                     System.err.println("File doesn't have track.");
-                } else if (fileManager.alreadyImportedGpx(gpx) != null) {
+                } else if (fileManager.alreadyImportedTrack(gpx) != null) {
                     System.err.println("Already imported.");
                 } else {
                     fileManager.saveRawGpxFileInFolders(gpx, trackFile.getName());
