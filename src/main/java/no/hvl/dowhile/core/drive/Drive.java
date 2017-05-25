@@ -1,7 +1,7 @@
 package no.hvl.dowhile.core.drive;
 
 /**
- * Storing info about a drive connected to system.
+ * Stores info about a drive connected to the system.
  */
 public class Drive {
     private String driveLetter;
@@ -16,7 +16,7 @@ public class Drive {
     }
 
     /**
-     * Gives to the letter referencing this drive.
+     * Gives the letter referencing this drive.
      *
      * @return the letter referencing this drive.
      */

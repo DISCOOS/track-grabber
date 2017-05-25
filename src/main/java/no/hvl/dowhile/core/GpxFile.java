@@ -1,6 +1,6 @@
 package no.hvl.dowhile.core;
 
-import org.alternativevision.gpx.beans.GPX;
+import com.hs.gpxparser.modal.GPX;
 
 import java.io.File;
 
@@ -9,21 +9,26 @@ import java.io.File;
  */
 public class GpxFile {
     private File file;
+    private String rawFileName;
+    private String rawfileHash;
     private GPX gpx;
 
     /**
      * Constructor taking the data required to create the object.
      *
-     * @param file actual file.
-     * @param gpx  the parsed GPX object.
+     * @param file        actual file.
+     * @param rawFileHash Hash value of the saved raw file.
+     * @param gpx         the parsed GPX object.
      */
-    public GpxFile(File file, GPX gpx) {
+    public GpxFile(File file, String rawFileName, String rawFileHash, GPX gpx) {
         this.file = file;
+        this.rawFileName = rawFileName;
+        this.rawfileHash = rawFileHash;
         this.gpx = gpx;
     }
 
     /**
-     * Get the file associated with this GPX object.
+     * Gets the file associated with this GPX object.
      *
      * @return the file.
      */
@@ -32,7 +37,25 @@ public class GpxFile {
     }
 
     /**
-     * Get the parsed GPX object.
+     * Gets the name of the raw file for this gpx file.
+     *
+     * @return the name of the raw file.
+     */
+    public String getRawFileName() {
+        return rawFileName;
+    }
+
+    /**
+     * Gets the hash value of the raw file.
+     *
+     * @return the hash value of the raw file.
+     */
+    public String getRawfileHash() {
+        return rawfileHash;
+    }
+
+    /**
+     * Gets the parsed GPX object.
      *
      * @return the parsed GPX object.
      */
@@ -40,6 +63,11 @@ public class GpxFile {
         return gpx;
     }
 
+    /**
+     * Sets the gpx object of for this object.
+     *
+     * @param gpx the gpx to set.
+     */
     public void setGpx(GPX gpx) {
         this.gpx = gpx;
     }

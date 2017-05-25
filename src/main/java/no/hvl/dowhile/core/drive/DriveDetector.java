@@ -29,7 +29,7 @@ public class DriveDetector implements Runnable {
     }
 
     /**
-     * Checking the amount of drives connected and updates the Map of detected drives.
+     * Checks the amount of drives connected and updates the Map of detected drives.
      */
     @Override
     public void run() {
@@ -46,6 +46,7 @@ public class DriveDetector implements Runnable {
                     if (!detectedDrives.containsKey(driveLetter)) {
                         if (driveLetter.equals("C")) {
                             OPERATION_MANAGER.setupLocalFolders(listRoot);
+                            OPERATION_MANAGER.showWindow();
                             List<Operation> operations = OPERATION_MANAGER.getExistingOperations();
                             OPERATION_MANAGER.showExistingOperations(operations);
                             registerConnectedDrive(driveLetter, listRoot);
@@ -140,6 +141,11 @@ public class DriveDetector implements Runnable {
         return gpsDrive;
     }
 
+    /**
+     * Gets the drives detected by the application.
+     *
+     * @return the map of detected drives.
+     */
     public Map<String, Drive> getDetectedDrives() {
         return detectedDrives;
     }

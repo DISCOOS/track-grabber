@@ -6,9 +6,11 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Storing folders for a given file location to store files for the current operation.
+ * Stores folders for a given file location to store files for the current operation.
  */
 public class OperationFolder {
+    private File trackFileInfo;
+    private File waypointFileInfo;
     private File operationFolder;
     private File processedFolder;
     private File rawFolder;
@@ -38,13 +40,13 @@ public class OperationFolder {
         dayOrgFolder = FileTools.setupFolder(organizingFolder, "Days");
         if (mainFolder) {
             operation.setMainPath(root.getAbsolutePath());
-            createOperationFile(operation);
+            createOperationFiles(operation);
         }
         System.err.println("Done creating folders for operation " + operation.getName());
     }
 
     /**
-     * Get the operation folder.
+     * Gets the operation folder.
      *
      * @return the operation folder.
      */
@@ -53,7 +55,7 @@ public class OperationFolder {
     }
 
     /**
-     * Set the operation folder.
+     * Sets the operation folder.
      *
      * @param operationFolder the operation folder.
      */
@@ -62,7 +64,7 @@ public class OperationFolder {
     }
 
     /**
-     * Get the folder to store processed tracks.
+     * Gets the folder to store processed tracks.
      *
      * @return the folder to store processed files.
      */
@@ -71,7 +73,7 @@ public class OperationFolder {
     }
 
     /**
-     * Set the folder to store processed tracks.
+     * Sets the folder to store processed tracks.
      *
      * @param processedFolder the folder to store processed tracks.
      */
@@ -80,7 +82,7 @@ public class OperationFolder {
     }
 
     /**
-     * Get the folder to store rawfiles.
+     * Gets the folder to store rawfiles.
      *
      * @return the folder to store rawfiles.
      */
@@ -89,7 +91,7 @@ public class OperationFolder {
     }
 
     /**
-     * Set the folder to store all rawfiles.
+     * Sets the folder to store all rawfiles.
      *
      * @param rawFolder the folder to store rawfiles..
      */
@@ -98,7 +100,7 @@ public class OperationFolder {
     }
 
     /**
-     * Get the folder to store areas.
+     * Gets the folder to store areas.
      *
      * @return the folder to store areas.
      */
@@ -107,7 +109,7 @@ public class OperationFolder {
     }
 
     /**
-     * Set the folder to store areas.
+     * Sets the folder to store areas.
      *
      * @param areaFolder the folder to store areas.
      */
@@ -116,7 +118,7 @@ public class OperationFolder {
     }
 
     /**
-     * Get the folder to store waypoints.
+     * Gets the folder to store waypoints.
      *
      * @return the folder to store waypoints.
      */
@@ -125,7 +127,7 @@ public class OperationFolder {
     }
 
     /**
-     * Set the folder to store waypoints.
+     * Sets the folder to store waypoints.
      *
      * @param waypointFolder the folder to store waypoints.
      */
@@ -143,7 +145,7 @@ public class OperationFolder {
     }
 
     /**
-     * Set the folder to store organizations of files.
+     * Sets the folder to store organizations of files.
      *
      * @param organizingFolder the folder to store organizations of files.
      */
@@ -152,7 +154,7 @@ public class OperationFolder {
     }
 
     /**
-     * Get the folder to store organizations of crew types.
+     * Gets the folder to store organizations of crew types.
      *
      * @return the folder to store organizations of crew types.
      */
@@ -161,7 +163,7 @@ public class OperationFolder {
     }
 
     /**
-     * Set the folder to store organizations of crew types.
+     * Sets the folder to store organizations of crew types.
      *
      * @param crewOrgFolder the folder to store organizations of crew types.
      */
@@ -170,7 +172,7 @@ public class OperationFolder {
     }
 
     /**
-     * Get the folder to store organizations of areas.
+     * Gets the folder to store organizations of areas.
      *
      * @return the folder to store organizations of areas.
      */
@@ -179,7 +181,7 @@ public class OperationFolder {
     }
 
     /**
-     * Set the folder to store organizations of areas.
+     * Sets the folder to store organizations of areas.
      *
      * @param areaOrgFolder the folder to store organizations of areas.
      */
@@ -188,7 +190,7 @@ public class OperationFolder {
     }
 
     /**
-     * Get the folder to store organizations of days.
+     * Gets the folder to store organizations of days.
      *
      * @return the folder to store organizations of days.
      */
@@ -197,7 +199,7 @@ public class OperationFolder {
     }
 
     /**
-     * Set the folder to store organizations of days.
+     * Sets the folder to store organizations of days.
      *
      * @param dayOrgFolder the folder to store organizations of days.
      */
@@ -210,20 +212,67 @@ public class OperationFolder {
      *
      * @param operation the operation to create the file for.
      */
-    private void createOperationFile(Operation operation) {
+    private void createOperationFiles(Operation operation) {
         File operationFile = new File(operationFolder, operation.getName().trim().replace(" ", "_") + ".txt");
+        trackFileInfo = new File(operationFolder, "TrackFileInfo.csv");
+        waypointFileInfo = new File(operationFolder, "WaypointFileInfo.csv");
         if (!operationFile.exists()) {
             try {
                 operationFile.createNewFile();
             } catch (IOException ex) {
                 System.err.println("Failed to create operation file.");
             }
+            FileTools.writeToFile(operation.getFileContent(), operationFile);
         }
-        FileTools.writeToFile(operation.getFileContent(), operationFile);
+        if (!trackFileInfo.exists()) {
+            try {
+                trackFileInfo.createNewFile();
+                FileTools.writeToCsvFile(trackFileInfo, "Lagtype", "Lagnummer", "Antall mann", "Teiger", "Lengde", "Spornummer", "Kommentar", "Tid", "Original fil", "Prosessert fil", "Original hash");
+            } catch (IOException ex) {
+                System.err.println("Failed to create operation file.");
+            }
+        }
+        if (!waypointFileInfo.exists()) {
+            try {
+                waypointFileInfo.createNewFile();
+                FileTools.writeToCsvFile(waypointFileInfo, "Kommentar", "Original fil", "Prosessert fil", "Original hash");
+            } catch (IOException ex) {
+                System.err.println("Failed to create operation file.");
+            }
+        }
     }
 
     /**
-     * Replacing the content of the operation file with the new operation info.
+     * Saves information about a track to the CSV file for the current operation.
+     *
+     * @param info             the trackinfo object with info about the track.
+     * @param time             time of import.
+     * @param originalFile     the name of the original/raw file.
+     * @param processedFile    the name of the processed file.
+     * @param originalFileHash the hash of the original/raw file.
+     */
+    public void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalFileHash) {
+        FileTools.writeToCsvFile(trackFileInfo,
+                info.getCrewType(), info.getCrewNumber() + "", info.getCrewCount() + "", info.getAreaSearched(),
+                info.getDistance() + "", info.getTrackNumber() + "", info.getComment().isEmpty() ? "Ingen kommentar" : info.getComment(),
+                time, originalFile, processedFile, originalFileHash
+        );
+    }
+
+    /**
+     * Saves information about a waypoint to the CSV file for the current operation.
+     *
+     * @param comment       comment about the waypoint.
+     * @param originalFile  the name of the original/raw file.
+     * @param processedFile the name of the processed file.
+     * @param originalHash  the hash of the original/raw file.
+     */
+    public void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
+        FileTools.writeToCsvFile(waypointFileInfo, comment, originalFile, processedFile, originalHash);
+    }
+
+    /**
+     * Replaces the content of the operation file with the new operation info.
      *
      * @param operation the current operation.
      */

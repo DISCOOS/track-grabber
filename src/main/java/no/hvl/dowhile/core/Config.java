@@ -7,24 +7,26 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 /**
- * Reading and writing to the configuration file.
+ * Reads and writes to the configuration file.
  */
 public class Config {
     private String filename;
     private List<TeamType> teamTypes;
 
+    /**
+     * Constructor setting a default filename.
+     */
     public Config() {
         this.filename = "%LAGTYPE%%LAGNUMMER%_TEIG%TEIGNUMMER%_SPOR%SPORNUMMER%_%DATO%.gpx";
-        this.teamTypes = new ArrayList<>(Arrays.asList(new TeamType("Mannskap", "Lime"), new TeamType("Hund", "Green"), new TeamType("Bil", "Blue"), new TeamType("ATV", "Yellow"), new TeamType("Båt", "Orange"), new TeamType("Helikopter", "DarkRed")));
+        this.teamTypes = new ArrayList<>();
     }
 
     /**
-     * Get the configuration template.
+     * Gets the configuration template.
      *
      * @return the lines for the configuration file.
      */
@@ -55,7 +57,7 @@ public class Config {
     }
 
     /**
-     * Get the current pattern to use for the filenames.
+     * Gets the current pattern to use for the filenames.
      *
      * @return the pattern for the filenames.
      */
@@ -64,7 +66,7 @@ public class Config {
     }
 
     /**
-     * Set the pattern to use for the filenames.
+     * Sets the pattern to use for the filenames.
      *
      * @param filename the pattern for the filenames.
      */
@@ -73,7 +75,7 @@ public class Config {
     }
 
     /**
-     * Get a list of the current team types for this operation and the corresponding color.
+     * Gets a list of the current team types for this operation and the corresponding color.
      *
      * @return list of the current team types.
      */
@@ -97,7 +99,7 @@ public class Config {
     }
 
     /**
-     * Get a list with the names of the team types.
+     * Gets a list with the names of the team types.
      *
      * @return list with names of the team types.
      */
@@ -109,6 +111,11 @@ public class Config {
         return teamNames;
     }
 
+    /**
+     * Parses the config file and extracts the needed information.
+     *
+     * @param file the config file.
+     */
     public void parseConfigFile(File file) {
         if (file == null || !file.getName().equals("config.txt")) {
             return;
@@ -147,7 +154,7 @@ public class Config {
     }
 
     /**
-     * Insert track info data into the pattern to generate the filename.
+     * Inserts track info data into the pattern to generate the filename.
      *
      * @param trackInfo the info to insert.
      * @return the filename.
@@ -181,7 +188,7 @@ public class Config {
     }
 
     /**
-     * Checking the filename to find the variables in the String.
+     * Checks the filename to find the variables in the String.
      *
      * @param filename the filename to check.
      * @return list of variables in the given filename.

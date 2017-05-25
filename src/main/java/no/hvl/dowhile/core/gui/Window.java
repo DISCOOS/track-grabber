@@ -1,5 +1,9 @@
 package no.hvl.dowhile.core.gui;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.TimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 import no.hvl.dowhile.core.Operation;
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
@@ -12,6 +16,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -19,20 +25,29 @@ import java.util.List;
  * The class has different panels for displaying information depending on certain events in the application.
  */
 public class Window extends JFrame {
+
+    // Font sizes
     final int HEADER_FONT_SIZE = 32;
     final int TEXT_FONT_SIZE = 24;
     final int BUTTON_FONT_SIZE = 20;
+
+    // Different fonts for different uses
     final Font TEXT_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE);
     final Font TEXT_BOLD_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, TEXT_FONT_SIZE);
     final Font TEXT_ITALIC_FONT = new Font(Messages.FONT_NAME.get(), Font.ITALIC, TEXT_FONT_SIZE);
-    final Font HEADER_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, HEADER_FONT_SIZE);
+    final Font HEADER_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, HEADER_FONT_SIZE);
     final Font BUTTON_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, BUTTON_FONT_SIZE);
-    private final OperationManager OPERATION_MANAGER;
+
+    // The panels (different views of the application)
     private JPanel cardPanel;
     private HeaderPanel headerPanel;
+    private StartPanel startPanel;
     private OperationPanel operationPanel;
     private TrackPanel trackPanel;
     private WaypointPanel waypointPanel;
+    private StandByPanel standByPanel;
+
+    private String activePanelName;
 
     /**
      * Constructor setting up the Window, logo, listener for closing and creating the different panels to display.
@@ -41,7 +56,6 @@ public class Window extends JFrame {
      * @see OperationManager
      */
     public Window(final OperationManager OPERATION_MANAGER) {
-        this.OPERATION_MANAGER = OPERATION_MANAGER;
 
         setTitle(Messages.PROJECT_NAME.get());
         setSize(800, 400);
@@ -55,21 +69,25 @@ public class Window extends JFrame {
         }
 
         headerPanel = new HeaderPanel(this);
+        startPanel = new StartPanel(OPERATION_MANAGER, this);
         operationPanel = new OperationPanel(OPERATION_MANAGER, this);
         trackPanel = new TrackPanel(OPERATION_MANAGER, this);
         waypointPanel = new WaypointPanel(OPERATION_MANAGER, this);
+        standByPanel = new StandByPanel(OPERATION_MANAGER, this);
 
         cardPanel = new JPanel(new CardLayout());
+        cardPanel.add(startPanel, "Start");
         cardPanel.add(operationPanel, "Operation");
         cardPanel.add(trackPanel, "Track");
         cardPanel.add(waypointPanel, "Waypoint");
-        add(cardPanel, BorderLayout.NORTH);
+        cardPanel.add(standByPanel, "StandBy");
+        add(cardPanel, BorderLayout.WEST);
 
         getContentPane().add(headerPanel, BorderLayout.NORTH);
         getContentPane().add(cardPanel, BorderLayout.CENTER);
 
         open();
-        openOperationPanel();
+        openStartPanel();
 
         // Listener for when the window closes
         addWindowListener(new WindowAdapter() {
@@ -91,7 +109,7 @@ public class Window extends JFrame {
     private Image getLogo() {
         BufferedImage bufferedImage;
         try {
-            bufferedImage = ImageIO.read(new File("src/main/resources/red_cross_icon.jpg"));
+            bufferedImage = ImageIO.read(new File("src/main/resources/images/red_cross_icon.jpg"));
         } catch (IOException ex) {
             return null;
         }
@@ -113,11 +131,22 @@ public class Window extends JFrame {
     }
 
     /**
-     * Open the panel allowing the administrator to change operation or edit the current operation.
+     * Open the panel allowing creating a new Operation or choose an existing Operation.
      */
-    public void openOperationPanel() {
+    public void openStartPanel() {
+        CardLayout cl = (CardLayout) (cardPanel.getLayout());
+        cl.show(cardPanel, "Start");
+        activePanelName = "Start";
+    }
+
+    /**
+     * Open the panel allowing the administrator to edit the current operation.
+     */
+    public void openOperationPanel(String paths) {
+        operationPanel.setAllSavedPathsLabel(paths);
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Operation");
+        activePanelName = "Operation";
     }
 
     /**
@@ -126,11 +155,25 @@ public class Window extends JFrame {
     public void openTrackPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Track");
+        activePanelName = "Track";
     }
 
+    /**
+     * Open the panel allowing to user to give info about a Waypoint.
+     */
     public void openWaypointPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Waypoint");
+        activePanelName = "Waypoint";
+    }
+
+    /**
+     * Open the panel allowing to user wait for GPS, import GPX-file from PC or access OperationPanel.
+     */
+    public void openStandByPanel() {
+        CardLayout cl = (CardLayout) (cardPanel.getLayout());
+        cl.show(cardPanel, "StandBy");
+        activePanelName = "StandBy";
     }
 
     /**
@@ -140,6 +183,10 @@ public class Window extends JFrame {
      */
     public void showDialog(String title, String text) {
         JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), text, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public boolean isReadyToProcessFile() {
+        return activePanelName.equals("Operation") || activePanelName.equals("StandBy") || activePanelName.equals("Start");
     }
 
     /**
@@ -153,14 +200,39 @@ public class Window extends JFrame {
     }
 
     /**
-     * Telling the track panel to update the info about which file is currently processed.
+     * Telling the TrackPanel to update the info about which file is currently processed.
      *
-     * @param filename  the name of the file.
-     * @param filesLeft the amount of files left after the one currently processing.
+     * @param filename      the name of the file.
+     * @param queueSize     Total files in queue
+     * @param queuePosition current postion in queue
      */
-    public void updateCurrentFile(String filename, int filesLeft) {
-        trackPanel.updateCurrentFile(filename, filesLeft);
-        waypointPanel.updateCurrentFile(filename, filesLeft);
+    public void updateCurrentTrackFile(String filename, int queueSize, int queuePosition, double trackDistance) {
+        trackPanel.updateCurrentFile(filename, queueSize, queuePosition);
+        trackPanel.updateCurrentFileDistance(trackDistance);
+
+    }
+
+    /**
+     * Telling the WaypointPanel to update the info about which file is currently processed.
+     *
+     * @param waypointDate  the date of the waypoint
+     * @param waypointName  the name of the file.
+     * @param queueSize     Total files in queue
+     * @param queuePosition current postion in queue
+     */
+    public void updateCurrentWaypointFile(String waypointDate, String waypointName, int queueSize, int queuePosition) {
+        waypointPanel.updateCurrentFile(waypointDate, waypointName, queueSize, queuePosition);
+    }
+
+    /**
+     * Updating the info about the position and amount of files in the queue.
+     *
+     * @param queueSize     the size of the queue.
+     * @param queuePosition the current position in the queue.
+     */
+    public void updateQueueInfo(int queueSize, int queuePosition) {
+        trackPanel.updateQueueInfo(queueSize, queuePosition);
+        waypointPanel.updateQueueInfo(queueSize, queuePosition);
     }
 
     /**
@@ -169,7 +241,7 @@ public class Window extends JFrame {
      * @param operations the operations to add.
      */
     public void showExistingOperations(List<Operation> operations) {
-        operationPanel.showExistingOperations(operations);
+        startPanel.showExistingOperations(operations);
     }
 
     /**
@@ -191,6 +263,13 @@ public class Window extends JFrame {
         return label;
     }
 
+    /**
+     * Makes a JLabel suitable for headers with a give text.
+     * The Font style and size is preset.
+     *
+     * @param text the text that the JLabel should have
+     * @return A JLabel with the given text and a preset font
+     */
     public JLabel makeHeaderLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(HEADER_FONT);
@@ -201,8 +280,9 @@ public class Window extends JFrame {
      * Makes a JButton with given text and a specific size and color
      *
      * @param text   within the button
-     * @param width
-     * @param height @return a JButton with given text and a set dimension and color
+     * @param width  Width of the button
+     * @param height Height of the button
+     * @return a JButton with given text and a set dimension and color
      */
     public JButton makeButton(String text, int width, int height) {
         JButton button = new JButton(text);
@@ -213,6 +293,13 @@ public class Window extends JFrame {
         return button;
     }
 
+    /**
+     * Makes a JTextField with a given size and a preset font
+     *
+     * @param width  the width of the JTextField
+     * @param height the height of the JTextField
+     * @return A JTextField with given dimensions(width and height) and a preset font
+     */
     public JTextField makeTextField(int width, int height) {
         JTextField textField = new JTextField();
         textField.setPreferredSize(new Dimension(width, height));
@@ -221,12 +308,57 @@ public class Window extends JFrame {
         return textField;
     }
 
+    /**
+     * Makes a JSpinner with a given SpinnerModel
+     *
+     * @param spinnerModel that contains parameters like stepSize, start and stop number
+     * @return a JSpinner with a preset dimension and font
+     */
     public JSpinner makeSpinner(SpinnerModel spinnerModel) {
         JSpinner spinner = new JSpinner(spinnerModel);
         spinner.setPreferredSize(new Dimension(150, 50));
         spinner.setFont(TEXT_FONT);
 
         return spinner;
+    }
+
+    /**
+     * Makes a DatePicker (from library LGoodDatePicker) with a given width and height
+     *
+     * @param width  width of the DatePicker
+     * @param height height of the Datepicker
+     * @return a DatePicker with given width and height
+     */
+
+    public DatePicker makeDatePicker(int width, int height) {
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        dateSettings.setAllowEmptyDates(false);
+
+        DatePicker datePicker = new DatePicker(dateSettings);
+        datePicker.setPreferredSize(new Dimension(width, height));
+        datePicker.setFont(TEXT_FONT);
+
+        return datePicker;
+    }
+
+    /**
+     * Makes a TimePicker (from library LGoodDatePicker) with a given width and height
+     *
+     * @param width  width of the TimePicker
+     * @param height height of the Timepicker
+     * @return a TimePicker with given width and height
+     */
+
+    public TimePicker makeTimePicker(int width, int height) {
+        TimePickerSettings timeSettings = new TimePickerSettings();
+        timeSettings.initialTime = LocalTime.now();
+
+        TimePicker timePicker = new TimePicker(timeSettings);
+        timePicker.setPreferredSize(new Dimension(width, height));
+        timePicker.setFont(TEXT_FONT);
+
+        return timePicker;
     }
 
     /**

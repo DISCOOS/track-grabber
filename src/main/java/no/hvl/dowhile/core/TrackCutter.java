@@ -1,14 +1,15 @@
 package no.hvl.dowhile.core;
 
+import com.hs.gpxparser.modal.Track;
+import com.hs.gpxparser.modal.TrackSegment;
+import com.hs.gpxparser.modal.Waypoint;
 import no.hvl.dowhile.utility.TrackTools;
-import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Processing a GPX file. Removing unnecessary data.
+ * Processes a GPX file by removing unnecessary data.
  */
 public class TrackCutter {
     private final OperationManager OPERATION_MANAGER;
@@ -23,31 +24,10 @@ public class TrackCutter {
     }
 
     /**
-     * Processing the file to remove unnecessary data.
+     * Processes the file by removing unnecessary data.
      */
     public void process() {
         filterOnTimeStarted(OPERATION_MANAGER.getOperation().getStartTime());
-    }
-
-    /**
-     * Determines a maximum latitude and longitude, and uses to create a radius
-     */
-    public void setRadius() {
-
-    }
-
-    /**
-     * Sets a time span for the track
-     */
-    private void setTimeSpan() {
-
-    }
-
-    /**
-     * Removes all track points that are outside of the given radius
-     */
-    private void filterOnRadius() {
-
     }
 
     /**
@@ -55,7 +35,7 @@ public class TrackCutter {
      */
     public void filterOnTimeStarted(Date startTime) {
         Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());
-        ArrayList<Waypoint> trackPoints = track.getTrackPoints();
+        ArrayList<Waypoint> trackPoints = TrackTools.getAllTrackPoints(track);
         ArrayList<Waypoint> pointsToRemove = new ArrayList<>();
         long startTimeMillis = startTime.getTime();
 
@@ -66,11 +46,15 @@ public class TrackCutter {
             }
         }
         trackPoints.removeAll(pointsToRemove);
-        track.setTrackPoints(trackPoints);
+        TrackSegment trackSegment = new TrackSegment();
+        trackSegment.setWaypoints(trackPoints);
+        ArrayList<TrackSegment> trackSegments = new ArrayList<>();
+        trackSegments.add(trackSegment);
+        track.setTrackSegments(trackSegments);
     }
 
     /**
-     * Get the current GpxFile.
+     * Gets the current GpxFile.
      *
      * @return the current GpxFile.
      */
@@ -79,7 +63,7 @@ public class TrackCutter {
     }
 
     /**
-     * Set the current GpxFile.
+     * Sets the current GpxFile.
      *
      * @param gpxFile the current GpxFile to be set.
      */
@@ -88,7 +72,7 @@ public class TrackCutter {
     }
 
     /**
-     * Get info about the current track.
+     * Gets info about the current track.
      *
      * @return info about the current track.
      */
@@ -97,7 +81,7 @@ public class TrackCutter {
     }
 
     /**
-     * Set info about the current track.
+     * Sets info about the current track.
      *
      * @param trackInfo info about the current track.
      */

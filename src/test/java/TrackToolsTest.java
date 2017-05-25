@@ -1,7 +1,7 @@
+import com.hs.gpxparser.modal.GPX;
+import com.hs.gpxparser.modal.Track;
+import com.hs.gpxparser.modal.Waypoint;
 import no.hvl.dowhile.utility.TrackTools;
-import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,6 +9,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -16,21 +17,28 @@ import static org.junit.Assert.assertTrue;
 
 public class TrackToolsTest {
 
-    Track track;
-    ArrayList<Waypoint> trackPoints;
-    SimpleDateFormat format;
-    Date veryLateStartTime;
-    Date veryEarlyStartTime;
-    Waypoint trackPoint0;
-    Waypoint trackPoint1;
-    Waypoint trackPoint1Copy;
-    private GPX gpxFile;
+    private GPX trackFile;
+    private File waypointFile;
+    private GPX waypointGpx;
+    private Track track;
+    private ArrayList<Waypoint> trackPoints;
+    private SimpleDateFormat format;
+    private Date veryLateStartTime;
+    private Date veryEarlyStartTime;
+    private Waypoint trackPoint0;
+    private Waypoint trackPoint1;
+    private Waypoint trackPoint1Copy;
+    private List<GPX> waypoints;
 
     @Before
     public void before() {
-        gpxFile = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
-        track = TrackTools.getTrackFromGPXFile(gpxFile);
-        trackPoints = track.getTrackPoints();
+        waypointFile = new File("src/test/resources/testWpFile.gpx");
+        waypointGpx = TrackTools.getGpxFromFile(waypointFile);
+        waypoints = TrackTools.splitWaypointGpx(waypointFile);
+
+        trackFile = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
+        track = TrackTools.getTrackFromGPXFile(trackFile);
+        trackPoints = TrackTools.getAllTrackPoints(track);
 
         format = new SimpleDateFormat("dd/mm/yyyy");
         veryLateStartTime = new Date("24/12/2038");
@@ -39,7 +47,7 @@ public class TrackToolsTest {
         trackPoint0 = trackPoints.get(0);
         trackPoint1 = trackPoints.get(1);
 
-        trackPoint1Copy = new Waypoint();
+        trackPoint1Copy = new Waypoint(14, 35);
         trackPoint1Copy.setLatitude(trackPoint1.getLatitude());
         trackPoint1Copy.setLongitude(trackPoint1.getLongitude());
         trackPoint1Copy.setElevation(trackPoint1.getElevation());
@@ -72,22 +80,51 @@ public class TrackToolsTest {
     }
 
     @Test
-    public void twoDifferentTrackPointsDoNotMatch() {
+    public void trackHasStartTime() {
+
+    }
+
+    @Test
+    public void trackHasEndTime() {
+
+    }
+
+    @Test
+    public void differentTrackPointsDoNotMatch() {
         assertFalse(TrackTools.matchingTrackPoints(trackPoint0, trackPoint1));
     }
 
     @Test
-    public void twoMatchingTrackPointsDoMatch() {
+    public void matchingTrackPointsMatch() {
         assertTrue(TrackTools.matchingTrackPoints(trackPoint1, trackPoint1Copy));
     }
 
     @Test
     public void trackWasInFactCreatedBeforeStartTime() {
-        assertTrue(TrackTools.trackCreatedBeforeStartTime(gpxFile, veryLateStartTime));
+        assertTrue(TrackTools.trackCreatedBeforeStartTime(trackFile, veryLateStartTime));
+    }
+
+    @Test
+    public void pointsAreRemovedFromTrack() {
+
     }
 
     @Test
     public void trackWasActuallyNotCreatedBeforeStartTime() {
-        assertFalse(TrackTools.trackCreatedBeforeStartTime(gpxFile, veryEarlyStartTime));
+        assertFalse(TrackTools.trackCreatedBeforeStartTime(trackFile, veryEarlyStartTime));
+    }
+
+    @Test
+    public void matchingWaypointsMatch() {
+        Waypoint wp1 = waypoints.get(0).getWaypoints().iterator().next();
+        Waypoint wp1Copy = waypoints.get(0).getWaypoints().iterator().next();
+        assertTrue(TrackTools.matchingWaypoints(wp1, wp1Copy));
+    }
+
+    @Test
+    public void differentWaypointsDoNotMatch() {
+        Waypoint wp1 = waypoints.get(0).getWaypoints().iterator().next();
+        Waypoint wp2 = waypoints.get(1).getWaypoints().iterator().next();
+        assertFalse(TrackTools.matchingWaypoints(wp1, wp2));
     }
 }

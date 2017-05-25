@@ -1,5 +1,7 @@
 package no.hvl.dowhile.utility;
 
+import com.hs.gpxparser.modal.GPX;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -8,7 +10,7 @@ import java.util.Date;
  */
 public class StringTools {
     /**
-     * Formatting a Date into a string.
+     * Formats a Date into a string.
      *
      * @param date the date to format.
      * @return the date formatted as a String.
@@ -18,7 +20,7 @@ public class StringTools {
     }
 
     /**
-     * Formatting a Date into a string without spaces.
+     * Formats a Date into a string without spaces.
      *
      * @param date the date to format.
      * @return the date formatted as a String without spaces.
@@ -28,13 +30,23 @@ public class StringTools {
     }
 
     /**
-     * Formatting a Date into a string without spaces, hours, minutes and seconds.
+     * Formats a Date into a string without spaces, hours, minutes and seconds.
      *
      * @param date the date to format.
      * @return the date formatted as a String without spaces, hours, minutes and seconds.
      */
     public static String formatDateForOrganizing(Date date) {
         return new SimpleDateFormat("dd-MM-yy").format(date);
+    }
+
+    /**
+     * Formats a Date into a String without year.
+     *
+     * @param date the date to format.
+     * @return the date formatted as a String without year.
+     */
+    public static String formatDateForFileProcessing(Date date) {
+        return new SimpleDateFormat("dd-MM HH:mm").format(date);
     }
 
     /**
@@ -74,6 +86,26 @@ public class StringTools {
      */
     public static boolean FilenameContainsString(String string, String filename) {
         return filename.contains(string);
+    }
+
+    /**
+     * Gets the track's start time and end time as one single String.
+     *
+     * @param gpx The file to get the times from.
+     * @return The start time and end time.
+     */
+    public static String startTimeAndEndTimeToString(GPX gpx) {
+        return Messages.TRACK_START.get() + TrackTools.getStartTimeFromTrack(gpx) + ", " + Messages.TRACK_END.get() + TrackTools.getEndTimeFromTrack(gpx);
+    }
+
+    /**
+     * Takes the name of a raw waypoint file and injects the file's index into it.
+     * @param name The name to replace.
+     * @param index The index to inject into the name
+     * @return The new name.
+     */
+    public static String renameRawWaypointName(String name, int index) {
+        return new StringBuilder(name).insert(name.length()-4, "_" + index).toString();
     }
 
 }

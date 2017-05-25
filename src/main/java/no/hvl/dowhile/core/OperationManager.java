@@ -1,18 +1,18 @@
 package no.hvl.dowhile.core;
 
+import com.hs.gpxparser.modal.GPX;
+import com.hs.gpxparser.modal.Track;
+import com.hs.gpxparser.modal.Waypoint;
 import no.hvl.dowhile.core.drive.DriveDetector;
 import no.hvl.dowhile.core.drive.GPSDrive;
 import no.hvl.dowhile.core.gui.Window;
 import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.Messages;
+import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
-import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Handling communication between the components in the application.
@@ -26,7 +26,10 @@ public class OperationManager {
     private List<Operation> existingOperations;
     private TrackCutter currentTrackCutter;
     private List<GpxFile> queue;
+    private int queueSize;
+    private int queuePosition;
     private Operation operation;
+
 
     /**
      * Constructor creating the components needed from the beginning.
@@ -34,11 +37,12 @@ public class OperationManager {
     public OperationManager() {
         this.active = true;
         this.config = new Config();
-        this.window = new Window(this);
         this.driveDetector = new DriveDetector(this);
         this.fileManager = new FileManager(this);
         this.existingOperations = new ArrayList<>();
         this.queue = new ArrayList<>();
+        this.queueSize = 0;
+        this.queuePosition = 0;
     }
 
     /**
@@ -77,10 +81,18 @@ public class OperationManager {
     }
 
     /**
+     * Generate and show the window.
+     */
+    public void showWindow() {
+        this.window = new Window(this);
+    }
+
+    /**
      * Perform actions required to be done before the program is shutdown.
      */
     public void stop() {
         removeUnprocessedFiles();
+        window.close();
     }
 
     /**
@@ -171,13 +183,12 @@ public class OperationManager {
         File gpxFolder = gpsDrive.getGpxFolder();
         Set<File> gpxFiles = FileTools.findGpxFiles(gpxFolder);
         for (File file : gpxFiles) {
-            System.err.println(file.getName());
-            processFile(file);
+            checkFile(file);
         }
-        if (!queue.isEmpty()) {
+        if (!queue.isEmpty() && window.isReadyToProcessFile()) {
             prepareNextFile();
-        } else {
-            window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_DESCRIPTION.get());
+        } else if (queue.isEmpty() && window.isReadyToProcessFile()) {
+            window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_GPS_DESCRIPTION.get());
         }
     }
 
@@ -187,45 +198,74 @@ public class OperationManager {
      * @param file the file selected.
      */
     public void handleImportedFile(File file) {
-        processFile(file);
-        if (!queue.isEmpty()) {
+        checkFile(file);
+        if (!queue.isEmpty() && window.isReadyToProcessFile()) {
             prepareNextFile();
-        } else {
-            window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_DESCRIPTION.get());
+        } else if (queue.isEmpty() && window.isReadyToProcessFile()) {
+            window.showDialog(Messages.NO_RELEVANT_FILES_TITLE.get(), Messages.NO_RELEVANT_FILES_IMPORT_DESCRIPTION.get());
         }
     }
 
     /**
-     * Processes a single GPX file.
+     * Identifies a GPX file and does the appropriate processing based on its attributes.
      *
-     * @param file the file to process.
+     * @param file the file to check.
      */
-    public void processFile(File file) {
+    public void checkFile(File file) {
         GPX gpx = TrackTools.getGpxFromFile(file);
         if (gpx == null) {
             System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
             return;
         }
         if (TrackTools.hasWaypoints(gpx)) {
-            queue.add(new GpxFile(file, gpx));
+            checkWaypoints(file);
             return;
         }
-        if (!TrackTools.fileHasTrack(gpx)) {
+        Track track = TrackTools.getTrackFromGPXFile(gpx);
+        if (track == null) {
             System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
             return;
         }
-        if (fileManager.fileAlreadyImported(gpx)) {
-            System.err.println("File \"" + file.getName() + "\" has already been imported. Ignoring.");
-            return;
+        int allPointsCount = TrackTools.getAllTrackPoints(track).size();
+        List<Waypoint> duplicatePoints = fileManager.alreadyImportedTrack(gpx);
+        while (!duplicatePoints.isEmpty()) {
+            if (!(duplicatePoints.size() == allPointsCount)) {
+                TrackTools.removePoints(track, duplicatePoints);
+                allPointsCount = TrackTools.getAllTrackPoints(track).size();
+                duplicatePoints = fileManager.alreadyImportedTrack(gpx);
+            } else {
+                return;
+            }
         }
-        fileManager.saveRawGpxFileInFolders(gpx, file.getName());
+        String rawfileHash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
         if (TrackTools.trackIsAnArea(gpx)) {
             fileManager.saveAreaGpxFileInFolders(gpx, file.getName());
         } else {
             if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-                queue.add(new GpxFile(file, gpx));
+                queue.add(new GpxFile(file, file.getName(), rawfileHash, gpx));
+                queueSize++;
+                window.updateQueueInfo(queueSize, queuePosition);
             } else {
                 System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
+            }
+        }
+    }
+
+    /**
+     * Takes a file containing waypoints and adds all of them to the queue.
+     *
+     * @param file The file containing the waypoints.
+     */
+    private void checkWaypoints(File file) {
+        List<GPX> waypointsInGpx = TrackTools.splitWaypointGpx(file);
+        for (int i = 0; i < waypointsInGpx.size(); i++) {
+            GPX waypointGpx = waypointsInGpx.get(i);
+            if (!TrackTools.waypointCreatedBeforeStartTime(waypointGpx, operation.getStartTime()) && !fileManager.waypointIsAlreadyImported(waypointGpx)) {
+                String newRawFileName = StringTools.renameRawWaypointName(file.getName(), i);
+                String hash = fileManager.saveRawGpxFileInFolders(waypointGpx, newRawFileName);
+                queue.add(new GpxFile(file, newRawFileName, hash, waypointGpx));
+                queueSize++;
+                window.updateQueueInfo(queueSize, queuePosition);
             }
         }
     }
@@ -235,13 +275,20 @@ public class OperationManager {
      * This method is used when a gps is connected and one or more gpx-files are located.
      */
     public void prepareNextFile() {
+        queuePosition++;
         GpxFile gpxFile = queue.remove(0);
-        window.updateCurrentFile(gpxFile.getFile().getName(), queue.size());
         currentTrackCutter = new TrackCutter(this);
         currentTrackCutter.setGpxFile(gpxFile);
         if (TrackTools.hasWaypoints(gpxFile.getGpx())) {
+            Waypoint wp = gpxFile.getGpx().getWaypoints().iterator().next();
+            Date wpDate = wp.getTime();
+            String wpDateFormatted = StringTools.formatDateForFileProcessing(wpDate);
+            String wpName = wp.getName();
+            window.updateCurrentWaypointFile(wpDateFormatted, wpName, queueSize, queuePosition);
             window.openWaypointPanel();
         } else {
+            double trackDistance = TrackTools.getDistanceFromTrack(gpxFile.getGpx());
+            window.updateCurrentTrackFile(StringTools.startTimeAndEndTimeToString(gpxFile.getGpx()), queueSize, queuePosition, trackDistance);
             window.openTrackPanel();
         }
     }
@@ -251,7 +298,7 @@ public class OperationManager {
      *
      * @param trackInfo info about the currently imported track.
      */
-    public void initiateTrackCutter(TrackInfo trackInfo) {
+    public void processFile(TrackInfo trackInfo) {
         if (currentTrackCutter == null || currentTrackCutter.getGpxFile() == null) {
             Messages.ERROR_NO_TRACK_FOR_INFO.print();
             return;
@@ -266,21 +313,102 @@ public class OperationManager {
             track.setDescription(trackInfo.getComment());
         }
         fileManager.saveProcessedGpxFileInFolders(gpxFile.getGpx(), trackInfo, newName);
+        fileManager.saveTrackFileInfo(trackInfo, System.currentTimeMillis() + "", gpxFile.getFile().getName(), newName, gpxFile.getRawfileHash());
         checkForMoreFiles();
+    }
+
+    /**
+     * This method is used for testing import of loads of files.
+     * No user interaction is required to import the files.
+     * The files you want to import need to be in a folder named "MassTesting" in the C://TrackGrabber folder.
+     */
+    public void importMassTestingFiles() {
+        long startTime = System.currentTimeMillis();
+        int filesImported = 0;
+        File appFolder = fileManager.getAppFolder();
+        if (appFolder == null || appFolder.listFiles() == null) {
+            return;
+        }
+        File massTestingFolder = new File(appFolder, "MassTesting");
+        File[] trackFiles = massTestingFolder.listFiles();
+        if (trackFiles == null) {
+            return;
+        }
+        Random random = new Random();
+        for (File trackFile : trackFiles) {
+            if (trackFile.getName().endsWith(".gpx")) {
+                System.err.println("Importing " + trackFile.getName());
+                GPX gpx = TrackTools.getGpxFromFile(trackFile);
+                if (gpx == null) {
+                    System.err.println("Failed to parse gpx.");
+
+                } else if (TrackTools.hasWaypoints(gpx)) {
+                    System.err.println("File is a waypoint file. Ignoring.");
+                } else if (!TrackTools.fileHasTrack(gpx)) {
+                    System.err.println("File doesn't have track.");
+                } else if (fileManager.alreadyImportedTrack(gpx) != null) {
+                    System.err.println("Already imported.");
+                } else {
+                    fileManager.saveRawGpxFileInFolders(gpx, trackFile.getName());
+                    System.err.println("Saved raw file!");
+                    if (TrackTools.trackIsAnArea(gpx)) {
+                        fileManager.saveAreaGpxFileInFolders(gpx, trackFile.getName());
+                        System.err.println("Saved area file!");
+                    } else {
+                        if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
+                            String crewType = config.getTeamTypes().get(random.nextInt(config.getTeamNames().size())).getName();
+                            TrackInfo trackInfo = new TrackInfo(
+                                    crewType, random.nextInt(40),
+                                    random.nextInt(40),
+                                    "[" + random.nextInt(40) + "]",
+                                    TrackTools.getDistanceFromTrack(gpx), random.nextInt(40),
+                                    "MassTesting"
+                            );
+                            String filename = config.generateFilename(trackInfo);
+                            Track track = TrackTools.getTrackFromGPXFile(gpx);
+                            track.setName(filename);
+                            if (!trackInfo.getComment().isEmpty()) {
+                                track.setDescription(trackInfo.getComment());
+                            }
+                            fileManager.saveProcessedGpxFileInFolders(gpx, trackInfo, filename);
+                            filesImported++;
+                            System.err.println("Saved processed!");
+                        } else {
+                            System.err.println("Track in file \"" + trackFile.getName() + "\" was stopped before operation start time. Ignoring.");
+                        }
+                    }
+                }
+            }
+        }
+        long stopTime = System.currentTimeMillis();
+        System.err.println("Successfully imported " + filesImported + " files in " + (stopTime - startTime) / 1000 + " seconds.");
     }
 
     /**
      * Assigns a name to the waypoint.
      *
-     * @param name the name for the file.
+     * @param name        the name for the file.
+     * @param description the description provided by the user.
      */
-    public void saveWaypoint(String name) {
+    public void saveWaypoint(String name, String description, String flagColor) {
         if (currentTrackCutter == null || currentTrackCutter.getGpxFile() == null) {
             Messages.ERROR_NO_TRACK_FOR_INFO.print();
             return;
         }
         GpxFile gpxFile = currentTrackCutter.getGpxFile();
-        fileManager.saveWaypointFileInFolders(gpxFile.getFile(), name + ".gpx");
+        GPX gpx = gpxFile.getGpx();
+        Waypoint waypoint = gpx.getWaypoints().iterator().next();
+        if (!name.isEmpty()) {
+            waypoint.setName(name);
+        }
+        if (!description.isEmpty()) {
+            waypoint.setDescription(description);
+        }
+        if (!flagColor.isEmpty()) {
+            waypoint.setSym("Flag, " + flagColor);
+        }
+        fileManager.saveWaypointFileInFolders(gpx, name.trim().replace(" ", "_") + ".gpx");
+        fileManager.saveWaypointFileInfo(description, gpxFile.getRawFileName() + ".gpx", name.trim().replace(" ", "_") + ".gpx", gpxFile.getRawfileHash());
         checkForMoreFiles();
     }
 
@@ -289,7 +417,10 @@ public class OperationManager {
      */
     public void checkForMoreFiles() {
         if (queue.isEmpty()) {
-            window.openOperationPanel();
+            currentTrackCutter = null;
+            window.openStandByPanel();
+            queueSize = 0;
+            queuePosition = 0;
         } else {
             prepareNextFile();
         }
@@ -342,6 +473,15 @@ public class OperationManager {
      */
     public Config getConfig() {
         return config;
+    }
+
+    /**
+     * Sets the window.
+     *
+     * @param window a window.
+     */
+    public void setWindow(Window window) {
+        this.window = window;
     }
 
     /**

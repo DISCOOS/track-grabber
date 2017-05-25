@@ -1,20 +1,20 @@
 package no.hvl.dowhile.utility;
 
-import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
+import com.hs.gpxparser.modal.GPX;
+import com.hs.gpxparser.modal.Track;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 /**
  * Utility methods to work with files.
  */
 public class FileTools {
     /**
-     * Clear the specified file.
+     * Clears the specified file.
      *
      * @param file the file to clear.
      */
@@ -29,7 +29,7 @@ public class FileTools {
     }
 
     /**
-     * Utility method to find all .gpx files in the folders.
+     * Utility method for finding all .gpx files in the folders.
      *
      * @param folders The folders to scan.
      * @return set with .gpx files.
@@ -74,14 +74,14 @@ public class FileTools {
     }
 
     /**
-     * Write the lines to the given file.
+     * Writes the lines to the given file.
      *
      * @param lines the array of lines to write.
      * @param file  the file to write to.
      */
     public static void writeToFile(String[] lines, File file) {
         try {
-            FileWriter writer = new FileWriter(file);
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8");
             for (String line : lines) {
                 writer.write(line + System.lineSeparator());
             }
@@ -91,6 +91,51 @@ public class FileTools {
             System.err.println("Error occured while writing to file " + file.getName());
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * Writes the lines to the given file.
+     *
+     * @param file   the file to write to.
+     * @param values the values to add.
+     */
+    public static void writeToCsvFile(File file, String... values) {
+        try {
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8");
+            StringBuilder builder = new StringBuilder("");
+            for (String value : values) {
+                if (value.contains(",")) {
+                    value = "\"" + value + "\"";
+                }
+                builder.append(value).append(",");
+            }
+            writer.write(builder.toString().substring(0, builder.toString().length() - 1) + System.lineSeparator());
+            writer.flush();
+            writer.close();
+        } catch (IOException ex) {
+            System.err.println("Error occured while writing to file " + file.getName());
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Gets the SHA-256 hash value of a file.
+     *
+     * @param file the file to hash.
+     * @return the hash of the file.
+     */
+    public static String hashFile(File file) {
+        try {
+            MessageDigest sha = MessageDigest.getInstance("SHA-256");
+            byte[] originalFileBytes = Files.readAllBytes(file.toPath());
+            byte[] hashed = sha.digest(originalFileBytes);
+            return Base64.getEncoder().encodeToString(hashed);
+        } catch (IOException ex) {
+            System.err.println("Failed while hashing file " + file.getName());
+        } catch (NoSuchAlgorithmException ex) {
+            System.err.println("Algorithm not found while hashing file " + file.getName());
+        }
+        return "";
     }
 
     /**
@@ -124,9 +169,7 @@ public class FileTools {
             String version = gpx.getVersion();
             String dataToReplace = "creator=\"" + creator + "\" " + "version=\"" + version + "\"";
             String replacedLine = line.replace(dataToReplace, "xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:gpxx=\"http://www.garmin.com/xmlschemas/GpxExtensions/v3\" xmlns:gpxtrkx=\"http://www.garmin.com/xmlschemas/TrackStatsExtension/v1\" xmlns:wptx1=\"http://www.garmin.com/xmlschemas/WaypointExtension/v1\" xmlns:gpxtpx=\"http://www.garmin.com/xmlschemas/TrackPointExtension/v1\" creator=\"" + creator + "\" version=\"" + version + "\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackStatsExtension/v1 http://www8.garmin.com/xmlschemas/TrackStatsExtension.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd\"");
-            if (replacedLine.contains("<extensions/>")) {
-                replacedLine = replacedLine.replace("<extensions/>", ""); // Resolving weird parsing bug.
-            }
+            replacedLine = replacedLine.replace("<text>Garmin International</text><link href=\"http://www.garmin.com\"/>", "<link href=\"http://www.garmin.com\"><text>Garmin International</text></link>");
             FileWriter writer = new FileWriter(file);
             writer.write(replacedLine);
             writer.flush();
@@ -151,15 +194,8 @@ public class FileTools {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
             reader.close();
-            String[] parts;
-            String replacedLine;
-            if (line.contains("</desc>")) {
-                parts = line.split("</desc>");
-                replacedLine = parts[0] + "</desc><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + color + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
-            } else {
-                parts = line.split("</name>");
-                replacedLine = parts[0] + "</name><extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + color + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + parts[1];
-            }
+            String[] parts = line.split("<trkseg>", 2);
+            String replacedLine = parts[0] + "<extensions><gpxx:TrackExtension><gpxx:DisplayColor>" + color + "</gpxx:DisplayColor></gpxx:TrackExtension></extensions>" + "<trkseg>" + parts[1];
             FileWriter writer = new FileWriter(file);
             writer.write(replacedLine);
             writer.flush();
@@ -170,7 +206,7 @@ public class FileTools {
     }
 
     /**
-     * Search for a given substring in the given text file
+     * Searches for a given substring in the given text file
      *
      * @param file      the file to check.
      * @param substring the substring to look for.
