@@ -284,7 +284,8 @@ public class OperationManager {
             Date wpDate = wp.getTime();
             String wpDateFormatted = StringTools.formatDateForFileProcessing(wpDate);
             String wpName = wp.getName();
-            window.updateCurrentWaypointFile(wpDateFormatted, wpName, queueSize, queuePosition);
+            String comment = wp.getComment();
+            window.updateCurrentWaypointFile(wpDateFormatted, wpName, comment, queueSize, queuePosition);
             window.openWaypointPanel();
         } else {
             double trackDistance = TrackTools.getDistanceFromTrack(gpxFile.getGpx());
