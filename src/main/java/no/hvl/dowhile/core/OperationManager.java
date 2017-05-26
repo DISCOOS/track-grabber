@@ -275,6 +275,9 @@ public class OperationManager {
      * This method is used when a gps is connected and one or more gpx-files are located.
      */
     public void prepareNextFile() {
+        if (queue.isEmpty()) {
+            return;
+        }
         queuePosition++;
         GpxFile gpxFile = queue.remove(0);
         currentTrackCutter = new TrackCutter(this);

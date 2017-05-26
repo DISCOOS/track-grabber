@@ -16,7 +16,7 @@ public class StringTools {
      * @return the date formatted as a String.
      */
     public static String formatDate(Date date) {
-        return new SimpleDateFormat("dd-MM/yyyy HH:mm z").format(date);
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
     }
 
     /**

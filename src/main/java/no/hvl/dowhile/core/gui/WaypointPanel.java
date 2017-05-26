@@ -17,22 +17,22 @@ import java.util.List;
 public class WaypointPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
-    // Radio buttons
-    JRadioButton redButton;
-    JRadioButton blueButton;
-    JRadioButton greenButton;
     private GridBagConstraints constraints;
+
     // JComponents
     private JLabel waypointHeaderLabel;
     private JLabel currentWaypointLabel;
     private JTextField waypointNameInput;
     private JTextArea waypointDescriptionInput;
-    private JButton confirmNameButton;
+    private JButton confirmButton;
+    private JButton skipButton;
     private JLabel queueLabel;
+
+    // Radio buttons
+    private JRadioButton redButton;
+    private JRadioButton greenButton;
     private List<JRadioButton> coloredButtons;
     private ButtonGroup colorGroup;
-
-
 
     /**
      * Constructor setting the OPERATION_MANAGER and WINDOW.
@@ -57,6 +57,7 @@ public class WaypointPanel extends JPanel {
         colorRadioButtons();
 
         confirmButtonListener();
+        skipButtonListener();
         radioButtonListeners();
 
         setBackground(new Color(255, 245, 252));
@@ -99,9 +100,14 @@ public class WaypointPanel extends JPanel {
         add(flagLabel, constraints);
 
         // Confirm button
-        confirmNameButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get(), 150, 50);
-        WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.WEST, 4);
-        add(confirmNameButton, constraints);
+        confirmButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get(), 150, 50);
+        WINDOW.modifyConstraints(constraints, 2, 7, GridBagConstraints.EAST, 2);
+        add(confirmButton, constraints);
+
+        // Skip button
+        skipButton = WINDOW.makeButton(Messages.SKIP_BUTTON.get(), 150, 50);
+        WINDOW.modifyConstraints(constraints, 0, 7, GridBagConstraints.WEST, 2);
+        add(skipButton, constraints);
 
         // Queue with remaining waypoint files
         queueLabel = WINDOW.makeLabel(Messages.PROCESSING_FILES.get(), Font.BOLD);
@@ -109,53 +115,41 @@ public class WaypointPanel extends JPanel {
         add(queueLabel, constraints);
     }
 
+    /**
+     * Creates flag color radio buttons adds them to the JPanel
+     */
     private void colorRadioButtons() {
         redButton = new JRadioButton();
         redButton.setName("Red");
+        redButton.setText(OPERATION_MANAGER.getConfig().getRedLabel());
         ImageIcon red = new ImageIcon(getColoredImage(Color.RED, 50));
         redButton.setIcon(red);
         redButton.setBorder(new LineBorder(Color.BLACK, 4));
         colorGroup.add(redButton);
         coloredButtons.add(redButton);
-        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 1);
-        constraints.insets = new Insets(5, 25, 5, 25);
+        WINDOW.modifyConstraints(constraints, 0, 5, GridBagConstraints.CENTER, 4);
         add(redButton, constraints);
-
-        blueButton = new JRadioButton();
-        blueButton.setName("Blue");
-        ImageIcon blue = new ImageIcon(getColoredImage(Color.BLUE, 50));
-        blueButton.setIcon(blue);
-        blueButton.setBorder(new LineBorder(Color.BLACK, 4));
-        colorGroup.add(blueButton);
-        coloredButtons.add(blueButton);
-        WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.CENTER, 1);
-        constraints.insets = new Insets(5, 25, 5, 25);
-        add(blueButton, constraints);
 
         greenButton = new JRadioButton();
         greenButton.setName("Green");
+        greenButton.setText(OPERATION_MANAGER.getConfig().getGreenLabel());
         ImageIcon green = new ImageIcon(getColoredImage(Color.green, 50));
         greenButton.setIcon(green);
         greenButton.setBorder(new LineBorder(Color.BLACK, 4));
         colorGroup.add(greenButton);
         coloredButtons.add(greenButton);
-        WINDOW.modifyConstraints(constraints, 2, 5, GridBagConstraints.CENTER, 1);
-        constraints.insets = new Insets(5, 25, 5, 25);
+        WINDOW.modifyConstraints(constraints, 0, 6, GridBagConstraints.CENTER, 4);
         add(greenButton, constraints);
     }
 
+    /**
+     * A method for the flag color radio buttons listeners
+     */
     private void radioButtonListeners() {
         redButton.addActionListener(actionEvent -> {
             if (redButton.isSelected()) {
                 redButton.setBorderPainted(true);
                 setRadioButtonsBorder(redButton);
-            }
-        });
-
-        blueButton.addActionListener(actionEvent -> {
-            if (blueButton.isSelected()) {
-                blueButton.setBorderPainted(true);
-                setRadioButtonsBorder(blueButton);
             }
         });
 
@@ -171,15 +165,26 @@ public class WaypointPanel extends JPanel {
      * A method for the confirmButton's listener
      */
     private void confirmButtonListener() {
-        confirmNameButton.addActionListener(actionEvent -> {
+        confirmButton.addActionListener(actionEvent -> {
             String name = waypointNameInput.getText();
             String description = waypointDescriptionInput.getText();
             String flagColor = getSelectedRadioButton(); // Variable for flag color selection
 
-            OPERATION_MANAGER.saveWaypoint(name, description, flagColor); // TODO send flag color in saveWaypoint()
-            waypointDescriptionInput.setText("");
+            OPERATION_MANAGER.saveWaypoint(name, description, flagColor);
 
             String dialogText = Messages.SAVE_FILE.get();
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
+        });
+    }
+
+    /**
+     * A method for the skipButton's listener
+     */
+    private void skipButtonListener() {
+        skipButton.addActionListener(actionEvent -> {
+            OPERATION_MANAGER.prepareNextFile();
+
+            String dialogText = Messages.SKIP_FILE.get();
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
         });
     }
@@ -192,10 +197,11 @@ public class WaypointPanel extends JPanel {
      * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
-    public void updateCurrentFile(String waypointDate, String waypointName, int queueSize, int queuePosition) {
+    public void updateCurrentFile(String waypointDate, String waypointName, String waypointComment, int queueSize, int queuePosition) {
         String currentImportedFile = Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + waypointDate;
         String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + "");
         waypointNameInput.setText(waypointName);
+        waypointDescriptionInput.setText(waypointComment);
         currentWaypointLabel.setText(currentImportedFile);
         queueLabel.setText(remainingFiles);
     }
@@ -210,6 +216,11 @@ public class WaypointPanel extends JPanel {
         queueLabel.setText(Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + ""));
     }
 
+    /**
+     * Fetches the current selected flag color radio button and returns the color
+     *
+     * @return the selected radio button's color
+     */
     private String getSelectedRadioButton() {
         String color = "";
         for (JRadioButton rb : coloredButtons) {
@@ -220,6 +231,12 @@ public class WaypointPanel extends JPanel {
         return color;
     }
 
+    /**
+     * Makes a color square icon with given color and size
+     * @param color color of the icon
+     * @param size size of the icon
+     * @return the icon as an image object
+     */
     private Image getColoredImage(Color color, int size) {
         BufferedImage bi = new BufferedImage(
                 size,
@@ -233,6 +250,10 @@ public class WaypointPanel extends JPanel {
         return bi;
     }
 
+    /**
+     * Sets the border true on the selected radio button
+     * @param selected the selected radio button
+     */
     private void setRadioButtonsBorder(JRadioButton selected) {
         for (JRadioButton rb : coloredButtons) {
             if (!rb.equals(selected)) {

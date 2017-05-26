@@ -220,8 +220,8 @@ public class Window extends JFrame {
      * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
-    public void updateCurrentWaypointFile(String waypointDate, String waypointName, int queueSize, int queuePosition) {
-        waypointPanel.updateCurrentFile(waypointDate, waypointName, queueSize, queuePosition);
+    public void updateCurrentWaypointFile(String waypointDate, String waypointName, String waypointComment, int queueSize, int queuePosition) {
+        waypointPanel.updateCurrentFile(waypointDate, waypointName, waypointComment, queueSize, queuePosition);
     }
 
     /**

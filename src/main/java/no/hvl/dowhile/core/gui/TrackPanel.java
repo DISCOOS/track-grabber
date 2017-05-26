@@ -34,9 +34,6 @@ public class TrackPanel extends JPanel {
     private List<JRadioButton> radioButtons;
     private ButtonGroup radioButtonGroup;
 
-    // Starts the processing of the file.
-    private JButton registerButton;
-
     // Getting the number of the team.
     private JLabel crewNumberLabel;
     private JSpinner crewNumberSpinner;
@@ -51,6 +48,7 @@ public class TrackPanel extends JPanel {
 
     // Getting info about the area searched.
     private JLabel areaLabel;
+    private JLabel areaInfoLabel;
     private JButton areaInputButton;
     private JSpinner areaSearchedSpinner;
     private JLabel areaSearchedLabel;
@@ -78,6 +76,8 @@ public class TrackPanel extends JPanel {
     // Controlling navigation flow.
     private JButton nextButton;
     private JButton backButton;
+    private JButton registerButton;
+    private JButton skipButton;
     private int viewCount;
 
     private List<JComponent> allInputComponents; // All JComponents connected to input from user is added to this List
@@ -113,6 +113,7 @@ public class TrackPanel extends JPanel {
         summaryGUI();
 
         initialVisibility();
+        radioButtons.get(0).setSelected(true);
 
         registerButtonListener();
         areaInputButtonListener();
@@ -158,13 +159,20 @@ public class TrackPanel extends JPanel {
      * Adds navigation buttons and sets them in the GridBagLayout
      */
     private void buttonsGUI() {
+        // Next button
         nextButton = WINDOW.makeButton(Messages.NEXT.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 3, 9, GridBagConstraints.EAST, 1);
         add(nextButton, constraints);
 
+        // Back button
         backButton = WINDOW.makeButton(Messages.BACK.get(), 150, 50);
-        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 2);
         add(backButton, constraints);
+
+        // Skip button
+        skipButton = WINDOW.makeButton(Messages.SKIP_BUTTON.get(), 150, 50);
+        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 1);
+        add(skipButton, constraints);
 
         // Register button
         registerButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get(), 150, 50);
@@ -199,7 +207,7 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(crewNumberLabel);
 
         // Spinner for crew number input
-        SpinnerModel crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
+        SpinnerModel crewNumberInput = new SpinnerNumberModel(21, 21, 999, 1);
         crewNumberSpinner = WINDOW.makeSpinner(crewNumberInput);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -218,7 +226,7 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(crewCountLabel);
 
         // Spinner for crew count input
-        SpinnerModel crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
+        SpinnerModel crewCountInput = new SpinnerNumberModel(1, 1, 15, 1);
         crewCountSpinner = WINDOW.makeSpinner(crewCountInput);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -230,28 +238,34 @@ public class TrackPanel extends JPanel {
      * Adds input for which areas is searched and sets them in the GridBagLayout
      */
     private void areaSearchedGUI() {
-        // Label and input for area searched
+        // Label for area searched
         areaLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED.get(), Font.BOLD);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
         add(areaLabel, constraints);
         allInputComponents.add(areaLabel);
 
+        // Label with info on area searched
+        areaInfoLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED_INFO.get(), Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 4);
+        add(areaInfoLabel, constraints);
+        allInputComponents.add(areaInfoLabel);
+
         // Spinner for input of area
-        SpinnerModel areaSearchedModel = new SpinnerNumberModel(0, 0, 1000, 1);
+        SpinnerModel areaSearchedModel = new SpinnerNumberModel(1, 1, 1000, 1);
         areaSearchedSpinner = WINDOW.makeSpinner(areaSearchedModel);
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 1);
         add(areaSearchedSpinner, constraints);
         allInputComponents.add(areaSearchedSpinner);
 
         // button for the area searched dialog
         areaInputButton = WINDOW.makeButton(Messages.CHOOSE_AREA.get(), 150, 50);
-        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 2, 4, GridBagConstraints.WEST, 1);
         add(areaInputButton, constraints);
         allInputComponents.add(areaInputButton);
 
         // Label for showing areas chosen
         areaSearchedLabel = WINDOW.makeLabel("", Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 2);
+        WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.WEST, 2);
         add(areaSearchedLabel, constraints);
         allInputComponents.add(areaSearchedLabel);
     }
@@ -267,7 +281,7 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(trackNumberLabel);
 
         // Spinner input for the track number
-        SpinnerModel trackNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
+        SpinnerModel trackNumberInput = new SpinnerNumberModel(1, 1, 15, 1);
         trackNumberSpinner = WINDOW.makeSpinner(trackNumberInput);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -532,12 +546,13 @@ public class TrackPanel extends JPanel {
             OPERATION_MANAGER.processFile(trackInfo);
 
             // Resetting all input fields
-            crewCountSpinner.setValue(0);
-            crewNumberSpinner.setValue(0);
+            radioButtons.get(0).setSelected(true);
+            crewCountSpinner.setValue(1);
+            crewNumberSpinner.setValue(21);
             areaSearchedLabel.setText("");
             areaSearchedStrings.clear();
-            areaSearchedSpinner.setValue(0);
-            trackNumberSpinner.setValue(0);
+            areaSearchedSpinner.setValue(1);
+            trackNumberSpinner.setValue(1);
             trackCommentInput.setText("");
 
             initialVisibility();
@@ -585,6 +600,7 @@ public class TrackPanel extends JPanel {
                 case 5:
                     hideAllComponents();
                     areaLabel.setVisible(true);
+                    areaInfoLabel.setVisible(true);
                     areaSearchedSpinner.setVisible(true);
                     areaInputButton.setVisible(true);
                     areaSearchedLabel.setVisible(true);
@@ -641,6 +657,7 @@ public class TrackPanel extends JPanel {
                 case 5:
                     hideAllComponents();
                     areaLabel.setVisible(true);
+                    areaInfoLabel.setVisible(true);
                     areaSearchedSpinner.setVisible(true);
                     areaInputButton.setVisible(true);
                     areaSearchedLabel.setVisible(true);
@@ -656,6 +673,18 @@ public class TrackPanel extends JPanel {
                     break;
             }
 
+        });
+    }
+
+    /**
+     * A method for the skipButton's listener
+     */
+    private void skipButtonListener() {
+        skipButton.addActionListener(actionEvent -> {
+            OPERATION_MANAGER.prepareNextFile();
+
+            String dialogText = Messages.SKIP_FILE.get();
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
         });
     }
 
