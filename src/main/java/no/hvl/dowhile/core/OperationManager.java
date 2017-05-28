@@ -480,6 +480,12 @@ public class OperationManager {
     }
 
     /**
+     * Gets the current track cutter.
+     * @return the current track cutter.
+     */
+    public TrackCutter getCurrentTrackCutter() { return currentTrackCutter; }
+
+    /**
      * Sets the window.
      *
      * @param window a window.

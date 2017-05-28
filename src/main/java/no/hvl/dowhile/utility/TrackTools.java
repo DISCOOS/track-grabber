@@ -143,7 +143,7 @@ public class TrackTools {
             GPX rawGpx = TrackTools.getGpxFromFile(rawFile);
             if (rawGpx != null && fileHasTrack(rawGpx)) {
                 Track rawTrack = TrackTools.getTrackFromGPXFile(rawGpx);
-                if (firstWaypointsMatch(rawGpx, newTrack)) {
+                if (firstTrackpointsMatch(rawGpx, newTrack)) {
                     List<Waypoint> newPoints = TrackTools.getAllTrackPoints(newTrack);
                     List<Waypoint> rawPoints = TrackTools.getAllTrackPoints(rawTrack);
                     if (newPoints != null && rawPoints != null) {
@@ -200,9 +200,9 @@ public class TrackTools {
      * @param newTrack The new track to be checked.
      * @return True if the waypoints are equal, false if not.
      */
-    public static boolean firstWaypointsMatch(GPX oldGpx, Track newTrack) {
+    public static boolean firstTrackpointsMatch(GPX oldGpx, Track newTrack) {
         Track track1 = getTrackFromGPXFile(oldGpx);
-        return matchingTrackPoints(track1.getTrackSegments().get(0).getWaypoints().get(0), newTrack.getTrackSegments().get(0).getWaypoints().get(0));
+        return matchingTrackPoints(getAllTrackPoints(track1).iterator().next(), getAllTrackPoints(newTrack).iterator().next());
     }
 
     /**

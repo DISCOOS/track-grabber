@@ -81,12 +81,12 @@ public class TrackToolsTest {
 
     @Test
     public void trackHasStartTime() {
-
+        assertNotNull(TrackTools.getStartTimeFromTrack(trackFile));
     }
 
     @Test
     public void trackHasEndTime() {
-
+        assertNotNull(TrackTools.getEndTimeFromTrack(trackFile));
     }
 
     @Test
@@ -106,7 +106,13 @@ public class TrackToolsTest {
 
     @Test
     public void pointsAreRemovedFromTrack() {
-
+        List<Waypoint> pointsToRemove = new ArrayList<>();
+        pointsToRemove.add(trackPoint0);
+        pointsToRemove.add(trackPoint1);
+        TrackTools.removePoints(track, pointsToRemove);
+        trackPoints = TrackTools.getAllTrackPoints(track);
+        assertFalse(trackPoints.contains(trackPoint0));
+        assertFalse(trackPoints.contains(trackPoint1));
     }
 
     @Test

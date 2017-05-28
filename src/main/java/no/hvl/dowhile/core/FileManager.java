@@ -226,7 +226,7 @@ public class FileManager {
     }
 
     /**
-     * Checks if a file has already been saved in the rawfolder.
+     * Checks if a track has already been saved in the rawfolder.
      *
      * @param newGpx The gpx file to check.
      * @return true if the file is matching a file, false if not.
@@ -571,4 +571,11 @@ public class FileManager {
     public OperationFolder getMainOperationFolder() {
         return mainOperationFolder;
     }
+
+    /**
+     * Gets all the extra operation folders associated with the current operation.
+     *
+     * @return all the extra operation folders.
+     */
+    public List<OperationFolder> getExtraOperationFolders() { return extraOperationFolders; }
 }
