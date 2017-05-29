@@ -183,7 +183,7 @@ public class Config {
                             String[] parts = line.split("=");
                             if (parts.length == 2) {
                                 greenLabel = parts[1];
-                                System.err.println("[Config] Parsed label for green waypoint flag color " + redLabel);
+                                System.err.println("[Config] Parsed label for green waypoint flag color " + greenLabel);
                             }
                         }
                     }

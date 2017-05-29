@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class OperationManagerTest {
 

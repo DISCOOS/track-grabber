@@ -30,6 +30,7 @@ public class TrackToolsTest {
     private Waypoint trackPoint1Copy;
     private List<GPX> waypoints;
 
+    @SuppressWarnings("deprecation")
     @Before
     public void before() {
         waypointFile = new File("src/test/resources/testWpFile.gpx");
