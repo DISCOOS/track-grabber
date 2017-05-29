@@ -16,7 +16,7 @@ import java.util.Locale;
 /**
  * This class has an interface for editing the current operation or choose another operation.
  */
-public class OperationPanel extends JPanel {
+class OperationPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private JLabel allSavedPathsHeaderLabel;
@@ -34,7 +34,7 @@ public class OperationPanel extends JPanel {
 
     private GridBagConstraints constraints;
 
-    public OperationPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
+    OperationPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
 
@@ -140,7 +140,7 @@ public class OperationPanel extends JPanel {
      *
      * @param operation the current operation.
      */
-    public void updateOperationInfo(Operation operation) {
+    void updateOperationInfo(Operation operation) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(operation.getStartTime());
         editDatePicker.setDate(LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH)));
@@ -245,7 +245,7 @@ public class OperationPanel extends JPanel {
         });
     }
 
-    public void setAllSavedPathsLabel(String paths) {
+    void setAllSavedPathsLabel(String paths) {
         allSavedPathsLabel.setText(paths);
     }
 }

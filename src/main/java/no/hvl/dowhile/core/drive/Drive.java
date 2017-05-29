@@ -11,7 +11,7 @@ public class Drive {
      *
      * @param driveLetter the letter referencing this drive.
      */
-    public Drive(String driveLetter) {
+    Drive(String driveLetter) {
         this.driveLetter = driveLetter;
     }
 

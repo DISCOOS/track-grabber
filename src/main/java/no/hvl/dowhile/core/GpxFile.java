@@ -41,7 +41,7 @@ public class GpxFile {
      *
      * @return the name of the raw file.
      */
-    public String getRawFileName() {
+    String getRawFileName() {
         return rawFileName;
     }
 
@@ -50,7 +50,7 @@ public class GpxFile {
      *
      * @return the hash value of the raw file.
      */
-    public String getRawfileHash() {
+    String getRawfileHash() {
         return rawfileHash;
     }
 

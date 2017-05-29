@@ -419,7 +419,7 @@ public class OperationManager {
     /**
      * Opens the operation panel if the queue is empty, and if not, prepares the next file.
      */
-    public void checkForMoreFiles() {
+    private void checkForMoreFiles() {
         if (queue.isEmpty()) {
             currentTrackCutter = null;
             window.openStandByPanel();
@@ -433,7 +433,7 @@ public class OperationManager {
     /**
      * This method will remove the files from the raw folder as they are not yet processed when in the queue.
      */
-    public void removeUnprocessedFiles() {
+    private void removeUnprocessedFiles() {
         for (GpxFile gpxFile : queue) {
             fileManager.deleteRawFileInFolders(gpxFile.getFile().getName());
         }

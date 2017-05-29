@@ -60,7 +60,7 @@ public class FileManager {
      *
      * @param filename the name of the file to delete.
      */
-    public void deleteRawFileInFolders(String filename) {
+    void deleteRawFileInFolders(String filename) {
         deleteRawFile(mainOperationFolder.getRawFolder(), filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
             deleteRawFile(operationFolder.getRawFolder(), filename);
@@ -72,7 +72,7 @@ public class FileManager {
      *
      * @param filename the name of the file to delete.
      */
-    public void deleteRawFile(File rawFolder, String filename) {
+    private void deleteRawFile(File rawFolder, String filename) {
         File file = new File(rawFolder, filename);
         if (!file.exists()) {
             return;
@@ -90,7 +90,7 @@ public class FileManager {
      *
      * @param listRoot the drive to store the files.
      */
-    public void setupLocalFolders(File listRoot) {
+    void setupLocalFolders(File listRoot) {
         appFolder = setupFolder(listRoot, "TrackGrabber");
         setupConfig(appFolder);
     }
@@ -216,7 +216,7 @@ public class FileManager {
      * @param name         the name of the new folder.
      * @return the folder which was created.
      */
-    public File setupFolder(File parentFolder, String name) {
+    private File setupFolder(File parentFolder, String name) {
         File folder = new File(parentFolder, name);
         boolean folderCreated = folder.mkdir();
         if (folderCreated) {
@@ -274,7 +274,7 @@ public class FileManager {
      * @param processedFile the name of the processed file.
      * @param originalHash  the hash of the original/raw file.
      */
-    public void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalHash) {
+    void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalHash) {
         mainOperationFolder.saveTrackFileInfo(info, time, originalFile, processedFile, originalHash);
     }
 
@@ -286,7 +286,7 @@ public class FileManager {
      * @param processedFile the name of the processed file.
      * @param originalHash  the hash of the original/raw file.
      */
-    public void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
+    void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
         mainOperationFolder.saveWaypointFileInfo(comment, originalFile, processedFile, originalHash);
     }
 
@@ -337,7 +337,7 @@ public class FileManager {
      * @param trackInfo    the info about the track.
      * @param filename     the name to save the file as.
      */
-    public void organizeFile(GPX processedGpx, TrackInfo trackInfo, String filename) {
+    private void organizeFile(GPX processedGpx, TrackInfo trackInfo, String filename) {
         organizeGpxInCrewFolders(processedGpx, trackInfo, filename);
         organizeGpxInAreaFolders(processedGpx, trackInfo, filename);
         organizeGpxInDayFolders(processedGpx, trackInfo, filename);
@@ -350,7 +350,7 @@ public class FileManager {
      * @param trackInfo    The info that helps find the right folder.
      * @param filename     The name of the file.
      */
-    public void organizeGpxInCrewFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
+    private void organizeGpxInCrewFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         File crewFolder = setupFolder(mainOperationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
         saveGpxFile(processedGpx, trackInfo, filename, crewFolder);
         for (OperationFolder operationFolder : extraOperationFolders) {
@@ -366,7 +366,7 @@ public class FileManager {
      * @param trackInfo    The info that helps find the correct folder(s).
      * @param filename     The name of the file.
      */
-    public void organizeGpxInAreaFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
+    private void organizeGpxInAreaFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         List<String> areaNumbers = FileTools.getAreasFromString(trackInfo.getAreaSearched());
         for (String areaNumber : areaNumbers) {
             File areaFolder = setupFolder(mainOperationFolder.getAreaOrgFolder(), areaNumber);
@@ -384,7 +384,7 @@ public class FileManager {
      * @param processedGpx The file to store.
      * @param filename     The name of the file.
      */
-    public void organizeGpxInDayFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
+    private void organizeGpxInDayFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         String dateString = TrackTools.getDayStringFromTrack(processedGpx);
         File dateFolder = setupFolder(mainOperationFolder.getDayOrgFolder(), dateString);
         saveGpxFile(processedGpx, trackInfo, filename, dateFolder);
@@ -493,7 +493,7 @@ public class FileManager {
      * @param folder   the folder to save it in.
      * @return hash value of the saved file.
      */
-    public String saveAndHashGpxFile(GPX gpx, TrackInfo trackInfo, String filename, File folder) {
+    private String saveAndHashGpxFile(GPX gpx, TrackInfo trackInfo, String filename, File folder) {
         String hash = "";
         try {
             File file = new File(folder, filename);
@@ -532,7 +532,7 @@ public class FileManager {
      * @param filename   the name for the new file.
      * @param folder     the folder to save it in.
      */
-    public void saveFile(File fileToSave, String filename, File folder) {
+    private void saveFile(File fileToSave, String filename, File folder) {
         try {
             File file = new File(folder, filename);
             if (!file.exists()) {

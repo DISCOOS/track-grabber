@@ -55,10 +55,10 @@ public class TrackTools {
     /**
      * Get all track points from all track segments of a track.
      *
-     * @param track the track to search for points.
-     * @return all points in the track.
+     * @param track  the track to search for points.
+     * @param points the points to set in the track.
      */
-    public static void setTrackPoints(Track track, List<Waypoint> points) {
+    private static void setTrackPoints(Track track, List<Waypoint> points) {
         List<TrackSegment> trackSegments = new ArrayList<>();
         TrackSegment trackSegment = new TrackSegment();
         trackSegment.setWaypoints(new ArrayList<>(points));
@@ -100,7 +100,8 @@ public class TrackTools {
 
     /**
      * Checks if the waypoint is older than the operation, and therefore is irrelevant.
-     * @param gpx The GPX containing a waypoint
+     *
+     * @param gpx                The GPX containing a waypoint
      * @param operationStartTime The operation start time to compare with
      * @return True if the waypoint is too old, false if not.
      */
@@ -182,6 +183,7 @@ public class TrackTools {
 
     /**
      * Checks if two waypoints match.
+     *
      * @param waypoint1 The first waypoint.
      * @param waypoint2 The second waypoint.
      * @return True if they match, false if not.
@@ -234,7 +236,7 @@ public class TrackTools {
     /**
      * Gets the part of the track that was produced since last transfer
      *
-     * @param track    the track to remove from.
+     * @param track  the track to remove from.
      * @param points the points to remove.
      */
     public static void removePoints(Track track, List<Waypoint> points) {
@@ -313,7 +315,7 @@ public class TrackTools {
      * @param gpx the gpx to search in.
      * @return list of waypoints in the file.
      */
-    public static List<Waypoint> getWaypointsFromFile(GPX gpx) {
+    private static List<Waypoint> getWaypointsFromFile(GPX gpx) {
         HashSet<Waypoint> waypointsSet = gpx.getWaypoints();
         List<Waypoint> waypoints = new ArrayList<>(waypointsSet);
         return waypoints;

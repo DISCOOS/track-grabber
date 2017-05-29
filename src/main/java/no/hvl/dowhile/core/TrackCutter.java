@@ -26,7 +26,7 @@ public class TrackCutter {
     /**
      * Processes the file by removing unnecessary data.
      */
-    public void process() {
+    void process() {
         filterOnTimeStarted(OPERATION_MANAGER.getOperation().getStartTime());
     }
 

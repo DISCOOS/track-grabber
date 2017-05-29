@@ -26,17 +26,16 @@ import java.util.List;
  */
 public class Window extends JFrame {
 
-    // Font sizes
-    final int HEADER_FONT_SIZE = 32;
     final int TEXT_FONT_SIZE = 24;
-    final int BUTTON_FONT_SIZE = 20;
-
     // Different fonts for different uses
     final Font TEXT_FONT = new Font(Messages.FONT_NAME.get(), Font.PLAIN, TEXT_FONT_SIZE);
-    final Font TEXT_BOLD_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, TEXT_FONT_SIZE);
-    final Font TEXT_ITALIC_FONT = new Font(Messages.FONT_NAME.get(), Font.ITALIC, TEXT_FONT_SIZE);
-    final Font HEADER_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, HEADER_FONT_SIZE);
-    final Font BUTTON_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, BUTTON_FONT_SIZE);
+    // Font sizes
+    private final int HEADER_FONT_SIZE = 32;
+    private final int BUTTON_FONT_SIZE = 20;
+    private final Font TEXT_BOLD_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, TEXT_FONT_SIZE);
+    private final Font TEXT_ITALIC_FONT = new Font(Messages.FONT_NAME.get(), Font.ITALIC, TEXT_FONT_SIZE);
+    private final Font HEADER_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, HEADER_FONT_SIZE);
+    private final Font BUTTON_FONT = new Font(Messages.FONT_NAME.get(), Font.BOLD, BUTTON_FONT_SIZE);
 
     // The panels (different views of the application)
     private JPanel cardPanel;
@@ -119,7 +118,7 @@ public class Window extends JFrame {
     /**
      * Open/show the window.
      */
-    public void open() {
+    private void open() {
         setVisible(true);
     }
 
@@ -133,7 +132,7 @@ public class Window extends JFrame {
     /**
      * Open the panel allowing creating a new Operation or choose an existing Operation.
      */
-    public void openStartPanel() {
+    void openStartPanel() {
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Start");
         activePanelName = "Start";
@@ -142,7 +141,7 @@ public class Window extends JFrame {
     /**
      * Open the panel allowing the administrator to edit the current operation.
      */
-    public void openOperationPanel(String paths) {
+    void openOperationPanel(String paths) {
         operationPanel.setAllSavedPathsLabel(paths);
         CardLayout cl = (CardLayout) (cardPanel.getLayout());
         cl.show(cardPanel, "Operation");
@@ -251,7 +250,7 @@ public class Window extends JFrame {
      * @param style Font style (plain, bold...)
      * @return a JLabel with given text and font size
      */
-    public JLabel makeLabel(String text, int style) {
+    JLabel makeLabel(String text, int style) {
         JLabel label = new JLabel(text);
         if (style == Font.BOLD) {
             label.setFont(TEXT_BOLD_FONT);
@@ -270,7 +269,7 @@ public class Window extends JFrame {
      * @param text the text that the JLabel should have
      * @return A JLabel with the given text and a preset font
      */
-    public JLabel makeHeaderLabel(String text) {
+    JLabel makeHeaderLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(HEADER_FONT);
         return label;
@@ -284,7 +283,7 @@ public class Window extends JFrame {
      * @param height Height of the button
      * @return a JButton with given text and a set dimension and color
      */
-    public JButton makeButton(String text, int width, int height) {
+    JButton makeButton(String text, int width, int height) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(width, height));
         button.setBackground(new Color(242, 94, 94));
@@ -300,7 +299,7 @@ public class Window extends JFrame {
      * @param height the height of the JTextField
      * @return A JTextField with given dimensions(width and height) and a preset font
      */
-    public JTextField makeTextField(int width, int height) {
+    JTextField makeTextField(int width, int height) {
         JTextField textField = new JTextField();
         textField.setPreferredSize(new Dimension(width, height));
         textField.setFont(TEXT_FONT);
@@ -314,7 +313,7 @@ public class Window extends JFrame {
      * @param spinnerModel that contains parameters like stepSize, start and stop number
      * @return a JSpinner with a preset dimension and font
      */
-    public JSpinner makeSpinner(SpinnerModel spinnerModel) {
+    JSpinner makeSpinner(SpinnerModel spinnerModel) {
         JSpinner spinner = new JSpinner(spinnerModel);
         spinner.setPreferredSize(new Dimension(150, 50));
         spinner.setFont(TEXT_FONT);
@@ -330,7 +329,7 @@ public class Window extends JFrame {
      * @return a DatePicker with given width and height
      */
 
-    public DatePicker makeDatePicker(int width, int height) {
+    DatePicker makeDatePicker(int width, int height) {
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         dateSettings.setAllowEmptyDates(false);
@@ -350,7 +349,7 @@ public class Window extends JFrame {
      * @return a TimePicker with given width and height
      */
 
-    public TimePicker makeTimePicker(int width, int height) {
+    TimePicker makeTimePicker(int width, int height) {
         TimePickerSettings timeSettings = new TimePickerSettings();
         timeSettings.initialTime = LocalTime.now();
 
@@ -370,7 +369,7 @@ public class Window extends JFrame {
      * @param anchor      Anchor to define how the object will "float" in the window.
      * @param gridWidth   The amount of grids the element should cover.
      */
-    public void modifyConstraints(GridBagConstraints constraints, int x, int y, int anchor, int gridWidth) {
+    void modifyConstraints(GridBagConstraints constraints, int x, int y, int anchor, int gridWidth) {
         constraints.gridx = x;
         constraints.gridy = y;
         constraints.anchor = anchor;
@@ -383,7 +382,7 @@ public class Window extends JFrame {
      * @param constraints the GridBagConstraints for which we will set the insets
      * @param borders     all borders around grid cell
      */
-    public void setConstraintsInsets(GridBagConstraints constraints, int borders) {
+    void setConstraintsInsets(GridBagConstraints constraints, int borders) {
         constraints.insets = new Insets(borders, borders, borders, borders);
     }
 }

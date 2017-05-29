@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
  */
-public class StartPanel extends JPanel {
+class StartPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
@@ -48,7 +48,7 @@ public class StartPanel extends JPanel {
      * @param OPERATION_MANAGER
      * @param WINDOW
      */
-    public StartPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
+    StartPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
 
@@ -185,7 +185,7 @@ public class StartPanel extends JPanel {
      *
      * @param operations the operations to add.
      */
-    public void showExistingOperations(java.util.List<Operation> operations) {
+    void showExistingOperations(java.util.List<Operation> operations) {
         existingOperationInput.removeAll(); // Avoid duplicates.
         for (Operation operation : operations) {
             existingOperationInput.addItem(operation.getName());

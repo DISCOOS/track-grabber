@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * This class has an interface for configuring details related to one waypoints.
  */
-public class WaypointPanel extends JPanel {
+class WaypointPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
@@ -41,7 +41,7 @@ public class WaypointPanel extends JPanel {
      * @param OPERATION_MANAGER the current instance of the OperationManager
      * @param WINDOW            the current instance of the Window
      */
-    public WaypointPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
+    WaypointPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
 
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
@@ -197,7 +197,7 @@ public class WaypointPanel extends JPanel {
      * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
-    public void updateCurrentFile(String waypointDate, String waypointName, String waypointComment, int queueSize, int queuePosition) {
+    void updateCurrentFile(String waypointDate, String waypointName, String waypointComment, int queueSize, int queuePosition) {
         String currentImportedFile = Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + waypointDate;
         String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + "");
         waypointNameInput.setText(waypointName);
@@ -212,7 +212,7 @@ public class WaypointPanel extends JPanel {
      * @param queueSize     the size of the queue.
      * @param queuePosition the current position in the queue.
      */
-    public void updateQueueInfo(int queueSize, int queuePosition) {
+    void updateQueueInfo(int queueSize, int queuePosition) {
         queueLabel.setText(Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + ""));
     }
 

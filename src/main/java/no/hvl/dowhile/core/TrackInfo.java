@@ -50,7 +50,7 @@ public class TrackInfo {
      *
      * @return the type of crew creating this track.
      */
-    public String getCrewType() {
+    String getCrewType() {
         return crewType;
     }
 
@@ -68,7 +68,7 @@ public class TrackInfo {
      *
      * @return the number of people on this creative.
      */
-    public int getCrewCount() {
+    int getCrewCount() {
         return crewCount;
     }
 
@@ -86,7 +86,7 @@ public class TrackInfo {
      *
      * @return the number of this crew.
      */
-    public int getCrewNumber() {
+    int getCrewNumber() {
         return crewNumber;
     }
 
@@ -104,7 +104,7 @@ public class TrackInfo {
      *
      * @return the area where this team were searching.
      */
-    public String getAreaSearched() {
+    String getAreaSearched() {
         return areaSearched;
     }
 
@@ -122,7 +122,7 @@ public class TrackInfo {
      *
      * @return distance covered.
      */
-    public double getDistance() {
+    double getDistance() {
         return distance;
     }
 
@@ -140,7 +140,7 @@ public class TrackInfo {
      *
      * @return number of the track.
      */
-    public int getTrackNumber() {
+    int getTrackNumber() {
         return trackNumber;
     }
 
@@ -158,7 +158,7 @@ public class TrackInfo {
      *
      * @return the comment about this track.
      */
-    public String getComment() {
+    String getComment() {
         return comment;
     }
 }

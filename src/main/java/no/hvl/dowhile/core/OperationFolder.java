@@ -28,7 +28,7 @@ public class OperationFolder {
      * @param root       the folder to store the new operation folder in.
      * @param mainFolder true if this is the main folder, false if not.
      */
-    public OperationFolder(Operation operation, File root, boolean mainFolder) {
+    OperationFolder(Operation operation, File root, boolean mainFolder) {
         operationFolder = FileTools.setupFolder(root, operation.getName().trim().replace(" ", "_"));
         rawFolder = FileTools.setupFolder(operationFolder, "Raw");
         processedFolder = FileTools.setupFolder(operationFolder, "Processed");
@@ -77,7 +77,7 @@ public class OperationFolder {
      *
      * @param processedFolder the folder to store processed tracks.
      */
-    public void setProcessedFolder(File processedFolder) {
+    void setProcessedFolder(File processedFolder) {
         this.processedFolder = processedFolder;
     }
 
@@ -95,7 +95,7 @@ public class OperationFolder {
      *
      * @param rawFolder the folder to store rawfiles..
      */
-    public void setRawFolder(File rawFolder) {
+    void setRawFolder(File rawFolder) {
         this.rawFolder = rawFolder;
     }
 
@@ -122,7 +122,7 @@ public class OperationFolder {
      *
      * @return the folder to store waypoints.
      */
-    public File getWaypointFolder() {
+    File getWaypointFolder() {
         return waypointFolder;
     }
 
@@ -158,7 +158,7 @@ public class OperationFolder {
      *
      * @return the folder to store organizations of crew types.
      */
-    public File getCrewOrgFolder() {
+    File getCrewOrgFolder() {
         return crewOrgFolder;
     }
 
@@ -176,7 +176,7 @@ public class OperationFolder {
      *
      * @return the folder to store organizations of areas.
      */
-    public File getAreaOrgFolder() {
+    File getAreaOrgFolder() {
         return areaOrgFolder;
     }
 
@@ -194,7 +194,7 @@ public class OperationFolder {
      *
      * @return the folder to store organizations of days.
      */
-    public File getDayOrgFolder() {
+    File getDayOrgFolder() {
         return dayOrgFolder;
     }
 
@@ -251,7 +251,7 @@ public class OperationFolder {
      * @param processedFile    the name of the processed file.
      * @param originalFileHash the hash of the original/raw file.
      */
-    public void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalFileHash) {
+    void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalFileHash) {
         FileTools.writeToCsvFile(trackFileInfo,
                 info.getCrewType(), info.getCrewNumber() + "", info.getCrewCount() + "", info.getAreaSearched(),
                 info.getDistance() + "", info.getTrackNumber() + "", info.getComment().isEmpty() ? "Ingen kommentar" : info.getComment(),
@@ -267,7 +267,7 @@ public class OperationFolder {
      * @param processedFile the name of the processed file.
      * @param originalHash  the hash of the original/raw file.
      */
-    public void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
+    void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
         FileTools.writeToCsvFile(waypointFileInfo, comment, originalFile, processedFile, originalHash);
     }
 

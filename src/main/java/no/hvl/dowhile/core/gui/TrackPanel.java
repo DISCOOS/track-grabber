@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * This class has an interface for configuring details related to one track.
  */
-public class TrackPanel extends JPanel {
+class TrackPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
@@ -90,7 +90,7 @@ public class TrackPanel extends JPanel {
      * @param OPERATION_MANAGER the current instance of the OperationManager
      * @param WINDOW            the current instance of the Window
      */
-    public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
+    TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
         viewCount = 0;
@@ -378,7 +378,7 @@ public class TrackPanel extends JPanel {
      * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
-    public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
+    void updateCurrentFile(String filename, int queueSize, int queuePosition) {
         String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + "");
         currentImportLabel.setText(filename);
         remainingFilesLabel.setText(remainingFiles);
@@ -390,7 +390,7 @@ public class TrackPanel extends JPanel {
      * @param queueSize     the size of the queue.
      * @param queuePosition the current position in the queue.
      */
-    public void updateQueueInfo(int queueSize, int queuePosition) {
+    void updateQueueInfo(int queueSize, int queuePosition) {
         remainingFilesLabel.setText(Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + ""));
     }
 
@@ -399,7 +399,7 @@ public class TrackPanel extends JPanel {
      *
      * @param trackDistance the distance covered in the track
      */
-    public void updateCurrentFileDistance(double trackDistance) {
+    void updateCurrentFileDistance(double trackDistance) {
         DecimalFormat df = new DecimalFormat("#.##");
         this.trackDistance = trackDistance;
 

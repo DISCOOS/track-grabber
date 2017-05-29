@@ -11,7 +11,7 @@ public class GPSDrive extends Drive {
     private File garminFolder;
     private File gpxFolder;
 
-    public GPSDrive(String driveLetter) {
+    GPSDrive(String driveLetter) {
         super(driveLetter);
     }
 
@@ -20,7 +20,7 @@ public class GPSDrive extends Drive {
      *
      * @return true if the folders are matching a GPS, false if not.
      */
-    public boolean isValidGPSDrive() {
+    boolean isValidGPSDrive() {
         return garminFolder != null && gpxFolder != null && garminFolder.getName().equals("Garmin") && gpxFolder.getName().equals("GPX");
     }
 
@@ -29,7 +29,7 @@ public class GPSDrive extends Drive {
      *
      * @return true if the folder has been set, false if not.
      */
-    public boolean hasGarminFolder() {
+    boolean hasGarminFolder() {
         return garminFolder != null && garminFolder.getName().equals("Garmin");
     }
 
@@ -38,7 +38,7 @@ public class GPSDrive extends Drive {
      *
      * @return true if the folder has been set, false if not.
      */
-    public boolean hasGpxFolder() {
+    boolean hasGpxFolder() {
         return gpxFolder != null && gpxFolder.getName().equals("GPX");
     }
 
@@ -49,7 +49,7 @@ public class GPSDrive extends Drive {
      * @return File representing the Garmin folder.
      * @see #hasGarminFolder()
      */
-    public File getGarminFolder() {
+    File getGarminFolder() {
         return garminFolder;
     }
 
@@ -58,7 +58,7 @@ public class GPSDrive extends Drive {
      *
      * @param garminFolder the file to set as Garmin folder.
      */
-    public void setGarminFolder(File garminFolder) {
+    void setGarminFolder(File garminFolder) {
         this.garminFolder = garminFolder;
     }
 
@@ -78,7 +78,7 @@ public class GPSDrive extends Drive {
      *
      * @param gpxFolder the file to set as GPX folder.
      */
-    public void setGpxFolder(File gpxFolder) {
+    void setGpxFolder(File gpxFolder) {
         this.gpxFolder = gpxFolder;
     }
 }

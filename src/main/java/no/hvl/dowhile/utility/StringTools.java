@@ -35,7 +35,7 @@ public class StringTools {
      * @param date the date to format.
      * @return the date formatted as a String without spaces, hours, minutes and seconds.
      */
-    public static String formatDateForOrganizing(Date date) {
+    static String formatDateForOrganizing(Date date) {
         return new SimpleDateFormat("dd-MM-yy").format(date);
     }
 

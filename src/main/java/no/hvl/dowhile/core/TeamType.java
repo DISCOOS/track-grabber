@@ -14,7 +14,7 @@ public class TeamType {
      * @param name  the name of this team type.
      * @param color the color of this team type.
      */
-    public TeamType(String name, String color) {
+    TeamType(String name, String color) {
         this.name = name;
         this.color = color;
     }
