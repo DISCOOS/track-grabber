@@ -166,7 +166,7 @@ class TrackPanel extends JPanel {
 
         // Back button
         backButton = WINDOW.makeButton(Messages.BACK.get(), 150, 50);
-        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 2);
+        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 1);
         add(backButton, constraints);
 
         // Skip button
