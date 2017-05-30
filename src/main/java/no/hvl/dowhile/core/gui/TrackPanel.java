@@ -119,6 +119,7 @@ class TrackPanel extends JPanel {
         areaInputButtonListener();
         nextButtonListener();
         backButtonListener();
+        skipButtonListener();
 
         setBackground(new Color(255, 245, 252));
     }

@@ -276,6 +276,7 @@ public class OperationManager {
      */
     public void prepareNextFile() {
         if (queue.isEmpty()) {
+            window.openStandByPanel();
             return;
         }
         queuePosition++;
