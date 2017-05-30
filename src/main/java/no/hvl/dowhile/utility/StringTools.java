@@ -77,6 +77,16 @@ public class StringTools {
         return operationName.length() >= 2 && operationName.length() <= 50;
     }
 
+    public static boolean isValidDate() {
+
+        return false;
+    }
+
+    public static boolean isValidTime() {
+
+        return false;
+    }
+
     /**
      * Checks if a given file name contains a given string.
      *

@@ -284,6 +284,7 @@ class StartPanel extends JPanel {
                 errorMessageLabel.setText(Messages.OPERATION_NAME_IS_TOO_LONG_OR_SHORT.get());
                 return;
             }
+
             Operation operation = new Operation(operationName, day, month, year, hour, minute);
             OPERATION_MANAGER.setupOperation(operation);
             OPERATION_MANAGER.reloadExistingOperations();

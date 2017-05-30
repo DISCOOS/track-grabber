@@ -333,6 +333,7 @@ public class Window extends JFrame {
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         dateSettings.setAllowEmptyDates(false);
+        dateSettings.setAllowKeyboardEditing(false);
 
         DatePicker datePicker = new DatePicker(dateSettings);
         datePicker.setPreferredSize(new Dimension(width, height));
@@ -351,7 +352,9 @@ public class Window extends JFrame {
 
     TimePicker makeTimePicker(int width, int height) {
         TimePickerSettings timeSettings = new TimePickerSettings();
+        timeSettings.generatePotentialMenuTimes(TimePickerSettings.TimeIncrement.TenMinutes, null, null);
         timeSettings.initialTime = LocalTime.now();
+        timeSettings.setAllowKeyboardEditing(false);
 
         TimePicker timePicker = new TimePicker(timeSettings);
         timePicker.setPreferredSize(new Dimension(width, height));
