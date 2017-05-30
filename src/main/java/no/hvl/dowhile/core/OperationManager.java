@@ -298,6 +298,10 @@ public class OperationManager {
         }
     }
 
+    public void clearTrackCutter() {
+        currentTrackCutter = null;
+    }
+
     /**
      * Taking info about the currently imported track and starting the process.
      *

@@ -682,6 +682,7 @@ class TrackPanel extends JPanel {
      */
     private void skipButtonListener() {
         skipButton.addActionListener(actionEvent -> {
+            OPERATION_MANAGER.clearTrackCutter();
             OPERATION_MANAGER.prepareNextFile();
 
             String dialogText = Messages.SKIP_FILE.get();
