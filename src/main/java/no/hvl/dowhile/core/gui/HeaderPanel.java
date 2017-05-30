@@ -31,8 +31,8 @@ class HeaderPanel extends JPanel {
         this.appName = WINDOW.makeHeaderLabel(Messages.PROJECT_NAME.get());
         this.spacer = WINDOW.makeHeaderLabel(Messages.SPACER.get());
         this.operationInfoHeader = WINDOW.makeLabel(Messages.OPERATION_INFO.get(), Font.BOLD);
-        this.operationInfoName = WINDOW.makeLabel(Messages.OPERATION_INFO_NAME.get("Ingen operasjon valgt."), Font.BOLD);
-        this.operationInfoStart = WINDOW.makeLabel(Messages.OPERATION_INFO_START.get("Ingen operasjon valgt."), Font.BOLD);
+        this.operationInfoName = WINDOW.makeLabel(Messages.OPERATION_INFO_NAME.get(Messages.NO_OPERATION.get()), Font.BOLD);
+        this.operationInfoStart = WINDOW.makeLabel(Messages.OPERATION_INFO_START.get(Messages.NO_OPERATION.get()), Font.BOLD);
 
         setLayout(new GridBagLayout());
 

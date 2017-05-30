@@ -19,19 +19,20 @@ public enum Messages {
     FONT_NAME("Calibri"),
 
     // Header panel
-    PROJECT_NAME("Track Grabber"),
     CONFIRM_EXIT("Vil du virkelig avslutte Track Grabber? Alle endringer vil bli lagret."),
-    SPACER("                                                  "),
+    NO_OPERATION("Ingen aksjon valgt."),
     OPERATION_INFO("Aksjonsinfo "),
     OPERATION_INFO_NAME("Navn: %1"),
     OPERATION_INFO_START("Start: %1"),
+    PROJECT_NAME("Track Grabber"),
+    SPACER("                                                  "),
 
     // Start panel
     OPERATION_NAME("Navn på aksjon: "),
     OPERATION_START_DATE("Startdato: "),
     DEFINE_OPERATION_PATH("Legg til ekstra lagringssted"),
     EXISTING_OPERATION("Velg en allerede eksisterende aksjon."),
-    NEW_OPERATION_BUTTON("Ny operasjon"),
+    NEW_OPERATION_BUTTON("Ny aksjon"),
     EXISTING_OPERATION_BUTTON("Eksisterende aksjon"),
     REGISTER_NEW_BUTTON("Opprett aksjon"),
     REGISTER_EXISTING_BUTTON("Last inn"),
