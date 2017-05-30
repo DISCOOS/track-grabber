@@ -237,11 +237,11 @@ public class OperationManager {
                 return;
             }
         }
-        String rawfileHash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
         if (TrackTools.trackIsAnArea(gpx)) {
             fileManager.saveAreaGpxFileInFolders(gpx, file.getName());
         } else {
             if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
+                String rawfileHash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
                 queue.add(new GpxFile(file, file.getName(), rawfileHash, gpx));
                 queueSize++;
                 window.updateQueueInfo(queueSize, queuePosition);

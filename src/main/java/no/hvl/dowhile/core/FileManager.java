@@ -299,7 +299,9 @@ public class FileManager {
     public String saveRawGpxFileInFolders(GPX rawGpx, String filename) {
         String hash = saveRawGpxFile(mainOperationFolder.getRawFolder(), rawGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveRawGpxFile(operationFolder.getRawFolder(), rawGpx, filename);
+            if (operationFolder.getOperationFolder().exists()) {
+                saveRawGpxFile(operationFolder.getRawFolder(), rawGpx, filename);
+            }
         }
         return hash;
     }
@@ -325,7 +327,9 @@ public class FileManager {
     public void saveProcessedGpxFileInFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         saveProcessedGpxFile(mainOperationFolder.getProcessedFolder(), trackInfo, processedGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveProcessedGpxFile(operationFolder.getProcessedFolder(), trackInfo, processedGpx, filename);
+            if (operationFolder.getOperationFolder().exists()) {
+                saveProcessedGpxFile(operationFolder.getProcessedFolder(), trackInfo, processedGpx, filename);
+            }
         }
         organizeFile(processedGpx, trackInfo, filename);
     }
@@ -354,8 +358,10 @@ public class FileManager {
         File crewFolder = setupFolder(mainOperationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
         saveGpxFile(processedGpx, trackInfo, filename, crewFolder);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            crewFolder = setupFolder(operationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
-            saveGpxFile(processedGpx, trackInfo, filename, crewFolder);
+            if (operationFolder.getOperationFolder().exists()) {
+                crewFolder = setupFolder(operationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
+                saveGpxFile(processedGpx, trackInfo, filename, crewFolder);
+            }
         }
     }
 
@@ -372,8 +378,10 @@ public class FileManager {
             File areaFolder = setupFolder(mainOperationFolder.getAreaOrgFolder(), areaNumber);
             saveGpxFile(processedGpx, trackInfo, filename, areaFolder);
             for (OperationFolder operationFolder : extraOperationFolders) {
-                areaFolder = setupFolder(operationFolder.getAreaOrgFolder(), areaNumber);
-                saveGpxFile(processedGpx, trackInfo, filename, areaFolder);
+                if (operationFolder.getOperationFolder().exists()) {
+                    areaFolder = setupFolder(operationFolder.getAreaOrgFolder(), areaNumber);
+                    saveGpxFile(processedGpx, trackInfo, filename, areaFolder);
+                }
             }
         }
     }
@@ -389,8 +397,10 @@ public class FileManager {
         File dateFolder = setupFolder(mainOperationFolder.getDayOrgFolder(), dateString);
         saveGpxFile(processedGpx, trackInfo, filename, dateFolder);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            dateFolder = setupFolder(operationFolder.getDayOrgFolder(), dateString);
-            saveGpxFile(processedGpx, trackInfo, filename, dateFolder);
+            if (operationFolder.getOperationFolder().exists()) {
+                dateFolder = setupFolder(operationFolder.getDayOrgFolder(), dateString);
+                saveGpxFile(processedGpx, trackInfo, filename, dateFolder);
+            }
         }
     }
 
@@ -413,7 +423,9 @@ public class FileManager {
     public void saveAreaGpxFileInFolders(GPX areaGpx, String filename) {
         saveAreaGpxFile(mainOperationFolder.getAreaFolder(), areaGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveAreaGpxFile(operationFolder.getAreaFolder(), areaGpx, filename);
+            if (operationFolder.getOperationFolder().exists()) {
+                saveAreaGpxFile(operationFolder.getAreaFolder(), areaGpx, filename);
+            }
         }
     }
 
@@ -435,18 +447,10 @@ public class FileManager {
     public void saveWaypointFileInFolders(GPX waypointGpx, String filename) {
         saveGpxFile(waypointGpx, null, filename, mainOperationFolder.getWaypointFolder());
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveGpxFile(waypointGpx, null, filename, operationFolder.getWaypointFolder());
+            if (operationFolder.getOperationFolder().exists()) {
+                saveGpxFile(waypointGpx, null, filename, operationFolder.getWaypointFolder());
+            }
         }
-    }
-
-    /**
-     * Saves the waypoint file in the waypoint folder as the specified filename.
-     *
-     * @param waypointFile the file to save.
-     * @param filename     the name to save it as.
-     */
-    private void saveWaypointFile(File waypointFolder, File waypointFile, String filename) {
-        saveFile(waypointFile, filename, waypointFolder);
     }
 
     /**

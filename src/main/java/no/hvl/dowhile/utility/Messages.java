@@ -52,6 +52,8 @@ public enum Messages {
     EDIT_INFO_HIDE_BUTTON("Skjul redigeringsinfo"),
     ALL_SAVED_PATHS("Mapper filene lagres til:"),
     GO_BACK("Tilbake"),
+    FOLDER_NOT_FOUND_TITLE("Mappe ikke funnet"),
+    FOLDER_NOT_FOUND_DESC("Kunne ikke legge til ekstra lagringsplassering \nfordi mappen du valgte ikke ble funnet."),
 
     // Track panel
     TRACK_HEADER("Prosesserer sporfil"),

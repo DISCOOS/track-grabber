@@ -203,6 +203,10 @@ class OperationPanel extends JPanel {
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int option = fileChooser.showSaveDialog(JOptionPane.getRootFrame());
             if (option == JFileChooser.APPROVE_OPTION) {
+                if (!fileChooser.getSelectedFile().exists()) {
+                    WINDOW.showDialog(Messages.FOLDER_NOT_FOUND_TITLE.get(), Messages.FOLDER_NOT_FOUND_DESC.get());
+                    return;
+                }
                 OPERATION_MANAGER.getOperation().addPath(fileChooser.getSelectedFile().getAbsolutePath());
                 OPERATION_MANAGER.updateOperationFile();
                 OPERATION_MANAGER.updateOperationFolders();
