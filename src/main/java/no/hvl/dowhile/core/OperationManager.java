@@ -327,75 +327,7 @@ public class OperationManager {
     }
 
     /**
-     * This method is used for testing import of loads of files.
-     * No user interaction is required to import the files.
-     * The files you want to import need to be in a folder named "MassTesting" in the C://TrackGrabber folder.
-     */
-    public void importMassTestingFiles() {
-        long startTime = System.currentTimeMillis();
-        int filesImported = 0;
-        File appFolder = fileManager.getAppFolder();
-        if (appFolder == null || appFolder.listFiles() == null) {
-            return;
-        }
-        File massTestingFolder = new File(appFolder, "MassTesting");
-        File[] trackFiles = massTestingFolder.listFiles();
-        if (trackFiles == null) {
-            return;
-        }
-        Random random = new Random();
-        for (File trackFile : trackFiles) {
-            if (trackFile.getName().endsWith(".gpx")) {
-                System.err.println("Importing " + trackFile.getName());
-                GPX gpx = TrackTools.getGpxFromFile(trackFile);
-                if (gpx == null) {
-                    System.err.println("Failed to parse gpx.");
-
-                } else if (TrackTools.hasWaypoints(gpx)) {
-                    System.err.println("File is a waypoint file. Ignoring.");
-                } else if (!TrackTools.fileHasTrack(gpx)) {
-                    System.err.println("File doesn't have track.");
-                } else if (fileManager.alreadyImportedTrack(gpx) != null) {
-                    System.err.println("Already imported.");
-                } else {
-                    fileManager.saveRawGpxFileInFolders(gpx, trackFile.getName());
-                    System.err.println("Saved raw file!");
-                    if (TrackTools.trackIsAnArea(gpx)) {
-                        fileManager.saveAreaGpxFileInFolders(gpx, trackFile.getName());
-                        System.err.println("Saved area file!");
-                    } else {
-                        if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-                            String crewType = config.getTeamTypes().get(random.nextInt(config.getTeamNames().size())).getName();
-                            TrackInfo trackInfo = new TrackInfo(
-                                    crewType, random.nextInt(40),
-                                    random.nextInt(40),
-                                    "[" + random.nextInt(40) + "]",
-                                    TrackTools.getDistanceFromTrack(gpx), random.nextInt(40),
-                                    "MassTesting"
-                            );
-                            String filename = config.generateFilename(trackInfo);
-                            Track track = TrackTools.getTrackFromGPXFile(gpx);
-                            track.setName(filename);
-                            if (!trackInfo.getComment().isEmpty()) {
-                                track.setDescription(trackInfo.getComment());
-                            }
-                            fileManager.saveProcessedGpxFileInFolders(gpx, trackInfo, filename);
-                            filesImported++;
-                            System.err.println("Saved processed!");
-                        } else {
-                            System.err.println("Track in file \"" + trackFile.getName() + "\" was stopped before operation start time. Ignoring.");
-                        }
-                    }
-                }
-            }
-        }
-        long stopTime = System.currentTimeMillis();
-        System.err.println("Successfully imported " + filesImported + " files in " + (stopTime - startTime) / 1000 + " seconds.");
-    }
-
-    /**
      * Assigns a name to the waypoint.
-     *
      * @param name        the name for the file.
      * @param description the description provided by the user.
      */
@@ -449,7 +381,6 @@ public class OperationManager {
 
     /**
      * Checks if a given operation name is already taken by another operation.
-     *
      * @param name the name of the new operation.
      * @return true if the names are equal, false if not.
      */
@@ -467,7 +398,6 @@ public class OperationManager {
 
     /**
      * Tell the FileManager to setup the folders on the computer for saving files later.
-     *
      * @param listRoot the drive to make folders.
      * @see FileManager
      */
@@ -477,7 +407,6 @@ public class OperationManager {
 
     /**
      * Get the current instance of the Config.
-     *
      * @return the current instance of the Config.
      */
     public Config getConfig() {
@@ -501,7 +430,6 @@ public class OperationManager {
 
     /**
      * Sets the file manager.
-     *
      * @param fileManager a file manager
      */
     public void setFileManager(FileManager fileManager) {
@@ -510,7 +438,6 @@ public class OperationManager {
 
     /**
      * Gets the file queue.
-     *
      * @return the file queue
      */
     public List<GpxFile> getQueue() {

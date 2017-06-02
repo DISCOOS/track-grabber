@@ -530,44 +530,6 @@ public class FileManager {
     }
 
     /**
-     * Saves the file in the specified folder as the specified filename.
-     *
-     * @param fileToSave the file to save.
-     * @param filename   the name for the new file.
-     * @param folder     the folder to save it in.
-     */
-    private void saveFile(File fileToSave, String filename, File folder) {
-        try {
-            File file = new File(folder, filename);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            Files.copy(fileToSave.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ex) {
-            System.err.println("Failed to save file.");
-            ex.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets the raw folder for the current operation.
-     *
-     * @param rawFolder the folder to save raw files.
-     */
-    public void setRawFolder(File rawFolder) {
-        mainOperationFolder.setRawFolder(rawFolder);
-    }
-
-    /**
-     * Sets the processed folder for the current operation.
-     *
-     * @param processedFolder the folder to save processed files.
-     */
-    public void setProcessedFolder(File processedFolder) {
-        mainOperationFolder.setProcessedFolder(processedFolder);
-    }
-
-    /**
      * Gets the main operation folder for the current operation.
      *
      * @return the main operation folder.

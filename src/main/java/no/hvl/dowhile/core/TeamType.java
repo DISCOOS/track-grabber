@@ -10,7 +10,6 @@ public class TeamType {
 
     /**
      * Constructor taking the name and color of this team type.
-     *
      * @param name  the name of this team type.
      * @param color the color of this team type.
      */
@@ -21,7 +20,6 @@ public class TeamType {
 
     /**
      * Gets the name of this team type.
-     *
      * @return the name of this team type.
      */
     public String getName() {
@@ -30,7 +28,6 @@ public class TeamType {
 
     /**
      * Gets the color for this team type.
-     *
      * @return the color for this team type.
      */
     public String getColor() {

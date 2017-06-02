@@ -67,7 +67,6 @@ class OperationPanel extends JPanel {
     /**
      * Creates the universal buttons in the GUI
      */
-
     private void universalButtonsGUI() {
         // Back button
         backButton = WINDOW.makeButton(Messages.GO_BACK.get(), 150, 50);

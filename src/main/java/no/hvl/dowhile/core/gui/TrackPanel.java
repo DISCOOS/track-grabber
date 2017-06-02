@@ -514,7 +514,6 @@ class TrackPanel extends JPanel {
     /**
      * Sets det data in the summaryData labels fetched from the input fields
      */
-
     private void setSummaryData() {
         String crew = getSelectedRadioButton();
         String crewCount = crewCountSpinner.getModel().getValue().toString();

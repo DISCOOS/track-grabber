@@ -55,7 +55,6 @@ public class TrackCutter {
 
     /**
      * Gets the current GpxFile.
-     *
      * @return the current GpxFile.
      */
     public GpxFile getGpxFile() {
@@ -64,7 +63,6 @@ public class TrackCutter {
 
     /**
      * Sets the current GpxFile.
-     *
      * @param gpxFile the current GpxFile to be set.
      */
     public void setGpxFile(GpxFile gpxFile) {
@@ -72,17 +70,7 @@ public class TrackCutter {
     }
 
     /**
-     * Gets info about the current track.
-     *
-     * @return info about the current track.
-     */
-    public TrackInfo getTrackInfo() {
-        return trackInfo;
-    }
-
-    /**
      * Sets info about the current track.
-     *
      * @param trackInfo info about the current track.
      */
     public void setTrackInfo(TrackInfo trackInfo) {

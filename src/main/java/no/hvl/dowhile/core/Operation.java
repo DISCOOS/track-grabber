@@ -121,15 +121,6 @@ public class Operation {
     /**
      * Sets the main path to save files for this operation.
      *
-     * @return the main path to save files.
-     */
-    public String getMainPath() {
-        return mainPath;
-    }
-
-    /**
-     * Sets the main path to save files for this operation.
-     *
      * @param mainPath the main path to save files.
      */
     void setMainPath(String mainPath) {
