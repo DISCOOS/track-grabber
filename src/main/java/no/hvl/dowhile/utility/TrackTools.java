@@ -309,6 +309,11 @@ public class TrackTools {
         }
     }
 
+    public static void purifyWaypointName(GPX waypointGpx) {
+        Waypoint waypoint = getWaypointsFromFile(waypointGpx).get(0);
+        waypoint.setName(StringTools.purifyString(waypoint.getName()));
+    }
+
     /**
      * Get the waypoints from a gpx object.
      *

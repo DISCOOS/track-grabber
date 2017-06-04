@@ -12,7 +12,10 @@ import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Handling communication between the components in the application.
@@ -261,6 +264,7 @@ public class OperationManager {
         for (int i = 0; i < waypointsInGpx.size(); i++) {
             GPX waypointGpx = waypointsInGpx.get(i);
             if (!TrackTools.waypointCreatedBeforeStartTime(waypointGpx, operation.getStartTime()) && !fileManager.waypointIsAlreadyImported(waypointGpx)) {
+                TrackTools.purifyWaypointName(waypointGpx);
                 String newRawFileName = StringTools.renameRawWaypointName(file.getName(), i);
                 String hash = fileManager.saveRawGpxFileInFolders(waypointGpx, newRawFileName);
                 queue.add(new GpxFile(file, newRawFileName, hash, waypointGpx));

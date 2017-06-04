@@ -10,6 +10,21 @@ import java.util.Date;
  */
 public class StringTools {
     /**
+     * Removes all characters which is not alphabetic, digit or a space.
+     *
+     * @param s the string to purify.
+     * @return the purified string.
+     */
+    public static String purifyString(String s) {
+        StringBuilder builder = new StringBuilder("");
+        for (char c : s.toCharArray()) {
+            if (Character.isAlphabetic(c) || Character.isDigit(c) || c == ' ') {
+                builder.append(c);
+            }
+        }
+        return builder.toString();
+    }
+    /**
      * Formats a Date into a string.
      *
      * @param date the date to format.
