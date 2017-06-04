@@ -83,6 +83,32 @@ public class StringTools {
     }
 
     /**
+     * Checks if a given Waypoint name or description is valid
+     *
+     * @param waypointString the string to check
+     * @return true if the string is valid, false if not
+     */
+    public static String isValidWaypoint(String waypointString) {
+        String newString = "";
+        if (waypointString == null) {
+            return waypointString;
+        }
+
+        waypointString.replace("'", " ");
+
+        for (char c : waypointString.toCharArray()) {
+            if (!Character.isLetter(c) && !Character.isDigit(c) && !(c == ' ')) {
+
+            } else {
+
+            }
+
+        }
+
+        return newString;
+    }
+
+    /**
      * Checks if the given operation name is between 2 and 50 characters.
      *
      * @param operationName The operation name to check.
