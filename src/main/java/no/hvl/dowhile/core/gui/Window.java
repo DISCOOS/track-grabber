@@ -14,7 +14,6 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -108,7 +107,7 @@ public class Window extends JFrame {
     private Image getLogo() {
         BufferedImage bufferedImage;
         try {
-            bufferedImage = ImageIO.read(new File("src/main/resources/images/red_cross_icon.jpg"));
+            bufferedImage = ImageIO.read(getClass().getResource("/images/red_cross_icon.jpg"));
         } catch (IOException ex) {
             return null;
         }
