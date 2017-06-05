@@ -183,6 +183,11 @@ public class Window extends JFrame {
         JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), text, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Checks if the Operation- StandBy- or StartPanel is currently active
+     *
+     * @return true if one of them is active, false if not
+     */
     public boolean isReadyToProcessFile() {
         return activePanelName.equals("Operation") || activePanelName.equals("StandBy") || activePanelName.equals("Start");
     }
