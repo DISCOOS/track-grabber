@@ -70,7 +70,8 @@ public enum Messages {
     REGISTER_BUTTON("Registrer"),
     SKIP_BUTTON("Hopp over"),
     SAVE_FILE("Fil prosessert og lagret!"),
-    TRACK_NUMBER("Spornummer (forklaring...): "),
+    TRACK_NUMBER("Spornummer:"),
+    TRACK_NUMBER_INFO("<html>Om det finnes flere sporlogger for ditt lag/teig,<br>nummerer hvert spor i stigende rekkefølge ved import.<br>Første spor er spornummer 1.</html>"),
     TRACK_COMMENT("Kommentar til sporfilen: "),
     TRACK_COMMENT_PLACEHOLDER("Valgfri"),
     CHOOSE_AREA("Legg til"),
@@ -87,7 +88,7 @@ public enum Messages {
     WAYPOINT_HEADER("Prosesserer veipunkt"),
     NEW_NAME("Nytt navn for waypoint"),
     NEW_DESCRIPTION("Beskrivelse av waypoint"),
-    FLAG_COLOR("Velg farge på Waypoint-flagg: "),
+    FLAG_COLOR("Velg farge på Waypoint-flagg (valgfritt): "),
 
     // Track panel and Waypoint panel
     PROCESSING_FILES("Prosesserer fil %1 av %2");

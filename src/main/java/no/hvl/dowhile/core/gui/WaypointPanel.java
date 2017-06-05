@@ -147,17 +147,11 @@ class WaypointPanel extends JPanel {
      */
     private void radioButtonListeners() {
         redButton.addActionListener(actionEvent -> {
-            if (redButton.isSelected()) {
-                redButton.setBorderPainted(true);
-                setRadioButtonsBorder(redButton);
-            }
+            radioButtonSelection(redButton);
         });
 
         greenButton.addActionListener(actionEvent -> {
-            if (greenButton.isSelected()) {
-                greenButton.setBorderPainted(true);
-                setRadioButtonsBorder(greenButton);
-            }
+            radioButtonSelection(greenButton);
         });
     }
 
@@ -174,6 +168,9 @@ class WaypointPanel extends JPanel {
 
             String dialogText = Messages.SAVE_FILE.get();
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
+
+            colorGroup.clearSelection();
+            setRadioButtonsBorder(null);
         });
     }
 
@@ -234,8 +231,9 @@ class WaypointPanel extends JPanel {
 
     /**
      * Makes a color square icon with given color and size
+     *
      * @param color color of the icon
-     * @param size size of the icon
+     * @param size  size of the icon
      * @return the icon as an image object
      */
     private Image getColoredImage(Color color, int size) {
@@ -253,13 +251,36 @@ class WaypointPanel extends JPanel {
 
     /**
      * Sets the border true on the selected radio button
+     *
      * @param selected the selected radio button
      */
     private void setRadioButtonsBorder(JRadioButton selected) {
-        for (JRadioButton rb : coloredButtons) {
-            if (!rb.equals(selected)) {
+        if (selected == null) {
+            for (JRadioButton rb : coloredButtons) {
                 rb.setBorderPainted(false);
             }
+        } else {
+            for (JRadioButton rb : coloredButtons) {
+                if (!rb.equals(selected)) {
+                    rb.setBorderPainted(false);
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets the clicked button selected and border painted true if clicked
+     * or unselects the button en border painted false if already selected
+     *
+     * @param selected the button to select/unselect
+     */
+    private void radioButtonSelection(JRadioButton selected) {
+        if (selected.isBorderPainted()) {
+            colorGroup.clearSelection();
+            setRadioButtonsBorder(null);
+        } else if (selected.isSelected()) {
+            selected.setBorderPainted(true);
+            setRadioButtonsBorder(selected);
         }
     }
 }

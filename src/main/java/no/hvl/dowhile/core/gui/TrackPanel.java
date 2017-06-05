@@ -44,6 +44,7 @@ class TrackPanel extends JPanel {
 
     // Getting the number of the track, if multiple tracks on a team etc.
     private JLabel trackNumberLabel;
+    private JLabel trackNumberInfoLabel;
     private JSpinner trackNumberSpinner;
 
     // Getting info about the area searched.
@@ -281,10 +282,16 @@ class TrackPanel extends JPanel {
         add(trackNumberLabel, constraints);
         allInputComponents.add(trackNumberLabel);
 
+        // Label and input for track number
+        trackNumberInfoLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER_INFO.get(), Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 3);
+        add(trackNumberInfoLabel, constraints);
+        allInputComponents.add(trackNumberInfoLabel);
+
         // Spinner input for the track number
         SpinnerModel trackNumberInput = new SpinnerNumberModel(1, 1, 15, 1);
         trackNumberSpinner = WINDOW.makeSpinner(trackNumberInput);
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
+        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(trackNumberSpinner, constraints);
         allInputComponents.add(trackNumberSpinner);
@@ -584,6 +591,7 @@ class TrackPanel extends JPanel {
                 case 2:
                     hideAllComponents();
                     trackNumberLabel.setVisible(true);
+                    trackNumberInfoLabel.setVisible(true);
                     trackNumberSpinner.setVisible(true);
                     backButton.setVisible(true);
                     break;
