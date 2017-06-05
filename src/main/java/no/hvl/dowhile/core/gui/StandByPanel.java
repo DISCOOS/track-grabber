@@ -21,6 +21,13 @@ class StandByPanel extends JPanel {
     private JLabel infoLabel;
     private JButton importFileButton;
 
+    /**
+     * Constructor setting the OPERATION_MANAGER and WINDOW.
+     * Also sets the layout and the constraints and the background color
+     *
+     * @param OPERATION_MANAGER the current instance of the OperationManager
+     * @param WINDOW            the current instance of the Window
+     */
     StandByPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
@@ -47,6 +54,10 @@ class StandByPanel extends JPanel {
         setBackground(new Color(255, 245, 252));
     }
 
+    /**
+     * Make the settings button.
+     * sets width, height, image icon and puts it in the Panel
+     */
     private void makeSettingsButton() {
         final int NEW_WIDTH = 60;
         final int NEW_HEIGHT = 60;
@@ -63,6 +74,9 @@ class StandByPanel extends JPanel {
         add(operationPanelButton, constraints);
     }
 
+    /**
+     * Listener for the operationPanelButton
+     */
     private void operationPanelButtonListener() {
         operationPanelButton.addActionListener(actionEvent -> {
             WINDOW.openOperationPanel(OPERATION_MANAGER.getOperation().pathsToString());

@@ -22,18 +22,30 @@ class OperationPanel extends JPanel {
     private JLabel allSavedPathsHeaderLabel;
     private JLabel allSavedPathsLabel;
 
+    // Back button
     private JButton backButton;
 
+    // Operation setting Buttons
     private JButton switchOperationButton;
     private JButton toggleEditInfoButton;
-    private JLabel editDateLabel;
-    private DatePicker editDatePicker;
-    private TimePicker editTimePicker;
     private JButton saveOperationButton;
     private JButton definePathButton;
 
+    // Edit operation
+    private JLabel editDateLabel;
+    private DatePicker editDatePicker;
+    private TimePicker editTimePicker;
+
+    // Constraints
     private GridBagConstraints constraints;
 
+    /**
+     * Constructor setting the OPERATION_MANAGER and WINDOW.
+     * Also sets the layout and the constraints and the background color
+     *
+     * @param OPERATION_MANAGER the current instance of the OperationManager
+     * @param WINDOW            the current instance of the Window
+     */
     OperationPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
@@ -196,6 +208,9 @@ class OperationPanel extends JPanel {
         });
     }
 
+    /**
+     * Button listener for the define path button
+     */
     private void definePathButtonListener() {
         definePathButton.addActionListener(actionEvent -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -248,6 +263,11 @@ class OperationPanel extends JPanel {
         });
     }
 
+    /**
+     * Sets the allSavedPathsLabel to the given parameter string
+     *
+     * @param paths the string with paths
+     */
     void setAllSavedPathsLabel(String paths) {
         allSavedPathsLabel.setText(paths);
     }
