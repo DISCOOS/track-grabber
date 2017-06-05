@@ -168,6 +168,9 @@ class WaypointPanel extends JPanel {
 
             String dialogText = Messages.SAVE_FILE.get();
             JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
+
+            colorGroup.clearSelection();
+            setRadioButtonsBorder(null);
         });
     }
 
