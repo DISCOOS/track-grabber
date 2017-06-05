@@ -17,6 +17,7 @@ public class GpxFile {
      * Constructor taking the data required to create the object.
      *
      * @param file        actual file.
+     * @param rawFileName The name of the raw file.
      * @param rawFileHash Hash value of the saved raw file.
      * @param gpx         the parsed GPX object.
      */

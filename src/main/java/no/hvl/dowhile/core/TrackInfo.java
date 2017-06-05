@@ -31,6 +31,7 @@ public class TrackInfo {
      * @param crewCount    number of people on the crew.
      * @param crewNumber   the number of this crew.
      * @param areaSearched the area they were searching in.
+     * @param distance     the total distance of the track.
      * @param trackNumber  the number of track (if multiple tracks for a team etc).
      * @param comment      Optional comment about a track.
      */

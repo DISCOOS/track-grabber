@@ -184,6 +184,7 @@ public class FileTools {
      *
      * @param gpx  the gpx to edit.
      * @param file the file representing the gpx.
+     * @param color the color to insert.
      */
     public static void insertDisplayColor(GPX gpx, File file, String color) {
         Track track = TrackTools.getTrackFromGPXFile(gpx);

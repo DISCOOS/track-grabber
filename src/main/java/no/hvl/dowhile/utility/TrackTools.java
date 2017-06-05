@@ -210,6 +210,7 @@ public class TrackTools {
     /**
      * Checks if the file only contains an area and not a track (the waypoints don't have timetags).
      *
+     * @param gpx the gpx file to check
      * @return true if the file is an area, false if not
      */
     public static boolean trackIsAnArea(GPX gpx) {
