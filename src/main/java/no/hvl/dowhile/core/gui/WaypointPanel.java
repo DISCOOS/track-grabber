@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * This class has an interface for configuring details related to one waypoints.
  */
-class WaypointPanel extends JPanel {
+public class WaypointPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;

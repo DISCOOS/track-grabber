@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * This class has labels for displaying application name and info about the current operation.
  */
-class HeaderPanel extends JPanel {
+public class HeaderPanel extends JPanel {
     private final Window WINDOW;
     private GridBagConstraints constraints;
     private JLabel appName;

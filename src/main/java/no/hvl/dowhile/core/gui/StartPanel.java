@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
  */
-class StartPanel extends JPanel {
+public class StartPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;

@@ -16,7 +16,7 @@ import java.util.Locale;
 /**
  * This class has an interface for editing the current operation or choose another operation.
  */
-class OperationPanel extends JPanel {
+public class OperationPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private JLabel allSavedPathsHeaderLabel;
