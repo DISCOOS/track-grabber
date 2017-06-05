@@ -332,6 +332,7 @@ public class OperationManager {
 
     /**
      * Assigns a name to the waypoint.
+     *
      * @param name        the name for the file.
      * @param description the description provided by the user.
      * @param flagColor   the color of the waypoint's flag.
@@ -386,6 +387,7 @@ public class OperationManager {
 
     /**
      * Checks if a given operation name is already taken by another operation.
+     *
      * @param name the name of the new operation.
      * @return true if the names are equal, false if not.
      */
@@ -403,6 +405,7 @@ public class OperationManager {
 
     /**
      * Tell the FileManager to setup the folders on the computer for saving files later.
+     *
      * @param listRoot the drive to make folders.
      * @see FileManager
      */
@@ -412,6 +415,7 @@ public class OperationManager {
 
     /**
      * Get the current instance of the Config.
+     *
      * @return the current instance of the Config.
      */
     public Config getConfig() {
@@ -420,9 +424,12 @@ public class OperationManager {
 
     /**
      * Gets the current track cutter.
+     *
      * @return the current track cutter.
      */
-    public TrackCutter getCurrentTrackCutter() { return currentTrackCutter; }
+    public TrackCutter getCurrentTrackCutter() {
+        return currentTrackCutter;
+    }
 
     /**
      * Sets the window.
@@ -435,6 +442,7 @@ public class OperationManager {
 
     /**
      * Sets the file manager.
+     *
      * @param fileManager a file manager
      */
     public void setFileManager(FileManager fileManager) {
@@ -443,6 +451,7 @@ public class OperationManager {
 
     /**
      * Gets the file queue.
+     *
      * @return the file queue
      */
     public List<GpxFile> getQueue() {

@@ -139,6 +139,8 @@ public class Window extends JFrame {
 
     /**
      * Open the panel allowing the administrator to edit the current operation.
+     *
+     * @param paths The paths for the operation to display in the window.
      */
     void openOperationPanel(String paths) {
         operationPanel.setAllSavedPathsLabel(paths);
@@ -178,7 +180,7 @@ public class Window extends JFrame {
      * Shows a dialog with the given text.
      *
      * @param title the title of the dialog.
-     * @param text the text to show in the dialog.
+     * @param text  the text to show in the dialog.
      */
     public void showDialog(String title, String text) {
         JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), text, title, JOptionPane.INFORMATION_MESSAGE);
@@ -220,11 +222,11 @@ public class Window extends JFrame {
     /**
      * Telling the WaypointPanel to update the info about which file is currently processed.
      *
-     * @param waypointDate  the date of the waypoint.
-     * @param waypointName  the name of the file.
+     * @param waypointDate    the date of the waypoint.
+     * @param waypointName    the name of the file.
      * @param waypointComment the waypoint's comment.
-     * @param queueSize     Total files in queue.
-     * @param queuePosition current postion in queue.
+     * @param queueSize       Total files in queue.
+     * @param queuePosition   current postion in queue.
      */
     public void updateCurrentWaypointFile(String waypointDate, String waypointName, String waypointComment, int queueSize, int queuePosition) {
         waypointPanel.updateCurrentFile(waypointDate, waypointName, waypointComment, queueSize, queuePosition);

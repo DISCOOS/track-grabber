@@ -27,6 +27,7 @@ public class TrackInfo {
 
     /**
      * Constructor taking info for all variables.
+     *
      * @param crewType     type of crew creating the track.
      * @param crewCount    number of people on the crew.
      * @param crewNumber   the number of this crew.
@@ -47,6 +48,7 @@ public class TrackInfo {
 
     /**
      * Gives the type of crew creating this track. (Car, Helicopter, Scooter, ATC, Dog etc.)
+     *
      * @return the type of crew creating this track.
      */
     String getCrewType() {
@@ -55,6 +57,7 @@ public class TrackInfo {
 
     /**
      * Sets the type of crew which was creating this track.
+     *
      * @param crewType the type of crew which was creating this track.
      */
     public void setCrewType(String crewType) {
@@ -63,6 +66,7 @@ public class TrackInfo {
 
     /**
      * Gets the number of people on this crew.
+     *
      * @return the number of people on this creative.
      */
     int getCrewCount() {
@@ -71,6 +75,7 @@ public class TrackInfo {
 
     /**
      * Gets the number of this crew.
+     *
      * @return the number of this crew.
      */
     int getCrewNumber() {
@@ -79,6 +84,7 @@ public class TrackInfo {
 
     /**
      * Gets the area where this team were searching.
+     *
      * @return the area where this team were searching.
      */
     String getAreaSearched() {
@@ -87,6 +93,7 @@ public class TrackInfo {
 
     /**
      * Sets the area where this team were searching.
+     *
      * @param areaSearched the area where this team were searching.
      */
     public void setAreaSearched(String areaSearched) {
@@ -95,6 +102,7 @@ public class TrackInfo {
 
     /**
      * Gets the distance covered in track.
+     *
      * @return distance covered.
      */
     double getDistance() {
@@ -103,6 +111,7 @@ public class TrackInfo {
 
     /**
      * Gets the number of the track (if multiple tracks on a team etc):
+     *
      * @return number of the track.
      */
     int getTrackNumber() {
@@ -111,6 +120,7 @@ public class TrackInfo {
 
     /**
      * Gets the optional comment about this track.
+     *
      * @return the comment about this track.
      */
     String getComment() {

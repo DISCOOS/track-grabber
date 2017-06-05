@@ -18,6 +18,7 @@ public class TrackCutter {
 
     /**
      * Constructor taking the current OperationManager instance to get info from it.
+     *
      * @param OPERATION_MANAGER the TrackCutter's OperationManager.
      */
     public TrackCutter(final OperationManager OPERATION_MANAGER) {
@@ -33,6 +34,7 @@ public class TrackCutter {
 
     /**
      * Removes all track points that were created before a given time.
+     *
      * @param startTime The start time of the operation.
      */
     public void filterOnTimeStarted(Date startTime) {
@@ -57,6 +59,7 @@ public class TrackCutter {
 
     /**
      * Gets the current GpxFile.
+     *
      * @return the current GpxFile.
      */
     public GpxFile getGpxFile() {
@@ -65,6 +68,7 @@ public class TrackCutter {
 
     /**
      * Sets the current GpxFile.
+     *
      * @param gpxFile the current GpxFile to be set.
      */
     public void setGpxFile(GpxFile gpxFile) {
@@ -73,6 +77,7 @@ public class TrackCutter {
 
     /**
      * Sets info about the current track.
+     *
      * @param trackInfo info about the current track.
      */
     public void setTrackInfo(TrackInfo trackInfo) {

@@ -15,7 +15,7 @@ public class StringTools {
      * @param s the string to purify.
      * @return the purified string.
      */
-    public static String purifyString(String s) {
+    static String purifyString(String s) {
         StringBuilder builder = new StringBuilder("");
         for (char c : s.toCharArray()) {
             if (Character.isAlphabetic(c) || Character.isDigit(c) || c == ' ') {
@@ -24,6 +24,7 @@ public class StringTools {
         }
         return builder.toString();
     }
+
     /**
      * Formats a Date into a string.
      *
@@ -104,12 +105,13 @@ public class StringTools {
 
     /**
      * Takes the name of a raw waypoint file and injects the file's index into it.
-     * @param name The name to replace.
+     *
+     * @param name  The name to replace.
      * @param index The index to inject into the name
      * @return The new name.
      */
     public static String renameRawWaypointName(String name, int index) {
-        return new StringBuilder(name).insert(name.length()-4, "_" + index).toString();
+        return new StringBuilder(name).insert(name.length() - 4, "_" + index).toString();
     }
 
 }

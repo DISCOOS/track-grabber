@@ -8,6 +8,7 @@ import no.hvl.dowhile.core.OperationManager;
 public class Main {
     /**
      * Main method starting the operation manager.
+     *
      * @param args arguments passed on command line.
      * @see OperationManager
      */

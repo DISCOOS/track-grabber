@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
  */
-public class StartPanel extends JPanel {
+class StartPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
@@ -45,8 +45,8 @@ public class StartPanel extends JPanel {
      * sets the layout and constraints, runs the GUI methods, sets the locale for the datepicker and timepicker,
      * sets initial visibility and sets the button listeners active
      *
-     * @param OPERATION_MANAGER
-     * @param WINDOW
+     * @param OPERATION_MANAGER the current instance of the operation manager.
+     * @param WINDOW            the current instance of the window.
      */
     StartPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;

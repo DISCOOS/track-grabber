@@ -12,8 +12,6 @@ import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +68,8 @@ public class FileManager {
     /**
      * Deletes the specified file from the rawfolder.
      *
-     * @param filename the name of the file to delete.
+     * @param rawFolder the raw folder to delete the file from.
+     * @param filename  the name of the file to delete.
      */
     private void deleteRawFile(File rawFolder, String filename) {
         File file = new File(rawFolder, filename);
@@ -97,6 +96,7 @@ public class FileManager {
 
     /**
      * Sets up the Config file.
+     *
      * @param folder The folder in which to store the config file.
      */
     public void setupConfig(File folder) {
@@ -311,8 +311,9 @@ public class FileManager {
     /**
      * Saves the specified file in the raw folder as the specified filename.
      *
-     * @param rawGpx   the gpx file to save.
-     * @param filename the name for the new file.
+     * @param rawFolder the folder to save the file to.
+     * @param rawGpx    the gpx file to save.
+     * @param filename  the name for the new file.
      * @return hash of the saved file.
      */
     private String saveRawGpxFile(File rawFolder, GPX rawGpx, String filename) {
@@ -392,6 +393,7 @@ public class FileManager {
      * Organizes the file into the correct day folder.
      *
      * @param processedGpx The file to store.
+     * @param trackInfo    info about the current track.
      * @param filename     The name of the file.
      */
     private void organizeGpxInDayFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
@@ -409,8 +411,10 @@ public class FileManager {
     /**
      * Saves the specified file in the processed folder as the specified filename.
      *
-     * @param processedGpx the gpx file to save.
-     * @param filename     the name for the new file.
+     * @param processedFolder the folder to save the file to.
+     * @param trackInfo       info about the current track.
+     * @param processedGpx    the gpx file to save.
+     * @param filename        the name for the new file.
      */
     private void saveProcessedGpxFile(File processedFolder, TrackInfo trackInfo, GPX processedGpx, String filename) {
         saveGpxFile(processedGpx, trackInfo, filename, processedFolder);
@@ -434,8 +438,9 @@ public class FileManager {
     /**
      * Saves the area file in the area folder as the specified filename.
      *
-     * @param areaGPX  the gpx file to save.
-     * @param filename the name for the new file.
+     * @param areaFolder the folder to save the file to.
+     * @param areaGPX    the gpx file to save.
+     * @param filename   the name for the new file.
      */
     private void saveAreaGpxFile(File areaFolder, GPX areaGPX, String filename) {
         saveGpxFile(areaGPX, null, filename, areaFolder);
@@ -443,8 +448,9 @@ public class FileManager {
 
     /**
      * Saves a waypoint to all necessary folders.
+     *
      * @param waypointGpx The waypoint GPX file to save.
-     * @param filename The name of the waypoint GPX file.
+     * @param filename    The name of the waypoint GPX file.
      */
     public void saveWaypointFileInFolders(GPX waypointGpx, String filename) {
         saveGpxFile(waypointGpx, null, filename, mainOperationFolder.getWaypointFolder());
@@ -495,9 +501,10 @@ public class FileManager {
     /**
      * Saves the file in the specified folder as the specified filename.
      *
-     * @param gpx      the gpx to save.
-     * @param filename the name for the new file.
-     * @param folder   the folder to save it in.
+     * @param gpx       the gpx to save.
+     * @param trackInfo info about the current track.
+     * @param filename  the name for the new file.
+     * @param folder    the folder to save it in.
      * @return hash value of the saved file.
      */
     private String saveAndHashGpxFile(GPX gpx, TrackInfo trackInfo, String filename, File folder) {
@@ -546,5 +553,7 @@ public class FileManager {
      *
      * @return all the extra operation folders.
      */
-    public List<OperationFolder> getExtraOperationFolders() { return extraOperationFolders; }
+    public List<OperationFolder> getExtraOperationFolders() {
+        return extraOperationFolders;
+    }
 }

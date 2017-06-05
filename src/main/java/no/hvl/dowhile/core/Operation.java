@@ -162,6 +162,8 @@ public class Operation {
 
     /**
      * Gets the content to be saved in the file representing this operation.
+     *
+     * @return array of the strings to store in the file.
      */
     String[] getFileContent() {
         List<String> lines = new ArrayList<>();

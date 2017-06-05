@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * This class has an interface for configuring details related to one waypoints.
  */
-public class WaypointPanel extends JPanel {
+class WaypointPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
@@ -190,10 +190,11 @@ public class WaypointPanel extends JPanel {
     /**
      * Updating info about the file currently being processed.
      *
-     * @param waypointDate  the date of the waypoint
-     * @param waypointName  the new filename.
-     * @param queueSize     Total files in queue
-     * @param queuePosition current postion in queue
+     * @param waypointDate    the date of the waypoint
+     * @param waypointName    the new filename.
+     * @param waypointComment the comment for the waypoint.
+     * @param queueSize       Total files in queue
+     * @param queuePosition   current postion in queue
      */
     void updateCurrentFile(String waypointDate, String waypointName, String waypointComment, int queueSize, int queuePosition) {
         String currentImportedFile = Messages.IMPORTED_FROM_WAYPOINT_GPS.get() + waypointDate;
