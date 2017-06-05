@@ -96,7 +96,8 @@ public class FileManager {
     }
 
     /**
-     * Sets up the config file.
+     * Sets up the Config file.
+     * @param folder The folder in which to store the config file.
      */
     public void setupConfig(File folder) {
         File config = FileTools.getFile(folder, "config.txt");
@@ -295,6 +296,7 @@ public class FileManager {
      *
      * @param rawGpx   the gpx to save.
      * @param filename the name to save it as.
+     * @return The hash value of the saved file.
      */
     public String saveRawGpxFileInFolders(GPX rawGpx, String filename) {
         String hash = saveRawGpxFile(mainOperationFolder.getRawFolder(), rawGpx, filename);
@@ -456,9 +458,10 @@ public class FileManager {
     /**
      * Saving the file in the specified folder as the specified filename.
      *
-     * @param gpx      the gpx to save.
-     * @param filename the name for the new file.
-     * @param folder   the folder to save it in.
+     * @param gpx       the gpx to save.
+     * @param trackInfo the info about the gpx's track.
+     * @param filename  the name for the new file.
+     * @param folder    the folder to save it in.
      */
     public void saveGpxFile(GPX gpx, TrackInfo trackInfo, String filename, File folder) {
         try {

@@ -18,6 +18,7 @@ public class TrackCutter {
 
     /**
      * Constructor taking the current OperationManager instance to get info from it.
+     * @param OPERATION_MANAGER the TrackCutter's OperationManager.
      */
     public TrackCutter(final OperationManager OPERATION_MANAGER) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
@@ -31,7 +32,8 @@ public class TrackCutter {
     }
 
     /**
-     * Removes all track points that were created before a given time
+     * Removes all track points that were created before a given time.
+     * @param startTime The start time of the operation.
      */
     public void filterOnTimeStarted(Date startTime) {
         Track track = TrackTools.getTrackFromGPXFile(gpxFile.getGpx());

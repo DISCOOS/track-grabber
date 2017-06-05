@@ -334,6 +334,7 @@ public class OperationManager {
      * Assigns a name to the waypoint.
      * @param name        the name for the file.
      * @param description the description provided by the user.
+     * @param flagColor   the color of the waypoint's flag.
      */
     public void saveWaypoint(String name, String description, String flagColor) {
         if (currentTrackCutter == null || currentTrackCutter.getGpxFile() == null) {

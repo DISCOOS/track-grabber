@@ -177,6 +177,7 @@ public class Window extends JFrame {
     /**
      * Shows a dialog with the given text.
      *
+     * @param title the title of the dialog.
      * @param text the text to show in the dialog.
      */
     public void showDialog(String title, String text) {
@@ -206,8 +207,9 @@ public class Window extends JFrame {
      * Telling the TrackPanel to update the info about which file is currently processed.
      *
      * @param filename      the name of the file.
-     * @param queueSize     Total files in queue
-     * @param queuePosition current postion in queue
+     * @param queueSize     Total files in queue.
+     * @param queuePosition current postion in queue.
+     * @param trackDistance the distance of the track in the file.
      */
     public void updateCurrentTrackFile(String filename, int queueSize, int queuePosition, double trackDistance) {
         trackPanel.updateCurrentFile(filename, queueSize, queuePosition);
@@ -218,10 +220,11 @@ public class Window extends JFrame {
     /**
      * Telling the WaypointPanel to update the info about which file is currently processed.
      *
-     * @param waypointDate  the date of the waypoint
+     * @param waypointDate  the date of the waypoint.
      * @param waypointName  the name of the file.
-     * @param queueSize     Total files in queue
-     * @param queuePosition current postion in queue
+     * @param waypointComment the waypoint's comment.
+     * @param queueSize     Total files in queue.
+     * @param queuePosition current postion in queue.
      */
     public void updateCurrentWaypointFile(String waypointDate, String waypointName, String waypointComment, int queueSize, int queuePosition) {
         waypointPanel.updateCurrentFile(waypointDate, waypointName, waypointComment, queueSize, queuePosition);

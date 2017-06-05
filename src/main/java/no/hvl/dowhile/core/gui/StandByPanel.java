@@ -11,7 +11,7 @@ import java.awt.*;
 /**
  * This class has an interface for importing gpx-files from PC and accessing settings for the current Operation.
  */
-class StandByPanel extends JPanel {
+public class StandByPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
