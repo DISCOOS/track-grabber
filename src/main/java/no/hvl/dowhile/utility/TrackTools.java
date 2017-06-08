@@ -72,7 +72,7 @@ public class TrackTools {
      * @param gpx the gpx to check.
      * @return true if the file has a track, false if not.
      */
-    private static boolean fileHasTrack(GPX gpx) {
+    public static boolean fileHasTrack(GPX gpx) {
         Track track = getTrackFromGPXFile(gpx);
         return track != null && track.getTrackSegments() != null && !track.getTrackSegments().isEmpty();
     }
