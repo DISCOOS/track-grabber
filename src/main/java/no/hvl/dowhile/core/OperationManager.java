@@ -12,7 +12,10 @@ import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Handling communication between the components in the application.
@@ -133,7 +136,6 @@ public class OperationManager {
         operation.setStartTime(year, month, day, hour, minute);
         window.updateOperationInfo(operation);
         fileManager.updateOperationFile(operation);
-        importMassTestingFiles();
     }
 
     /**
@@ -454,72 +456,5 @@ public class OperationManager {
      */
     public List<GpxFile> getQueue() {
         return queue;
-    }
-
-    /**
-     * This method is used for testing import of loads of files.
-     * No user interaction is required to import the files.
-     * The files you want to import need to be in a folder named "MassTesting" in the C://TrackGrabber folder.
-     */
-    public void importMassTestingFiles() {
-        long startTime = System.currentTimeMillis();
-        int filesImported = 0;
-        File appFolder = fileManager.getAppFolder();
-        if (appFolder == null || appFolder.listFiles() == null) {
-            return;
-        }
-        File massTestingFolder = new File(appFolder, "MassTesting");
-        File[] trackFiles = massTestingFolder.listFiles();
-        if (trackFiles == null) {
-            return;
-        }
-        Random random = new Random();
-        for (File trackFile : trackFiles) {
-            if (trackFile.getName().endsWith(".gpx")) {
-                System.err.println("Importing " + trackFile.getName());
-                GPX gpx = TrackTools.getGpxFromFile(trackFile);
-                if (gpx == null) {
-                    System.err.println("Failed to parse gpx.");
-
-                } else if (TrackTools.hasWaypoints(gpx)) {
-                    System.err.println("File is a waypoint file. Ignoring.");
-                } else if (!TrackTools.fileHasTrack(gpx)) {
-                    System.err.println("File doesn't have track.");
-                } else if (fileManager.alreadyImportedTrack(gpx) != null) {
-                    System.err.println("Already imported.");
-                } else {
-                    fileManager.saveRawGpxFileInFolders(gpx, trackFile.getName());
-                    System.err.println("Saved raw file!");
-                    if (TrackTools.trackIsAnArea(gpx)) {
-                        fileManager.saveAreaGpxFileInFolders(gpx, trackFile.getName());
-                        System.err.println("Saved area file!");
-                    } else {
-                        if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-                            String crewType = config.getTeamTypes().get(random.nextInt(config.getTeamNames().size())).getName();
-                            TrackInfo trackInfo = new TrackInfo(
-                                    crewType, random.nextInt(40),
-                                    random.nextInt(40),
-                                    "[" + random.nextInt(40) + "]",
-                                    TrackTools.getDistanceFromTrack(gpx), random.nextInt(40),
-                                    "MassTesting"
-                            );
-                            String filename = config.generateFilename(trackInfo);
-                            Track track = TrackTools.getTrackFromGPXFile(gpx);
-                            track.setName(filename);
-                            if (!trackInfo.getComment().isEmpty()) {
-                                track.setDescription(trackInfo.getComment());
-                            }
-                            fileManager.saveProcessedGpxFileInFolders(gpx, trackInfo, filename);
-                            filesImported++;
-                            System.err.println("Saved processed!");
-                        } else {
-                            System.err.println("Track in file \"" + trackFile.getName() + "\" was stopped before operation start time. Ignoring.");
-                        }
-                    }
-                }
-            }
-        }
-        long stopTime = System.currentTimeMillis();
-        System.err.println("Successfully imported " + filesImported + " files in " + (stopTime - startTime) / 1000 + " seconds.");
     }
 }
