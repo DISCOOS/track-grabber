@@ -121,18 +121,9 @@ public class Operation {
     /**
      * Sets the main path to save files for this operation.
      *
-     * @return the main path to save files.
-     */
-    public String getMainPath() {
-        return mainPath;
-    }
-
-    /**
-     * Sets the main path to save files for this operation.
-     *
      * @param mainPath the main path to save files.
      */
-    public void setMainPath(String mainPath) {
+    void setMainPath(String mainPath) {
         this.mainPath = mainPath;
     }
 
@@ -141,7 +132,7 @@ public class Operation {
      *
      * @return list of paths.
      */
-    public List<String> getExtraPaths() {
+    List<String> getExtraPaths() {
         return extraPaths;
     }
 
@@ -171,8 +162,10 @@ public class Operation {
 
     /**
      * Gets the content to be saved in the file representing this operation.
+     *
+     * @return array of the strings to store in the file.
      */
-    public String[] getFileContent() {
+    String[] getFileContent() {
         List<String> lines = new ArrayList<>();
         lines.add("# Operasjon " + name);
         lines.add("# Starttid: " + StringTools.formatDate(startTime));

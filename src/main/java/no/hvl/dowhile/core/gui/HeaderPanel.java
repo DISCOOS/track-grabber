@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * This class has labels for displaying application name and info about the current operation.
  */
-public class HeaderPanel extends JPanel {
+class HeaderPanel extends JPanel {
     private final Window WINDOW;
     private GridBagConstraints constraints;
     private JLabel appName;
@@ -25,14 +25,14 @@ public class HeaderPanel extends JPanel {
      * @param WINDOW the current instance of the Window.
      * @see Window
      */
-    public HeaderPanel(final Window WINDOW) {
+    HeaderPanel(final Window WINDOW) {
         this.WINDOW = WINDOW;
         this.constraints = new GridBagConstraints();
         this.appName = WINDOW.makeHeaderLabel(Messages.PROJECT_NAME.get());
         this.spacer = WINDOW.makeHeaderLabel(Messages.SPACER.get());
         this.operationInfoHeader = WINDOW.makeLabel(Messages.OPERATION_INFO.get(), Font.BOLD);
-        this.operationInfoName = WINDOW.makeLabel(Messages.OPERATION_INFO_NAME.get("Ingen operasjon valgt."), Font.BOLD);
-        this.operationInfoStart = WINDOW.makeLabel(Messages.OPERATION_INFO_START.get("Ingen operasjon valgt."), Font.BOLD);
+        this.operationInfoName = WINDOW.makeLabel(Messages.OPERATION_INFO_NAME.get(Messages.NO_OPERATION.get()), Font.BOLD);
+        this.operationInfoStart = WINDOW.makeLabel(Messages.OPERATION_INFO_START.get(Messages.NO_OPERATION.get()), Font.BOLD);
 
         setLayout(new GridBagLayout());
 
@@ -61,7 +61,7 @@ public class HeaderPanel extends JPanel {
      *
      * @param operation the current operation.
      */
-    public void updateOperationInfo(Operation operation) {
+    void updateOperationInfo(Operation operation) {
         operationInfoName.setText(Messages.OPERATION_INFO_NAME.get(operation.getName()));
         operationInfoStart.setText(Messages.OPERATION_INFO_START.get(StringTools.formatDate(operation.getStartTime())));
     }

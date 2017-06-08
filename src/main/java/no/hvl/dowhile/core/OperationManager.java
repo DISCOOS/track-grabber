@@ -12,7 +12,10 @@ import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Handling communication between the components in the application.
@@ -237,11 +240,11 @@ public class OperationManager {
                 return;
             }
         }
-        String rawfileHash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
         if (TrackTools.trackIsAnArea(gpx)) {
             fileManager.saveAreaGpxFileInFolders(gpx, file.getName());
         } else {
             if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
+                String rawfileHash = fileManager.saveRawGpxFileInFolders(gpx, file.getName());
                 queue.add(new GpxFile(file, file.getName(), rawfileHash, gpx));
                 queueSize++;
                 window.updateQueueInfo(queueSize, queuePosition);
@@ -261,6 +264,7 @@ public class OperationManager {
         for (int i = 0; i < waypointsInGpx.size(); i++) {
             GPX waypointGpx = waypointsInGpx.get(i);
             if (!TrackTools.waypointCreatedBeforeStartTime(waypointGpx, operation.getStartTime()) && !fileManager.waypointIsAlreadyImported(waypointGpx)) {
+                TrackTools.purifyWaypointName(waypointGpx);
                 String newRawFileName = StringTools.renameRawWaypointName(file.getName(), i);
                 String hash = fileManager.saveRawGpxFileInFolders(waypointGpx, newRawFileName);
                 queue.add(new GpxFile(file, newRawFileName, hash, waypointGpx));
@@ -275,6 +279,10 @@ public class OperationManager {
      * This method is used when a gps is connected and one or more gpx-files are located.
      */
     public void prepareNextFile() {
+        if (queue.isEmpty()) {
+            window.openStandByPanel();
+            return;
+        }
         queuePosition++;
         GpxFile gpxFile = queue.remove(0);
         currentTrackCutter = new TrackCutter(this);
@@ -284,13 +292,18 @@ public class OperationManager {
             Date wpDate = wp.getTime();
             String wpDateFormatted = StringTools.formatDateForFileProcessing(wpDate);
             String wpName = wp.getName();
-            window.updateCurrentWaypointFile(wpDateFormatted, wpName, queueSize, queuePosition);
+            String comment = wp.getComment();
+            window.updateCurrentWaypointFile(wpDateFormatted, wpName, comment, queueSize, queuePosition);
             window.openWaypointPanel();
         } else {
             double trackDistance = TrackTools.getDistanceFromTrack(gpxFile.getGpx());
             window.updateCurrentTrackFile(StringTools.startTimeAndEndTimeToString(gpxFile.getGpx()), queueSize, queuePosition, trackDistance);
             window.openTrackPanel();
         }
+    }
+
+    public void clearTrackCutter() {
+        currentTrackCutter = null;
     }
 
     /**
@@ -318,77 +331,11 @@ public class OperationManager {
     }
 
     /**
-     * This method is used for testing import of loads of files.
-     * No user interaction is required to import the files.
-     * The files you want to import need to be in a folder named "MassTesting" in the C://TrackGrabber folder.
-     */
-    public void importMassTestingFiles() {
-        long startTime = System.currentTimeMillis();
-        int filesImported = 0;
-        File appFolder = fileManager.getAppFolder();
-        if (appFolder == null || appFolder.listFiles() == null) {
-            return;
-        }
-        File massTestingFolder = new File(appFolder, "MassTesting");
-        File[] trackFiles = massTestingFolder.listFiles();
-        if (trackFiles == null) {
-            return;
-        }
-        Random random = new Random();
-        for (File trackFile : trackFiles) {
-            if (trackFile.getName().endsWith(".gpx")) {
-                System.err.println("Importing " + trackFile.getName());
-                GPX gpx = TrackTools.getGpxFromFile(trackFile);
-                if (gpx == null) {
-                    System.err.println("Failed to parse gpx.");
-
-                } else if (TrackTools.hasWaypoints(gpx)) {
-                    System.err.println("File is a waypoint file. Ignoring.");
-                } else if (!TrackTools.fileHasTrack(gpx)) {
-                    System.err.println("File doesn't have track.");
-                } else if (fileManager.alreadyImportedTrack(gpx) != null) {
-                    System.err.println("Already imported.");
-                } else {
-                    fileManager.saveRawGpxFileInFolders(gpx, trackFile.getName());
-                    System.err.println("Saved raw file!");
-                    if (TrackTools.trackIsAnArea(gpx)) {
-                        fileManager.saveAreaGpxFileInFolders(gpx, trackFile.getName());
-                        System.err.println("Saved area file!");
-                    } else {
-                        if (!TrackTools.trackCreatedBeforeStartTime(gpx, operation.getStartTime())) {
-                            String crewType = config.getTeamTypes().get(random.nextInt(config.getTeamNames().size())).getName();
-                            TrackInfo trackInfo = new TrackInfo(
-                                    crewType, random.nextInt(40),
-                                    random.nextInt(40),
-                                    "[" + random.nextInt(40) + "]",
-                                    TrackTools.getDistanceFromTrack(gpx), random.nextInt(40),
-                                    "MassTesting"
-                            );
-                            String filename = config.generateFilename(trackInfo);
-                            Track track = TrackTools.getTrackFromGPXFile(gpx);
-                            track.setName(filename);
-                            if (!trackInfo.getComment().isEmpty()) {
-                                track.setDescription(trackInfo.getComment());
-                            }
-                            fileManager.saveProcessedGpxFileInFolders(gpx, trackInfo, filename);
-                            filesImported++;
-                            System.err.println("Saved processed!");
-                        } else {
-                            System.err.println("Track in file \"" + trackFile.getName() + "\" was stopped before operation start time. Ignoring.");
-                        }
-                    }
-                }
-            }
-        }
-        long stopTime = System.currentTimeMillis();
-        System.err.println("Successfully imported " + filesImported + " files in " + (stopTime - startTime) / 1000 + " seconds.");
-    }
-
-    /**
      * Assigns a name to the waypoint.
      *
      * @param name        the name for the file.
      * @param description the description provided by the user.
+     * @param flagColor   the color of the waypoint's flag.
      */
     public void saveWaypoint(String name, String description, String flagColor) {
         if (currentTrackCutter == null || currentTrackCutter.getGpxFile() == null) {
@@ -415,7 +362,7 @@ public class OperationManager {
     /**
      * Opens the operation panel if the queue is empty, and if not, prepares the next file.
      */
-    public void checkForMoreFiles() {
+    private void checkForMoreFiles() {
         if (queue.isEmpty()) {
             currentTrackCutter = null;
             window.openStandByPanel();
@@ -429,7 +376,7 @@ public class OperationManager {
     /**
      * This method will remove the files from the raw folder as they are not yet processed when in the queue.
      */
-    public void removeUnprocessedFiles() {
+    private void removeUnprocessedFiles() {
         for (GpxFile gpxFile : queue) {
             fileManager.deleteRawFileInFolders(gpxFile.getFile().getName());
         }
@@ -473,6 +420,15 @@ public class OperationManager {
      */
     public Config getConfig() {
         return config;
+    }
+
+    /**
+     * Gets the current track cutter.
+     *
+     * @return the current track cutter.
+     */
+    public TrackCutter getCurrentTrackCutter() {
+        return currentTrackCutter;
     }
 
     /**

@@ -10,13 +10,29 @@ import java.util.Date;
  */
 public class StringTools {
     /**
+     * Removes all characters which is not alphabetic, digit or a space.
+     *
+     * @param s the string to purify.
+     * @return the purified string.
+     */
+    static String purifyString(String s) {
+        StringBuilder builder = new StringBuilder("");
+        for (char c : s.toCharArray()) {
+            if (Character.isAlphabetic(c) || Character.isDigit(c) || c == ' ') {
+                builder.append(c);
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
      * Formats a Date into a string.
      *
      * @param date the date to format.
      * @return the date formatted as a String.
      */
     public static String formatDate(Date date) {
-        return new SimpleDateFormat("dd-MM/yyyy HH:mm z").format(date);
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
     }
 
     /**
@@ -35,7 +51,7 @@ public class StringTools {
      * @param date the date to format.
      * @return the date formatted as a String without spaces, hours, minutes and seconds.
      */
-    public static String formatDateForOrganizing(Date date) {
+    static String formatDateForOrganizing(Date date) {
         return new SimpleDateFormat("dd-MM-yy").format(date);
     }
 
@@ -78,17 +94,6 @@ public class StringTools {
     }
 
     /**
-     * Checks if a given file name contains a given string.
-     *
-     * @param string   The string to search for.
-     * @param filename The filename to search through.
-     * @return True if the filename contains the given string, false if not.
-     */
-    public static boolean FilenameContainsString(String string, String filename) {
-        return filename.contains(string);
-    }
-
-    /**
      * Gets the track's start time and end time as one single String.
      *
      * @param gpx The file to get the times from.
@@ -100,12 +105,13 @@ public class StringTools {
 
     /**
      * Takes the name of a raw waypoint file and injects the file's index into it.
-     * @param name The name to replace.
+     *
+     * @param name  The name to replace.
      * @param index The index to inject into the name
      * @return The new name.
      */
     public static String renameRawWaypointName(String name, int index) {
-        return new StringBuilder(name).insert(name.length()-4, "_" + index).toString();
+        return new StringBuilder(name).insert(name.length() - 4, "_" + index).toString();
     }
 
 }

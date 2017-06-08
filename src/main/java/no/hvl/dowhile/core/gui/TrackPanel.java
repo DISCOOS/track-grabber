@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * This class has an interface for configuring details related to one track.
  */
-public class TrackPanel extends JPanel {
+class TrackPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
@@ -34,9 +34,6 @@ public class TrackPanel extends JPanel {
     private List<JRadioButton> radioButtons;
     private ButtonGroup radioButtonGroup;
 
-    // Starts the processing of the file.
-    private JButton registerButton;
-
     // Getting the number of the team.
     private JLabel crewNumberLabel;
     private JSpinner crewNumberSpinner;
@@ -47,10 +44,12 @@ public class TrackPanel extends JPanel {
 
     // Getting the number of the track, if multiple tracks on a team etc.
     private JLabel trackNumberLabel;
+    private JLabel trackNumberInfoLabel;
     private JSpinner trackNumberSpinner;
 
     // Getting info about the area searched.
     private JLabel areaLabel;
+    private JLabel areaInfoLabel;
     private JButton areaInputButton;
     private JSpinner areaSearchedSpinner;
     private JLabel areaSearchedLabel;
@@ -78,6 +77,8 @@ public class TrackPanel extends JPanel {
     // Controlling navigation flow.
     private JButton nextButton;
     private JButton backButton;
+    private JButton registerButton;
+    private JButton skipButton;
     private int viewCount;
 
     private List<JComponent> allInputComponents; // All JComponents connected to input from user is added to this List
@@ -90,7 +91,7 @@ public class TrackPanel extends JPanel {
      * @param OPERATION_MANAGER the current instance of the OperationManager
      * @param WINDOW            the current instance of the Window
      */
-    public TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
+    TrackPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
         viewCount = 0;
@@ -113,11 +114,13 @@ public class TrackPanel extends JPanel {
         summaryGUI();
 
         initialVisibility();
+        radioButtons.get(0).setSelected(true);
 
         registerButtonListener();
         areaInputButtonListener();
         nextButtonListener();
         backButtonListener();
+        skipButtonListener();
 
         setBackground(new Color(255, 245, 252));
     }
@@ -158,13 +161,20 @@ public class TrackPanel extends JPanel {
      * Adds navigation buttons and sets them in the GridBagLayout
      */
     private void buttonsGUI() {
+        // Next button
         nextButton = WINDOW.makeButton(Messages.NEXT.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 3, 9, GridBagConstraints.EAST, 1);
         add(nextButton, constraints);
 
+        // Back button
         backButton = WINDOW.makeButton(Messages.BACK.get(), 150, 50);
         WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 1);
         add(backButton, constraints);
+
+        // Skip button
+        skipButton = WINDOW.makeButton(Messages.SKIP_BUTTON.get(), 150, 50);
+        WINDOW.modifyConstraints(constraints, 0, 9, GridBagConstraints.WEST, 1);
+        add(skipButton, constraints);
 
         // Register button
         registerButton = WINDOW.makeButton(Messages.REGISTER_BUTTON.get(), 150, 50);
@@ -199,7 +209,7 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(crewNumberLabel);
 
         // Spinner for crew number input
-        SpinnerModel crewNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
+        SpinnerModel crewNumberInput = new SpinnerNumberModel(21, 21, 999, 1);
         crewNumberSpinner = WINDOW.makeSpinner(crewNumberInput);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -218,7 +228,7 @@ public class TrackPanel extends JPanel {
         allInputComponents.add(crewCountLabel);
 
         // Spinner for crew count input
-        SpinnerModel crewCountInput = new SpinnerNumberModel(0, 0, 15, 1);
+        SpinnerModel crewCountInput = new SpinnerNumberModel(1, 1, 15, 1);
         crewCountSpinner = WINDOW.makeSpinner(crewCountInput);
         WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -230,28 +240,34 @@ public class TrackPanel extends JPanel {
      * Adds input for which areas is searched and sets them in the GridBagLayout
      */
     private void areaSearchedGUI() {
-        // Label and input for area searched
+        // Label for area searched
         areaLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED.get(), Font.BOLD);
         WINDOW.modifyConstraints(constraints, 0, 2, GridBagConstraints.WEST, 2);
         add(areaLabel, constraints);
         allInputComponents.add(areaLabel);
 
+        // Label with info on area searched
+        areaInfoLabel = WINDOW.makeLabel(Messages.AREA_SEARCHED_INFO.get(), Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 4);
+        add(areaInfoLabel, constraints);
+        allInputComponents.add(areaInfoLabel);
+
         // Spinner for input of area
-        SpinnerModel areaSearchedModel = new SpinnerNumberModel(0, 0, 1000, 1);
+        SpinnerModel areaSearchedModel = new SpinnerNumberModel(1, 1, 1000, 1);
         areaSearchedSpinner = WINDOW.makeSpinner(areaSearchedModel);
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 1);
         add(areaSearchedSpinner, constraints);
         allInputComponents.add(areaSearchedSpinner);
 
         // button for the area searched dialog
         areaInputButton = WINDOW.makeButton(Messages.CHOOSE_AREA.get(), 150, 50);
-        WINDOW.modifyConstraints(constraints, 2, 3, GridBagConstraints.WEST, 1);
+        WINDOW.modifyConstraints(constraints, 2, 4, GridBagConstraints.WEST, 1);
         add(areaInputButton, constraints);
         allInputComponents.add(areaInputButton);
 
         // Label for showing areas chosen
         areaSearchedLabel = WINDOW.makeLabel("", Font.PLAIN);
-        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 2);
+        WINDOW.modifyConstraints(constraints, 1, 5, GridBagConstraints.WEST, 2);
         add(areaSearchedLabel, constraints);
         allInputComponents.add(areaSearchedLabel);
     }
@@ -266,10 +282,16 @@ public class TrackPanel extends JPanel {
         add(trackNumberLabel, constraints);
         allInputComponents.add(trackNumberLabel);
 
+        // Label and input for track number
+        trackNumberInfoLabel = WINDOW.makeLabel(Messages.TRACK_NUMBER_INFO.get(), Font.PLAIN);
+        WINDOW.modifyConstraints(constraints, 0, 3, GridBagConstraints.WEST, 3);
+        add(trackNumberInfoLabel, constraints);
+        allInputComponents.add(trackNumberInfoLabel);
+
         // Spinner input for the track number
-        SpinnerModel trackNumberInput = new SpinnerNumberModel(0, 0, 15, 1);
+        SpinnerModel trackNumberInput = new SpinnerNumberModel(1, 1, 15, 1);
         trackNumberSpinner = WINDOW.makeSpinner(trackNumberInput);
-        WINDOW.modifyConstraints(constraints, 1, 3, GridBagConstraints.WEST, 2);
+        WINDOW.modifyConstraints(constraints, 1, 4, GridBagConstraints.WEST, 2);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(trackNumberSpinner, constraints);
         allInputComponents.add(trackNumberSpinner);
@@ -364,7 +386,7 @@ public class TrackPanel extends JPanel {
      * @param queueSize     Total files in queue
      * @param queuePosition current postion in queue
      */
-    public void updateCurrentFile(String filename, int queueSize, int queuePosition) {
+    void updateCurrentFile(String filename, int queueSize, int queuePosition) {
         String remainingFiles = Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + "");
         currentImportLabel.setText(filename);
         remainingFilesLabel.setText(remainingFiles);
@@ -376,7 +398,7 @@ public class TrackPanel extends JPanel {
      * @param queueSize     the size of the queue.
      * @param queuePosition the current position in the queue.
      */
-    public void updateQueueInfo(int queueSize, int queuePosition) {
+    void updateQueueInfo(int queueSize, int queuePosition) {
         remainingFilesLabel.setText(Messages.PROCESSING_FILES.get(queuePosition + "", queueSize + ""));
     }
 
@@ -385,7 +407,7 @@ public class TrackPanel extends JPanel {
      *
      * @param trackDistance the distance covered in the track
      */
-    public void updateCurrentFileDistance(double trackDistance) {
+    void updateCurrentFileDistance(double trackDistance) {
         DecimalFormat df = new DecimalFormat("#.##");
         this.trackDistance = trackDistance;
 
@@ -499,7 +521,6 @@ public class TrackPanel extends JPanel {
     /**
      * Sets det data in the summaryData labels fetched from the input fields
      */
-
     private void setSummaryData() {
         String crew = getSelectedRadioButton();
         String crewCount = crewCountSpinner.getModel().getValue().toString();
@@ -532,12 +553,13 @@ public class TrackPanel extends JPanel {
             OPERATION_MANAGER.processFile(trackInfo);
 
             // Resetting all input fields
-            crewCountSpinner.setValue(0);
-            crewNumberSpinner.setValue(0);
+            radioButtons.get(0).setSelected(true);
+            crewCountSpinner.setValue(1);
+            crewNumberSpinner.setValue(21);
             areaSearchedLabel.setText("");
             areaSearchedStrings.clear();
-            areaSearchedSpinner.setValue(0);
-            trackNumberSpinner.setValue(0);
+            areaSearchedSpinner.setValue(1);
+            trackNumberSpinner.setValue(1);
             trackCommentInput.setText("");
 
             initialVisibility();
@@ -569,6 +591,7 @@ public class TrackPanel extends JPanel {
                 case 2:
                     hideAllComponents();
                     trackNumberLabel.setVisible(true);
+                    trackNumberInfoLabel.setVisible(true);
                     trackNumberSpinner.setVisible(true);
                     backButton.setVisible(true);
                     break;
@@ -585,6 +608,7 @@ public class TrackPanel extends JPanel {
                 case 5:
                     hideAllComponents();
                     areaLabel.setVisible(true);
+                    areaInfoLabel.setVisible(true);
                     areaSearchedSpinner.setVisible(true);
                     areaInputButton.setVisible(true);
                     areaSearchedLabel.setVisible(true);
@@ -641,6 +665,7 @@ public class TrackPanel extends JPanel {
                 case 5:
                     hideAllComponents();
                     areaLabel.setVisible(true);
+                    areaInfoLabel.setVisible(true);
                     areaSearchedSpinner.setVisible(true);
                     areaInputButton.setVisible(true);
                     areaSearchedLabel.setVisible(true);
@@ -656,6 +681,19 @@ public class TrackPanel extends JPanel {
                     break;
             }
 
+        });
+    }
+
+    /**
+     * A method for the skipButton's listener
+     */
+    private void skipButtonListener() {
+        skipButton.addActionListener(actionEvent -> {
+            OPERATION_MANAGER.clearTrackCutter();
+            OPERATION_MANAGER.prepareNextFile();
+
+            String dialogText = Messages.SKIP_FILE.get();
+            JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), dialogText);
         });
     }
 

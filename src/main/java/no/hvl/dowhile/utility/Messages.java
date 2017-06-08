@@ -11,28 +11,33 @@ public enum Messages {
     ERROR_THREAD("En tråd ga en error mens den ventet på neste kjøring."),
     ERROR_NO_TRACK_FOR_INFO("Systemet prøvde å starte prosessering av fil som ikke finnes."),
     NO_RELEVANT_FILES_TITLE("Ingen relevante filer på GPS"),
-    NO_RELEVANT_FILES_GPS_DESCRIPTION("Oppdaget GPS, men fant ingen relevante filer! \n Mulige årsaker: \n - GPSen inneholder ingen filer \n - Filene er for gamle (de ble laget før operasjonsstart) \n - Filene er allerede overført"),
-    NO_RELEVANT_FILES_IMPORT_DESCRIPTION("Fil funnet, men den ble ikke overført! \n Mulige årsaker: \n - Filen er for gammel (den ble laget før operasjonsstart) \n - Filen er allerede overført"),
+    NO_RELEVANT_FILES_GPS_DESCRIPTION("Oppdaget GPS, men fant ingen relevante filer! \n Mulige årsaker: \n - GPSen inneholder ingen filer \n - Filene er for gamle (de ble laget før aksjonsstart) \n - Filene er allerede overført"),
+    NO_RELEVANT_FILES_IMPORT_DESCRIPTION("Fil funnet, men den ble ikke overført! \n Mulige årsaker: \n - Filen er for gammel (den ble laget før aksjonsstart) \n - Filen er allerede overført"),
+    SKIP_FILE("Hoppet over fil. \nFilen vil ikke bli lagt til i prosesserte filer, men i råfilene."),
 
     // Font
     FONT_NAME("Calibri"),
 
-    // Window
-    PROJECT_NAME("Track Grabber"),
+    // Header panel
     CONFIRM_EXIT("Vil du virkelig avslutte Track Grabber? Alle endringer vil bli lagret."),
+    NO_OPERATION("Ingen aksjon valgt."),
+    OPERATION_INFO("Aksjonsinfo "),
+    OPERATION_INFO_NAME("Navn: %1"),
+    OPERATION_INFO_START("Start: %1"),
+    PROJECT_NAME("Track Grabber"),
     SPACER("                                                  "),
 
     // Start panel
-    OPERATION_NAME("Navn på operasjon: "),
+    OPERATION_NAME("Navn på aksjon: "),
     OPERATION_START_DATE("Startdato: "),
     DEFINE_OPERATION_PATH("Legg til ekstra lagringssted"),
-    EXISTING_OPERATION("Velg en allerede eksisterende operasjon."),
-    NEW_OPERATION_BUTTON("Ny operasjon"),
-    EXISTING_OPERATION_BUTTON("Eksisterende operasjon"),
-    REGISTER_NEW_BUTTON("Opprett operasjon"),
+    EXISTING_OPERATION("Velg en allerede eksisterende aksjon."),
+    NEW_OPERATION_BUTTON("Ny aksjon"),
+    EXISTING_OPERATION_BUTTON("Eksisterende aksjon"),
+    REGISTER_NEW_BUTTON("Opprett aksjon"),
     REGISTER_EXISTING_BUTTON("Last inn"),
-    INVALID_OPERATION_NAME("Ugyldig operasjonsnavn"),
-    OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en operasjon med dette navnet."),
+    INVALID_OPERATION_NAME("Ugyldig aksjonsnavn"),
+    OPERATION_NAME_ALREADY_EXISTS("Det finnes allerede en aksjon med dette navnet."),
     OPERATION_NAME_IS_TOO_LONG_OR_SHORT("Navnet må være mellom 2 og 50 tegn."),
 
     // Stand by panel
@@ -40,13 +45,15 @@ public enum Messages {
     AWAITING_GPS("Koble til GPS-enhet og vent på prosessering..."),
 
     // Operation panel
-    CHOOSE_OTHER_OPERATION("Velg en annen operasjon"),
+    CHOOSE_OTHER_OPERATION("Velg en annen aksjon"),
     EDIT_OPERATION_TIME("Endre starttid: "),
-    EDIT_OPERATION_BUTTON("Lagre operasjonsinfo"),
-    EDIT_INFO_SHOW_BUTTON("Rediger operasjon"),
+    EDIT_OPERATION_BUTTON("Lagre aksjonsinfo"),
+    EDIT_INFO_SHOW_BUTTON("Rediger aksjon"),
     EDIT_INFO_HIDE_BUTTON("Skjul redigeringsinfo"),
     ALL_SAVED_PATHS("Mapper filene lagres til:"),
     GO_BACK("Tilbake"),
+    FOLDER_NOT_FOUND_TITLE("Mappe ikke funnet"),
+    FOLDER_NOT_FOUND_DESC("Kunne ikke legge til ekstra lagringsplassering \nfordi mappen du valgte ikke ble funnet."),
 
     // Track panel
     TRACK_HEADER("Prosesserer sporfil"),
@@ -56,16 +63,15 @@ public enum Messages {
     TRACK_START("Startet: "),
     TRACK_END("Sluttet: "),
     CREW_TYPE_MESSAGE("Velg type lag"),
-    CREW_NUMBER("Gruppenummer: "),
-    CREW_COUNT("Antall enheter: "),
+    CREW_NUMBER("Lagnummer (lag 21 = 2.1 osv.): "),
+    CREW_COUNT("Antall mannskap: "),
     AREA_SEARCHED("Teiger: "),
+    AREA_SEARCHED_INFO("Velg eller skriv inn teignummer og trykk legg til. Du kan legge til flere."),
     REGISTER_BUTTON("Registrer"),
+    SKIP_BUTTON("Hopp over"),
     SAVE_FILE("Fil prosessert og lagret!"),
-    OPERATION_INFO("Operasjonsinfo "),
-    OPERATION_INFO_NAME("Navn: %1"),
-    OPERATION_INFO_START("Start: %1"),
-    TRACK_NUMBER("Spornummer: "),
-    IMPORTED_FILES_LEFT_TO_PROCESS("Det er nå %1 filer i kø for prosessering."),
+    TRACK_NUMBER("Spornummer:"),
+    TRACK_NUMBER_INFO("<html>Om det finnes flere sporlogger for ditt lag/teig,<br>nummerer hvert spor i stigende rekkefølge ved import.<br>Første spor er spornummer 1.</html>"),
     TRACK_COMMENT("Kommentar til sporfilen: "),
     TRACK_COMMENT_PLACEHOLDER("Valgfri"),
     CHOOSE_AREA("Legg til"),
@@ -82,7 +88,7 @@ public enum Messages {
     WAYPOINT_HEADER("Prosesserer veipunkt"),
     NEW_NAME("Nytt navn for waypoint"),
     NEW_DESCRIPTION("Beskrivelse av waypoint"),
-    FLAG_COLOR("Velg farge på Waypoint-flagg:"),
+    FLAG_COLOR("Velg farge på Waypoint-flagg (valgfritt): "),
 
     // Track panel and Waypoint panel
     PROCESSING_FILES("Prosesserer fil %1 av %2");

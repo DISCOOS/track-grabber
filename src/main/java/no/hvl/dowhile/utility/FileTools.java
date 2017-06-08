@@ -182,8 +182,9 @@ public class FileTools {
     /**
      * Method to get the color from the gpx file and insert it correctly into the xml file.
      *
-     * @param gpx  the gpx to edit.
-     * @param file the file representing the gpx.
+     * @param gpx   the gpx to edit.
+     * @param file  the file representing the gpx.
+     * @param color the color to insert.
      */
     public static void insertDisplayColor(GPX gpx, File file, String color) {
         Track track = TrackTools.getTrackFromGPXFile(gpx);

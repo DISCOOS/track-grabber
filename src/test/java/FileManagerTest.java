@@ -25,6 +25,7 @@ public class FileManagerTest {
     private OperationManager opManager;
     private FileManager fileManager;
     private File appFolder;
+    private File extraFolder;
     private Operation operation;
     private String operationName;
     private TrackInfo trackInfo;
@@ -40,6 +41,8 @@ public class FileManagerTest {
 
         appFolder = tempFolder.newFolder("TrackGrabberTest");
         fileManager.setAppFolder(appFolder);
+
+        extraFolder = tempFolder.newFolder("Extra folders");
 
         fileManager.setupMainOperationFolder(operation);
     }
@@ -87,7 +90,7 @@ public class FileManagerTest {
 
     @Test
     public void existingOperationsAreNotLoadedFromEmptyFolder() {
-        fileManager.getMainOperationFolder().getOperationFolder().delete();
+        fileManager.getAppFolder().delete();
         List<Operation> operations = fileManager.loadExistingOperations();
         System.out.println(operations.size());
         assertTrue(operations.isEmpty());
@@ -99,7 +102,7 @@ public class FileManagerTest {
         operation.setStartTime(2014, 10, 21, 10, 34);
         fileManager.updateOperationFile(operation);
         File updatedOpFile = FileTools.getFile(fileManager.getMainOperationFolder().getOperationFolder(), operationName + ".txt");
-        String updatedDateString = "21-10/2014 10:34";
+        String updatedDateString = "21/10/2014 10:34";
         assertTrue(FileTools.txtFileContainsString(updatedOpFile, updatedDateString));
     }
 
@@ -121,14 +124,14 @@ public class FileManagerTest {
         assertNotNull(TrackTools.duplicateGpx(rawFiles, TrackTools.getTrackFromGPXFile(gpx2)));
     }
 
-    /*
     @Test
     public void alreadyImportedTrackIsAlreadyImported() {
         GPX gpx = TrackTools.getGpxFromFile(new File("src/test/resources/testFile.gpx"));
         fileManager.saveRawGpxFileInFolders(gpx, "Filnavn");
-        assertTrue(fileManager.alreadyImportedTrack(gpx));
+        int gpxTrackpointSize = TrackTools.getAllTrackPoints(TrackTools.getTrackFromGPXFile(gpx)).size();
+        int duplicateTrackpointsSize = fileManager.alreadyImportedTrack(gpx).size();
+        assertTrue(gpxTrackpointSize == duplicateTrackpointsSize);
     }
-    */
 
     @Test
     public void alreadyImportedWaypointIsAlreadyImported() {
@@ -163,6 +166,9 @@ public class FileManagerTest {
 
     @Test
     public void extraOperationFolderIsSetUp() {
-
+        fileManager.setupExtraOperationFolder(operation, extraFolder.getPath());
+        File extra = FileTools.getFile(extraFolder, "TestOp");
+        assertTrue(fileManager.getExtraOperationFolders().size() == 1);
+        assertNotNull(extra);
     }
 }

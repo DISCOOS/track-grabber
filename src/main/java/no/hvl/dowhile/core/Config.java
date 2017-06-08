@@ -16,6 +16,8 @@ import java.util.List;
 public class Config {
     private String filename;
     private List<TeamType> teamTypes;
+    private String redLabel;
+    private String greenLabel;
 
     /**
      * Constructor setting a default filename.
@@ -23,6 +25,8 @@ public class Config {
     public Config() {
         this.filename = "%LAGTYPE%%LAGNUMMER%_TEIG%TEIGNUMMER%_SPOR%SPORNUMMER%_%DATO%.gpx";
         this.teamTypes = new ArrayList<>();
+        this.redLabel = "Etterretning";
+        this.greenLabel = "Info";
     }
 
     /**
@@ -53,6 +57,10 @@ public class Config {
                 "team=Mannskap,color=Green",
                 "team=Hund,color=Magenta",
                 "team=Helikopter,color=DarkRed",
+                "#",
+                "# Velg beskrivelse av flaggfarge på veipunkt:",
+                "red-label=Etterretning",
+                "green-label=Info"
         };
     }
 
@@ -112,6 +120,24 @@ public class Config {
     }
 
     /**
+     * Get the label for the red color on waypoint flag color selector.
+     *
+     * @return the label for the red color.
+     */
+    public String getRedLabel() {
+        return redLabel;
+    }
+
+    /**
+     * Gets the label for the green color on waypoint flag color selector.
+     *
+     * @return the label for the green color.
+     */
+    public String getGreenLabel() {
+        return greenLabel;
+    }
+
+    /**
      * Parses the config file and extracts the needed information.
      *
      * @param file the config file.
@@ -142,6 +168,22 @@ public class Config {
                                 String teamColor = parts[1].split("=")[1];
                                 teamTypes.add(new TeamType(teamType, teamColor));
                                 System.err.println("[Config] Parsed team type " + teamType + " with color " + teamColor);
+                            }
+                        }
+                    } else if (line.startsWith("red-label")) {
+                        if (line.contains("=")) {
+                            String[] parts = line.split("=");
+                            if (parts.length == 2) {
+                                redLabel = parts[1];
+                                System.err.println("[Config] Parsed label for red waypoint flag color " + redLabel);
+                            }
+                        }
+                    } else if (line.startsWith("green-label")) {
+                        if (line.contains("=")) {
+                            String[] parts = line.split("=");
+                            if (parts.length == 2) {
+                                greenLabel = parts[1];
+                                System.err.println("[Config] Parsed label for green waypoint flag color " + greenLabel);
                             }
                         }
                     }

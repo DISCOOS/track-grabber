@@ -16,25 +16,37 @@ import java.util.Locale;
 /**
  * This class has an interface for editing the current operation or choose another operation.
  */
-public class OperationPanel extends JPanel {
+class OperationPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private JLabel allSavedPathsHeaderLabel;
     private JLabel allSavedPathsLabel;
 
+    // Back button
     private JButton backButton;
 
+    // Operation setting Buttons
     private JButton switchOperationButton;
     private JButton toggleEditInfoButton;
-    private JLabel editDateLabel;
-    private DatePicker editDatePicker;
-    private TimePicker editTimePicker;
     private JButton saveOperationButton;
     private JButton definePathButton;
 
+    // Edit operation
+    private JLabel editDateLabel;
+    private DatePicker editDatePicker;
+    private TimePicker editTimePicker;
+
+    // Constraints
     private GridBagConstraints constraints;
 
-    public OperationPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
+    /**
+     * Constructor setting the OPERATION_MANAGER and WINDOW.
+     * Also sets the layout and the constraints and the background color
+     *
+     * @param OPERATION_MANAGER the current instance of the OperationManager
+     * @param WINDOW            the current instance of the Window
+     */
+    OperationPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
 
@@ -67,7 +79,6 @@ public class OperationPanel extends JPanel {
     /**
      * Creates the universal buttons in the GUI
      */
-
     private void universalButtonsGUI() {
         // Back button
         backButton = WINDOW.makeButton(Messages.GO_BACK.get(), 150, 50);
@@ -140,7 +151,7 @@ public class OperationPanel extends JPanel {
      *
      * @param operation the current operation.
      */
-    public void updateOperationInfo(Operation operation) {
+    void updateOperationInfo(Operation operation) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(operation.getStartTime());
         editDatePicker.setDate(LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH)));
@@ -197,12 +208,19 @@ public class OperationPanel extends JPanel {
         });
     }
 
+    /**
+     * Button listener for the define path button
+     */
     private void definePathButtonListener() {
         definePathButton.addActionListener(actionEvent -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int option = fileChooser.showSaveDialog(JOptionPane.getRootFrame());
             if (option == JFileChooser.APPROVE_OPTION) {
+                if (!fileChooser.getSelectedFile().exists()) {
+                    WINDOW.showDialog(Messages.FOLDER_NOT_FOUND_TITLE.get(), Messages.FOLDER_NOT_FOUND_DESC.get());
+                    return;
+                }
                 OPERATION_MANAGER.getOperation().addPath(fileChooser.getSelectedFile().getAbsolutePath());
                 OPERATION_MANAGER.updateOperationFile();
                 OPERATION_MANAGER.updateOperationFolders();
@@ -245,7 +263,12 @@ public class OperationPanel extends JPanel {
         });
     }
 
-    public void setAllSavedPathsLabel(String paths) {
+    /**
+     * Sets the allSavedPathsLabel to the given parameter string
+     *
+     * @param paths the string with paths
+     */
+    void setAllSavedPathsLabel(String paths) {
         allSavedPathsLabel.setText(paths);
     }
 }

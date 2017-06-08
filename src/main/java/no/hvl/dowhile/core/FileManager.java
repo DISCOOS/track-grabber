@@ -12,8 +12,6 @@ import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +58,7 @@ public class FileManager {
      *
      * @param filename the name of the file to delete.
      */
-    public void deleteRawFileInFolders(String filename) {
+    void deleteRawFileInFolders(String filename) {
         deleteRawFile(mainOperationFolder.getRawFolder(), filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
             deleteRawFile(operationFolder.getRawFolder(), filename);
@@ -70,9 +68,10 @@ public class FileManager {
     /**
      * Deletes the specified file from the rawfolder.
      *
-     * @param filename the name of the file to delete.
+     * @param rawFolder the raw folder to delete the file from.
+     * @param filename  the name of the file to delete.
      */
-    public void deleteRawFile(File rawFolder, String filename) {
+    private void deleteRawFile(File rawFolder, String filename) {
         File file = new File(rawFolder, filename);
         if (!file.exists()) {
             return;
@@ -90,13 +89,15 @@ public class FileManager {
      *
      * @param listRoot the drive to store the files.
      */
-    public void setupLocalFolders(File listRoot) {
+    void setupLocalFolders(File listRoot) {
         appFolder = setupFolder(listRoot, "TrackGrabber");
         setupConfig(appFolder);
     }
 
     /**
-     * Sets up the config file.
+     * Sets up the Config file.
+     *
+     * @param folder The folder in which to store the config file.
      */
     public void setupConfig(File folder) {
         File config = FileTools.getFile(folder, "config.txt");
@@ -216,7 +217,7 @@ public class FileManager {
      * @param name         the name of the new folder.
      * @return the folder which was created.
      */
-    public File setupFolder(File parentFolder, String name) {
+    private File setupFolder(File parentFolder, String name) {
         File folder = new File(parentFolder, name);
         boolean folderCreated = folder.mkdir();
         if (folderCreated) {
@@ -226,7 +227,7 @@ public class FileManager {
     }
 
     /**
-     * Checks if a file has already been saved in the rawfolder.
+     * Checks if a track has already been saved in the rawfolder.
      *
      * @param newGpx The gpx file to check.
      * @return true if the file is matching a file, false if not.
@@ -274,7 +275,7 @@ public class FileManager {
      * @param processedFile the name of the processed file.
      * @param originalHash  the hash of the original/raw file.
      */
-    public void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalHash) {
+    void saveTrackFileInfo(TrackInfo info, String time, String originalFile, String processedFile, String originalHash) {
         mainOperationFolder.saveTrackFileInfo(info, time, originalFile, processedFile, originalHash);
     }
 
@@ -286,7 +287,7 @@ public class FileManager {
      * @param processedFile the name of the processed file.
      * @param originalHash  the hash of the original/raw file.
      */
-    public void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
+    void saveWaypointFileInfo(String comment, String originalFile, String processedFile, String originalHash) {
         mainOperationFolder.saveWaypointFileInfo(comment, originalFile, processedFile, originalHash);
     }
 
@@ -295,11 +296,14 @@ public class FileManager {
      *
      * @param rawGpx   the gpx to save.
      * @param filename the name to save it as.
+     * @return The hash value of the saved file.
      */
     public String saveRawGpxFileInFolders(GPX rawGpx, String filename) {
         String hash = saveRawGpxFile(mainOperationFolder.getRawFolder(), rawGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveRawGpxFile(operationFolder.getRawFolder(), rawGpx, filename);
+            if (operationFolder.getOperationFolder().exists()) {
+                saveRawGpxFile(operationFolder.getRawFolder(), rawGpx, filename);
+            }
         }
         return hash;
     }
@@ -307,8 +311,9 @@ public class FileManager {
     /**
      * Saves the specified file in the raw folder as the specified filename.
      *
-     * @param rawGpx   the gpx file to save.
-     * @param filename the name for the new file.
+     * @param rawFolder the folder to save the file to.
+     * @param rawGpx    the gpx file to save.
+     * @param filename  the name for the new file.
      * @return hash of the saved file.
      */
     private String saveRawGpxFile(File rawFolder, GPX rawGpx, String filename) {
@@ -325,7 +330,9 @@ public class FileManager {
     public void saveProcessedGpxFileInFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         saveProcessedGpxFile(mainOperationFolder.getProcessedFolder(), trackInfo, processedGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveProcessedGpxFile(operationFolder.getProcessedFolder(), trackInfo, processedGpx, filename);
+            if (operationFolder.getOperationFolder().exists()) {
+                saveProcessedGpxFile(operationFolder.getProcessedFolder(), trackInfo, processedGpx, filename);
+            }
         }
         organizeFile(processedGpx, trackInfo, filename);
     }
@@ -337,7 +344,7 @@ public class FileManager {
      * @param trackInfo    the info about the track.
      * @param filename     the name to save the file as.
      */
-    public void organizeFile(GPX processedGpx, TrackInfo trackInfo, String filename) {
+    private void organizeFile(GPX processedGpx, TrackInfo trackInfo, String filename) {
         organizeGpxInCrewFolders(processedGpx, trackInfo, filename);
         organizeGpxInAreaFolders(processedGpx, trackInfo, filename);
         organizeGpxInDayFolders(processedGpx, trackInfo, filename);
@@ -350,12 +357,14 @@ public class FileManager {
      * @param trackInfo    The info that helps find the right folder.
      * @param filename     The name of the file.
      */
-    public void organizeGpxInCrewFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
+    private void organizeGpxInCrewFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         File crewFolder = setupFolder(mainOperationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
         saveGpxFile(processedGpx, trackInfo, filename, crewFolder);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            crewFolder = setupFolder(operationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
-            saveGpxFile(processedGpx, trackInfo, filename, crewFolder);
+            if (operationFolder.getOperationFolder().exists()) {
+                crewFolder = setupFolder(operationFolder.getCrewOrgFolder(), trackInfo.getCrewType());
+                saveGpxFile(processedGpx, trackInfo, filename, crewFolder);
+            }
         }
     }
 
@@ -366,14 +375,16 @@ public class FileManager {
      * @param trackInfo    The info that helps find the correct folder(s).
      * @param filename     The name of the file.
      */
-    public void organizeGpxInAreaFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
+    private void organizeGpxInAreaFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         List<String> areaNumbers = FileTools.getAreasFromString(trackInfo.getAreaSearched());
         for (String areaNumber : areaNumbers) {
             File areaFolder = setupFolder(mainOperationFolder.getAreaOrgFolder(), areaNumber);
             saveGpxFile(processedGpx, trackInfo, filename, areaFolder);
             for (OperationFolder operationFolder : extraOperationFolders) {
-                areaFolder = setupFolder(operationFolder.getAreaOrgFolder(), areaNumber);
-                saveGpxFile(processedGpx, trackInfo, filename, areaFolder);
+                if (operationFolder.getOperationFolder().exists()) {
+                    areaFolder = setupFolder(operationFolder.getAreaOrgFolder(), areaNumber);
+                    saveGpxFile(processedGpx, trackInfo, filename, areaFolder);
+                }
             }
         }
     }
@@ -382,23 +393,28 @@ public class FileManager {
      * Organizes the file into the correct day folder.
      *
      * @param processedGpx The file to store.
+     * @param trackInfo    info about the current track.
      * @param filename     The name of the file.
      */
-    public void organizeGpxInDayFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
+    private void organizeGpxInDayFolders(GPX processedGpx, TrackInfo trackInfo, String filename) {
         String dateString = TrackTools.getDayStringFromTrack(processedGpx);
         File dateFolder = setupFolder(mainOperationFolder.getDayOrgFolder(), dateString);
         saveGpxFile(processedGpx, trackInfo, filename, dateFolder);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            dateFolder = setupFolder(operationFolder.getDayOrgFolder(), dateString);
-            saveGpxFile(processedGpx, trackInfo, filename, dateFolder);
+            if (operationFolder.getOperationFolder().exists()) {
+                dateFolder = setupFolder(operationFolder.getDayOrgFolder(), dateString);
+                saveGpxFile(processedGpx, trackInfo, filename, dateFolder);
+            }
         }
     }
 
     /**
      * Saves the specified file in the processed folder as the specified filename.
      *
-     * @param processedGpx the gpx file to save.
-     * @param filename     the name for the new file.
+     * @param processedFolder the folder to save the file to.
+     * @param trackInfo       info about the current track.
+     * @param processedGpx    the gpx file to save.
+     * @param filename        the name for the new file.
      */
     private void saveProcessedGpxFile(File processedFolder, TrackInfo trackInfo, GPX processedGpx, String filename) {
         saveGpxFile(processedGpx, trackInfo, filename, processedFolder);
@@ -413,15 +429,18 @@ public class FileManager {
     public void saveAreaGpxFileInFolders(GPX areaGpx, String filename) {
         saveAreaGpxFile(mainOperationFolder.getAreaFolder(), areaGpx, filename);
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveAreaGpxFile(operationFolder.getAreaFolder(), areaGpx, filename);
+            if (operationFolder.getOperationFolder().exists()) {
+                saveAreaGpxFile(operationFolder.getAreaFolder(), areaGpx, filename);
+            }
         }
     }
 
     /**
      * Saves the area file in the area folder as the specified filename.
      *
-     * @param areaGPX  the gpx file to save.
-     * @param filename the name for the new file.
+     * @param areaFolder the folder to save the file to.
+     * @param areaGPX    the gpx file to save.
+     * @param filename   the name for the new file.
      */
     private void saveAreaGpxFile(File areaFolder, GPX areaGPX, String filename) {
         saveGpxFile(areaGPX, null, filename, areaFolder);
@@ -429,32 +448,26 @@ public class FileManager {
 
     /**
      * Saves a waypoint to all necessary folders.
+     *
      * @param waypointGpx The waypoint GPX file to save.
-     * @param filename The name of the waypoint GPX file.
+     * @param filename    The name of the waypoint GPX file.
      */
     public void saveWaypointFileInFolders(GPX waypointGpx, String filename) {
         saveGpxFile(waypointGpx, null, filename, mainOperationFolder.getWaypointFolder());
         for (OperationFolder operationFolder : extraOperationFolders) {
-            saveGpxFile(waypointGpx, null, filename, operationFolder.getWaypointFolder());
+            if (operationFolder.getOperationFolder().exists()) {
+                saveGpxFile(waypointGpx, null, filename, operationFolder.getWaypointFolder());
+            }
         }
-    }
-
-    /**
-     * Saves the waypoint file in the waypoint folder as the specified filename.
-     *
-     * @param waypointFile the file to save.
-     * @param filename     the name to save it as.
-     */
-    private void saveWaypointFile(File waypointFolder, File waypointFile, String filename) {
-        saveFile(waypointFile, filename, waypointFolder);
     }
 
     /**
      * Saving the file in the specified folder as the specified filename.
      *
-     * @param gpx      the gpx to save.
-     * @param filename the name for the new file.
-     * @param folder   the folder to save it in.
+     * @param gpx       the gpx to save.
+     * @param trackInfo the info about the gpx's track.
+     * @param filename  the name for the new file.
+     * @param folder    the folder to save it in.
      */
     public void saveGpxFile(GPX gpx, TrackInfo trackInfo, String filename, File folder) {
         try {
@@ -488,12 +501,13 @@ public class FileManager {
     /**
      * Saves the file in the specified folder as the specified filename.
      *
-     * @param gpx      the gpx to save.
-     * @param filename the name for the new file.
-     * @param folder   the folder to save it in.
+     * @param gpx       the gpx to save.
+     * @param trackInfo info about the current track.
+     * @param filename  the name for the new file.
+     * @param folder    the folder to save it in.
      * @return hash value of the saved file.
      */
-    public String saveAndHashGpxFile(GPX gpx, TrackInfo trackInfo, String filename, File folder) {
+    private String saveAndHashGpxFile(GPX gpx, TrackInfo trackInfo, String filename, File folder) {
         String hash = "";
         try {
             File file = new File(folder, filename);
@@ -526,49 +540,20 @@ public class FileManager {
     }
 
     /**
-     * Saves the file in the specified folder as the specified filename.
-     *
-     * @param fileToSave the file to save.
-     * @param filename   the name for the new file.
-     * @param folder     the folder to save it in.
-     */
-    public void saveFile(File fileToSave, String filename, File folder) {
-        try {
-            File file = new File(folder, filename);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            Files.copy(fileToSave.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ex) {
-            System.err.println("Failed to save file.");
-            ex.printStackTrace();
-        }
-    }
-
-    /**
-     * Sets the raw folder for the current operation.
-     *
-     * @param rawFolder the folder to save raw files.
-     */
-    public void setRawFolder(File rawFolder) {
-        mainOperationFolder.setRawFolder(rawFolder);
-    }
-
-    /**
-     * Sets the processed folder for the current operation.
-     *
-     * @param processedFolder the folder to save processed files.
-     */
-    public void setProcessedFolder(File processedFolder) {
-        mainOperationFolder.setProcessedFolder(processedFolder);
-    }
-
-    /**
      * Gets the main operation folder for the current operation.
      *
      * @return the main operation folder.
      */
     public OperationFolder getMainOperationFolder() {
         return mainOperationFolder;
+    }
+
+    /**
+     * Gets all the extra operation folders associated with the current operation.
+     *
+     * @return all the extra operation folders.
+     */
+    public List<OperationFolder> getExtraOperationFolders() {
+        return extraOperationFolders;
     }
 }

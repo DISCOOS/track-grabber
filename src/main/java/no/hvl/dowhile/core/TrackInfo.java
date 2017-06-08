@@ -32,6 +32,7 @@ public class TrackInfo {
      * @param crewCount    number of people on the crew.
      * @param crewNumber   the number of this crew.
      * @param areaSearched the area they were searching in.
+     * @param distance     the total distance of the track.
      * @param trackNumber  the number of track (if multiple tracks for a team etc).
      * @param comment      Optional comment about a track.
      */
@@ -50,7 +51,7 @@ public class TrackInfo {
      *
      * @return the type of crew creating this track.
      */
-    public String getCrewType() {
+    String getCrewType() {
         return crewType;
     }
 
@@ -68,17 +69,8 @@ public class TrackInfo {
      *
      * @return the number of people on this creative.
      */
-    public int getCrewCount() {
+    int getCrewCount() {
         return crewCount;
-    }
-
-    /**
-     * Sets the number of people on this crew.
-     *
-     * @param crewCount the number of people on this crew.
-     */
-    public void setCrewCount(int crewCount) {
-        this.crewCount = crewCount;
     }
 
     /**
@@ -86,17 +78,8 @@ public class TrackInfo {
      *
      * @return the number of this crew.
      */
-    public int getCrewNumber() {
+    int getCrewNumber() {
         return crewNumber;
-    }
-
-    /**
-     * Sets the number of this crew.
-     *
-     * @param groupNumber the number of this crew.
-     */
-    public void setCrewNumber(int groupNumber) {
-        this.crewNumber = groupNumber;
     }
 
     /**
@@ -104,7 +87,7 @@ public class TrackInfo {
      *
      * @return the area where this team were searching.
      */
-    public String getAreaSearched() {
+    String getAreaSearched() {
         return areaSearched;
     }
 
@@ -122,17 +105,8 @@ public class TrackInfo {
      *
      * @return distance covered.
      */
-    public double getDistance() {
+    double getDistance() {
         return distance;
-    }
-
-    /**
-     * Sets the distance covered in the track.
-     *
-     * @param distance the distance to be set.
-     */
-    public void setDistance(double distance) {
-        this.distance = distance;
     }
 
     /**
@@ -140,17 +114,8 @@ public class TrackInfo {
      *
      * @return number of the track.
      */
-    public int getTrackNumber() {
+    int getTrackNumber() {
         return trackNumber;
-    }
-
-    /**
-     * Sets the number of the track (if multiple tracks on a team etc):
-     *
-     * @param trackNumber number of the track.
-     */
-    public void setTrackNumber(int trackNumber) {
-        this.trackNumber = trackNumber;
     }
 
     /**
@@ -158,7 +123,7 @@ public class TrackInfo {
      *
      * @return the comment about this track.
      */
-    public String getComment() {
+    String getComment() {
         return comment;
     }
 }

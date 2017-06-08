@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * This class has an interface for creating a new operation or choosing an existing operation.
  */
-public class StartPanel extends JPanel {
+class StartPanel extends JPanel {
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
@@ -45,10 +45,10 @@ public class StartPanel extends JPanel {
      * sets the layout and constraints, runs the GUI methods, sets the locale for the datepicker and timepicker,
      * sets initial visibility and sets the button listeners active
      *
-     * @param OPERATION_MANAGER
-     * @param WINDOW
+     * @param OPERATION_MANAGER the current instance of the operation manager.
+     * @param WINDOW            the current instance of the window.
      */
-    public StartPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
+    StartPanel(final OperationManager OPERATION_MANAGER, final Window WINDOW) {
         this.OPERATION_MANAGER = OPERATION_MANAGER;
         this.WINDOW = WINDOW;
 
@@ -185,7 +185,7 @@ public class StartPanel extends JPanel {
      *
      * @param operations the operations to add.
      */
-    public void showExistingOperations(java.util.List<Operation> operations) {
+    void showExistingOperations(java.util.List<Operation> operations) {
         existingOperationInput.removeAll(); // Avoid duplicates.
         for (Operation operation : operations) {
             existingOperationInput.addItem(operation.getName());
@@ -284,6 +284,7 @@ public class StartPanel extends JPanel {
                 errorMessageLabel.setText(Messages.OPERATION_NAME_IS_TOO_LONG_OR_SHORT.get());
                 return;
             }
+
             Operation operation = new Operation(operationName, day, month, year, hour, minute);
             OPERATION_MANAGER.setupOperation(operation);
             OPERATION_MANAGER.reloadExistingOperations();
