@@ -2,6 +2,8 @@ package no.hvl.dowhile.utility;
 
 import com.hs.gpxparser.modal.GPX;
 import com.hs.gpxparser.modal.Track;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,6 +15,9 @@ import java.util.*;
  * Utility methods to work with files.
  */
 public class FileTools {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileTools.class);
+
     /**
      * Clears the specified file.
      *
@@ -24,7 +29,7 @@ public class FileTools {
             writer.print("");
             writer.close();
         } catch (IOException ex) {
-            System.err.println("Failed while attempting to clear file " + file.getName());
+            logger.error("Failed while attempting to clear file {}" , file.getName(), ex);
         }
     }
 
@@ -88,8 +93,7 @@ public class FileTools {
             writer.flush();
             writer.close();
         } catch (IOException ex) {
-            System.err.println("Error occured while writing to file " + file.getName());
-            ex.printStackTrace();
+            logger.error("Error occured while writing to file {}", file.getName(), ex);
         }
     }
 
@@ -113,8 +117,7 @@ public class FileTools {
             writer.flush();
             writer.close();
         } catch (IOException ex) {
-            System.err.println("Error occured while writing to file " + file.getName());
-            ex.printStackTrace();
+            logger.error("Error occured while writing to file {}", file.getName(), ex);
         }
     }
 
@@ -131,9 +134,9 @@ public class FileTools {
             byte[] hashed = sha.digest(originalFileBytes);
             return Base64.getEncoder().encodeToString(hashed);
         } catch (IOException ex) {
-            System.err.println("Failed while hashing file " + file.getName());
+            logger.error("Failed while hashing file {}", file.getName(), ex);
         } catch (NoSuchAlgorithmException ex) {
-            System.err.println("Algorithm not found while hashing file " + file.getName());
+            logger.error("Algorithm not found while hashing file {}", file.getName(), ex);
         }
         return "";
     }
@@ -149,7 +152,7 @@ public class FileTools {
         File folder = new File(parentFolder, name);
         boolean folderCreated = folder.mkdir();
         if (folderCreated) {
-            System.err.println(name + " folder didn't exist. Created!");
+            logger.info("{} folder didn't exist. Created!", name);
         }
         return folder;
     }
@@ -175,7 +178,7 @@ public class FileTools {
             writer.flush();
             writer.close();
         } catch (Exception ex) {
-            System.err.println("Failed while inserting xml data.");
+            logger.error("Failed while inserting xml data.", ex);
         }
     }
 
@@ -202,7 +205,7 @@ public class FileTools {
             writer.flush();
             writer.close();
         } catch (Exception ex) {
-            System.err.println("Failed while inserting xml data.");
+            logger.error("Failed while inserting xml data.", ex);
         }
     }
 
@@ -227,7 +230,7 @@ public class FileTools {
             }
             reader.close();
         } catch (IOException ex) {
-            System.err.println("Failed while reading from file.");
+            logger.error("Failed while reading from file.", ex);
         }
         return found;
     }

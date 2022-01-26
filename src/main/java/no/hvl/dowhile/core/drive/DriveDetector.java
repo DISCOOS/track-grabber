@@ -5,6 +5,8 @@ import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.Messages;
 import no.hvl.dowhile.utility.ThreadTools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.*;
@@ -14,6 +16,9 @@ import java.util.*;
  * The class will also check if a drive is a GPS.
  */
 public class DriveDetector implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(DriveDetector.class);
+
     private final OperationManager OPERATION_MANAGER;
     private Map<String, Drive> detectedDrives;
 
@@ -76,12 +81,12 @@ public class DriveDetector implements Runnable {
         if (gpsDrive != null) {
             OPERATION_MANAGER.handleGPSDrive(gpsDrive);
             detectedDrives.put(driveLetter, gpsDrive);
-            System.err.println("GPS drive detected. There are now " + detectedDrives.size() + " connected.");
+            logger.info("GPS drive detected. There are now {} connected.", detectedDrives.size());
         } else {
             // Drive is not a GPS.
             Drive drive = new Drive(driveLetter);
             detectedDrives.put(driveLetter, drive);
-            System.err.println("Normal drive detected. There are now " + detectedDrives.size() + " connected.");
+            logger.info("Normal drive detected. There are now {} connected.", detectedDrives.size());
         }
     }
 
@@ -106,9 +111,9 @@ public class DriveDetector implements Runnable {
             Drive drive = detectedDrives.remove(driveLetter);
             if (drive != null) {
                 if (drive instanceof GPSDrive) {
-                    System.err.println("GPS drive removed. There are now " + detectedDrives.size() + " connected.");
+                    logger.info("GPS drive removed. There are now {} connected.", detectedDrives.size());
                 } else {
-                    System.err.println("Normal drive removed. There are now " + detectedDrives.size() + " connected.");
+                    logger.info("Normal drive removed. There are now {} connected.", detectedDrives.size());
                 }
             }
         }

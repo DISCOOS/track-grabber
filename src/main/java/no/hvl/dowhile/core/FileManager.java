@@ -6,6 +6,8 @@ import com.hs.gpxparser.modal.Track;
 import com.hs.gpxparser.modal.Waypoint;
 import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.TrackTools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -19,6 +21,9 @@ import java.util.List;
  * Managing files and has methods for storing files in the application file system.
  */
 public class FileManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileManager.class);
+
     private final OperationManager OPERATION_MANAGER;
     private File appFolder;
 
@@ -78,9 +83,9 @@ public class FileManager {
         }
         boolean deleted = file.delete();
         if (deleted) {
-            System.err.println("File " + filename + " deleted.");
+            logger.info("File {} deleted.", filename);
         } else {
-            System.err.println("Tried to delete " + filename + " from rawfolder, however it didn't work.");
+            logger.info("Tried to delete {} from rawfolder, however it didn't work.", filename);
         }
     }
 
@@ -102,14 +107,14 @@ public class FileManager {
     public void setupConfig(File folder) {
         File config = FileTools.getFile(folder, "config.txt");
         if (config == null) {
-            System.err.println("Config doesn't exist. Creating.");
+            logger.info("Config doesn't exist. Creating.");
             config = new File(folder, "config.txt");
             try {
                 config.createNewFile();
                 FileTools.writeToFile(OPERATION_MANAGER.getConfig().getConfigTemplate(), config);
-                System.err.println("Config created.");
+                logger.info("Config created.");
             } catch (IOException ex) {
-                System.err.println("Failed while creating config file.");
+                logger.info("Failed while creating config file.");
             }
         }
         OPERATION_MANAGER.getConfig().parseConfigFile(config);
@@ -136,7 +141,7 @@ public class FileManager {
                                 Operation operation = new Operation(fileInOperationFolder);
                                 operations.add(operation);
                             } catch (Exception ex) {
-                                System.err.println("Failed while parsing operation file.");
+                                logger.info("Failed while parsing operation file.");
                             }
                         }
                     }
@@ -181,7 +186,7 @@ public class FileManager {
             try {
                 operationFile.createNewFile();
             } catch (IOException ex) {
-                System.err.println("Failed to create operation file.");
+                logger.error("Failed to create operation file.", ex);
             }
         }
         FileTools.writeToFile(operation.getFileContent(), operationFile);
@@ -206,7 +211,7 @@ public class FileManager {
             }
             FileTools.writeToFile(operation.getFileContent(), operationFile);
         } catch (IOException ex) {
-            System.err.println("Failed to update operation file.");
+            logger.error("Failed to update operation file.", ex);
         }
     }
 
@@ -221,7 +226,7 @@ public class FileManager {
         File folder = new File(parentFolder, name);
         boolean folderCreated = folder.mkdir();
         if (folderCreated) {
-            System.err.println(name + " folder didn't exist. Created!");
+            logger.info("{} folder didn't exist. Created!", name);
         }
         return folder;
     }
@@ -487,14 +492,11 @@ public class FileManager {
                 }
             }
         } catch (IOException ex) {
-            System.err.println("Failed to save raw file.");
-            ex.printStackTrace();
+            logger.error("Failed to save raw file.", ex);
         } catch (ParserConfigurationException ex) {
-            System.err.println("Parser is not configured correctly.");
-            ex.printStackTrace();
+            logger.error("Parser is not configured correctly.", ex);
         } catch (TransformerException ex) {
-            System.err.println("Failed to transform raw file.");
-            ex.printStackTrace();
+            logger.error("Failed to transform raw file.", ex);
         }
     }
 
@@ -527,14 +529,11 @@ public class FileManager {
             }
             hash = FileTools.hashFile(file);
         } catch (IOException ex) {
-            System.err.println("Failed to save raw file.");
-            ex.printStackTrace();
+            logger.error("Failed to save raw file.", ex);
         } catch (ParserConfigurationException ex) {
-            System.err.println("Parser is not configured correctly.");
-            ex.printStackTrace();
+            logger.error("Parser is not configured correctly.", ex);
         } catch (TransformerException ex) {
-            System.err.println("Failed to transform raw file.");
-            ex.printStackTrace();
+            logger.error("Failed to transform raw file.", ex);
         }
         return hash;
     }

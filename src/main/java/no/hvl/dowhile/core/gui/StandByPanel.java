@@ -2,6 +2,8 @@ package no.hvl.dowhile.core.gui;
 
 import no.hvl.dowhile.core.OperationManager;
 import no.hvl.dowhile.utility.Messages;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,6 +14,9 @@ import java.awt.*;
  * This class has an interface for importing gpx-files from PC and accessing settings for the current Operation.
  */
 class StandByPanel extends JPanel {
+
+    private static final Logger logger = LoggerFactory.getLogger(StandByPanel.class);
+
     private final OperationManager OPERATION_MANAGER;
     private final Window WINDOW;
     private GridBagConstraints constraints;
@@ -67,7 +72,7 @@ class StandByPanel extends JPanel {
             Image newimg = img.getScaledInstance((NEW_WIDTH - 10), (NEW_HEIGHT - 10), java.awt.Image.SCALE_SMOOTH);
             operationPanelButton.setIcon(new ImageIcon(newimg));
         } catch (Exception ex) {
-            System.out.println(ex);
+            logger.error("Failed to read image for settings icon", ex);
         }
         operationPanelButton.setToolTipText("Operasjonsinnstillinger");
         WINDOW.modifyConstraints(constraints, 2, 1, GridBagConstraints.EAST, 1);

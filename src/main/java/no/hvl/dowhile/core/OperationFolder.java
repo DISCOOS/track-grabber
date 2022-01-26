@@ -1,6 +1,8 @@
 package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.utility.FileTools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +11,9 @@ import java.io.IOException;
  * Stores folders for a given file location to store files for the current operation.
  */
 public class OperationFolder {
+
+    private static final Logger logger = LoggerFactory.getLogger(OperationFolder.class);
+
     private File trackFileInfo;
     private File waypointFileInfo;
     private File operationFolder;
@@ -42,7 +47,7 @@ public class OperationFolder {
             operation.setMainPath(root.getAbsolutePath());
             createOperationFiles(operation);
         }
-        System.err.println("Done creating folders for operation " + operation.getName());
+        logger.info("Done creating folders for operation {}", operation.getName());
     }
 
     /**
@@ -130,7 +135,7 @@ public class OperationFolder {
             try {
                 operationFile.createNewFile();
             } catch (IOException ex) {
-                System.err.println("Failed to create operation file.");
+                logger.error("Failed to create operation file.", ex);
             }
             FileTools.writeToFile(operation.getFileContent(), operationFile);
         }
@@ -139,7 +144,7 @@ public class OperationFolder {
                 trackFileInfo.createNewFile();
                 FileTools.writeToCsvFile(trackFileInfo, "Lagtype", "Lagnummer", "Antall mann", "Teiger", "Lengde", "Spornummer", "Kommentar", "Tid", "Original fil", "Prosessert fil", "Original hash");
             } catch (IOException ex) {
-                System.err.println("Failed to create operation file.");
+                logger.error("Failed to create operation file.", ex);
             }
         }
         if (!waypointFileInfo.exists()) {
@@ -147,7 +152,7 @@ public class OperationFolder {
                 waypointFileInfo.createNewFile();
                 FileTools.writeToCsvFile(waypointFileInfo, "Kommentar", "Original fil", "Prosessert fil", "Original hash");
             } catch (IOException ex) {
-                System.err.println("Failed to create operation file.");
+                logger.error("Failed to create operation file.", ex);
             }
         }
     }
@@ -196,7 +201,7 @@ public class OperationFolder {
             }
             FileTools.writeToFile(operation.getFileContent(), operationFile);
         } catch (IOException ex) {
-            System.err.println("Failed to update operation file.");
+            logger.error("Failed to update operation file.", ex);
         }
     }
 }

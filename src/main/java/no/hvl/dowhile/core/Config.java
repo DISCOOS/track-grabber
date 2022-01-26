@@ -1,6 +1,8 @@
 package no.hvl.dowhile.core;
 
 import no.hvl.dowhile.utility.StringTools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +16,9 @@ import java.util.List;
  * Reads and writes to the configuration file.
  */
 public class Config {
+
+    private static final Logger logger = LoggerFactory.getLogger(Config.class);
+
     private String filename;
     private List<TeamType> teamTypes;
     private String redLabel;
@@ -157,7 +162,7 @@ public class Config {
                             String[] parts = line.split("=");
                             if (parts.length == 2) {
                                 filename = parts[1];
-                                System.err.println("[Config] Parsed filename " + filename);
+                                logger.info("[Config] Parsed filename {}", filename);
                             }
                         }
                     } else if (line.startsWith("team")) {
@@ -167,7 +172,7 @@ public class Config {
                                 String teamType = parts[0].split("=")[1];
                                 String teamColor = parts[1].split("=")[1];
                                 teamTypes.add(new TeamType(teamType, teamColor));
-                                System.err.println("[Config] Parsed team type " + teamType + " with color " + teamColor);
+                                logger.info("[Config] Parsed team type {} with color {}", teamType, teamColor);
                             }
                         }
                     } else if (line.startsWith("red-label")) {
@@ -175,7 +180,7 @@ public class Config {
                             String[] parts = line.split("=");
                             if (parts.length == 2) {
                                 redLabel = parts[1];
-                                System.err.println("[Config] Parsed label for red waypoint flag color " + redLabel);
+                                logger.info("[Config] Parsed label for red waypoint flag color {}", redLabel);
                             }
                         }
                     } else if (line.startsWith("green-label")) {
@@ -183,7 +188,7 @@ public class Config {
                             String[] parts = line.split("=");
                             if (parts.length == 2) {
                                 greenLabel = parts[1];
-                                System.err.println("[Config] Parsed label for green waypoint flag color " + greenLabel);
+                                logger.info("[Config] Parsed label for green waypoint flag color {}", greenLabel);
                             }
                         }
                     }

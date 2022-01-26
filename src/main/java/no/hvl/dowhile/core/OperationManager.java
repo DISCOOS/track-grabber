@@ -10,6 +10,8 @@ import no.hvl.dowhile.utility.FileTools;
 import no.hvl.dowhile.utility.Messages;
 import no.hvl.dowhile.utility.StringTools;
 import no.hvl.dowhile.utility.TrackTools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,6 +23,9 @@ import java.util.Set;
  * Handling communication between the components in the application.
  */
 public class OperationManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(OperationManager.class);
+
     private boolean active;
     private Config config;
     private Window window;
@@ -217,7 +222,7 @@ public class OperationManager {
     public void checkFile(File file) {
         GPX gpx = TrackTools.getGpxFromFile(file);
         if (gpx == null) {
-            System.err.println("Couldn't parse file. File " + file.getName() + " will not be processed.");
+            logger.warn("Couldn't parse file. File {} will not be processed.", file.getName());
             return;
         }
         if (TrackTools.hasWaypoints(gpx)) {
@@ -226,7 +231,7 @@ public class OperationManager {
         }
         Track track = TrackTools.getTrackFromGPXFile(gpx);
         if (track == null) {
-            System.err.println("Couldn't find track. File " + file.getName() + " will not be processed.");
+            logger.warn("Couldn't find track. File {} will not be processed.", file.getName());
             return;
         }
         int allPointsCount = TrackTools.getAllTrackPoints(track).size();
@@ -249,7 +254,7 @@ public class OperationManager {
                 queueSize++;
                 window.updateQueueInfo(queueSize, queuePosition);
             } else {
-                System.err.println("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
+                logger.info("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
             }
         }
     }
