@@ -114,7 +114,7 @@ public class FileManager {
                 FileTools.writeToFile(OPERATION_MANAGER.getConfig().getConfigTemplate(), config);
                 logger.info("Config created.");
             } catch (IOException ex) {
-                logger.info("Failed while creating config file.");
+                logger.error("Failed while creating config file.", ex);
             }
         }
         OPERATION_MANAGER.getConfig().parseConfigFile(config);
@@ -141,7 +141,7 @@ public class FileManager {
                                 Operation operation = new Operation(fileInOperationFolder);
                                 operations.add(operation);
                             } catch (Exception ex) {
-                                logger.info("Failed while parsing operation file.");
+                                logger.error("Failed while parsing operation file.", ex);
                             }
                         }
                     }

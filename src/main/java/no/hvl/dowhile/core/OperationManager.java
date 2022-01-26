@@ -254,7 +254,7 @@ public class OperationManager {
                 queueSize++;
                 window.updateQueueInfo(queueSize, queuePosition);
             } else {
-                logger.info("Track in file \"" + file.getName() + "\" was stopped before operation start time. Ignoring.");
+                logger.info("Track in file \"{}\" was stopped before operation start time. Ignoring.", file.getName());
             }
         }
     }
